@@ -1,0 +1,23 @@
+@charset "UTF-8";
+/* ----- top.jsp ----- */
+#top_area {
+	text-align: right;
+	margin-bottom: 20px;	
+}
+
+/* ----- bottom.jsp ----- */
+#footer_area {
+	text-align: center;
+	margin-top: 50px;	
+}
+
+/* ------- 공통 ------- */
+/* 하이퍼링크 밑줄 제거 */
+a {
+	text-decoration: none;
+}
+
+#menu_area {
+	text-align: center;
+}
+
