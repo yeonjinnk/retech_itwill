@@ -42,6 +42,7 @@
 	<div class="left">
 		<div class="img">
 		${Product.store_content}
+		${Product.store_content}
 <%-- 		${Product.store_img1} --%>
 <%-- 		<img src="${Product.store_img1}"> --%>
 			<img src="${Product.store_img1}"/>
