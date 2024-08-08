@@ -35,6 +35,7 @@ a {
 .top_inner {
 	box-sizing: border-box;
 	display: flex;
+	justify-content: space-between;
 	height: 22px;
 	padding-left: 40px;
 	padding-right: 40px;

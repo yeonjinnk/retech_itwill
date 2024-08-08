@@ -35,7 +35,7 @@
 						<a href="#" class="menu_link" id="menu_link1">상품</a>
 					</li>
 					<li class="menu_list">
-						<a href="#" class="menu_link">스토어</a>
+						<a href="Store" class="menu_link">스토어</a>
 					</li>
 					<li class="menu_list">
 						<a href="#" class="menu_link">고객센터</a>
