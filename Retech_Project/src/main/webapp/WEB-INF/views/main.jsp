@@ -9,10 +9,13 @@
 </head>
 <body>
 	<header>
-		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
+<%-- 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	 --%>
+		<jsp:include page="/WEB-INF/views/inc/top2.jsp"></jsp:include>	
 	</header>
 	<section>
-		<h1>retech 메인</h1>
+		<div class="main_slide">
+		
+		</div>
 	</section>
 	<footer>
 <%-- 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	 --%>
