@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 	// 로그아웃 여부를 확인할 confirmLogout() 함수 정의
 // 	function confirmLogout() {
@@ -17,7 +18,9 @@
 	<a href="#">테크페이</a>
 	<a href="#">채팅하기</a>
 	<a href="#">판매하기</a>
-	<a href="#">관리자페이지</a>
+	<c:if test="${sessionScope.sIsAdmin eq 1}">
+			| <a href="AdminHome">관리자페이지</a>
+		</c:if>
 	<a href="#">로그인</a>
 <!-- 	로그인 여부(= 세션 아이디 존재 여부) 판별하여 각각 다른 링크 표시 -->
 <!-- 	EL 의 sessionScope 내장 객체에 접근하여 "sId" 속성값 존재 여부 판별 -->
