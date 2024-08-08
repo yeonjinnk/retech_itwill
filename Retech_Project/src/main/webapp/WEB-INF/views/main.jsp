@@ -12,13 +12,22 @@
 <%-- 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	 --%>
 		<jsp:include page="/WEB-INF/views/inc/top2.jsp"></jsp:include>	
 	</header>
-	<section>
+	<section class="main_section">
 		<div class="main_slide">
 		
 		</div>
+		<div class="main_category">
+		카테고리
+		</div>
+		<div class="main_best">
+		인기상품
+		</div>
+		<div class="main_rct">
+		최근 본 상품
+		</div>
 	</section>
 	<footer>
-<%-- 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	 --%>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
 	</footer>
 </body>
 </html>
