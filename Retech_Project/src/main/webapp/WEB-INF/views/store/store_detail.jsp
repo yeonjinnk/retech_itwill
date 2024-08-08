@@ -8,23 +8,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/defaul.css" rel="stylesheet" type="text/css">
+<script type="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 
-//  	$.ajax({
-//  		url: "StoreProductList",
-//  		data : {
-//  			pageNum: pageNum,
-//  			keyword: keyword,
-			
-//  		},
-//  		dataType: 'json',
-//  		success: function(data) {
-			
-//  			for(let i = 0; i < productList.length; i++) {
-				
-//  			}
-//  		}
-//  	});
+
+function showBig(src) {
+	$("#big").src = src;
+}
 </script>
 <style>
 .left {
@@ -35,19 +25,20 @@
 	float:right;
 }
 </style>
-
 </head>
 <body>
 <div class="store-view">
 	<div class="left">
 		<div class="img">
-		${Product.store_content}
-		${Product.store_content}
+			<div class="bigImage">
+				<img src="${Product.store_img1}" id="big"/>
+			</div>
+			<div class="smallImages">
+				<img src="${Product.store_img2}" onclick="showBig(this.src)"/>
+				<img src="${Product.store_img3}"/>
+			</div>
 <%-- 		${Product.store_img1} --%>
 <%-- 		<img src="${Product.store_img1}"> --%>
-			<img src="${Product.store_img1}"/>
-			<img src="${Product.store_img2}"/>
-			<img src="${Product.store_img3}"/>
 				
 <%-- 			<c:forEach var="product" items="${Product}"> --%>
 <%-- 				<c:set var="" value="${Product.store_img1}"/> --%>
