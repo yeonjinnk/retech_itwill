@@ -38,7 +38,7 @@
 						<a href="#" class="menu_link">스토어</a>
 					</li>
 					<li class="menu_list">
-						<a href="#" class="menu_link">고객센터</a>
+						<a href="Cs" class="menu_link">고객센터</a>
 					</li>
 				</ul>
 				<ul class="main_search">
