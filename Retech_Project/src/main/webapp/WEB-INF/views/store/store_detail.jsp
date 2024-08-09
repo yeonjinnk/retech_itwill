@@ -69,7 +69,6 @@ function showBig(src) {
 <body>
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
-		<jsp:include page="/WEB-INF/views/inc/top2.jsp"></jsp:include>
 	</header>
 	<article id="articleForm">
 		<div class="store-view">
