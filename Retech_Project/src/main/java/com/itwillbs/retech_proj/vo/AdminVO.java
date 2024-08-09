@@ -1,5 +1,8 @@
 package com.itwillbs.retech_proj.vo;
 
-public class AdminVO {
+import lombok.Data;
 
+@Data
+public class AdminVO {
+	
 }
