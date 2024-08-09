@@ -1,6 +1,5 @@
 package com.itwillbs.retech_proj.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -31,7 +30,6 @@ public class MemberController {
 	      return "member/member_join";
 	   }
 
-	   // 0722 수정 -> 중복확인
 	   @PostMapping("MemberJoin")
 	   public String memberDupId(MemberVO member, Model model) {
 		  MemberVO dbmember = service.getMember(member);
@@ -48,7 +46,6 @@ public class MemberController {
 		  }
 	   }
 	   
-	   // 0722 수정
 	   @GetMapping("MemberJoinForm")
 	   public String memberJoinForm(@RequestParam(defaultValue = "") String member_id) {
 //		  System.out.println("넘어온 member_id 확인 : " + member_id);
@@ -127,23 +124,6 @@ public class MemberController {
 			
 		}
 	   
-	   // 비회원 로그인 --------------------------------------------------------------------------------------
-	   @PostMapping("MemberLoginUnregisted")
-	   public String memberLoginUnregistered(
-	           @RequestParam("name") String name,
-	           @RequestParam("email") String email,
-	           @RequestParam("phoneNum") String phoneNum,
-	           @RequestParam("passwd") String passwd,
-	           Model model) {
-	       // 비회원 로그인 처리
-	       if ("example@email.com".equals(email) && "1234".equals(passwd)) {
-	           model.addAttribute("name", name);
-	           model.addAttribute("email", email);
-	           return "redirect:/"; 
-	       } else {
-	           return "result/fail"; 
-	       }
-	   }
 	   
 	   // 로그아웃 -------------------------------------------------------------------------------------------
 	   @GetMapping("MemberLogout")
@@ -223,17 +203,13 @@ public class MemberController {
 						return "member/member_pw_find_pro";
 					}
 					
-//					return "member/member_pw_find_pro";
 				}
 			
 				// 전화번호로 비밀번호 찾기
 				@PostMapping("PwResetPro")
 				public String pwResetPro(MemberVO member, Model model) {
 					MemberVO dbMember = service.isExistPhonenumber(member);
-					
-					
-					
-					
+			
 					if(dbMember == null) { // !member.getMem_tel().equals(mem_tel)
 						model.addAttribute("msg", "없는 전화번호입니다");
 						return "result/fail";
@@ -243,7 +219,6 @@ public class MemberController {
 						return "member/member_pw_reset";
 					}
 					
-//					return "member/member_pw_find";
 				}
 				// 비밀번호 재설정
 				@PostMapping("PwResetFinal")
@@ -258,9 +233,9 @@ public class MemberController {
 				    }
 
 				    // 새 비밀번호 입력 여부를 확인하여 새 비밀번호 입력됐을 경우 암호화 수행 필요
-				    String newPasswd = map.get("member_pw");
+				    String newPasswd = map.get("member_passwd");
 				    if (newPasswd != null && !newPasswd.isEmpty()) {
-				        map.put("member_pw", passwordEncoder.encode(newPasswd)); // 새 비밀번호 암호화
+				        map.put("member_passwd", passwordEncoder.encode(newPasswd)); // 새 비밀번호 암호화
 				        System.out.println("map : " + map); // passwd 항목 암호화 결과 확인
 				    }
 
@@ -320,8 +295,8 @@ public class MemberController {
 	         model.addAttribute("msg", "수정 권한이 없습니다!");
 	         return "result/fail";
 	      } else {
-	         if (!((String)map.get("member_pw")).equals("")) {
-	            map.put("member_pw", passwordEncoder.encode((CharSequence)map.get("member_pw")));
+	         if (!((String)map.get("member_passwd")).equals("")) {
+	            map.put("member_passwd", passwordEncoder.encode((CharSequence)map.get("member_passwd")));
 	         }
 
 	         int updateCount = service.modifyMember(map);

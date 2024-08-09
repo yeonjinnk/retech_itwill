@@ -3,20 +3,87 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.retech_proj.mapper.MemberMapper">
+	<!-- 회원가입 insert -->
+	<insert id="insertMember">
+		INSERT 
+		INTO member
+		VALUES (
+			  #{member_id}
+			, #{member_nickname}
+			, #{member_passwd}
+			, #{member_name}
+			, #{member_birth}
+			, #{member_phone}
+			, #{member_status}
+			, #{member_mail_auth}
+			, #{member_postcode}
+			, #{member_address1}
+			, #{member_address2}
+			, #{member_profile}
+			, #{member_isAdmin}
+		)
+	</insert>
 	
+	<!-- mybatis-config.xml 에 typeAlias 설정 MemberVO => member -->
+	<select id="selectMember" resultType="member">
+		select *
+		from member
+		where member_id = #{member_id}
+	</select>
+	
+	 	<!--  회원 정보 수정 --> 
+<!-- 	<update id="updateMember"> -->
+<!-- 		UPDATE member  -->
+<!-- 		SET -->
+<!-- 			member_preference_theater = #{member_preference_theater}       -->
+<!-- 			, member_passwd = #{member_passwd} -->
+<!-- 		WHERE -->
+<!-- 			member_id = #{member_id}		 -->
+<!-- 	</update> -->
+	
+	<!--  회원 탈퇴 -->
+	<update id="updateWithdrawMember">
+		UPDATE member
+		SET
+			member_status = '탈퇴'
+		WHERE
+			member_id = #{member_id}
+	</update>
+	
+	<!-- 회원 아이디 찾기 -->
+	<select id="selectMemberSearchId" resultType="member">
+	    SELECT *
+	    FROM member
+	    WHERE 
+	        member_name = #{member_name} 
+	        AND member_birth = #{member_birth}
+	        AND member_phone = #{member_phone}
+	</select>
+
+	
+	<!-- 회원 비밀번호 찾기 -->
+	<select id="selectId" resultType="member">
+		SELECT *
+		FROM member
+		WHERE member_id = #{member_id}
+	</select>
+	
+	<!-- 회원 비밀번호 수정 - UPDATE -->
+	<update id="updatePasswd">
+		UPDATE member
+		SET 
+			member_passwd = #{member_passwd}
+		WHERE  
+			member_id = #{member_id}
+	</update>
+	
+	<!-- 회원 아이디 찾기, 비밀번호 변경 위한 전화번호 검색 -->
+	<select id="selectTel" resultType="member">
+		SELECT *
+		FROM member
+		WHERE 
+			member_phone = #{member_phone}
+	</select>
+
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
