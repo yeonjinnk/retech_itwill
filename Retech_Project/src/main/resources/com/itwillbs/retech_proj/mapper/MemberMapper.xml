@@ -84,6 +84,5 @@
 		WHERE 
 			member_phone = #{member_phone}
 	</select>
-
 </mapper>
 
