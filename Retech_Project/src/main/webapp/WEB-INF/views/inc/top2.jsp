@@ -18,6 +18,9 @@
 			<li class="top_list">
 				<a href="#" class="top_link">로그인</a>
 			</li>
+			<c:if test="${sessionScope.sIsAdmin eq 1}">
+			| <a href="AdminHome">관리자페이지</a>
+			</c:if>
 		</ul>
 	</div>
 </div>
@@ -40,6 +43,7 @@
 					<li class="menu_list">
 						<a href="Cs" class="menu_link">고객센터</a>
 					</li>
+					
 				</ul>
 				<ul class="main_search">
 					<li>
