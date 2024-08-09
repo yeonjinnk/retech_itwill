@@ -9,8 +9,7 @@
 </head>
 <body>
 	<header>
-<%-- 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	 --%>
-		<jsp:include page="/WEB-INF/views/inc/top2.jsp"></jsp:include>	
+		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
 	<section class="main_section">
 		<div class="main_slide">
