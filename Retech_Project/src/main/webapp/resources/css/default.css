@@ -1,24 +1,44 @@
 @charset "UTF-8";
-/* ----- top.jsp ----- */
-#top_area {
-	text-align: right;
-	margin-bottom: 20px;	
-}
-
-/* ----- bottom.jsp ----- */
-#footer_area {
-	text-align: center;
-	margin-top: 50px;	
-}
-
 /* ------- 공통 ------- */
 /* 하이퍼링크 밑줄 제거 */
 a {
 	text-decoration: none;
 }
 
-/*---- top.jsp ----*/
-/*---- top 최상단 영역 ----*/
+/* ----- top.jsp, bottom.jsp 공통 ----- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;	
+}
+
+.main_section {
+ 	flex: 1;	
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* header { */
+/* 	position: fixed; */
+/* 	width: 100%; */
+/* 	height: 180px; */
+/* 	z-index: 50; */
+/* 	justify-content: center; */
+/* 	align-items: center; */
+/* 	box-sizing: border-box; */
+/* } */
+
+footer {
+	display: block;
+}
+
+/*---- header 영역 시작 ----*/
+/*---- top 최상단 ----*/
 .header_top {
 	box-sizing: border-box;
 	display: block;
@@ -26,6 +46,7 @@ a {
 	margin-right: 120px;
 	max-width: 1280px;
 	height: 22px;
+	margin: auto;
 }
 
 .header_top li {
@@ -35,10 +56,12 @@ a {
 .top_inner {
 	box-sizing: border-box;
 	display: flex;
+	justify-content: space-between;
 	height: 22px;
 	padding-left: 40px;
 	padding-right: 40px;
 	padding-top: 8px;
+	margin: auto;
 }
 
 .top_area {
@@ -57,18 +80,15 @@ a {
 	margin-left: 30px;
 }
 
-/* .top_list:not(#top_list1) { */
-/* 	margin-left: 25px; */
-/* } */
-
-/*---- top 메뉴영역 ----*/
+/*---- top 메뉴 ----*/
 .header_main {
 	box-sizing: border-box;
 	display: block;
-	margin-left: 120px;
-	margin-right: 120px;
+	margin-left: 50px;
+	margin-right: 50px;
 	max-width: 1280px;
 	max-height: 100px;
+	margin: auto;
 }
 
 .header_main li {
@@ -81,6 +101,8 @@ a {
 	display: flex;
 	justify-content: space-between;
 	padding: 20px 40px;
+	align-items: center;
+	white-space: nowrap;
 }
 
 .main_menu {
@@ -113,10 +135,55 @@ a {
 	margin-top: 0;
 }
 
-/*---- 메인 이미지 슬라이드영역 ----*/
+/*---- header 영역 끝 ----*/
+
+
+
+/*---- body 영역 시작 ----*/
+/*---- 메인 이미지 슬라이드 ----*/
 .main_slide {
 	box-sizing: border-box;
-	height: 480px;
-	width: 1540px;
+	height: 470px;
+	width: 100%;
 	background-color: lightgray;  /*-- 임시 --*/
 }
+
+.main_section > div:not(.main_slide) {
+	width: 1280px;
+	align-items: center;
+    display: flex;
+    margin: auto;
+}
+
+/*---- body 영역 끝 ----*/
+
+
+/*---- bottom 영역 시작 ----*/
+.bottom_area {
+	box-sizing: border-box;
+	display: block;
+	width: 100%;	
+	background-color: lightgray;
+	margin: auto;
+}
+
+.inc_info {
+	box-sizing: border-box;
+	padding-bottom: 40px; 
+	padding-top: 30px; 
+    white-space: pre-line;	
+    display: flex;
+    font-size: 10px;
+   	max-width: 1280px;
+   	margin: auto;
+}
+
+.inc_info > div:not(.bottom_logo) {
+	 margin-left: 40px;
+}
+
+.inc_intro1, .inc_intro2 {
+    width: 30%; 
+}
+
+/*---- bottom 영역 끝 ----*/

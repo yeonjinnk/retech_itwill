@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.itwillbs.retech_proj.mapper.StoreMapper">
+    	<select id="selectProductList">
+    		SELECT *
+    		FROM store
+    		
+    	
+    	</select>
+    
+    
+    		<!-- 상품상세조회 -->
+    <select id="selectProduct" resultType="map">
+    	SELECT *
+    	FROM store
+<!--     	WHERE store_id = #{store_id} -->
+    </select>
+    
+    </mapper>
