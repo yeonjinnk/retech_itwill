@@ -35,7 +35,7 @@
 			<nav class="menu_container">
 				<ul class="menu_area">
 					<li class="menu_list">
-						<a href="#" class="menu_link" id="menu_link1">상품</a>
+						<a href="ProductList" class="menu_link" id="menu_link1">상품</a>
 					</li>
 					<li class="menu_list">
 						<a href="Store" class="menu_link">스토어</a>
