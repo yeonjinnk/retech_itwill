@@ -16,7 +16,7 @@
 				<a href="#" class="top_link">판매하기</a>
 			</li>
 			<li class="top_list">
-				<a href="#" class="top_link">로그인</a>
+				<a href="MemberLogin" class="login">로그인</a>
 			</li>
 			<c:if test="${sessionScope.sIsAdmin eq 1}">
 			| <a href="AdminHome">관리자페이지</a>
@@ -35,7 +35,7 @@
 			<nav class="menu_container">
 				<ul class="menu_area">
 					<li class="menu_list">
-						<a href="#" class="menu_link" id="menu_link1">상품</a>
+						<a href="ProductList" class="menu_link" id="menu_link1">상품</a>
 					</li>
 					<li class="menu_list">
 						<a href="Store" class="menu_link">스토어</a>
