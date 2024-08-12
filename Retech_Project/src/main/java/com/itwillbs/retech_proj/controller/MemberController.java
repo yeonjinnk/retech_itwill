@@ -76,53 +76,53 @@ public class MemberController {
 	   public String memberLogin() {
 	      return "member/member_login_form";
 	   }
-	   
+
 	   @PostMapping("MemberLogin")
 	   public String loginPro(MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model,
-	                          HttpSession session, HttpServletResponse response, String rememberId) {
+			   HttpSession session, HttpServletResponse response, String rememberId) {
+	     
 
-	       // 비밀번호가 null이거나 비어 있는지 확인
-	       if (member.getMember_passwd() == null || member.getMember_passwd().isEmpty()) {
-	           model.addAttribute("msg", "비밀번호를 입력해주세요.");
-	           return "result/fail";
-	       }
+		  MemberVO dbMember = service.getMember(member);
+	      
+	      System.out.println("dbMember : " + dbMember);
+	      
+	      if(dbMember == null || !passwordEncoder.matches(member.getMember_passwd(), dbMember.getMember_passwd())) {
+				model.addAttribute("msg", "로그인 실패!");
+				return "result/fail";
+			} else if(dbMember.getMember_status().equals("탈퇴")) { // 로그인 성공(이지만 탈퇴 회원인 경우)
+				model.addAttribute("msg", "탈퇴한 회원입니다!");
+				return "result/fail";
+			} else { // 로그인 성공
+				// 로그인 성공한 아이디를 세션에 저장
+				session.setAttribute("sId", member.getMember_id());
+				session.setAttribute("sName", dbMember.getMember_name());
+				session.setAttribute("sIsAdmin", dbMember.getMember_isAdmin());
+				session.setMaxInactiveInterval(3600);
 
-	       MemberVO dbMember = service.getMember(member);
-
-	       if (dbMember == null || !passwordEncoder.matches(member.getMember_passwd(), dbMember.getMember_passwd())) {
-	           model.addAttribute("msg", "로그인 실패!");
-	           return "result/fail";
-	       } else if (dbMember.getMember_status().equals("탈퇴")) { // 로그인 성공(이지만 탈퇴 회원인 경우)
-	           model.addAttribute("msg", "탈퇴한 회원입니다!");
-	           return "result/fail";
-	       } else { // 로그인 성공
-	           // 로그인 성공한 아이디를 세션에 저장
-	           session.setAttribute("sId", member.getMember_id());
-	           session.setAttribute("sName", dbMember.getMember_name());
-	           session.setAttribute("sIsAdmin", dbMember.getMember_isAdmin());
-	           session.setMaxInactiveInterval(3600);
-
-	           Cookie cookie = new Cookie("rememberId", member.getMember_id());
-
-	           // 2. 파라미터로 전달받은 rememberId 변수값 체크
-	           if (rememberId != null) {
-	               // 2-1. 아이디 기억하기 체크 시 : 쿠키 유효기간 30일로 설정
-	               cookie.setMaxAge(60 * 60 * 24 * 30); // 30일(60초 * 60분 * 24시간 * 30일)
-	           } else { 
-	               // 2-2. 아이디 기억하기 미체크 시 : 쿠키 삭제 위해 유효기간을 0 으로 설정
-	               cookie.setMaxAge(0);
-	           }
-
-	           response.addCookie(cookie);
-	           if (session.getAttribute("prevURL") == null) {
-	               return "redirect:/";
-	           } else {
-	               // 요청 서블릿 주소 앞에 "/" 기호가 이미 붙어있으므로 "redirect:" 문자열과 결합
-	               return "redirect:" + session.getAttribute("prevURL");
-	           }
-	       }
-	   }
-
+			
+				Cookie cookie = new Cookie("rememberId", member.getMember_id());
+				
+				// 2. 파라미터로 전달받은 rememberId 변수값 체크
+				if(rememberId != null) {
+					// 2-1. 아이디 기억하기 체크 시 : 쿠키 유효기간 30일로 설정
+					cookie.setMaxAge(60 * 60 * 24 * 30); // 30일(60초 * 60분 * 24시간 * 30일)
+				} else { 
+					// 2-2. 아이디 기억하기 미체크 시 : 쿠키 삭제 위해 유효기간을 0 으로 설정
+					cookie.setMaxAge(0);
+				}
+				
+				response.addCookie(cookie);
+				if(session.getAttribute("prevURL") == null) {
+					return "redirect:/";
+				} else {
+					// 요청 서블릿 주소 앞에 "/" 기호가 이미 붙어있으므로 "redirect:" 문자열과 결합
+					return "redirect:" + session.getAttribute("prevURL");
+				}
+				// -----------------------------------------------------------------------------------------
+				
+			}
+			
+		}
 	   
 	   
 	   // 로그아웃 -------------------------------------------------------------------------------------------
