@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/store/store_detail.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 
@@ -19,59 +20,36 @@
 
 //이미지 바꾸기(작은 이미지 클릭 시 큰 이미지에 띄우기)
 function showBig(src) {
-// 	console.log("src : " + src);
+	console.log("src : " + src);
 // 	console.log("src2 : " + $("#big").attr("src"));
 	
 	//id가 big인 이미지 src 속성을 클릭한 작은 이미지의 속성으로 변경
 	$("#big").attr("src",src);
 }
+
+$(function() {
+	$("#minus").click(function() {
+		console.log("minus button clicked"); // 버튼 클릭 시 표시
+		let result = $("#selected_quantity").val(); // 선택한 수량 result 변수에 저장
+		if(result > 1) {
+			console.log("result : " + result);
+			result = result - 1;
+			$("#selected_quantity").val(result);
+		} else {
+			$("#minus").disabled;
+		}
+	});
+	
+});
 </script>
-<style>
-#articleForm {
-/* 		width: 100%; */
-    margin: 30px 30px 30px 30px;
-/*     padding: 40px 0 0 0; */
-}
-
- .left { 
- 	float:left; 
- 	margin: 5px 50px 5px 200px;
-} 
-
-.right {
-	float: right;
-	padding: 5px 1000px 5px 50px;
-/*     padding: 15px 0 30px 40px; */
-}
-
-/*  .img {  */
-/* 	margin: 30px 30px 30px 30px; */
-/*  }  */
-.bigImage { /* 큰 사진 표시영역*/
-	margin-bottom: 10px; /* 아래쪽 여백*/
-}
-
-#big { /* 큰 사진*/
-	width: 300px;
-	height: 300px;
-}
-
-
-#small { /* 작은 사진들*/
-	width: 100px;
-	height: 100px;
-}
-
-
-
-</style>
 </head>
 <body>
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<article id="articleForm">
-		<div class="store-view">
+		
+		
 			<div class="left">
 				<div class="img">
 					<div class="bigImage">
@@ -102,12 +80,30 @@ function showBig(src) {
 					<div>
 						<h2 class="title">${Product.store_id}</h2>
 					</div>
-					<div>
-						<h3 class="price">
+					<div class="price">
+						<h3>
 							<fmt:formatNumber pattern="#,###" value="${Product.store_price}"/>원
 						</h3>
 					</div>
-					<div>
+					<hr>
+					<div class="goods_plus_info">
+						<dl>
+							<dt>카드 혜택</dt>
+							<dd>신용카드 할인 안내</dd>
+						</dl>
+						<dl>
+							<dt>배송비</dt>
+							<dd>업체 무료배송</dd>
+						</dl>
+					</div>
+					<div class="quantity">
+<%-- 						<c:if test="${ }" disabled/> --%>
+						<input type="button" value="-" id="minus" >
+						<input type="number" id="selected_quantity" value="1">
+						<input type="button" value="+" id="plus" onclick="plus_quantity()">
+						
+					</div>
+					<div class="btn-Area">
 						<input type="button" value="장바구니" name="cart">
 						<input type="button" value="바로구매" name="buy">
 		 			</div>

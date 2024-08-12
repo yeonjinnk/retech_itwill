@@ -39,6 +39,12 @@
 					</li>
 					<li class="menu_list">
 						<a href="Store" class="menu_link">스토어</a>
+							<ul class="sub_menu">
+								<li><a href="#">키스킨</a></li>
+								<li><a href="#">마우스패드</a></li>
+								<li><a href="#">받침대</a></li>
+								<li><a href="#">파우치</a></li>
+							</ul>
 					</li>
 					<li class="menu_list">
 						<a href="Cs" class="menu_link">고객센터</a>

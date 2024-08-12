@@ -125,6 +125,8 @@ footer {
 .menu_link {
 	font-size: 16px;
 	margin-left: 40px;
+	display:block;
+	
 }
 
 .main_search {
@@ -134,6 +136,42 @@ footer {
 	margin-bottom: 0;
 	margin-top: 0;
 }
+
+.menu_list {
+    position: relative; /* 서브메뉴 위치를 조정하기 위해 */
+}
+/*서브메뉴*/
+.sub_menu {
+	display:none; /*서브메뉴 숨기기*/
+	position:absolute; /*부모메뉴 위치 따라 이동 */
+	top: 100%; /* 부모 메뉴 항목 바로 아래에 위치 */
+    left: 0; /* 부모 메뉴 항목의 왼쪽에 정렬 */
+    background-color: white; /* 배경색 설정 */
+    border: 1px solid black; /* 테두리 추가 */
+    list-style: none; /* 리스트 스타일 제거 */
+    padding: 0;
+    margin: 0;
+    font-size: 0.5em;
+}
+
+.sub_menu li:hover{
+	background: lime;
+}
+
+.menu_list:hover .sub_menu {
+    display: block; /* 마우스 오버 시 서브메뉴 표시 */
+}
+
+.sub_menu li {
+    padding: 10px;
+}
+
+.sub_menu li a {
+    text-decoration: none;
+    color: #333;
+}
+
+
 
 /*---- header 영역 끝 ----*/
 
