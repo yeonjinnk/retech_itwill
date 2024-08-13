@@ -19,6 +19,10 @@ body {
     display: flex;
     flex-direction: column;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git
 /* header 고정 */
 header {
 	position: fixed;
@@ -27,6 +31,14 @@ header {
 	top:0;
 	z-index: 50;
 	background-color: white;
+<<<<<<< HEAD
+=======
+}
+
+/* header 고정 후 다음 section 시작 */
+section {
+	margin-top: 150px;
+>>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git
 }
 /* header 고정 후 다음 section 시작 */
 section {
@@ -149,8 +161,13 @@ footer {
 }
 .inc_info {
 	box-sizing: border-box;
+<<<<<<< HEAD
 	padding-bottom: 40px;
 	padding-top: 30px;
+=======
+	padding-bottom: 40px; 
+	padding-top: 30px; 
+>>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git
 	padding-left: 35px;
     white-space: pre-line;	
     display: flex;
