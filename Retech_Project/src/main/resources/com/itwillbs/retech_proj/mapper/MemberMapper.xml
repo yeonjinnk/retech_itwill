@@ -14,8 +14,8 @@
 			, #{member_name}
 			, #{member_birth}
 			, #{member_phone}
-			, #{member_status}
-			, #{member_mail_auth}
+			, 1
+			,'N'
 			, #{member_postcode}
 			, #{member_address1}
 			, #{member_address2}
