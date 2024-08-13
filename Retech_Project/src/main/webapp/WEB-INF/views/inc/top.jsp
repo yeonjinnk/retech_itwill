@@ -1,7 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<script type="text/javascript">
+	function confirmLogout() {
+		let isLogout = confirm("로그아웃 하시겠습니까?");
+		// isLogout 변수값이 true 일 경우 로그아웃 작업을 수행할
+		// "MemberLogout" 서블릿 요청
+		if (isLogout) {
+			location.href = "MemberLogout";
+		}
+	}
+</script>
 <!-- 탑 최상단 영역 -->
 <div class="header_top">
 	<div class="top_inner">
@@ -19,23 +28,38 @@
 					<li class="top_list">
 						<a href="#" class="top_link">판매하기</a>
 					</li>
-					<li class="top_list">
-						<a href="MemberLogin" class="login top_link">로그인</a>
-					</li>
-					<c:if test="${sessionScope.sIsAdmin eq 1}">
-					| <a href="AdminHome">관리자페이지</a>
-					</c:if>
+						<c:choose>
+							<c:when test="${empty sessionScope.sId}"> <%-- 로그인 상태가 아닐 경우 --%>
+								<li class="top_list">
+								 	<a href="MemberLogin" class="login top_link">로그인</a>
+								</li>
+							</c:when>
+							<c:otherwise> <%-- 로그인 상태일 경우 --%>
+								<li class="top_list">
+									<a href="MyPageMain">${sessionScope.sName}</a>님
+								</li>
+								<li class="top_list">
+									<a href="javascript:confirmLogout()">로그아웃</a>
+								</li>
+								
+								<!-- 관리자 계정일 경우 관리자 페이지 링크 표시 -->
+								<c:if test="${sessionScope.sIsAdmin eq 'Y'}">
+									<li class="top_list">
+										<a href="AdminHome">관리자페이지</a>
+									</li>
+								</c:if>
+							</c:otherwise>
+						</c:choose>
 				</ul>
 			</nav>
 		</div>
 	</div>
 </div>
-
 <!-- 탑 로고 및 메뉴,], 검색어 영역 -->
 <div class="header_main">
 	<div class="main_inner">
 		<div class="logo">
-			<a href="#" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
+			<a href="./" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
 		</div>
 		<div class="main_menu">
 			<nav class="menu_container">
@@ -60,4 +84,3 @@
 		</div>
 	</div>
 </div>
-
