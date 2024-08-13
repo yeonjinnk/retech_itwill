@@ -61,7 +61,7 @@
 <div class="header_main">
 	<div class="main_inner">
 		<div class="logo">
-			<a href="#" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
+			<a href="./" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
 		</div>
 		<div class="main_menu">
 			<nav class="menu_container">
