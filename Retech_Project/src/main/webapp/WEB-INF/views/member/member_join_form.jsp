@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -92,8 +91,8 @@
         <form class="join" name="joinForm" action="MemberJoinForm" method="post">
             <div class="join_detail">
                 <span class="title">주소</span>
-				<input type="text" name="member_postcode" id="postCode" size="6" required readonly>
-				<input type="button" value="주소검색" id="btnSearchAddress">
+                <input type="text" name="member_postcode" id="postCode" size="6" required readonly>
+                <input type="button" value="주소검색" id="btnSearchAddress">
                 <br>
                 <input type="text" name="member_address1" id="address1" size="30" placeholder="기본주소" required>
                 <br>
@@ -106,31 +105,36 @@
             </div>
             <div class="join_detail">
                 <span class="title">비밀번호</span>
-                <input type="password" class="detail2" name="member_passwd" id="member_passwd" placeholder="영문, 숫자, 특수문자 중 2개 조합 8자 이상" required onblur="emptyPw()"> <!-- / ^[A-Za-z0-9!@#$%^&*_-+=]{8,}$/ -->
+                <input type="password" class="detail2" name="member_passwd" id="member_passwd" placeholder="영문, 숫자, 특수문자 중 2개 조합 8자 이상" required>
             </div>
             <div class="join_detail">
                 <span class="title">비밀번호 확인</span>
-                <input type="password" class="detail2" name="member_passwd2" id="member_passwd2" placeholder="위에 입력한 비밀번호를 다시 입력해주세요" required onblur="checkSamePw()"> <br>
+                <input type="password" class="detail2" name="member_passwd2" id="member_passwd2" placeholder="위에 입력한 비밀번호를 다시 입력해주세요" required>
+                <br>
                 <span id="checkPasswdResult" class="check"></span>
             </div>
             <div class="join_detail">
                 <span class="title">이름</span>
-                <input type="text" class="detail2" name="member_name" id="member_name" placeholder="실명을 입력해주세요" required onblur="checkName()"><br>
+                <input type="text" class="detail2" name="member_name" id="member_name" placeholder="실명을 입력해주세요" required>
+                <br>
                 <span id="checkNameResult" class="check"></span>
             </div>
             <div class="join_detail">
                 <span class="title">상점이름(닉네임)</span>
-                <input type="text" class="detail2" name="member_nickname" id="member_nickname" placeholder="상점이름을 입력해주세요" required onblur="checkNickName()"><br>
+                <input type="text" class="detail2" name="member_nickname" id="member_nickname" placeholder="상점이름을 입력해주세요" required>
+                <br>
                 <span id="checkNickNameResult" class="check"></span>
             </div>
             <div class="join_detail">
                 <span class="title">생년월일</span>
-                <input type="text" class="detail2" name="member_birth" id="member_birth" placeholder="예) 1999-01-01" required onblur="checkBirth()"><br>
+                <input type="text" class="detail2" name="member_birth" id="member_birth" placeholder="예) 1999-01-01" required>
+                <br>
                 <span id="checkBirthResult" class="check"></span>
             </div>
             <div class="join_detail">
                 <span class="title">휴대폰번호</span>
-                <input type="text" class="detail2" name="member_phone" id="member_phone" placeholder="- 없이 숫자만 입력해주세요." required onblur="checkPhoneNum()"> <br>
+                <input type="text" class="detail2" name="member_phone" id="member_phone" placeholder="- 없이 숫자만 입력해주세요." required>
+                <br>
                 <span id="checkPhoneResult" class="check"></span>
             </div>
 
@@ -202,22 +206,24 @@
             }
         }
 
-        // 주소 검색
-       $("#btnSearchAddress").click(function() {
-	    new daum.Postcode({
-	        oncomplete: function(data) {
-	            $("#postCode").val(data.zonecode);
-	            let address = data.address;
-	            if (data.buildingName !== '') {
-	                address += " (" + data.buildingName + ")";
-	            }
-	            $("#address1").val(address);
-	            $("#address2").focus();
-	        }
-	   	 }).open();
-   	  });
-
-</script>
+        // 주소 검색 API 활용 기능 추가
+        $("#btnSearchAddress").click(function() {
+            new daum.Postcode({
+                oncomplete: function(data) { 
+                    $("#postCode").val(data.zonecode);
+            
+                    let address = data.address;
+                    if (data.buildingName !== '') {
+                        address += " (" + data.buildingName + ")";
+                    }
+            
+                    $("#address1").val(address);
+                    $("#address2").focus();
+                }
+            }).open();
+        });
+    });
+    </script>
 
 </body>
 </html>

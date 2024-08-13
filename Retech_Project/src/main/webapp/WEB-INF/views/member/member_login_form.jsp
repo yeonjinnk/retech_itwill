@@ -129,10 +129,6 @@
 			<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 		</header>
 		
-		<div class="logo">
-			<a href="./" class="main_logo"><img src="resources/images/main_logo.png"></a>
-		</div>
-		
 		<div class="tab">
 			<ul>
 				<li class="tabMenu on"><a href="#">회원 로그인</a></li>
@@ -150,7 +146,7 @@
 					
 					<div class="info">
 						<span>비밀번호</span>
-						<input type="password" name="member_pw" id="member_pw" placeholder= "영문, 숫자 포함 8자 이상" required><br>
+						<input type="password" name="member_passwd" id="member_passwd" placeholder= "영문, 숫자 포함 8자 이상" required><br>
 					</div>
 					
 					<div class="search">
