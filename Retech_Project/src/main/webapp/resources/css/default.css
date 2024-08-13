@@ -4,7 +4,6 @@
 a {
 	text-decoration: none;
 }
-
 /* ----- top.jsp, bottom.jsp 공통 ----- */
 html, body {
     height: 100%;
@@ -13,11 +12,9 @@ html, body {
     display: flex;
     flex-direction: column;	
 }
-
 .main_section {
  	flex: 1;	
 }
-
 body {
     display: flex;
     flex-direction: column;
@@ -31,17 +28,20 @@ header {
 	top:0;
 	z-index: 50;
 	background-color: white;
+
 }
 
 /* header 고정 후 다음 section 시작 */
 section {
 	margin-top: 150px;
 }
-
+/* header 고정 후 다음 section 시작 */
+section {
+	margin-top: 150px;
+}
 footer {
 	display: block;
 }
-
 /*---- header 영역 시작 ----*/
 /*---- top 최상단 ----*/
 .header_top {
@@ -53,30 +53,25 @@ footer {
 	max-height: 60px;
 	margin: auto;
 }
-
 .header_top li {
 	list-style-type: none;
 }
-
 .top_inner {
 	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
 	padding: 10px 40px;
-	white-space: nowrap;        
+	white-space: nowrap;
 }
-
 .top_menu {
 	box-sizing: border-box;
 	display: flex;
 	justify-content: flex-end;	
 }
-
 .top_menu_container {
 	box-sizing: border-box;
 	display: block;	
 }
-
 .top_area {
 	box-sizing: border-box;
 	display: flex;
@@ -84,12 +79,10 @@ footer {
 	margin-bottom: 10px;
 	
 }
-
 .top_link {
 	font-size: 12px;
 	margin-left: 40px;
 }
-
 /*---- top 메뉴 ----*/
 .header_main {
 	box-sizing: border-box;
@@ -100,11 +93,9 @@ footer {
 	max-height: 100px;
 	margin: auto;
 }
-
 .header_main li {
 	list-style-type: none;
 }
-
 .main_inner {
 	box-sizing: border-box;
 /* 	height: 64px; */
@@ -114,31 +105,26 @@ footer {
 	align-items: center;
 	white-space: nowrap;
 }
-
 .main_menu {
 	box-sizing: border-box;
 	display: flex;
 	justify-content: flex-end;
 }
-
 .menu_container {
 	box-sizing: border-box;
 	display: block;
 }
-
 .menu_area {
 	box-sizing: border-box;
 	display: flex;
 	margin-bottom: 10px;
 }
-
 .menu_link {
 	font-size: 16px;
 	margin-left: 40px;
 	display:block;
 	
 }
-
 .main_search {
 	box-sizing: border-box;
 	display: flex;
@@ -146,6 +132,7 @@ footer {
 	margin-bottom: 0;
 	margin-top: 0;
 }
+<<<<<<< HEAD
 
 .menu_list {
     position: relative; /* 서브메뉴 위치를 조정하기 위해 */
@@ -183,10 +170,9 @@ footer {
 
 
 
+=======
+>>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git
 /*---- header 영역 끝 ----*/
-
-
-
 /*---- body 영역 시작 ----*/
 /*---- 메인 이미지 슬라이드 ----*/
 .main_slide {
@@ -195,17 +181,13 @@ footer {
 	width: 100%;
 	background-color: lightgray;  /*-- 임시 --*/
 }
-
 .main_section > div:not(.main_slide) {
 	width: 1280px;
 	align-items: center;
     display: flex;
     margin: auto;
 }
-
 /*---- body 영역 끝 ----*/
-
-
 /*---- bottom 영역 시작 ----*/
 .bottom_area {
 	box-sizing: border-box;
@@ -214,9 +196,10 @@ footer {
 	background-color: lightgray;
 	margin: auto;
 }
-
 .inc_info {
 	box-sizing: border-box;
+	padding-bottom: 40px;
+	padding-top: 30px;
 	padding-bottom: 40px; 
 	padding-top: 30px; 
 	padding-left: 35px;
@@ -226,13 +209,10 @@ footer {
    	max-width: 1280px;
    	margin: auto;
 }
-
 .inc_info > div:not(.bottom_logo) {
 	 margin-left: 40px;
 }
-
 .inc_intro1, .inc_intro2 {
-    width: 30%; 
+    width: 30%;
 }
-
 /*---- bottom 영역 끝 ----*/

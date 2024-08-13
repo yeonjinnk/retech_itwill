@@ -27,20 +27,57 @@ function showBig(src) {
 	$("#big").attr("src",src);
 }
 
+//수량 감소 버튼 클릭 시
 $(function() {
 	$("#minus").click(function() {
-		console.log("minus button clicked"); // 버튼 클릭 시 표시
-		let result = $("#selected_quantity").val(); // 선택한 수량 result 변수에 저장
+// 		console.log("minus button clicked"); // 버튼 클릭 시 표시
+		let result = Number($("#selected_quantity").val()); // 선택한 수량 result 변수에 저장
+// 		console.log("데이터타입 : " + typeof(result));
 		if(result > 1) {
-			console.log("result : " + result);
+// 			console.log("result : " + result + "데이터타입 : " + typeof(result));
 			result = result - 1;
-			$("#selected_quantity").val(result);
+			let price = result * $("#unit_price").val(); //가격 = 수량 * 단위가격
+			$("#selected_quantity").val(result); //증가한 수량을 입력
+			$("#amount").html(result); //증가한 수량을 입력
+			$("#price").html(price); //총 가격 표시 자리에 계산한 금액 출력
 		} else {
 			$("#minus").disabled;
 		}
 	});
 	
+	
+	
 });
+
+//수량 증가 버튼 클릭 시
+$(function() {
+	$("#plus").click(function() {
+// 		console.log("plus button clicked"); // 버튼 클릭 시 표시
+		let result = Number($("#selected_quantity").val()); // 선택한 수량 result 변수에 저장
+		console.log("데이터타입 : " + typeof(result));
+		if(result > 0) {
+// 			console.log("result : " + result + "데이터타입 : " + typeof(result));
+			result += 1;
+			let price = result * $("#unit_price").val(); //가격 = 수량 * 단위가격
+			$("#selected_quantity").val(result);
+			$("#amount").html(result);
+			$("#price").html(price); //총 가격 표시 자리에 계산한 금액 출력
+
+		} else {
+			$("#plus").disabled;
+		}
+	});
+});
+
+//바로구매 버튼 클릭 시
+$(function() {
+	$("#buy").click(function() {
+		console.log("바로구매 버튼 클릭됨");
+		location.href="StorePay";
+	});
+	
+});
+
 </script>
 </head>
 <body>
@@ -100,19 +137,23 @@ $(function() {
 <%-- 						<c:if test="${ }" disabled/> --%>
 						<input type="button" value="-" id="minus" >
 						<input type="number" id="selected_quantity" value="1">
-						<input type="button" value="+" id="plus" onclick="plus_quantity()">
+						<input type="button" value="+" id="plus">
 						
 					</div>
+					<input type="hidden" value="${Product.store_price}" id="unit_price">
+					<div class="amount">
+						총<span id="amount">1</span>개
+						<span id="price">${Product.store_price}</span>원
+					</div>
 					<div class="btn-Area">
-						<input type="button" value="장바구니" name="cart">
-						<input type="button" value="바로구매" name="buy">
+						<input type="button" value="장바구니" id="cart">
+						<input type="button" value="바로구매" id="buy">
 		 			</div>
 				</div>
 			</div>
 			<div class="goods_view_area">
 			
 			</div>
-		</div>
 	</article>
 
 

@@ -41,5 +41,10 @@ public class StoreController {
 	}
 	
 	
+	@GetMapping("StorePay")
+	public String storePay() {
+		return "store/store_pay";
+	}
+	
 	
 }

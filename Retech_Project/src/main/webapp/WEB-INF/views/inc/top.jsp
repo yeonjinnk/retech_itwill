@@ -11,7 +11,6 @@
 		}
 	}
 </script>
-
 <!-- 탑 최상단 영역 -->
 <div class="header_top">
 	<div class="top_inner">
@@ -56,12 +55,11 @@
 		</div>
 	</div>
 </div>
-
 <!-- 탑 로고 및 메뉴,], 검색어 영역 -->
 <div class="header_main">
 	<div class="main_inner">
 		<div class="logo">
-			<a href="#" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
+			<a href="./" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
 		</div>
 		<div class="main_menu">
 			<nav class="menu_container">
@@ -92,4 +90,3 @@
 		</div>
 	</div>
 </div>
-
