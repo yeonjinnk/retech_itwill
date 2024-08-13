@@ -39,14 +39,57 @@ footer {
 
 /*---- header 영역 시작 ----*/
 /*---- top 최상단 ----*/
+/* .header_top { */
+/* 	box-sizing: border-box; */
+/* 	display: block; */
+/* 	margin-left: 120px; */
+/* 	margin-right: 120px; */
+/* 	max-width: 1280px; */
+/* 	height: 22px; */
+/* 	margin: auto; */
+/* } */
+
+/* .header_top li { */
+/* 	list-style-type: none; */
+/* } */
+
+/* .top_inner { */
+/* 	box-sizing: border-box; */
+/* 	display: flex; */
+/* 	justify-content: space-between; */
+/* 	height: 22px; */
+/* 	padding-left: 40px; */
+/* 	padding-right: 40px; */
+/* 	padding-top: 8px; */
+/* 	margin: auto; */
+/* } */
+
+/* .top_area { */
+/* 	box-sizing: border-box; */
+/* 	display: flex; */
+/* 	margin-left:860px; */
+/* 	margin-top: auto; */
+/* 	height: 14px; */
+	
+/* } */
+
+/* .top_list { */
+/* 	box-sizing: border-box; */
+/* 	display: list-item; */
+/* 	font-size: 12px; */
+/* 	margin-left: 30px; */
+/* } */
+
+/*---- top 최상단 222222 ----*/
 .header_top {
 	box-sizing: border-box;
 	display: block;
 	margin-left: 120px;
 	margin-right: 120px;
 	max-width: 1280px;
-	height: 22px;
+	max-height: 22px;            /*수정*/
 	margin: auto;
+	padding-top: 10px;
 }
 
 .header_top li {
@@ -57,27 +100,40 @@ footer {
 	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
-	height: 22px;
+/* 	height: 22px; */             /*수정*/
 	padding-left: 40px;
 	padding-right: 40px;
-	padding-top: 8px;
-	margin: auto;
+/* 	padding-top: 8px; */         /*수정*/
+	white-space: nowrap;         /*수정*/
+}
+
+.top_menu {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: flex-end;	
+}
+
+.top_menu_container {
+	box-sizing: border-box;
+	display: block;	
 }
 
 .top_area {
 	box-sizing: border-box;
 	display: flex;
-	margin-left:860px;
+/* 	margin-left:860px; */
 	margin-top: auto;
-	height: 14px;
+	margin-bottom: 10px;
 	
 }
 
-.top_list {
-	box-sizing: border-box;
-	display: list-item;
+.top_link {
 	font-size: 12px;
-	margin-left: 30px;
+	margin-left: 40px;
+/* 	box-sizing: border-box; */
+/* 	display: list-item; */
+/* 	font-size: 12px; */
+/* 	margin-left: 30px; */
 }
 
 /*---- top 메뉴 ----*/
@@ -119,7 +175,7 @@ footer {
 .menu_area {
 	box-sizing: border-box;
 	display: flex;
-	margin-bottom: 10px;;
+	margin-bottom: 10px;
 }
 
 .menu_link {

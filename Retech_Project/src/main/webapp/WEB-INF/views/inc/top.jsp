@@ -5,23 +5,27 @@
 <!-- 탑 최상단 영역 -->
 <div class="header_top">
 	<div class="top_inner">
-		<ul class="top_area">
-			<li class="top_list">
-				<a href="#" class="top_link" id="top_link1">테크페이</a>
-			</li>
-			<li class="top_list">
-				<a href="#" class="top_link">채팅하기</a>
-			</li>
-			<li class="top_list">
-				<a href="#" class="top_link">판매하기</a>
-			</li>
-			<li class="top_list">
-				<a href="MemberLogin" class="login">로그인</a>
-			</li>
-			<c:if test="${sessionScope.sIsAdmin eq 1}">
-			| <a href="AdminHome">관리자페이지</a>
-			</c:if>
-		</ul>
+		<div class="top_menu">
+			<nav class="top_menu_container">
+				<ul class="top_area">
+					<li class="top_list">
+						<a href="#" class="top_link" id="top_link1">테크페이</a>
+					</li>
+					<li class="top_list">
+						<a href="#" class="top_link">채팅하기</a>
+					</li>
+					<li class="top_list">
+						<a href="#" class="top_link">판매하기</a>
+					</li>
+					<li class="top_list">
+						<a href="MemberLogin" class="login top_link">로그인</a>
+					</li>
+					<c:if test="${sessionScope.sIsAdmin eq 1}">
+					| <a href="AdminHome">관리자페이지</a>
+					</c:if>
+				</ul>
+			</nav>
+		</div>
 	</div>
 </div>
 
