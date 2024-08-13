@@ -120,7 +120,7 @@
 					
 					<div class="info">
 						<span>휴대폰번호</span>
-						<input type="text" name="member_phonenumber" placeholder=" - 없이 숫자만 입력해주세요." required> <br>
+						<input type="text" name="member_phone" placeholder=" - 없이 숫자만 입력해주세요." required> <br>
 					</div>
 					
 					<input type="submit" value="아이디찾기" class="submitBtn">
