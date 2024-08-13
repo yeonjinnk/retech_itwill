@@ -5,6 +5,8 @@
 <!-- 탑 최상단 영역 -->
 <div class="header_top">
 	<div class="top_inner">
+		<div class="top_left_blank">
+		</div>
 		<div class="top_menu">
 			<nav class="top_menu_container">
 				<ul class="top_area">
