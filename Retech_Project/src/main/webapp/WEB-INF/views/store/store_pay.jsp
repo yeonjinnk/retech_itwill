@@ -37,13 +37,18 @@
 				<table class="tbl_row">
 					<tr>
 						<th>주문상품</th>
-						<td>총 				
-						</td>
+						<td>총 	${payProduct.order_store_quantity}개</td>
+					</tr>
+					<tr>
+						<th>주문상품</th>
+						<td>총 	${payProduct.order_store_quantity}개</td>
 					</tr>
 					<tr class="table">
 					</tr>
 				</table>
-			
+				<table>
+				
+				</table>
 			</div>
 			<div class="select_product">
 			</div>

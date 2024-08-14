@@ -29,6 +29,8 @@ function showBig(src) {
 
 //수량 감소 버튼 클릭 시
 $(function() {
+	let result = 1;
+	$("#amount").html(result);
 	$("#minus").click(function() {
 // 		console.log("minus button clicked"); // 버튼 클릭 시 표시
 		let result = Number($("#selected_quantity").val()); // 선택한 수량 result 변수에 저장
@@ -51,6 +53,8 @@ $(function() {
 
 //수량 증가 버튼 클릭 시
 $(function() {
+	let result = 1;
+	$("#amount").html(result);
 	$("#plus").click(function() {
 // 		console.log("plus button clicked"); // 버튼 클릭 시 표시
 		let result = Number($("#selected_quantity").val()); // 선택한 수량 result 변수에 저장
@@ -72,8 +76,12 @@ $(function() {
 //바로구매 버튼 클릭 시
 $(function() {
 	$("#buy").click(function() {
+		let order_store_quantity = $("#amount").html();
+		let order_store_pay = $("#price").html();
+		console.log("order_store_quantity: " + order_store_quantity);
+		console.log("order_store_pay: " + order_store_pay);
 		console.log("바로구매 버튼 클릭됨");
-		location.href="StorePay";
+		location.href="StorePay?order_store_item=${Product.store_idx}&order_store_quantity=" + order_store_quantity + "&order_store_pay=" + order_store_pay;
 	});
 	
 });
@@ -115,7 +123,7 @@ $(function() {
 			<div class="right">
 				<div class="goods-info">
 					<div>
-						<h2 class="title">${Product.store_id}</h2>
+						<h2 class="title" name="order_store_item" value="${Product.store_id}">${Product.store_id}</h2>
 					</div>
 					<div class="price">
 						<h3>
@@ -141,8 +149,9 @@ $(function() {
 						
 					</div>
 					<input type="hidden" value="${Product.store_price}" id="unit_price">
+					<input type="hidden" value="${Product.store_price}" id="unit_price">
 					<div class="amount">
-						총<span id="amount">1</span>개
+						총<span id="amount" name="order_store_quantity"></span>개
 						<span id="price">${Product.store_price}</span>원
 					</div>
 					<div class="btn-Area">

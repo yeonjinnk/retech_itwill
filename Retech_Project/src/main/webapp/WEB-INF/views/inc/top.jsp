@@ -72,7 +72,7 @@
 							<ul class="sub_menu">
 								<li><a href="#">키스킨</a></li>
 								<li><a href="#">마우스패드</a></li>
-								<li><a href="#">받침대</a></li>
+								<li><a href="StoreDetail">받침대</a></li>
 								<li><a href="#">파우치</a></li>
 							</ul>
 					</li>
@@ -90,3 +90,4 @@
 		</div>
 	</div>
 </div>
+
