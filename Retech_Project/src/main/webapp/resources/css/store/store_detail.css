@@ -1,0 +1,47 @@
+@charset "UTF-8";
+/* html, body { */
+/* 	overflow-x:auto; */
+/* 	overflow-y:hidden; */
+/* } */
+#articleForm {
+/* 		width: 100%; */
+    margin: 30px auto;
+    overflow-x:auto;
+	overflow-y:hidden;
+/*     padding: 40px 0 0 0; */
+}
+
+
+/*탭메뉴*/
+
+
+
+
+ .left { 
+ 	float:left; 
+ 	margin: 5px 2px 5px 200px;
+} 
+
+.right {
+	float: right;
+	padding: 5px 50px 5px 2px;
+/*     padding: 15px 0 30px 40px; */
+}
+
+/*  .img {  */
+/* 	margin: 30px 30px 30px 30px; */
+/*  }  */
+.bigImage { /* 큰 사진 표시영역*/
+	margin-bottom: 10px; /* 아래쪽 여백*/
+}
+
+#big { /* 큰 사진*/
+	width: 300px;
+	height: 300px;
+}
+
+
+#small { /* 작은 사진들*/
+	width: 100px;
+	height: 80px;
+}

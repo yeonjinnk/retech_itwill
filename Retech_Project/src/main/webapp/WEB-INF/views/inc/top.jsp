@@ -11,7 +11,6 @@
 		}
 	}
 </script>
-
 <!-- 탑 최상단 영역 -->
 <div class="header_top">
 	<div class="top_inner">
@@ -56,7 +55,6 @@
 		</div>
 	</div>
 </div>
-
 <!-- 탑 로고 및 메뉴,], 검색어 영역 -->
 <div class="header_main">
 	<div class="main_inner">
@@ -71,6 +69,12 @@
 					</li>
 					<li class="menu_list">
 						<a href="Store" class="menu_link">스토어</a>
+							<ul class="sub_menu">
+								<li><a href="#">키스킨</a></li>
+								<li><a href="#">마우스패드</a></li>
+								<li><a href="#">받침대</a></li>
+								<li><a href="#">파우치</a></li>
+							</ul>
 					</li>
 					<li class="menu_list">
 						<a href="Notice" class="menu_link">고객센터</a>
@@ -86,4 +90,3 @@
 		</div>
 	</div>
 </div>
-

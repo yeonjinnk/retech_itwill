@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+h1 {
+	text-align: left;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.tbl_row {
+	border: 1px solid black;
+}
