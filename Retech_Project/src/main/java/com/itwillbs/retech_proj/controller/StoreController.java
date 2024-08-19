@@ -42,7 +42,7 @@ public class StoreController {
 		return "store/store_detail";
 	}
 	
-	
+	//진성민
 	@GetMapping("StorePay")
 	public String storePay(@RequestParam("order_store_item") int store_idx, Model model) {
 //		System.out.println("store_idx" + store_idx);
