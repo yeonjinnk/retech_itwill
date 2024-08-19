@@ -43,6 +43,15 @@
 					<tr class="table">
 					</tr>
 				</table>
+				<table class="tbl_row">
+					<tr>
+						<th>결제수단</th>
+						<td>총 				
+						</td>
+					</tr>
+					<tr class="table">
+					</tr>
+				</table>
 			
 			</div>
 			<div class="select_product">
