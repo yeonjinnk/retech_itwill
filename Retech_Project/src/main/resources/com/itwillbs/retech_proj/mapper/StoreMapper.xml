@@ -18,4 +18,11 @@
     	WHERE pd_idx = #{pd_idx}
     </select>
     
+    		<!-- 상품상세조회2 -->
+    <select id="selectStore" resultType="map">
+    	SELECT *
+    	FROM store
+    	WHERE store_idx = #{store_idx}
+    </select>
+    
     </mapper>

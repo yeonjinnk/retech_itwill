@@ -25,5 +25,11 @@ public class StoreService {
 		return mapper.selectProduct(store);
 	}
 
+	//상품 정보 조회2
+	public Map<String, Object> selectStore(int store_idx) {
+		return mapper.selectStore(store_idx);
+	}
+	
+
 	
 }
