@@ -62,6 +62,13 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+	
+	<!-- 404 에러시 표시할 페이지 지정 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/error_404.jsp</location>
+	</error-page>
+	
 
 </web-app>
 

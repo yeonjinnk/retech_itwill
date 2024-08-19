@@ -6,7 +6,7 @@
 <div class="bottom_area">
 	<div class="inc_info">
 		<div class="bottom_logo">
-			<a href="#" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
+			<a href="./" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
 		</div>
 		<div class="inc_intro1">
 			<b>(주)리테크 사업자정보</b>

@@ -14,13 +14,13 @@
 			, #{member_name}
 			, #{member_birth}
 			, #{member_phone}
-			, #{member_status}
-			, #{member_mail_auth}
+			, 1   	                    -- 회원 상태 (1: 회원, 0: 탈퇴회원)
+			,'N'						-- 이메일 인증 상태 (Y: 인증됨, N: 인증되지 않음)
 			, #{member_postcode}
 			, #{member_address1}
 			, #{member_address2}
-			, #{member_profile}
-			, #{member_isAdmin}
+			, null						-- 프로필 사진 (기본값은 null)
+			, 'N'						-- 관리자 여부 (Y: 관리자, N: 일반 사용자)
 		)
 	</insert>
 	
