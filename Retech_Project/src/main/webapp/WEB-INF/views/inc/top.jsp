@@ -26,7 +26,7 @@
 						<a href="#" class="top_link">채팅하기</a>
 					</li>
 					<li class="top_list">
-						<a href="#" class="top_link">판매하기</a>
+						<a href="ProductRegistForm" class="top_link">판매하기</a>
 					</li>
 						<c:choose>
 							<c:when test="${empty sessionScope.sId}"> <%-- 로그인 상태가 아닐 경우 --%>

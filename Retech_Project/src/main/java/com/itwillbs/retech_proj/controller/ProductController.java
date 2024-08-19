@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.retech_proj.service.ProductService;
 import com.itwillbs.retech_proj.vo.ProductVO;
@@ -54,5 +54,41 @@ public class ProductController {
 		
 		return"product/product_list";
 	}
+	//판매하기 클릭시 상품 등록 페이지로 이동
+	@GetMapping("ProductRegistForm")
+	public String productRegistForm(HttpSession session, Model model) {
+		//미로그인시 "로그인이 필요합니다." 문구 출력 후 이전 페이지로 돌아감
+		//임시로 주석 처리
+//		String member_id = (String)session.getAttribute("member_id");
+//		System.out.println("member_id : " + member_id);
+//		if(member_id == null) {
+//			model.addAttribute("msg", "로그인이 필요합니다.");
+//			return"result/fail";
+//		}
+		return"product/product_regist_form";
+	}
+	//상품 등록 처리
+	@ResponseBody
+	@PostMapping("ProductRegistPro")
+	public String productRegistPro(ProductVO product, HttpSession session, Model model, HttpServletResponse request) {
+		
+		
+		
+		
+		return"";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	   
 }
