@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+#articleForm {
+	margin: 200px 150px 200px 150px;
+}
+
 h1 {
 	text-align: left;
 }
@@ -13,5 +17,27 @@ h1 {
 }
 
 .tbl_row {
+	margin: 10px;
 	border: 1px solid black;
+	border-radius: 10px;
+	width: 600px;
+	height: 150px;
+}
+
+.pay {
+	width: 310px;
+}
+.tbl_row_right {
+	margin: 10px;
+	padding: 10px;
+	border: 1px solid black;
+	border-radius: 10px;
+	width: 300px;
+	height: 150px;
+	
+}
+
+.btn_fold {
+	border: 0;
+	background-color: transparent;
 }
