@@ -17,13 +17,20 @@ public class ProductService {
 	 
 	// 상품 목록 페이지
 	public List<ProductVO> getProductList(int startRow, int listLimit) {
-		// TODO Auto-generated method stub
 		return mapper.selectProductList(startRow, listLimit);
 	}
 	// 페이징처리 - 상품 전체 개수 
 	public int getProductListCount() {
-		// TODO Auto-generated method stub
 		return mapper.selectProductListCount();
+	}
+	//리텍트 상품 등록 처리
+	public int registBoard(ProductVO product) {
+		int insertcount = mapper.insertProduct(product);
+		return insertcount;
+	}
+	//리테크 상품수정작업
+	public int modifyProduct(ProductVO product) {
+		return mapper.updateProduct(product);
 	}
 
 }

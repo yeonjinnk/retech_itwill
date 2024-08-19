@@ -1,9 +1,161 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<!-- 반응형웹페이지를 위한 설정 -->
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script type="text/javascript">
+//이미지 추가 버튼 스크립트
+	let preview_array = {false, false, false, false, false};
+	//이미지 등록 시 미리보기 추가 작업
+	function img_preview() {
+		for (var i = 0; i < preview_array.length; i++) {
+			//i가 0일 때
+			if(i == 0){
+				//0번 사진 비어있는 경우
+				if(preview_array[0] == false){
+					//섬네일 사진
+					//0번 사진 인풋태그 호출
+					send_0();
+					return;
+				}
+				//1번 사진 비어있는 경우
+				if(preview_array[1] == false){
+					//섬네일 사진
+					//1번 사진 인풋태그 호출
+					send_1();
+					return;
+				}
+				//2번 사진 비어있는 경우
+				if(preview_array[2] == false){
+					//섬네일 사진
+					//2번 사진 인풋태그 호출
+					send_2();
+					return;
+				}
+				//3번 사진 비어있는 경우
+				if(preview_array[3] == false){
+					//섬네일 사진
+					//3번 사진 인풋태그 호출
+					send_3();
+					return;
+				}
+				//4번 사진 비어있는 경우
+				if(preview_array[4] == false){
+					//섬네일 사진
+					//4번 사진 인풋태그 호출
+					send_4();
+					return;
+				}
+			}
+		}
+		alert("더 이상 사진을 등록할 수 없습니다!")
+		return;
+		
+	}//프리뷰 파트 끝
+//----------------------------------------------------------------------------------------------------------------------
+// 이미지 갯수 표현 함수
+	function img_num() {
+		let img_number = 0;
+		for (var i = 0; i < preview_array.length; i++) {
+			if(preview_array[i] == true){
+				img_number++;
+			}
+		}
+		//이미지 갯수 표시
+		$("#img_number").html('(' + img_number + '/4)')
+	}
+//----------------------------------------------------------------------------------------------------------------------
+
+	function send_0() {
+		$("#sumimage").click();		
+	}
+	$(function() {
+		$("#sumimage").on('change',function(){
+			if($("#sumimage")[0].files[0] == undefined){
+				return;
+			}
+			imgcheck0(this);
+		})
+	});
+
+	
+//이미지 미리보기 --------------------------------------------------------------------------------------------------------
+
+	function imgcheck0(input) {
+		//이미지 확장자 파일체크
+		let file_kind = input.value.lastIndexOf('.');
+		let file_name = input.value.substring(file_kind+1,input.length);
+		let file_type = file_name.toLowerCase();
+		
+		let check_array = new Array( 'jpg','png','jpeg' );
+		
+		$('#sumimage').val();
+		
+		if(check_array.indexOf(file_type)==-1){
+			
+			// 사용자에게 알려주고 
+			alert('이미지 파일만 선택할 수 있습니다.');
+			// 실제 업로드 되는 input태그 vlaue값 지우기 
+			$('#sumimage').val('');
+			
+			return;
+		
+		} 	
+		
+		 if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+	        reader.onload = function (e) {
+		        $('#imgup_sum').attr('src', e.target.result);
+		        
+		        $("#img_preview0").css("display","inline-block");
+				$("#imgup_sum").show();
+		        $("#del_sum").show();
+		       
+				preview_array[0] = true;
+				
+				/* 이미지넘버 변경 */
+				img_num();
+	        }
+	        reader.readAsDataURL(input.files[0]);
+		  }
+	}
+	
+	//1번 사진 
+	
+	function send_1() {
+		$("#imageFile1").click();
+	}
+	$(function() {
+		$("#imageFile1").on('change', function() {
+			//파일 선택을 취소하였을 때
+			if($("#imageFile1")[0].files[0] == undefined){
+				return;
+			}
+			imgcheck1(this);
+		})
+	});
+	
+	
+		
+		
+		
+		
+		
+		
+	
+
+</script>
+
 <style>
 body {
     font-family: 'Gowun Dodum', sans-serif;
@@ -54,6 +206,9 @@ footer {
 		<input type="file" id="sumimage"   style="display: none;" accept=".jpg, .jpeg, .png">
 		<input type="file" id="imageFile1" style="display: none;" accept=".jpg, .jpeg, .png">
 		<input type="file" id="imageFile2" style="display: none;" accept=".jpg, .jpeg, .png">
+		<input type="file" id="imageFile3" style="display: none;" accept=".jpg, .jpeg, .png">
+		<input type="file" id="imageFile4" style="display: none;" accept=".jpg, .jpeg, .png">
+		<input type="file" id="imageFile5" style="display: none;" accept=".jpg, .jpeg, .png">
 	</form>
 	
 	<div id = "root">

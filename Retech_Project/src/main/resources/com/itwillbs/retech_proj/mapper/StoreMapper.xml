@@ -15,7 +15,7 @@
     <select id="selectProduct" resultType="map">
     	SELECT *
     	FROM store
-<!--     	WHERE store_id = #{store_id} -->
+    	WHERE pd_idx = #{pd_idx}
     </select>
     
     </mapper>
