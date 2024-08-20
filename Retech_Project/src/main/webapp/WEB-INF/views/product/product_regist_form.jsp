@@ -15,7 +15,7 @@
 
 <script type="text/javascript">
 //이미지 추가 버튼 스크립트
-	let preview_array = {false, false, false, false, false};
+	let preview_array = [false, false, false, false, false];
 	//이미지 등록 시 미리보기 추가 작업
 	function img_preview() {
 		for (var i = 0; i < preview_array.length; i++) {
@@ -60,8 +60,9 @@
 		}
 		alert("더 이상 사진을 등록할 수 없습니다!")
 		return;
-		
-	}//프리뷰 파트 끝
+	}
+	
+	//프리뷰 파트 끝
 //----------------------------------------------------------------------------------------------------------------------
 // 이미지 갯수 표현 함수
 	function img_num() {
@@ -72,7 +73,7 @@
 			}
 		}
 		//이미지 갯수 표시
-		$("#img_number").html('(' + img_number + '/4)')
+		$("#img_number").html('(' + img_number + '/5)')
 	}
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -113,7 +114,7 @@
 		} 	
 		
 		 if (input.files && input.files[0]) {
-	        var reader = new FileReader();
+	        let reader = new FileReader();
 	        reader.onload = function (e) {
 		        $('#imgup_sum').attr('src', e.target.result);
 		        
@@ -145,51 +146,787 @@
 		})
 	});
 	
+	function imgcheck1(input) {
+		//이미지 확장자 파일체크
+		let file_kind = input.value.lastIndexOf('.');
+		let file_name = input.value.substring(file_kind+1, input.length);
+		let file_type = file_name.toLowerCase();
+		
+		let check_array = new Array('jpg', 'png', 'jpeg');
+		
+		if(check_array.indexOf(file_type) == -1){
+			alert('이미지 파일만 선택할 수 있습니다.');
+			//실제 업로드되는 input태그 value값 지우기
+			$('#imageFile1').val('');
+			return;
+		}
+		if(input.files && input.files[0]){
+			let reader = new FileReader();
+			reader.onload = function(e) {
+				
+				$('#imgup_1').attr('src', e.target.result);
+				//배열에 트루값주기, 트루면 업로드 못함
+				
+				$("#img_preview1").css("display", "inline-block");
+				$("#imgup_1").show();
+				$("#del_img1").show();
+				
+				preview_array[1] = true;
+				
+				//이미지 넘버 변경
+				img_num();
+			}
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+	//2번 사진
+	function send_2() {
+		$("#imageFile2").click();
+	}
+	$(function() {
+		$("#imageFile2").on('change', function() {
+			//파일 선택을 취소하였을 때
+			if($("#imageFile2")[0].files[0] == undefined){
+				return;
+			}
+			imgcheck2(this);
+		})
+	});	
+
 	
+	function imgcheck2(input) {
+		
+		/* 이미지 확장자 파일체크 */
+		let file_kind = input.value.lastIndexOf('.');
+		let file_name = input.value.substring(file_kind+1,input.length);
+		let file_type = file_name.toLowerCase();
+
+		let check_array = new Array( 'jpg','png','jpeg' );
+		
+		if(check_array.indexOf(file_type)==-1){
+			alert('이미지 파일만 선택할 수 있습니다.');
+			/* 실제 업로드 되는 input태그 vlaue값 지우기 */
+			$('#imageFile2').val('');
+			
+			return;
+		
+		} 
 		
 		
+	    if (input.files && input.files[0]) {
+	    	let reader = new FileReader();
+	        reader.onload = function (e) {
+				$('#imgup_2').attr('src', e.target.result);
+				
+				 $("#img_preview2").css("display","inline-block");
+				$("#imgup_2").show();
+				$("#del_img2").show();
+				
+				preview_array[2] = true;
+	        	/* 이미지넘버 변경 */
+				img_num();
+	       
+	        }
+	        
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
+	//3번 이미지
+	function send_3() {
+		$("#imageFile3").click();
+	}
+	$(function() {
+		$("#imageFile3").on('change', function() {
+			//파일 선택을 취소하였을 때
+			if($("#imageFile3")[0].files[0] == undefined){
+				return;
+			}
+			imgcheck3(this);
+		})
+	});	
+	function imgcheck3(input) {
+			
+			/* 이미지 확장자 파일체크 */
+			let file_kind = input.value.lastIndexOf('.');
+			let file_name = input.value.substring(file_kind+1,input.length);
+			let file_type = file_name.toLowerCase();
+	
+			let check_array = new Array( 'jpg','png','jpeg' );
+			
+			if(check_array.indexOf(file_type)==-1){
+				alert('이미지 파일만 선택할 수 있습니다.');
+				/* 실제 업로드 되는 input태그 vlaue값 지우기 */
+				$('#imageFile3').val('');
+				
+				return;
+			
+			} 
+			
+			
+		    if (input.files && input.files[0]) {
+		    	let reader = new FileReader();
+		        reader.onload = function (e) {
+					$('#imgup_3').attr('src', e.target.result);
+					
+					 $("#img_preview3").css("display","inline-block");
+					$("#imgup_3").show();
+					$("#del_img3").show();
+					
+					preview_array[3] = true;
+		        	/* 이미지넘버 변경 */
+					img_num();
+		       
+		        }
+		        
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+	//4번 이미지
+	function send_4() {
+		$("#imageFile4").click();
+	}
+	$(function() {
+		$("#imageFile4").on('change', function() {
+			//파일 선택을 취소하였을 때
+			if($("#imageFile4")[0].files[0] == undefined){
+				return;
+			}
+			imgcheck4(this);
+		})
+	});	
+	function imgcheck4(input) {
+			
+			/* 이미지 확장자 파일체크 */
+			let file_kind = input.value.lastIndexOf('.');
+			let file_name = input.value.substring(file_kind+1,input.length);
+			let file_type = file_name.toLowerCase();
+	
+			let check_array = new Array( 'jpg','png','jpeg' );
+			
+			if(check_array.indexOf(file_type)==-1){
+				alert('이미지 파일만 선택할 수 있습니다.');
+				/* 실제 업로드 되는 input태그 vlaue값 지우기 */
+				$('#imageFile3').val('');
+				
+				return;
+			
+			} 
+			
+			
+		    if (input.files && input.files[0]) {
+		    	let reader = new FileReader();
+		        reader.onload = function (e) {
+					$('#imgup_4').attr('src', e.target.result);
+					
+					 $("#img_preview4").css("display","inline-block");
+					$("#imgup_4").show();
+					$("#del_img4").show();
+					
+					preview_array[4] = true;
+		        	/* 이미지넘버 변경 */
+					img_num();
+		       
+		        }
+		        
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+	
+//이미지 미리보기 삭제
+	
+	function del_sum() {
+		//실제 DB에 들어가는 input value 지움
+		$('#sumimage').val('');
+		
+		$("#img_preview0").css("display", "none");
+		$('#imgup_sum').hide();
+		$("#del_sum").hide();
+		
+		//썸네일 비움
+		preview_array[0] = false;
+		
+		//이미지 넘버변경
+		img_num();
+		
+		return;
+	}
+		
+	function del_img1() {
+		
+		$('#imageFile1').val('');
+		
+		$("#img_preview1").css("display","none");
+		$('#imgup_1').hide();
+		$("#del_img1").hide();
+		
+		// 1번사진 비움 
+		preview_array[1] = false;
+		
+		// 이미지 넘버변경 
+		img_num();
+		
+		return;
+	}
+	
+	function del_img2() {
+		
+		$('#imageFile2').val('');
+		
+		$("#img_preview2").css("display","none");
+		$('#imgup_2').hide();
+		$("#del_img2").hide();
+		
+		// 2번사진 비움 
+		preview_array[2] = false;
+		
+		// 이미지 넘버변경 
+		img_num();
+		
+		return;
+	}	
+	function del_img3() {
+		
+		$('#imageFile3').val('');
+		
+		$("#img_preview3").css("display","none");
+		$('#imgup_3').hide();
+		$("#del_img3").hide();
+		
+		// 3번사진 비움 
+		preview_array[3] = false;
+		
+		// 이미지 넘버변경 
+		img_num();
+		
+		return;
+	}	
+	function del_img4() {
+		
+		$('#imageFile4').val('');
+		
+		$("#img_preview4").css("display","none");
+		$('#imgup_4').hide();
+		$("#del_img4").hide();
+		
+		// 4번사진 비움 
+		preview_array[4] = false;
+		
+		// 이미지 넘버변경 
+		img_num();
+		
+		return;
+	}	
+
+//====================================================================================================================
+
+//<!-- 주소API -->-------------------------------------------
+	function addrFind() {
+		
+		let width = 500; //팝업의 너비
+		let height = 300; //팝업의 높이
 		
 		
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	         
+	            $("#p_location").val(data.address);
+	        },
+	    
+	    	theme: {
+		        searchBgColor: "#7dd87d", //검색창 배경색
+		        queryTextColor: "white" //검색창 글자색
+		    },
+		    
+		    width: width, 
+		    height: height
+		    
+	    
+	    
+	    }).open({
+	        left: (window.screen.width / 2) - (width / 2),
+	        top: (window.screen.height / 2) - (height / 2) - 200
+	    });
+		
+	}
+
+//--------------------------------------------------------------------------------------------------------------------------
+		
+//본격적인 데이터 넣기------------------------------------------------------------------------------------------------------
+	
+	let regular_han = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]/;
+	
+	function proInfoSend() {
+		
+		//세션으로부터 받은 member_idx값
+		let member_id = $("#member_id").val().trim();
+		
+		let p_name = $("#p_name").val().trim();
+		let c_idx = $("#c_idx").val();
+		
+		let p_delivery_type = $("#p_delivery_type").val();
+		
+		let p_delivery_type2 = $("#p_delivery_type2").val();
+		let p_delivery_type3 = $("#p_delivery_type3").val();
+		let p_delivery_type4 = $("#p_delivery_type4").val();
+
+		let p_paymentType = $("#p_paymentType").val();
+		let p_paymentType2 = $("#p_paymentType2").val();
 		
 		
+		let p_price = $("#p_price").val().trim();
+		let p_exp = $("#p_exp").val().trim();
+		let sumimage = $("#sumimage").val(); c_idx = $("#c_idx").val();
+		
+		if(sumimage == ''){
+			alert('대표 이미지를 반드시 등록해주세요.');
+			$("#imgup").focus();
+			return;
+		}
+		
+		if(p_name==''){
+			alert('제목이 비어있습니다. (필수입력, 공백불가)');
+			$("#p_name").val('');
+			$("#p_name").focus();
+			return;
+		}
+		
+		if(c_idx==0){
+			alert('카테고리를 선택하세요. ');
+			$("#c_idx").focus();
+			return;
+		}
+		
+		if(p_delivery_type=='' && p_delivery_type2=='' && p_delivery_type3=='' && p_delivery_type4=='' ){
+			alert('거래 방법을 한 가지 이상 선택해 주세요');
+			$("#p_delivery_type").val('');
+			$("#p_delivery_type").focus();
+			return;			
+		}
+		
+		if(p_price==''){
+			
+			alert('가격이 비어있습니다.');
+			$("#p_price").val('');
+			$("#p_price").focus();
+			return;
+		}
+		
+		if(p_exp==''){
+			
+			alert('상품 설명이 비어있습니다. ');
+			$("#p_exp").val('');
+			$("#p_exp").focus();
+			return;
+		}
+
+		
+		if( regular_han.test(p_price) ){
+			alert('숫자만 입력 가능합니다.');
+			$("#p_price").val('');
+			$("#p_price").focus();
+			return;
+		} 
+		
+		// 가격 콤마 제거 
+		p_price = p_price.replace(/,/g, "");
+		
+		if(p_price < 100){
+			alert('가격은 100원 이상 입력해주세요.');
+			$("#p_price").val('');
+			$("#p_price").focus();
+			return;
+		}
+		
+		
+		if(confirm('등록 하시겠습니까?') == false) return;
+		
+		let form = $("#imgform")[0];
+		let formData = new FormData(form);
+		
+		//이미지
+		//필수 이미지 = sumimage
+
+		formData.append('file1',$('#sumimage')[0].files[0]);
+		if($('#imageFile1')[0].files[0]!=undefined){
+			formData.append('file2',$('#imageFile1')[0].files[0]);	
+		}
+		if($('#imageFile2')[0].files[0]!=undefined){
+			formData.append('file3',$('#imageFile2')[0].files[0]);
+		}
+		
+		formData.append('member_id', member_id);				// 유저idx
+		formData.append('pd_subject',p_name);			// 상품명
+		formData.append('category_idx',c_idx);
+		
+		if($("#p_delivery_type").is(":checked")){
+			formData.append('secondhand_deliveryType_ptp',p_delivery_type);	// 거래방법-직거래
+		}
+		if($("#p_delivery_type2").is(":checked")){
+			formData.append('secondhand_deliveryType_parcel',p_delivery_type2);	// 거래방법-택배
+		}
+		if($("#p_delivery_type3").is(":checked")){
+			formData.append('secondhand_deliveryType_zstation',p_delivery_type3);	// 거래방법-zstation
+		}
+		if($("#p_delivery_type4").is(":checked")){
+			formData.append('secondhand_deliveryType_zman',p_delivery_type4);	// 거래방법-zman
+		}	
+		
+		
+		if($("#p_paymentType").is(":checked")){
+			formData.append('secondhand_paymentType_ptp',p_paymentType);	// 결제타입
+		}
+		if($("#p_paymentType2").is(":checked")){
+			formData.append('secondhand_paymentType_zpay',p_paymentType2);	// 결제타입-zpay
+		}
+		
+		formData.append('secondhand_price',p_price);			// 가격
+		formData.append('secondhand_content',p_exp);				// 상품설명
+		
+		/*	
+			파일 데이터를 ajax처리 하기 위해선
+			반드시 processData,contentType 들을 false 해주기
+		 */
+		
+	 	$.ajax({
+			
+			url 	 : 'ProductRegistPro',
+			type	 : 'POST',
+			data	 : formData,
+			processData : false,
+			contentType : false,
+			dataType : 'json',
+			success  : function(res){
+				
+				if(res == true){
+					alert('해당 상품이 정상적으로 등록되었습니다!');
+	//					location.href='../mainpage/list.do';
+					location.href='${pageContext.request.contextPath }/secondhand_list';
+				}
+				
+			},error	: function(err){
+				alert('해당 상품에 실패했습니다. 관리자나 1:1 게시판에 문의하세요.');
+			}
+			
+		});
+	
+	
+	}
+	
+	// 상품등록을 취소하게 하는 함수(procancel)	
+	function procancel(){
+		
+		if(confirm('상품등록을 취소하시겠습니까?')==false) return;
+		
+		history.back();
+
+		
+	}	
+	//<!-- 가격 함수 (실시간 콤마, 한글입력불가) -->------------
+	$(function() {
+
+		$("#p_price").on("propertychange change keyup paste input", function() {
+			
+			
+			let p_price = $(this).val() ;
+			
+			if(p_price<100 ){
+				$("#price_under").show();
+				$("#price_under").text('100원 이상만 입력하세요.').css('color','red');
+		 		$("#p_price").css('outline','1px solid red');
+				$("#p_price").css('border-color','red');
+				
+			}
+			
+			if(p_price>=100 || p_price=='' ){
+				$("#price_under").hide();
+				$("#p_price").css('border-color','black');
+				$("#p_price").css('outline','black');
+			}
+			
+			/* 숫자 comma 찍는 함수 */
+			p_price = comma(uncomma(p_price));
+			
+			
+			/* console.log(p_price); */
+			
+			$("#p_price").val(p_price);
+
+		});
+
+	})
+	
+	/* 실제 입력값을 변경해주는 함수 */
+	function comma(str) {
+	    str = String(str);
+	    
+	    return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	}
+	
+	function uncomma(str) {
+	    str = String(str);
+	    
+	    if(regular_han.test(str)){
+	    	alert('숫자만 입력하세요');
+	    }
+	    
+	    return str.replace(/[^\d]+/g, '');
+	}
+//------------------------------------------------------------------------------------------------------------------------
+//실시간 글자수 체크 코드!!-----------------------------------------------------------------------------------------------
+	
+	$(function() {
+	    $("#p_name").on("input", function() {
+	        let p_name_length = $(this).val().length;
+	        $("#name_length").html(p_name_length + '/40');
+	
+	        // 입력된 값이 최대 길이를 넘지 않도록 처리
+	        numberMaxLength(this);
+	    });
+	
+	    $("#p_exp").on("input", function() {
+	        let p_exp_length = $(this).val().length;
+	        $("#exp_length").html(p_exp_length + '/1000');
+	
+	        // 입력된 값이 최대 길이를 넘지 않도록 처리
+	        numberMaxLength(this);
+	    });
+	});
+	function numberMaxLength(e) {
+	    if (e.value.length > e.maxLength) {
+	        e.value = e.value.slice(0, e.maxLength);
+	    }
+	}
+
+
+	$(function() {
+
+		$("#p_name").on("propertychange change keyup paste input", function() {
+
+			var p_name = $(this).val().length;
+
+			/* console.log(p_name); */
+
+			$("#name_length").html(p_name + '/40')
+
+		});
+
+	})
+
+	$(function() {
+
+		$("#p_exp").on("propertychange change keyup paste input", function() {
+
+			var p_exp = $(this).val().length;
+
+			$("#exp_length").html(p_exp + '/1000')
+
+		});
+
+	})
 	
 
 </script>
 
 <style>
-body {
-    font-family: 'Gowun Dodum', sans-serif;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
+body{
+	  font-family: 'Gowun Dodum', sans-serif;
+	}
+	#root {
+		/* 		background: #ccffcc; */
+		width: 100%;
+		height: 100%;
+	}
+	
+	/* 실제 전체 div */
+	#insert_box {
+		width: 1020px;
+		margin: auto;
+		padding-top : 160px;
+		/* 		background: gray; */
+		min-height: 1000px;
+		text-align: center;
+	}
+	
+	/* 인클루드 한 메인프레임 */
+	#mainframe {
+		/* position : absolute; */
+		/* z-index: 999; */
+	}
+	
+	
+	#title {
+		font-size: 40px;
+	}
+	
+	/* span태그 */
+	.pro_info {
+		font-size: 20px;
+	}
+	
+	/* 전체 인풋태그 css */
+	.input-tag {
+		display: inline-block;
+		height: 35px;
+		padding: 5px;
+		vertical-align: middle;
+		border: 1px solid black;
+		width: 100%;
+		color: black;
+		font-size: 15px;
+		border-radius: 5px;
+	}
+	
+	/* 이미지 미리보기 css */
+	#img_preview0, #img_preview1, #img_preview2, #img_preview3, #img_preview4, #img_preview5{
+		display: none;
+		position: relative;
+		
+		margin:5px;
+		
+		width: 150px;
+		height: 150px; 
+		
+/* 		border: 2px solid black; */
+	
+	}
+	/* 미리보기 삭제버튼 css */
+	#sum_style{
+		text-align:center;
+		width:75px;
+		height:20spx;
+	    position:absolute; 
+		font-size:12px;
+		outline:none;
+		border:none;
+		border-radius:15px;
+	    right:70px;
+	    bottom:130px;
+	    /* z-index:1; */
+	    background-color:rgba(0,0,0,0.5);
+	    color:white;
+	}
+	.chk_style{
+		vertical-align: middle;
+		text-align:center;
+		
+		width:28px;
+		height:28px;
+	    position:absolute; 
+		/* font-size:20px; */
+		outline:none;
+		border:none;
+		border-radius:18px;
+	    right:9px;
+	    bottom:115px;
+	    /* z-index:1; */
+	    background-color:rgba(0,0,0,0.5);
+	    color:#ffcccc;
+	}
+	
+		
+	/* 미리보기 삭제 css */
+	#del_img1, #del_img2, #del_img3, #del_img4, #del_sum{
+		cursor: pointer;
+		display: none;
+	}
+	
+	#imgup{
+		margin-top: 5px;
+	}
+	
+	/* 이미지 미리보기 css */
+	#imgup_1,#imgup_2, #imgup_3, #imgup_4, #imgup_sum {
+		cursor: pointer;
+		display: none;
+	}
+	
+	
+	.input-tag:focus{
+		outline: none;
+		border: 1px solid black;
+	}
+	
+	/* 제목입력창 넓이 */
+	#p_name {
+		width: 88%;
+	}
+	
+	
+	
+	/* 제품설명 textarea css */
+	#p_exp {
+		padding: 15px;
+		width: 100%;
+		height: 150px;
+		resize: none;
+	}
+	
+	/* 주소버튼 */
+	#addrfind, #myaddr{
+		
+		background: white;
+		cursor: pointer;
+		border: 1px solid black;
+		width: 90px;
+		height: 40px;
+		
+	}
+	
+	/* 상품 상태 */
+/* 	#p_condition { */
+/* 		width: 15px; */
+/* 		height: 15px; */
+/* 	} */
+	
+	/* 거래 방법*/
+	#p_delivery_type {
+		width: 15px;
+		height: 15px;
+	}
+	
+	/* 결제방법 */
+	#p_paymentType {
+		width: 15px;
+		height: 15px;
+	}
+	
+	
+	input {
+		accent-color: red;
+	}
+	
+	/* 테이블 간의 간격 */
+	td {
+		width: 1020px;
+		padding: 0.8em 1.4em 0.5em 0.8em;
+	}
+	
+	.td1{
+		width: 20%;
+		vertical-align: top;
+	}
+	
+	.td2{
+		width: 80%;
+	}
+	#img_zone{
+		
+		/* background-color: black; */
+		margin: auto; 
+		width: 65%; 
+		min-height: 50px;
+		margin-bottom: 50px;
+	}
+	#img_intro{
+		
+		font-size:16px;
+		color : skyblue;
+		/* background-color: #ccffcc; */
+		margin: auto; 
+		width: 65%; 
+		min-height: 50px;
+	}
 
-#root {
-    flex: 1;
-    width: 100%;
-}
-
-#insert_box {
-    width: 1020px;
-    margin: auto;
-    padding-top: 160px;
-    min-height: 1000px;
-    text-align: center;
-}
-
-/* 나머지 스타일 생략 */
-
-/* footer 스타일 */
-footer {
-    width: 100%;
-    background-color: #f8f9fa;
-    text-align: center;
-    padding: 10px 0;
-    border-top: 1px solid #e9ecef;
-    margin-top: auto; /* 페이지 콘텐츠 끝에 위치 */
-}
 </style>
 
 
@@ -211,8 +948,10 @@ footer {
 		<input type="file" id="imageFile5" style="display: none;" accept=".jpg, .jpeg, .png">
 	</form>
 	
+	
+	
 	<div id = "root">
-	  <input type="hidden" id="member_id">
+	  <input type="hidden" id="member_id" value="${sessionScope.member_id}">
 	
 	  <div id="insert_box">
 			<span id="title">상품등록</span>
@@ -226,11 +965,13 @@ footer {
 				<tr>
 					<td colspan="2"><hr></td>
 				</tr>
+				
+				
 				<!-- 상품이미지 -->
 				<tr>
 					<td class="td1" align="left" ><span
-						class="pro_info">상품이미지</span> 
-						<span class="pro_info" id="img_number">(0/3)</span>
+						class="pro_info">등록 상품 이미지</span> 
+						<span class="pro_info" id="img_number">(0/5)</span>
 						<span style="color: red">*</span>
 						<input type="image" id="imgup" onclick="img_preview();"
 								src="${ pageContext.request.contextPath }/resources/img/image_upload.png" width="150px" height="150px">
@@ -246,21 +987,30 @@ footer {
 								<!-- 삭제버튼 -->
 								<span id="del_sum" class="chk_style"  onclick="del_sum();">x</span>
 							</div>
-							
-								
 							<div id="img_preview1" >
 								<input type="image" id="imgup_1" onclick="send_1();"
 									src="" width="150px" height="150px">
 								<!-- 삭제버튼 -->
 								<span id="del_img1" class="chk_style" onclick="del_img1();">x</span>
 							</div>
-							
 							<div id="img_preview2">
 								<input type="image" id="imgup_2" onclick="send_2();"
 									src="" width="150px" height="150px">
+								<!-- 삭제버튼 -->
 								<span id="del_img2" class="chk_style" onclick="del_img2();">x</span>
 							</div>
-	
+							<div id="img_preview3">
+								<input type="image" id="imgup_3" onclick="send_3();"
+									src="" width="150px" height="150px">
+								<!-- 삭제버튼 -->
+								<span id="del_img3" class="chk_style" onclick="del_img3();">x</span>
+							</div>
+							<div id="img_preview4">
+								<input type="image" id="imgup_4" onclick="send_4();"
+									src="" width="150px" height="150px">
+								<!-- 삭제버튼 -->
+								<span id="del_img4" class="chk_style" onclick="del_img4();">x</span>
+							</div>
 						</div>
 						<div id="img_intro">
 								
@@ -364,7 +1114,8 @@ footer {
 	  
 	  
 	  
-	  
+	 <div style="min-height: 200px;"></div>
+	</div>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
 	</footer>

@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Retech 메인페이지</title>
+<%-- 외부 CSS 파일(css/default.css) 연결하기 --%>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
