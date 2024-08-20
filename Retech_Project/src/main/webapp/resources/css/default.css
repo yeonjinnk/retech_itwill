@@ -177,7 +177,7 @@ footer {
 	background-color: lightgray;  /*-- 임시 --*/
 }
 .main_section > div:not(.main_slide) {
-	width: 1280px;
+	width: 1200px;
 	align-items: center;
     display: flex;
     margin: auto;
