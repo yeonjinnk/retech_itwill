@@ -36,16 +36,16 @@
 							</c:when>
 							<c:otherwise> <%-- 로그인 상태일 경우 --%>
 								<li class="top_list">
-									<a href="MyPageMain">${sessionScope.sName}</a>님
+									<a href="MyPageMain" class="top_link">${sessionScope.sName}</a>님
 								</li>
 								<li class="top_list">
-									<a href="javascript:confirmLogout()">로그아웃</a>
+									<a href="javascript:confirmLogout()" class="top_link">로그아웃</a>
 								</li>
 								
 								<!-- 관리자 계정일 경우 관리자 페이지 링크 표시 -->
 								<c:if test="${sessionScope.sIsAdmin eq 'Y'}">
 									<li class="top_list">
-										<a href="AdminHome">관리자페이지</a>
+										<a href="AdminHome" class="top_link">관리자페이지</a>
 									</li>
 								</c:if>
 							</c:otherwise>
