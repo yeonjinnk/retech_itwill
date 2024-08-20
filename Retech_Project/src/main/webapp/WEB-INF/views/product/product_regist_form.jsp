@@ -463,16 +463,6 @@
 		let p_name = $("#p_name").val().trim();
 		let c_idx = $("#c_idx").val();
 		
-		let p_delivery_type = $("#p_delivery_type").val();
-		
-		let p_delivery_type2 = $("#p_delivery_type2").val();
-		let p_delivery_type3 = $("#p_delivery_type3").val();
-		let p_delivery_type4 = $("#p_delivery_type4").val();
-
-		let p_paymentType = $("#p_paymentType").val();
-		let p_paymentType2 = $("#p_paymentType2").val();
-		
-		
 		let p_price = $("#p_price").val().trim();
 		let p_exp = $("#p_exp").val().trim();
 		let sumimage = $("#sumimage").val(); c_idx = $("#c_idx").val();
@@ -494,13 +484,6 @@
 			alert('카테고리를 선택하세요. ');
 			$("#c_idx").focus();
 			return;
-		}
-		
-		if(p_delivery_type=='' && p_delivery_type2=='' && p_delivery_type3=='' && p_delivery_type4=='' ){
-			alert('거래 방법을 한 가지 이상 선택해 주세요');
-			$("#p_delivery_type").val('');
-			$("#p_delivery_type").focus();
-			return;			
 		}
 		
 		if(p_price==''){
@@ -554,9 +537,9 @@
 			formData.append('file3',$('#imageFile2')[0].files[0]);
 		}
 		
-		formData.append('member_id', member_id);				// 유저idx
+		formData.append('member_id', member_id);		// 유저idx
 		formData.append('pd_subject',p_name);			// 상품명
-		formData.append('category_idx',c_idx);
+		formData.append('category_idx',c_idx);			// 카테고리 코드
 		
 		if($("#p_delivery_type").is(":checked")){
 			formData.append('secondhand_deliveryType_ptp',p_delivery_type);	// 거래방법-직거래
@@ -764,17 +747,32 @@ body{
 	}
 	
 	/* 전체 인풋태그 css */
+	/* 현재 CSS에서 입력 필드에 접근성을 높이기 위해 z-index를 조정할 수 있습니다. */
 	.input-tag {
-		display: inline-block;
-		height: 35px;
-		padding: 5px;
-		vertical-align: middle;
-		border: 1px solid black;
-		width: 100%;
-		color: black;
-		font-size: 15px;
-		border-radius: 5px;
+/* 	    position: relative; /* position 속성을 추가 */ */
+	     /* z-index 값을 추가하여 다른 요소보다 위로 표시되도록 합니다. */
+	    display: inline-block;
+	    height: 35px;
+	    padding: 5px;
+	    vertical-align: middle;
+	    border: 1px solid black;
+	    width: 100%;
+	    color: black;
+	    font-size: 15px;
+	    border-radius: 5px;
 	}
+	
+	/* 혹시 다른 요소들이 입력 필드 위에 겹치는 경우를 대비하여 */
+	#insert_box {
+	    position: relative;
+	    z-index: 5; /* 필요한 경우 z-index 값을 낮게 설정합니다. */
+	}
+	
+	/* 부모 요소나 관련된 다른 요소에서 pointer-events 속성을 확인합니다. */
+	input, select, textarea {
+	    pointer-events: auto; /* pointer-events가 none으로 설정된 경우 auto로 변경합니다. */
+	}
+
 	
 	/* 이미지 미리보기 css */
 	#img_preview0, #img_preview1, #img_preview2, #img_preview3, #img_preview4, #img_preview5{
@@ -789,6 +787,15 @@ body{
 /* 		border: 2px solid black; */
 	
 	}
+	/* footer부분 밑으로 고정css*/
+	  footer {
+	           background-color: #f8f9fa; /* 원하는 배경색으로 설정 */
+	           padding: 10px;
+	           text-align: center;
+	           position: relative; /* 필요한 경우 relative로 설정 */
+	           bottom: -100;
+	           width: 100%;
+	       }
 	/* 미리보기 삭제버튼 css */
 	#sum_style{
 		text-align:center;
@@ -898,7 +905,7 @@ body{
 	/* 테이블 간의 간격 */
 	td {
 		width: 1020px;
-		padding: 0.8em 1.4em 0.5em 0.8em;
+/* 		padding: 0.8em 1.4em 0.5em 0.8em; */
 	}
 	
 	.td1{
@@ -1052,6 +1059,32 @@ body{
 								<c:forEach var="category" items="${categorylist }">
 									<option value="${category.category_idx }"> ${category.category_name }</option>
 								</c:forEach>
+								<option value="1">PC</option>
+								<c:forEach var="category" items="${categorylist }">
+									<option value="${category.category_idx }"> ${category.category_name }</option>
+								</c:forEach>
+								<option value="2">노트북</option>
+								<c:forEach var="category" items="${categorylist }">
+									<option value="${category.category_idx }"> ${category.category_name }</option>
+								</c:forEach>
+						</select>
+						<select class="input-tag" id="c_idx" name="c_idx" style="width: 30%; height: 35px;">
+								<option value="0">카테고리 선택</option>
+								<c:forEach var="category" items="${categorylist }">
+									<option value="${category.category_idx }"> ${category.category_name }</option>
+								</c:forEach>
+								<option value="1">삼성</option>
+								<c:forEach var="category" items="${categorylist }">
+									<option value="${category.category_idx }"> ${category.category_name }</option>
+								</c:forEach>
+								<option value="2">애플</option>
+								<c:forEach var="category" items="${categorylist }">
+									<option value="${category.category_idx }"> ${category.category_name }</option>
+								</c:forEach>
+								<option value="2">LG</option>
+								<c:forEach var="category" items="${categorylist }">
+									<option value="${category.category_idx }"> ${category.category_name }</option>
+								</c:forEach>
 						</select>
 					</td>
 				</tr>
@@ -1105,15 +1138,6 @@ body{
 	
 		</div>
 	  </div>
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 	 <div style="min-height: 200px;"></div>
 	</div>
 	<footer>
