@@ -15,7 +15,6 @@
     <select id="selectProduct" resultType="map">
     	SELECT *
     	FROM store
-    	WHERE pd_idx = #{pd_idx}
     </select>
     
     		<!-- 상품상세조회2 -->
