@@ -160,7 +160,6 @@ $(function() {
 			</div>
 	</article>
 
-
 		 
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
