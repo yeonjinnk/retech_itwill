@@ -252,12 +252,17 @@ public class MemberController {
 				    }
 				}
 		
-
-	   @PostMapping("MyPageMain")
+	   @GetMapping("MyPageMain")
 	   public String mypageinfo2(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
-		     
+
 		   return "member/member_mypage";
 	   }
+				
+//	   @PostMapping("MyPageMain")
+//	   public String mypageinfo2(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
+//		     
+//		   return "member/member_mypage";
+//	   }
 
 
 	   

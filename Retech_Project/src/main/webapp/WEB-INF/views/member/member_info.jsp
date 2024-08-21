@@ -251,7 +251,7 @@
 				</div>
 				<div class="join_detail">
 					<span>휴대폰번호</span>
-					<input type="text" name="member_phonenumber" id="member_phonenumber" value="${member.member_phonenumber}" required onblur="checkPhoneNum()">
+					<input type="text" name="member_phonenumber" id="member_phonenumber" value="${member.member_phone}" required onblur="checkPhoneNum()">
 					<span id="checkPhoneResult"></span>
 <!-- 					<a href="#">인증번호 받기</a> --> <!-- 구현 배우면 추가 -->
 				</div>

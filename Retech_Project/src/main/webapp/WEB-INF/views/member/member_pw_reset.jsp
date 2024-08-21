@@ -124,25 +124,66 @@
     #findPw_wrap3 {
         border: 1px solid #ccc;
         border-radius: 12px;
-        padding: 10px 30px;
+        padding: 20px; /* 패딩 조정 */
+        max-width: 500px; /* 최대 너비 설정 */
+        margin: 20px auto; /* 중앙 정렬 */
+        background-color: #ffffff; /* 배경 색상 설정 */
     }
 
     #next {
-        padding: 10px 30px;
+        padding: 10px 20px; /* 패딩 조정 */
         border: none;
-        border-radius: 12px;
-        background-color: #ccc;
+        border-radius: 8px; /* 둥근 모서리 */
+        background-color: #4CAF50; /* 버튼 색상 변경 */
+        color: white; /* 텍스트 색상 변경 */
     }
 
     #next:hover {
-        background-color: #59b9a9;
+        background-color: #45a049; /* hover 시 버튼 색상 변경 */
     }
 
     #sec02 {
-        background-color: #f1f3f5;
-        border-radius: 12px;
-        margin: 10px 60px;
+        background-color: #f9fafb; /* 배경 색상 밝게 변경 */
+        border-radius: 8px; /* 둥근 모서리 */
+        margin: 10px 0; /* 상하 여백 설정 */
         padding: 10px;
+    }
+
+    table {
+        width: 100%; /* 테이블 너비 100% */
+        border-collapse: collapse; /* 테이블 셀 간의 간격 제거 */
+    }
+
+    td, th {
+        padding: 8px; /* 셀 내 여백 조정 */
+        text-align: left; /* 텍스트 정렬 */
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+        width: 100%; /* 입력 필드와 셀렉트 박스 너비 조정 */
+        padding: 6px; /* 패딩 추가 */
+        border: 1px solid #ccc; /* 테두리 색상 설정 */
+        border-radius: 4px; /* 둥근 모서리 */
+    }
+
+    input[type="submit"] {
+        padding: 10px 20px; /* 패딩 조정 */
+        border: none;
+        border-radius: 8px; /* 둥근 모서리 */
+        background-color: #4CAF50; /* 버튼 색상 변경 */
+        color: white; /* 텍스트 색상 변경 */
+        cursor: pointer; /* 커서 포인터로 변경 */
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049; /* hover 시 버튼 색상 변경 */
+    }
+
+    #checkPasswdResult,
+    #checkPasswd2Result {
+        margin-top: 5px; /* 상단 여백 추가 */
     }
 </style>
 
@@ -155,35 +196,35 @@
 <section>
     <div id="findPw_wrap3">
         <form action="PwResetFinal" method="post">
-            <input type="hidden" name="member_phonenumber" value="${dbMember.member_phonenumber}" id="member_phonenumber" size="10">
+            <input type="hidden" name="member_phonenumber" value="${dbMember.member_phone}" id="member_phone" size="10">
             <input type="hidden" name="member_id" value="${dbMember.member_id}" id="member_id" size="10">
             <section id="sec01">
                 <table>
                     <tr>
-                        <td id="td01"><h2>비밀번호 재설정</h2></td>
+                        <td><h2>비밀번호 재설정</h2></td>
                     </tr>
                 </table>
             </section>
             <section id="sec02">
-                <div style="display: flex; justify-content: center;">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
                     <table>  
                         <tr>
-                            <td id="td03">새 비밀번호</td>
+                            <td>새 비밀번호</td>
                             <td>
-                                <input type="password" name="member_pw" id="member_pw" size="15" maxlength="16" onblur="checkPasswd()" required>
+                                <input type="password" name="member_passwd" id="member_passwd" size="15" maxlength="16" onblur="checkPasswd()" required>
                                 <span id="checkPasswdComplexResult"></span>
                                 <div id="checkPasswdResult"></div>
                             </td>
                         </tr>
                         <tr>
-                            <td id="td04">새 비밀번호 확인</td>
+                            <td>새 비밀번호 확인</td>
                             <td>
-                                <input type="password" name="member_pw2" id="member_pw2" size="15" maxlength="16" onblur="checkSamePasswd()" required>
+                                <input type="password" name="member_passwd2" id="member_passwd2" size="15" maxlength="16" onblur="checkSamePasswd()" required>
                                 <div id="checkPasswd2Result"></div>
                             </td>
                         </tr>
                         <tr>
-                            <td id="td04" colspan="2" align="center">
+                            <td colspan="2" align="center">
                                 <br><input type="submit" value="다음" id="next">
                             </td>
                         </tr>
