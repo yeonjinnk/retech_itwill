@@ -16,7 +16,7 @@
 
     // 비밀번호 복잡성 검증 함수
     function checkPasswd() {
-        let member_pw = $("#member_pw").val();
+        let member_pw = $("#member_passwd").val();  // ID 수정
 
         let msg = "";
         let color = "";
@@ -79,13 +79,13 @@
 
         $("#checkPasswdResult").text(msg);
         $("#checkPasswdResult").css("color", color);
-        $("#member_pw").css("background", bgColor);
+        $("#member_passwd").css("background", bgColor);
     }
 
     // 비밀번호 확인 함수
     function checkSamePasswd() {
-        let member_pw = $("#member_pw").val();
-        let member_pw2 = $("#member_pw2").val();
+        let member_pw = $("#member_passwd").val();  // ID 수정
+        let member_pw2 = $("#member_passwd2").val();  // ID 수정
 
         if (member_pw === member_pw2) {
             $("#checkPasswd2Result").text("비밀번호 일치");
@@ -104,14 +104,14 @@
 
             if (!checkPasswdResult) {
                 alert("패스워드를 부적합하게 입력했습니다.");
-                $("#member_pw").focus();
+                $("#member_passwd").focus();
                 event.preventDefault();
             } else {
                 checkSamePasswd();
 
                 if (!checkPasswd2Result) {
                     alert("패스워드 확인 항목이 일치하지 않습니다!");
-                    $("#member_pw2").focus();
+                    $("#member_passwd2").focus();
                     event.preventDefault(); 
                 }
             }

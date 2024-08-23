@@ -16,14 +16,14 @@
 				padding: 0;
 			}
 			
-			/* 로고 영역 */
-			.logo {
-				width: 120px;
-				margin: 30px auto;
-				text-align: center;
-			}
+ 			/* 로고 영역 */
+ 			.logo2 { 
+ 				width: 120px; 
+ 				margin: 30px auto; 
+ 				text-align: center; 
+ 			} 
 			
-			.logo img {
+			.logo2 img {
 				width: 100%;
 				border-radius: 50%;
 				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -201,7 +201,7 @@
 		</header>
 		
 		<div id="memberLoginArea">
-			<div class="logo">
+			<div class="logo2">
 				<img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="로고">
 			</div>
 			

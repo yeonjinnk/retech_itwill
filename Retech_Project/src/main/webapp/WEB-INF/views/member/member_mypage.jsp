@@ -22,29 +22,6 @@
         font-family: Arial, sans-serif;
     }
 
-    header, footer {
-        width: 100%;
-    }
-
-    header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 150px;
-        background-color: #f4f4f4;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        z-index: 1000;
-    }
-
-    footer {
-        background-color: #f4f4f4;
-        padding: 10px;
-        border-top: 1px solid #ddd;
-        text-align: center;
-    }
-
     .main-content {
         display: flex;
         flex: 1;
@@ -152,7 +129,7 @@
         <div class="content-area">
             <div class="store-info">
                 <h2>상점 정보</h2>
-                <p>상점명: ${sessionScope.sNickName}</p>
+                <p>상점명: ${member.member_nickname}</p>
                 <p>신뢰지수: </p>
             </div>
 
