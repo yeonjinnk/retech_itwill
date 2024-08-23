@@ -18,7 +18,6 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    padding-top: 200px; 	
 }
 
 /* header 고정 */
