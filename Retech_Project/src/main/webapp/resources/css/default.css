@@ -18,6 +18,7 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
+    padding-top: 200px; 	
 }
 
 /* header 고정 */
@@ -28,7 +29,12 @@ header {
 	top:0;
 	z-index: 50;
 	background-color: white;
+	margin-bottom: 500px;
 }
+
+#header_top{
+		margin-bottom: 500px;
+	}
 
 /* header 고정 후 다음 section 시작 */
 section {
@@ -190,6 +196,7 @@ footer {
 	width: 100%;	
 	background-color: lightgray;
 	margin: auto;
+    bottom: 0; 
 }
 .inc_info {
 	box-sizing: border-box;
