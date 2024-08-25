@@ -4,86 +4,75 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
+		<title>아이디 확인</title>
 		<link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 		<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 		<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<style>
+			body {
+				font-family: 'Noto Sans', sans-serif;
+				background-color: #f4f7f6;
+				margin: 0;
+				padding: 0;
+			}
+			
 			.logo {
-				width: 100px;
-				margin: 0 auto;
-			}
-			
-			.logo .main_logo {
-				width: 100%;
-			}
-			
-			.logo .main_logo img {
-				width: 100%;
-			}
-			
-			.tab{
-				width: 720px;
-				margin: 0 auto;
+				width: 120px;
+				margin: 30px auto;
 				text-align: center;
 			}
-			.tab > ul {
-				display: flex;
-				justify-content: space-between;
-			}
-			.tab > ul > li {
-				width:50%;
-				background-color: #eee;
-			}
-			.tab > ul > li a {
-				display: block;
+			
+			.logo img {
 				width: 100%;
+				border-radius: 50%;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			}
+
+			article {
+				width: 100%;
+				max-width: 400px;
+				margin: 60px auto; /* 기존 30px에서 60px으로 조정 */
+				padding: 30px;
+				background-color: #ffffff;
+				border-radius: 10px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+				text-align: center;
 			}
 			
-			.tab > ul > li.on {
-				background-color: #ccc;
-				color: rgb(211, 84, 0);
+			article span {
+				font-size: 18px;
+				color: #333;
+				display: block;
+				margin-bottom: 20px;
+			}
+
+			article b {
+				color: #d35400;
 				font-weight: bold;
 			}
 			
-			article {
-				width: 720px;
-				margin: 0 auto;
+			article input[type="button"] {
+				width: 100px;
+				margin: 10px 10px;
+				padding: 10px;
+				border: none;
+				border-radius: 5px;
+				background-color: #4CAF50;
+				color: white;
+				font-size: 16px;
+				cursor: pointer;
+				transition: background-color 0.3s;
 			}
 			
-			article .search{
-				width: 400px;
-				padding-top: 30px;
+			article input[type="button"]:hover {
+				background-color: #45a049;
 			}
-			
-			article .search .info {
-				width: 100%;
-				display: flex;
-				justify-content: center;
-			}
-			
-			article .search .info span {
-				width: 40%;
-				text-align: left;
-			}
-			
-			article .search .info input {
-				width: 60%;
-			}
-			
-			
-/* 			article .search .info .auth_btn { */
-/* 				width: 100px; */
-/* 				margin-left: 10px; */
-/* 			} */
-			
-			article .alert {
-				display: block;
-				width: 100%;
-			}
-			
-			article .search .submitBtn {
-				width: 100%;
+
+			footer {
+				margin-top: 50px;
+				text-align: center;
+				color: #999;
+				font-size: 14px;
 			}
 		</style>
 	</head>
@@ -93,18 +82,17 @@
 		</header>
 		
 		<div class="logo">
-			<a href="./" class="main_logo"><img src="resources/images/main_logo.png"></a>
+			<a href="./" class="main_logo"><img src="resources/images/main_logo.png" alt="로고"></a>
 		</div>
 		
 		<article>
-			<div align="center">
-				<!-- id 알려주기 -->
+			<div>
 				<span>회원님의 아이디는 <b>${member_id}</b> 입니다.</span>
 			</div>
 			
-			<div align="center">
-				<input type="button" value ="홈으로" onclick="location.href='./'">
-				<input type="button" value ="로그인" onclick="location.href='MemberLogin'">
+			<div>
+				<input type="button" value="홈으로" onclick="location.href='./'">
+				<input type="button" value="로그인" onclick="location.href='MemberLogin'">
 			</div>
 		</article>
 		

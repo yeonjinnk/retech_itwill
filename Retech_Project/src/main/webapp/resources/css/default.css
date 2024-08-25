@@ -4,6 +4,7 @@
 a {
 	text-decoration: none;
 }
+/*/
 /* ----- top.jsp, bottom.jsp 공통 ----- */
 html, body {
     height: 100%;
@@ -28,7 +29,12 @@ header {
 	top:0;
 	z-index: 50;
 	background-color: white;
+	margin-bottom: 500px;
 }
+
+#header_top{
+		margin-bottom: 500px;
+	}
 
 /* header 고정 후 다음 section 시작 */
 section {
@@ -131,7 +137,7 @@ footer {
 	margin-bottom: 0;
 	margin-top: 0;
 }
-<<<<<<< HEAD
+
 
 .menu_list {
     position: relative; /* 서브메뉴 위치를 조정하기 위해 */
@@ -190,6 +196,7 @@ footer {
 	width: 100%;	
 	background-color: lightgray;
 	margin: auto;
+    bottom: 0; 
 }
 .inc_info {
 	box-sizing: border-box;
