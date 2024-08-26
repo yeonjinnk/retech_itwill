@@ -23,7 +23,7 @@ public class StoreController {
 		return "store/store_list";
 	}
 	
-	//상품 목록 출력 ajax
+	//상품 목록 출력 ajax..
 	@GetMapping("StoreProductList")
 	public String productList() {
 		
