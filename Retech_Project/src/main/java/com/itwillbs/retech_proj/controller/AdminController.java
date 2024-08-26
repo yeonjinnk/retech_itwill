@@ -22,6 +22,6 @@ public class AdminController {
 			model.addAttribute("targetURL", "./");
 			return "result/fail";
 		}
-		return "admin/admin_index";
+		return "admin/admin_main";
 	} 
 }
