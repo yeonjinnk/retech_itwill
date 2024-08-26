@@ -12,7 +12,6 @@
 			product
 		ORDER BY
 			pd_reg_date DESC
-			
 	</select>
 	
 	<!-- 리테크 상품 목록 개수 조회작업(페이징) -->

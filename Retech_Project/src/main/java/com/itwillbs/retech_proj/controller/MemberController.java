@@ -79,48 +79,38 @@ public class MemberController {
 
 	   @PostMapping("MemberLogin")
 	   public String loginPro(MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model,
-			   HttpSession session, HttpServletResponse response, String rememberId) {
-	     
+		        HttpSession session, HttpServletResponse response, String rememberId) {
 
-		  MemberVO dbMember = service.getMember(member);
-	      
-	      System.out.println("dbMember : " + dbMember);
-	      
-	      if(dbMember == null || !passwordEncoder.matches(member.getMember_passwd(), dbMember.getMember_passwd())) {
-				model.addAttribute("msg", "로그인 실패!");
-				return "result/fail";
-			} else if(dbMember.getMember_status().equals("탈퇴")) { // 로그인 성공(이지만 탈퇴 회원인 경우)
-				model.addAttribute("msg", "탈퇴한 회원입니다!");
-				return "result/fail";
-			} else { // 로그인 성공
-				// 로그인 성공한 아이디를 세션에 저장
-				session.setAttribute("sId", member.getMember_id());
-				session.setAttribute("sName", dbMember.getMember_name());
-				session.setAttribute("sIsAdmin", dbMember.getMember_isAdmin());
-				session.setMaxInactiveInterval(3600);
+		    MemberVO dbMember = service.getMember(member);
+		    
+		    if (dbMember == null || !passwordEncoder.matches(member.getMember_passwd(), dbMember.getMember_passwd())) {
+		        model.addAttribute("msg", "로그인 실패!");
+		        return "result/fail";
+		    } else if (dbMember.getMember_status().equals("탈퇴")) {
+		        model.addAttribute("msg", "탈퇴한 회원입니다!");
+		        return "result/fail";
+		    } else {
+		        // 로그인 성공 시, 세션에 상점명과 관련된 정보 저장
+		        session.setAttribute("sId", member.getMember_id());
+		        session.setAttribute("sName", dbMember.getMember_name()); // 세션에 회원 이름 저장
+		        session.setAttribute("sNickName", dbMember.getMember_nickname()); // 세션에 상점명 저장
+		        session.setAttribute("sIsAdmin", dbMember.getMember_isAdmin());
+		        session.setMaxInactiveInterval(3600);
 
-			
-				Cookie cookie = new Cookie("rememberId", member.getMember_id());
-				
-				// 2. 파라미터로 전달받은 rememberId 변수값 체크
-				if(rememberId != null) {
-					// 2-1. 아이디 기억하기 체크 시 : 쿠키 유효기간 30일로 설정
-					cookie.setMaxAge(60 * 60 * 24 * 30); // 30일(60초 * 60분 * 24시간 * 30일)
-				} else { 
-					// 2-2. 아이디 기억하기 미체크 시 : 쿠키 삭제 위해 유효기간을 0 으로 설정
-					cookie.setMaxAge(0);
-				}
-				
-				response.addCookie(cookie);
-				if(session.getAttribute("prevURL") == null) {
-					return "redirect:/";
-				} else {
-					// 요청 서블릿 주소 앞에 "/" 기호가 이미 붙어있으므로 "redirect:" 문자열과 결합
-					return "redirect:" + session.getAttribute("prevURL");
-				}
-				// -----------------------------------------------------------------------------------------
-				
-			}
+		        Cookie cookie = new Cookie("rememberId", member.getMember_id());
+		        if (rememberId != null) {
+		            cookie.setMaxAge(60 * 60 * 24 * 30); // 30일
+		        } else {
+		            cookie.setMaxAge(0);
+		        }
+		        response.addCookie(cookie);
+
+		        if (session.getAttribute("prevURL") == null) {
+		            return "redirect:/";
+		        } else {
+		            return "redirect:" + session.getAttribute("prevURL");
+		        }
+		    }
 			
 		}
 	   
@@ -251,13 +241,26 @@ public class MemberController {
 				        return "result/fail";
 				    }
 				}
-		
-
-	   @PostMapping("MyPageMain")
-	   public String mypageinfo2(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
-		     
+	
+				
+	   @GetMapping("MyPageMain")
+	   public String mypageinfo2(@RequestParam Map<String, String> map, HttpSession session, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
+		   String id = (String) session.getAttribute("sId");
+		   // 세션에 사용자 ID가 존재하는 경우
+		   if (id != null) {
+			   member.setMember_id(id);
+			   // 해당 ID의 회원 정보를 조회
+			   member = service.getMember(member);
+			   model.addAttribute("member", member);
+		   }
 		   return "member/member_mypage";
 	   }
+				
+//	   @PostMapping("MyPageMain")
+//	   public String mypageinfo2(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
+//		     
+//		   return "member/member_mypage";
+//	   }
 
 
 	   
@@ -286,30 +289,71 @@ public class MemberController {
 		   return "member/member_info";
 	   }
 
+//	   @PostMapping("MemberModify")
+//	   public String mypageinfo(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
+//		   System.out.println(member);
+//		   System.out.println(map);
+//	      member =service.getMember(member);
+//	      if (!passwordEncoder.matches((CharSequence)map.get("member_oldpw"), member.getMember_passwd())) {
+//	         model.addAttribute("msg", "수정 권한이 없습니다!");
+//	         return "result/fail";
+//	      } else {
+//	         if (!((String)map.get("member_passwd")).equals("")) {
+//	            map.put("member_passwd", passwordEncoder.encode((CharSequence)map.get("member_passwd")));
+//	         }
+//
+//	         int updateCount = service.modifyMember(map);
+//	         if (updateCount > 0) {
+//	            model.addAttribute("msg", "회원정보 수정 성공!");
+//	            model.addAttribute("targetURL", "MemberInfo");
+//	            return "result/success";
+//	         } else {
+//	            model.addAttribute("msg", "회원정보 수정 실패!");
+//	            return "result/fail";
+//	         }
+//	      }
+//	   }
+	   
 	   @PostMapping("MemberModify")
 	   public String mypageinfo(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
-		   System.out.println(member);
-		   System.out.println(map);
-	      member =service.getMember(member);
-	      if (!passwordEncoder.matches((CharSequence)map.get("member_oldpw"), member.getMember_passwd())) {
-	         model.addAttribute("msg", "수정 권한이 없습니다!");
-	         return "result/fail";
-	      } else {
-	         if (!((String)map.get("member_passwd")).equals("")) {
-	            map.put("member_passwd", passwordEncoder.encode((CharSequence)map.get("member_passwd")));
-	         }
+	       if (member == null || member.getMember_id() == null) {
+	           model.addAttribute("msg", "회원 정보를 찾을 수 없습니다.");
+	           return "result/fail";
+	       }
 
-	         int updateCount = service.modifyMember(map);
-	         if (updateCount > 0) {
-	            model.addAttribute("msg", "회원정보 수정 성공!");
-	            model.addAttribute("targetURL", "MemberInfo");
-	            return "result/success";
-	         } else {
-	            model.addAttribute("msg", "회원정보 수정 실패!");
-	            return "result/fail";
-	         }
-	      }
+	       member = service.getMember(member);
+	       if (member == null) {
+	           model.addAttribute("msg", "회원 정보 조회 실패!");
+	           return "result/fail";
+	       }
+
+	       String oldPassword = map.get("member_oldpw");
+	       if (oldPassword == null || !passwordEncoder.matches(oldPassword, member.getMember_passwd())) {
+	           model.addAttribute("msg", "수정 권한이 없습니다!");
+	           return "result/fail";
+	       }
+
+	       String newPassword = map.get("member_passwd");
+	       if (newPassword != null && !newPassword.isEmpty()) {
+	           map.put("member_passwd", passwordEncoder.encode(newPassword));
+	       } else {
+	           map.remove("member_passwd");  // 비밀번호가 없으면 맵에서 제거
+	       }
+
+	       int updateCount = service.modifyMember(map);
+	       if (updateCount > 0) {
+	           model.addAttribute("msg", "회원정보 수정 성공!");
+	           model.addAttribute("targetURL", "MemberInfo");
+	           return "result/success";
+	       } else {
+	           model.addAttribute("msg", "회원정보 수정 실패!");
+	           return "result/fail";
+	       }
 	   }
+
+
+	   
+	   
 
 	   @GetMapping("MemberWithdraw")
 	   public String withdrawForm(HttpSession session, Model model) {

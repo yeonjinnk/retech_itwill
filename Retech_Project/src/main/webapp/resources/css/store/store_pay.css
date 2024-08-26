@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+#articleForm {
+	margin: 200px 150px 200px 150px;
+}
+
 h1 {
 	text-align: left;
 }
@@ -13,5 +17,59 @@ h1 {
 }
 
 .tbl_row {
+	margin: 30px;
+	padding: 20px 10px 20px 10px;
 	border: 1px solid black;
+	border-radius: 10px;
+	width: 600px;
+	height: 150px;
+}
+
+th, td {
+	margin: 100px;
+	padding-left: 20px;
+	text-align: left;
+}
+
+.detail {
+	
+	border: 1px solid black;
+}
+
+
+.pay {
+	width: 310px;
+}
+.tbl_row_right {
+	margin: 10px;
+	padding: 30px 10px 30px 10px;	
+	border: 1px solid black;
+	border-radius: 10px;
+	width: 350px;
+	height: 150px;
+	
+}
+
+.btn_fold {
+	border: 0;
+	background-color: transparent;
+}
+
+.agree {
+	width: 350px;
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 30px 10px 30px 10px;
+}
+
+.fold_box_header {
+	width: 300px;
+	margin-bottom: 20px;
+	
+}
+
+.fold_box_contents {
+	height: 100px;
+	width: 300px;
+	overflow: scroll;
 }

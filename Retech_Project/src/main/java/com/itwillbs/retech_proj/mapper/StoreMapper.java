@@ -21,4 +21,7 @@ public interface StoreMapper {
 	int insertPayProduct(@Param("order_store_item")String order_store_item, @Param("order_store_quantity") int order_store_quantity,
 			@Param("order_store_pay") int order_store_pay);
 	 */
+	//상품 정보 조회2
+	Map<String, Object> selectStore(int store_idx);
+
 }

@@ -11,6 +11,14 @@
 	<script type="text/javascript">
 		// JSP 내장객체 request 의 "msg" 속성값을 자바스크립트 alert() 함수로 출력
 		alert("${msg}"); // requestScope 영역 객체 지정 생략 가능
+		
+		
+		if("${isClose}") { 
+			// 부모창 새로고침 후 자식창(현재창) 닫기
+			window.opener.location.reload();
+			window.close();
+		}
+		
 		// 1) JSTL 과 EL 을 조합하여 request 객체의 "targetURL" 속성이 비어있을 경우
 		// 이전페이지로 돌아가기 수행하고, 아니면 "targetURL" 속성에 지정된 페이지로 이동
 		// => 주의! 자바스크립트 내에 JSTL 코드 사용 시 JSTL 색상 표기가 되지 않지만

@@ -20,13 +20,13 @@
 			<nav class="top_menu_container">
 				<ul class="top_area">
 					<li class="top_list">
-						<a href="#" class="top_link" id="top_link1">테크페이</a>
+						<a href="TechPayMain" class="top_link" id="top_link1">테크페이</a>
 					</li>
 					<li class="top_list">
 						<a href="#" class="top_link">채팅하기</a>
 					</li>
 					<li class="top_list">
-						<a href="#" class="top_link">판매하기</a>
+						<a href="ProductRegistForm" class="top_link">판매하기</a>
 					</li>
 						<c:choose>
 							<c:when test="${empty sessionScope.sId}"> <%-- 로그인 상태가 아닐 경우 --%>
@@ -36,16 +36,16 @@
 							</c:when>
 							<c:otherwise> <%-- 로그인 상태일 경우 --%>
 								<li class="top_list">
-									<a href="MyPageMain">${sessionScope.sName}</a>님
+									<a href="MyPageMain" class="top_link">${sessionScope.sName}님</a>
 								</li>
 								<li class="top_list">
-									<a href="javascript:confirmLogout()">로그아웃</a>
+									<a href="javascript:confirmLogout()" class="top_link">로그아웃</a>
 								</li>
 								
 								<!-- 관리자 계정일 경우 관리자 페이지 링크 표시 -->
 								<c:if test="${sessionScope.sIsAdmin eq 'Y'}">
 									<li class="top_list">
-										<a href="AdminHome">관리자페이지</a>
+										<a href="AdminHome" class="top_link">관리자페이지</a>
 									</li>
 								</c:if>
 							</c:otherwise>

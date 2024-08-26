@@ -33,7 +33,8 @@ $(function() {
 	$("#amount").html(result);
 	$("#minus").click(function() {
 // 		console.log("minus button clicked"); // 버튼 클릭 시 표시
-		let result = Number($("#selected_quantity").val()); // 선택한 수량 result 변수에 저장
+		let result = 1;
+		result = Number($("#selected_quantity").val()); // 선택한 수량 result 변수에 저장
 // 		console.log("데이터타입 : " + typeof(result));
 		if(result > 1) {
 // 			console.log("result : " + result + "데이터타입 : " + typeof(result));
@@ -57,7 +58,8 @@ $(function() {
 	$("#amount").html(result);
 	$("#plus").click(function() {
 // 		console.log("plus button clicked"); // 버튼 클릭 시 표시
-		let result = Number($("#selected_quantity").val()); // 선택한 수량 result 변수에 저장
+		let result = 1;
+		result = Number($("#selected_quantity").val()); // 선택한 수량 result 변수에 저장
 		console.log("데이터타입 : " + typeof(result));
 		if(result > 0) {
 // 			console.log("result : " + result + "데이터타입 : " + typeof(result));
@@ -82,6 +84,10 @@ $(function() {
 		console.log("order_store_pay: " + order_store_pay);
 		console.log("바로구매 버튼 클릭됨");
 		location.href="StorePay?order_store_item=${Product.store_idx}&order_store_quantity=" + order_store_quantity + "&order_store_pay=" + order_store_pay;
+		let order_store_item = ${Product.store_idx};
+// 		let order_store_quantity = $("#amount").text();
+		console.log("order_store_item = " + order_store_item + " , order_store_quantity" + order_store_quantity);
+		location.href="StorePay?order_store_item=" + order_store_item + "&order_store_quantity=" + order_store_quantity; 
 	});
 	
 });
@@ -93,7 +99,6 @@ $(function() {
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
 	<article id="articleForm">
-		
 		
 			<div class="left">
 				<div class="img">

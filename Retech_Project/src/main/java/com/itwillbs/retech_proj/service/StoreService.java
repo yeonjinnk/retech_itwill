@@ -35,6 +35,11 @@ public class StoreService {
 	public int insertPayProduct(String order_store_item, int order_store_quantity, int order_store_pay) {
 		return mapper.insertPayProduct(order_store_item, order_store_quantity, order_store_pay);
 	}*/
+	//상품 정보 조회2
+	public Map<String, Object> selectStore(int store_idx) {
+		return mapper.selectStore(store_idx);
+	}
+	
 
 	
 }
