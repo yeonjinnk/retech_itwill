@@ -1118,7 +1118,7 @@ body{
 						<textarea class="input-tag"
 							id="p_exp" name="p_exp" maxlength="1000"
 							oninput="numberMaxLength(this);"
-							placeholder="구입연도, 브랜드, 사용감, 하자유무 등 필요한 정보를 넣어주세요. &#13;&#10;구매자의 문의를 좀더 줄일 수 있습니다."></textarea>
+							placeholder="구입연도, 브랜드, 사용감, 직거래시 거래지역, 하자유무 등 필요한 정보를 넣어주세요. &#13;&#10;구매자의 문의를 좀더 줄일 수 있습니다."></textarea>
 						</div>
 						<div align="right"><span style="font-size: 18px;"id="exp_length">0/1000</span></div>
 					</td>
