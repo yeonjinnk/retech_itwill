@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.itwillbs.retech_proj.mapper.NoticeMapper">
+   
+	<select id="selectNoticeListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM notice
+		<if test="!searchKeyword.equals('')">
+		WHERE 
+			notice_subject like concat('%',#{searchKeyword},'%')
+			or notice_content like concat('%',#{searchKeyword},'%')
+		</if>	
+	</select>
+   
+	<select id="selectNoticeList" resultType="notice">
+		SELECT *
+		FROM notice
+		<if test="!searchKeyword.equals('')">
+			WHERE 
+				notice_subject like concat('%',#{searchKeyword},'%')
+				or notice_content like concat('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY
+			notice_idx DESC
+		LIMIT
+			#{startRow}     
+			, #{listLimit}  
+	</select>
+	
+	<select id="selectNotice" resultType="notice">
+		SELECT *
+		FROM notice
+		WHERE 
+			notice_idx = #{notice_idx}
+	</select>
+    
+</mapper>
