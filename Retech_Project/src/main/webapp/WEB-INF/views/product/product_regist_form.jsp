@@ -452,7 +452,6 @@
 //--------------------------------------------------------------------------------------------------------------------------
       
 //본격적인 데이터 넣기------------------------------------------------------------------------------------------------------
-<<<<<<< HEAD
    
    let regular_han = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]/;
    
@@ -502,57 +501,6 @@
          $("#p_exp").focus();
          return;
       }
-=======
-	
-	let regular_han = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]/;
-	
-	function proInfoSend() {
-		
-		//세션으로부터 받은 member_id값
-		let member_id = $("#member_id").val().trim();
-		
-		let p_name = $("#p_name").val().trim();
-		let c_idx = $("#c_idx").val();
-		
-		let p_price = $("#p_price").val().trim();
-		let p_exp = $("#p_exp").val().trim();
-		let sumimage = $("#sumimage").val(); c_idx = $("#c_idx").val();
-		
-		if(sumimage == ''){
-			alert('대표 이미지를 반드시 등록해주세요.');
-			$("#imgup").focus();
-			return;
-		}
-		
-		if(p_name==''){
-			alert('제목이 비어있습니다. (필수입력, 공백불가)');
-			$("#p_name").val('');
-			$("#p_name").focus();
-			return;
-		}
-		
-		if(c_idx==0){
-			alert('카테고리를 선택하세요. ');
-			$("#c_idx").focus();
-			return;
-		}
-		
-		if(p_price==''){
-			
-			alert('가격이 비어있습니다.');
-			$("#p_price").val('');
-			$("#p_price").focus();
-			return;
-		}
-		
-		if(p_exp==''){
-			
-			alert('상품 설명이 비어있습니다. ');
-			$("#p_exp").val('');
-			$("#p_exp").focus();
-			return;
-		}
->>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git
 
       
       if( regular_han.test(p_price) ){
@@ -581,7 +529,6 @@
       //이미지
       //필수 이미지 = sumimage
 
-<<<<<<< HEAD
       formData.append('file1',$('#sumimage')[0].files[0]);
       if($('#imageFile1')[0].files[0]!=undefined){
          formData.append('file2',$('#imageFile1')[0].files[0]);   
@@ -632,60 +579,7 @@
       if(confirm('상품등록을 취소하시겠습니까?')==false) return;
       
       history.back();
-=======
-		formData.append('file1',$('#sumimage')[0].files[0]);
-		if($('#imageFile1')[0].files[0]!=undefined){
-			formData.append('file2',$('#imageFile1')[0].files[0]);	
-		}
-		if($('#imageFile2')[0].files[0]!=undefined){
-			formData.append('file3',$('#imageFile2')[0].files[0]);
-		}
-		
-		formData.append('member_id', member_id);		// 유저idx
-		formData.append('pd_subject',p_name);			// 상품명
-		
-		formData.append('pd_price',p_price);			// 가격
-		formData.append('pd_content',p_exp);				// 상품설명
-		
-		/*	
-			파일 데이터를 ajax처리 하기 위해선
-			반드시 processData,contentType 들을 false 해주기
-		 */
-		
-	 	$.ajax({
-			
-			url 	 : 'ProductRegistPro',
-			type	 : 'POST',
-			data	 : formData,
-			processData : false,
-			contentType : false,
-			dataType : 'json',
-			success  : function(res){
-				
-				if(res == true){
-					alert('해당 상품이 정상적으로 등록되었습니다!');
-	//					location.href='../mainpage/list.do';
-					location.href='${pageContext.request.contextPath }/product_list';
-				}
-				
-			},error	: function(err){
-				alert('해당 상품에 실패했습니다. 관리자나 1:1 게시판에 문의하세요.');
-			}
-			
-		});
-	
-	
-	}
-	
-	// 상품등록을 취소하게 하는 함수(procancel)	
-	function procancel(){
-		
-		if(confirm('상품등록을 취소하시겠습니까?')==false) return;
-		
-		history.back();
->>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git
 
-<<<<<<< HEAD
       
    }   
    // 상품 카테고리 공통코드 사용 함수
@@ -709,29 +603,8 @@
    
    
    
-	// 상품 카테고리 공통코드 사용 함수
-	
-	$(function () {
-			$("select").on("change", function() {
-				let product = "PRODUCT";
-				let product1 = $("#c_idx").val();
-				let product2 = $("#c_idx2").val();
-				let pd_category = product +  product1 + product2;
-// 				$("#pd_category_hidden").hidden = pd_category;
-				$("#pd_category").html("pd_category");
-// 				$("#text").html("pd_category");
-				console.log("product : " + product);
-				console.log("product1 : " + product1);
-				console.log("product2 : " + product2);
-				console.log("pd_category : " + pd_category);
-				
-			});
-		});
-	
-	
-	
-	//<!-- 가격 함수 (실시간 콤마, 한글입력불가) -->------------
-	$(function() {
+   //<!-- 가격 함수 (실시간 콤마, 한글입력불가) -->------------
+   $(function() {
 
       $("#p_price").on("propertychange change keyup paste input", function() {
          
@@ -1068,7 +941,6 @@ body{
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<<<<<<< HEAD
    <header>
       <jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>   
    </header>
