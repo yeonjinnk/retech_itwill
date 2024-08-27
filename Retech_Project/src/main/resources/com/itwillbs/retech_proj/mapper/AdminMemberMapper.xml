@@ -24,15 +24,12 @@
 		FROM member
 		<if test="!searchKeyword.equals('')">
 			where 
-				member_num like concat('%',#{searchKeyword},'%')
-				or member_id like concat('%',#{searchKeyword},'%')
+				member_id like concat('%',#{searchKeyword},'%')
 				or member_name like concat('%',#{searchKeyword},'%')
-				or member_join_date like concat('%',#{searchKeyword},'%')
 				or member_status like concat('%',#{searchKeyword},'%')
 		</if>
 		ORDER BY
-			member_isAdmin DESC,
-			member_num DESC
+			member_isAdmin DESC
 		LIMIT
 			#{startRow}     
 			, #{listLimit}  
@@ -45,120 +42,16 @@
 		UPDATE member
 		SET 
 			<choose>
-				<when test="member_isAdmin == 0">
-					member_isAdmin = 1
+				<when test="member_isAdmin == Y">
+					member_isAdmin = Y
 				</when>
 				<otherwise>
-					member_isAdmin = 0
+					member_isAdmin = N
 				</otherwise>
 			</choose>
 		WHERE member_id = #{member_id}
 	</update>
+
 	
-	<!-- =========================================================================== -->
-	
-	<!-- 리뷰 -->
-	<!-- 리뷰 총 개수 -->
-	<select id="selectReviewListCount" resultType="int">
-		SELECT COUNT(*)
-		FROM review
-		<if test="!searchKeyword.equals('')">
-			WHERE 
-				review_num like concat('%',#{searchKeyword},'%')
-				or review_rating like concat('%',#{searchKeyword},'%')
-				or review_content like concat('%',#{searchKeyword},'%')
-				or review_date like concat('%',#{searchKeyword},'%')
-				or review_movie_code like concat('%',#{searchKeyword},'%')
-				or member_num like concat('%',#{searchKeyword},'%')
-				or review_movie_name_kr like concat('%',#{searchKeyword},'%')
-		</if>
-	</select>
-	
-	<select id="selectReviewList" resultType="hashmap">
-		SELECT *
-		FROM review r
-		JOIN movie m
-		ON r.review_movie_code = m.movie_code
-		<if test="!searchKeyword.equals('')">
-			WHERE 
-				review_num like concat('%',#{searchKeyword},'%')
-				or review_rating like concat('%',#{searchKeyword},'%')
-				or review_content like concat('%',#{searchKeyword},'%')
-				or review_date like concat('%',#{searchKeyword},'%')
-				or review_movie_code like concat('%',#{searchKeyword},'%')
-				or member_num like concat('%',#{searchKeyword},'%')
-				or review_movie_name_kr like concat('%',#{searchKeyword},'%')
-		</if>
-		ORDER BY
-			member_num DESC
-		LIMIT
-			#{startRow}     
-			, #{listLimit}  
-	</select>
-	
-	<!-- 관리자 회원 리뷰 삭제 -->
-	<delete id="deleteReview">
-		DELETE 
-		FROM review
-		WHERE review_num = #{review_num}
-	</delete>
-	
-	<!-- =========================================================================== -->
-	
-	<!-- 예매 내역 -->
-	<!-- 예매 내역 총 개수 -->
-	<select id="selectBookListCount" resultType="int">
-		SELECT COUNT(*)
-		FROM order_ticket
-		<if test="!searchKeyword.equals('')">
-			WHERE 
-				order_ticket_id like concat('%',#{searchKeyword},'%')
-				or order_ticket_member_num like concat('%',#{searchKeyword},'%')
-				or order_ticket_theater_name like concat('%',#{searchKeyword},'%')
-				or order_ticket_status like concat('%',#{searchKeyword},'%')
-		</if>
-	</select>
-	
-	<!-- 예매내역 목록 -->
-	<select id="selectBookList" resultType="hashmap">
-		SELECT *		
-		FROM order_ticket o 
-		JOIN theater t 
-		ON o.order_ticket_theater_num = t.theater_num 
-		JOIN movie v 
-		ON o.order_ticket_movie_code = v.movie_code 
-		JOIN ticket tk
-		ON o.order_ticket_type = tk.ticket_num
-		<if test="!searchKeyword.equals('')">
-		WHERE 
-			order_ticket_id like concat('%',#{searchKeyword},'%')
-			or order_ticket_member_num like concat('%',#{searchKeyword},'%')
-			or order_ticket_theater_name like concat('%',#{searchKeyword},'%')
-			or order_ticket_status like concat('%',#{searchKeyword},'%')
-		</if>
-	</select>
-	
-	<!-- 예매내역 목록 -->
-	<select id="selectBook" resultType="hashmap">
-		SELECT 
-			o.order_ticket_id
-			, o.order_ticket_member_num
-			, v.movie_name_kr
-			, o.order_ticket_date
-			, t.theater_name
-			, o.order_ticket_seat
-			, o.order_ticket_how_many_people
-			, tk.ticket_price
-			, o.order_ticket_status
-			, o.order_ticket_room_num
-		FROM order_ticket o 
-		JOIN theater t 
-		ON o.order_ticket_theater_num = t.theater_num 
-		JOIN movie v 
-		ON o.order_ticket_movie_code = v.movie_code 
-		JOIN ticket tk
-		ON o.order_ticket_type = tk.ticket_num 
-		
-		WHERE o.order_ticket_id = #{order_ticket_id}
-	</select>
+
 </mapper>

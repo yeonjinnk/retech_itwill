@@ -24,7 +24,7 @@
 			<h1>회원 탈퇴</h1>
 			<h4>회원 탈퇴 확인을 위해 비밀번호를 입력해 주세요</h4>
 			<form action="MemberWithdraw" method="post">
-				<input type="password" name="member_pw" placeholder="패스워드" required><br>
+				<input type="password" name="member_passwd" placeholder="패스워드" required><br>
 				<input type="submit" value="회원탈퇴">
 			</form>	
 		</div>
