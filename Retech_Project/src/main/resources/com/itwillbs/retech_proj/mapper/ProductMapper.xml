@@ -4,6 +4,31 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.retech_proj.mapper.ProductMapper">
 	
+	<!-- 리테크 상품 등록하기 -->
+	<insert id="insertProduct">
+		INSERT INTO 
+			product
+		VALUES (
+			null								-- pd_idx
+			, #{member_id}						-- 상품 작성자
+			, #{pd_category}					-- 상품 카테고리(공통코드)
+			, #{pd_subject}
+			, #{pd_content}
+			, #{pd_price}
+			, #{pd_status}						-- 거래상태
+			, now()								-- 작성일 (pd_first_date)
+			, null								-- 등록일 (pd_update_date)
+			, 0									-- 조회수 (pd_readcount)
+			, pd_idx + 1						-- re_ref
+			, #{pd_image1}
+			, #{pd_image2}
+			, #{pd_image3}
+			, #{pd_image4}
+			, #{pd_image5}
+		)
+	</insert>
+
+	
 	<!-- 리테크 상품 목록 조회작업 -->
 	<select id="selectProductList" resultType="com.itwillbs.retech_proj.vo.ProductVO">
 		SELECT

@@ -457,7 +457,7 @@
 	
 	function proInfoSend() {
 		
-		//세션으로부터 받은 member_idx값
+		//세션으로부터 받은 member_id값
 		let member_id = $("#member_id").val().trim();
 		
 		let p_name = $("#p_name").val().trim();
@@ -539,31 +539,9 @@
 		
 		formData.append('member_id', member_id);		// 유저idx
 		formData.append('pd_subject',p_name);			// 상품명
-		formData.append('category_idx',c_idx);			// 카테고리 코드
 		
-		if($("#p_delivery_type").is(":checked")){
-			formData.append('secondhand_deliveryType_ptp',p_delivery_type);	// 거래방법-직거래
-		}
-		if($("#p_delivery_type2").is(":checked")){
-			formData.append('secondhand_deliveryType_parcel',p_delivery_type2);	// 거래방법-택배
-		}
-		if($("#p_delivery_type3").is(":checked")){
-			formData.append('secondhand_deliveryType_zstation',p_delivery_type3);	// 거래방법-zstation
-		}
-		if($("#p_delivery_type4").is(":checked")){
-			formData.append('secondhand_deliveryType_zman',p_delivery_type4);	// 거래방법-zman
-		}	
-		
-		
-		if($("#p_paymentType").is(":checked")){
-			formData.append('secondhand_paymentType_ptp',p_paymentType);	// 결제타입
-		}
-		if($("#p_paymentType2").is(":checked")){
-			formData.append('secondhand_paymentType_zpay',p_paymentType2);	// 결제타입-zpay
-		}
-		
-		formData.append('secondhand_price',p_price);			// 가격
-		formData.append('secondhand_content',p_exp);				// 상품설명
+		formData.append('pd_price',p_price);			// 가격
+		formData.append('pd_content',p_exp);				// 상품설명
 		
 		/*	
 			파일 데이터를 ajax처리 하기 위해선
@@ -583,7 +561,7 @@
 				if(res == true){
 					alert('해당 상품이 정상적으로 등록되었습니다!');
 	//					location.href='../mainpage/list.do';
-					location.href='${pageContext.request.contextPath }/secondhand_list';
+					location.href='${pageContext.request.contextPath }/product_list';
 				}
 				
 			},error	: function(err){
@@ -604,6 +582,27 @@
 
 		
 	}	
+	// 상품 카테고리 공통코드 사용 함수
+	
+	$(function () {
+			$("select").on("change", function() {
+				let product = "PRODUCT";
+				let product1 = $("#c_idx").val();
+				let product2 = $("#c_idx2").val();
+				let pd_category = product +  product1 + product2;
+// 				$("#pd_category_hidden").hidden = pd_category;
+				$("#pd_category").html("pd_category");
+// 				$("#text").html("pd_category");
+				console.log("product : " + product);
+				console.log("product1 : " + product1);
+				console.log("product2 : " + product2);
+				console.log("pd_category : " + pd_category);
+				
+			});
+		});
+	
+	
+	
 	//<!-- 가격 함수 (실시간 콤마, 한글입력불가) -->------------
 	$(function() {
 
@@ -1056,36 +1055,17 @@ body{
 					<td class="td2" align="left">
 						<select class="input-tag" id="c_idx" name="c_idx" style="width: 30%; height: 35px;">
 								<option value="0">카테고리 선택</option>
-								<c:forEach var="category" items="${categorylist }">
-									<option value="${category.category_idx }"> ${category.category_name }</option>
-								</c:forEach>
-								<option value="1">PC</option>
-								<c:forEach var="category" items="${categorylist }">
-									<option value="${category.category_idx }"> ${category.category_name }</option>
-								</c:forEach>
-								<option value="2">노트북</option>
-								<c:forEach var="category" items="${categorylist }">
-									<option value="${category.category_idx }"> ${category.category_name }</option>
-								</c:forEach>
+								<option value="PC">PC</option>
+								<option value="NB">노트북</option>
 						</select>
-						<select class="input-tag" id="c_idx" name="c_idx" style="width: 30%; height: 35px;">
+						<select class="input-tag" id="c_idx2" name="c_idx" style="width: 30%; height: 35px;">
 								<option value="0">카테고리 선택</option>
-								<c:forEach var="category" items="${categorylist }">
-									<option value="${category.category_idx }"> ${category.category_name }</option>
-								</c:forEach>
-								<option value="1">삼성</option>
-								<c:forEach var="category" items="${categorylist }">
-									<option value="${category.category_idx }"> ${category.category_name }</option>
-								</c:forEach>
-								<option value="2">애플</option>
-								<c:forEach var="category" items="${categorylist }">
-									<option value="${category.category_idx }"> ${category.category_name }</option>
-								</c:forEach>
-								<option value="2">LG</option>
-								<c:forEach var="category" items="${categorylist }">
-									<option value="${category.category_idx }"> ${category.category_name }</option>
-								</c:forEach>
+								<option value="SA">삼성</option>
+								<option value="AP">애플</option>
+								<option value="LG">LG</option>
+								<option value="ET">기타</option>
 						</select>
+						<input type="hidden" name="pd_category" id="pd_category_hidden">
 					</td>
 				</tr>
 				<tr>

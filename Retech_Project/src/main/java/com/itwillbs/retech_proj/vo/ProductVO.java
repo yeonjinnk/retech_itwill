@@ -1,6 +1,7 @@
 package com.itwillbs.retech_proj.vo;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,16 +10,17 @@ import lombok.Data;
 @Data
 public class ProductVO {
 	private int pd_idx;
-	private String us_id;
-	private String pd_category;
+	private String member_id; //us_id에서 member_id로 변경
+	private String pd_category; 
 	private String pd_subject; 
 	private String pd_content; 
-	private int pd_price; 
+	private String pd_price; 
 	private String pd_status; 
-	private Date pd_reg_date; 
-	private int pd_readcount; 
-	private int town_id; 
-	private int product_save;  
+	private String pd_first_date; // 상품 등록일
+	private String pd_update_date; 
+	private int pd_readcount; //조회수
+	private int pd_re_ref;
+	
 	private String pd_image1; 
 	private String pd_image2; 
 	private String pd_image3; 
@@ -32,4 +34,6 @@ public class ProductVO {
 	private MultipartFile file3;
 	private MultipartFile file4;
 	private MultipartFile file5;
+	
+	List<ProductVO> image_list;
 }

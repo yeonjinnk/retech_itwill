@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -89,12 +90,16 @@ public class ProductController {
 		//기본 리턴값 false
 		String rResult = "false";
 		//리테크 상품 설명란 줄바꿈 하기
-		product.setPd_content(product.getPd_content().replaceAll("\r\n", "<br>"));
+//		product.setPd_content(product.getPd_content().replaceAll("\r\n", "<br>"));
 		
 		//판매자 아이디 저장
-		String member_id = (String)session.getAttribute("member_id");
+		String member_id = (String)session.getAttribute("sId");
+		session.setAttribute("sId", member_id);
 		System.out.println("판매자 아이디 : " + member_id);
-		session.setAttribute("member_id", member_id);
+		//세션에 값들이 잘 넘어오는지 확인
+		for (String attrName : Collections.list(session.getAttributeNames())) {
+			System.out.println("Session Attribute - Name: " + attrName + ", Value: " + session.getAttribute(attrName));
+		}
 		// 아이디가 null값일 경우 페이징 처리
 		if(member_id == null) {
 			model.addAttribute("msg", "잘못된 접근입니다!");
@@ -214,6 +219,8 @@ public class ProductController {
 			model.addAttribute("msg", "상품 등록 실패!");
 			return "result/fail";
 		}
+		
+
 	}
 	
 	
