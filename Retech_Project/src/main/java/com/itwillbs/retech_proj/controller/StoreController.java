@@ -34,6 +34,13 @@ public class StoreController {
 	@Autowired
 	StoreService service;
 	
+	@GetMapping("Review")
+	public String review() {
+		return "mypage/review_popup";
+	}
+	
+	
+	
 	@GetMapping("Store")
 	public String store() {
 		return "store/store_list";
