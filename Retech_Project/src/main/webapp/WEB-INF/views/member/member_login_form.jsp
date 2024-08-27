@@ -9,6 +9,7 @@
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_1.3.2.js"></script>
     <style>
         body {
             font-family: 'Noto Sans', sans-serif;
@@ -205,6 +206,24 @@
 
             return true;
         }
+
+        // 네이버 로그인 SDK 초기화
+        function initNaverLogin() {
+            var naverLogin = new naver.LoginWithNaverId({
+                clientId: 'm2dRYZx3zL38lwBOy44l', // 네이버 개발자 센터에서 발급받은 Client ID
+                callbackUrl: '${pageContext.request.contextPath}/naver-callback', // 네이버 로그인 후 리다이렉트될 URL
+                isPopup: false, // 팝업 방식 로그인 여부
+                loginButton: {color: 'green', type: 3, height: 40} // 버튼 스타일 설정
+            });
+            naverLogin.init();
+
+            // 네이버 로그인 버튼 생성
+            var loginButton = naverLogin.getLoginButton();
+            var naverIdLoginDiv = document.getElementById("naverIdLogin");
+            naverIdLoginDiv.appendChild(loginButton);
+        }
+
+        window.onload = initNaverLogin;
     </script>
 </head>
 <body>
@@ -251,6 +270,11 @@
                         <li><a href="MemberJoin">회원가입</a></li>
                     </ul>
                 </form>
+
+                <!-- 네이버 로그인 버튼 추가 -->
+                <div id="naverIdLogin" class="social-login">
+                    <p>네이버로 로그인</p>
+                </div>
             </div>        
         </article>
     </div>
