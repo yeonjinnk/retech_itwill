@@ -253,7 +253,7 @@ public class MemberController {
 			   member = service.getMember(member);
 			   model.addAttribute("member", member);
 		   }
-		   return "member/member_mypage";
+		   return "mypage/member_mypage";
 	   }
 				
 //	   @PostMapping("MyPageMain")
@@ -314,6 +314,7 @@ public class MemberController {
 //	      }
 //	   }
 	   
+	   // 회원정보 수정
 	   @PostMapping("MemberModify")
 	   public String mypageinfo(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
 	       if (member == null || member.getMember_id() == null) {
@@ -350,11 +351,9 @@ public class MemberController {
 	           return "result/fail";
 	       }
 	   }
-
-
-	   
-	   
-
+	 	   
+	   	   
+	   // 회원 탈퇴 
 	   @GetMapping("MemberWithdraw")
 	   public String withdrawForm(HttpSession session, Model model) {
 	      String id = (String)session.getAttribute("sId");
@@ -389,4 +388,31 @@ public class MemberController {
 	         }
 	      }
 	   }
+	   
+	   // 판매내역
+	   @GetMapping("SaleHistory")
+	   public String SaleHistory() {
+		   
+		   return "mypage/salehistory";
+	   }
+	
+	   // 구매내역
+	   @GetMapping("PurchaseHistory")
+	   public String Purchasehistory() {
+		   
+		   return "mypage/purchasehistory";
+	   }
+	 
+	   // 찜한상품
+	   @GetMapping("Wishlist")
+	   public String Wishlist() {
+		   
+		   return "mypage/wishlist";
+	   }
+	   
+	   
+	   
+	   
+	   
+	   
 }
