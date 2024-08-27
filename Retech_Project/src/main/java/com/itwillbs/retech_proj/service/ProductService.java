@@ -29,8 +29,8 @@ public class ProductService {
 		return insertcount;
 	}
 	//리테크 상품수정작업
-	public int modifyProduct(ProductVO product) {
-		return mapper.updateProduct(product);
-	}
+//	public int modifyProduct(ProductVO product) {
+//		return mapper.updateProduct(product);
+//	}
 
 }
