@@ -27,7 +27,6 @@
 			, #{pd_image5}
 		)
 	</insert>
-	
 	<!-- 리테크 상품 목록 조회작업 -->
 	<select id="selectProductList" resultType="com.itwillbs.retech_proj.vo.ProductVO">
 		SELECT
