@@ -23,7 +23,7 @@ public class StoreController {
 		return "store/store_list";
 	}
 	
-	//상품 목록 출력 ajax
+	//상품 목록 출력 ajax..
 	@GetMapping("StoreProductList")
 	public String productList() {
 		
@@ -44,6 +44,12 @@ public class StoreController {
 	
 	//진행중..
 	@GetMapping("StorePay")
+	/*public String storePay(@RequestParam String order_store_item, @RequestParam int order_store_quantity, 
+							@RequestParam int order_store_pay, Model model) {
+		//상품 정보 조회
+		int insertCount = service.insertPayProduct(order_store_item, order_store_quantity, order_store_pay);
+		Map<String, Object> payProduct = service.selectPayProduct(order_store_item);
+		model.addAttribute("payProduct", payProduct);*/
 	public String storePay(@RequestParam("order_store_item") int store_idx, Model model) {
 //		System.out.println("store_idx" + store_idx);
 		//상품 정보 조회
@@ -52,7 +58,7 @@ public class StoreController {
 		
 		model.addAttribute("Store", Store);
 		return "store/store_pay";
-	}
+	} 
 	
 	
 }

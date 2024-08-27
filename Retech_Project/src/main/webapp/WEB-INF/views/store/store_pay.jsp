@@ -9,6 +9,8 @@
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/store/store_pay.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<!-- 포트원 라이브러리 추가 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
 </head>
 <body>
@@ -81,7 +83,9 @@
 					<tr class="table">
 					</tr>
 				</table>
-			
+				<table>
+				
+				</table>
 			</div>
 			<div class="select_product">
 			</div>
@@ -108,7 +112,7 @@
 						<td><c:out value="${final_price}"/>원</td>
 					</tr>
 				</table>
-						<button type="button">
+						<button type="button" id="payment">
 							<span class="text">결제하기</span>
 						</button>
 			</div>
@@ -208,6 +212,13 @@
 	    	
 	    });
 	});
+	
+	//결제하기 버튼 클릭
+	$(function() {
+		$("#payment").click() {
+			
+		}
+	})
 	</script>
 	</article>
 		<footer>
