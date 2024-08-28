@@ -44,6 +44,18 @@
 					</c:when>
 				    <c:otherwise>
 						계좌인증완료 시 표시됨
+						<div>
+							${sessionScope.sName}님
+							<input type="button" value="계좌관리">
+						</div>
+						<div>
+							<p>페이잔액  원</p>
+						</div>
+						<div>
+							<input type="button" value="충전">
+							<input type="button" value="환급">
+						</div>
+						
 				    </c:otherwise>
 				</c:choose>
 			</div>

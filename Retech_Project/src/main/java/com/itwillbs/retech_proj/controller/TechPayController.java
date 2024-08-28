@@ -43,7 +43,7 @@ public class TechPayController {
 		//    현재 개발 서버(localhost)와 운영 서버(localhost)가 모두 이클립스가 관리하는 톰캣이므로
 		//    코드 수정 후 저장 시 서버 reload 과정에서 세션 정보가 날아가는 현상이 생김
 		// => 따라서, 해당 현상을 임시 방편으로 해결하기 위해 핀테크 메인 페이지 로딩 시 토큰도 조회
-		// techPayService - getBankUserInfo() 메서드 호출하여 핀테크 사용자 관련 정보 조회(엑세스토큰 조회 위함)
+		// TechPayService - getBankUserInfo() 메서드 호출하여 핀테크 사용자 관련 정보 조회(엑세스토큰 조회 위함)
 		// => 파라미터 : 아이디   리턴타입 : BankToken(token)
 		BankToken token = techPayService.getBankUserInfo(id);
 		
