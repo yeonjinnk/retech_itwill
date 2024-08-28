@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -292,7 +291,7 @@
                 $.ajax({
                     type: "POST", // post 형식으로 발송
                     url: "/shop/member/sendSMS1.do", // controller 위치
-                    data: { phoneNumber: phone }, // 전송할 데이터값
+                    data: { member_phone: phone }, // 전송할 데이터값 (회원 전화번호로 변경)
                     cache: false,
                     success: function(data) {
                         if(data === "error") { // 실패시
@@ -309,6 +308,8 @@
             $("#phoneChk2").click(function() {
                 if($("#phone2").val() === code2) { // 위에서 저장한 값과 비교
                     alert('인증성공');
+                    // 인증 성공 시 전화번호 입력 필드에 값 설정
+                    $("#phoneNumber").val($("#phoneNumber").val());
                 } else {
                     alert('인증실패');
                 }
@@ -369,7 +370,7 @@
             </div>
             
             <div class="input_text">
-                <input class="signin_pass" id="phoneNumber" type="text" name="phoneNumber" title="전화번호 입력" placeholder="전화번호 입력해주세요">
+                <input class="signin_pass" id="phoneNumber" type="text" name="member_phone" title="전화번호 입력" placeholder="전화번호 입력해주세요">
                 <input class="signin_pass" type="button" value="인증번호 받기" id="phoneChk">
                 
                 <input class="signin_pass" id="phone2" type="text" name="phone" title="인증번호 입력" placeholder="인증번호 입력해주세요">

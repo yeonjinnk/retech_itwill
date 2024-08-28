@@ -148,7 +148,7 @@
                         </tr>
                     </table>
                 </c:if>
-                <ul class="list-movie"></ul>
+                <ul class="list"></ul>
                 <a href="#" class="btn-more" style="display: none;">더보기 +</a>
             </div>
         </div>
