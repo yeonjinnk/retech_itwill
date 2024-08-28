@@ -10,16 +10,16 @@
 			product
 		VALUES (
 			null								-- pd_idx
-			, #{member_id}						-- 상품 작성자
-			, #{pd_category}					-- 상품 카테고리(공통코드)
+			, #{pd_price}						-- 상품 가격
 			, #{pd_subject}
 			, #{pd_content}
-			, #{pd_price}
-			, #{pd_status}						-- 거래상태
 			, now()								-- 작성일 (pd_first_date)
 			, null								-- 등록일 (pd_update_date)
 			, 0									-- 조회수 (pd_readcount)
 			, pd_idx + 1						-- re_ref
+			, '판매중'							-- 상품상태(pd_status)
+			, #{member_id}						-- 상품 작성자
+			, #{pd_category}					-- 상품 카테고리(공통코드)
 			, #{pd_image1}
 			, #{pd_image2}
 			, #{pd_image3}
@@ -34,7 +34,7 @@
 		FROM
 			product
 		ORDER BY
-			pd_reg_date DESC
+			pd_first_date DESC
 	</select>
 	
 	<!-- 리테크 상품 목록 개수 조회작업(페이징) -->

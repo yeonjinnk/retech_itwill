@@ -11,7 +11,7 @@ public class ProductVO {
 	private String pd_category;
 	private String pd_subject;
 	private String pd_content;
-	private String pd_price;
+	private int pd_price;
 	private String pd_status;
 	private String pd_first_date; // 상품 등록일
 	private String pd_update_date;

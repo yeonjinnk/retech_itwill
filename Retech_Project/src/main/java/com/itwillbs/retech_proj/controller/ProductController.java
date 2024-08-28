@@ -66,12 +66,12 @@ public class ProductController {
 	public String productRegistForm(HttpSession session, Model model) {
 		//미로그인시 "로그인이 필요합니다." 문구 출력 후 이전 페이지로 돌아감
 		//임시로 주석 처리
-//		String member_id = (String)session.getAttribute("member_id");
-//		System.out.println("member_id : " + member_id);
-//		if(member_id == null) {
-//			model.addAttribute("msg", "로그인이 필요합니다.");
-//			return"result/fail";
-//		}
+		String member_id = (String)session.getAttribute("sId");
+		System.out.println("member_id : " + member_id);
+		if(member_id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다.");
+			return"result/fail";
+		}
 		return"product/product_regist_form";
 	}
 	//상품 등록 처리
@@ -87,8 +87,6 @@ public class ProductController {
 		
 		//판매자 아이디 저장
 		String member_id = (String)session.getAttribute("sId");
-		session.setAttribute("sId", member_id);
-		System.out.println("판매자 아이디 : " + member_id);
 		//세션에 값들이 잘 넘어오는지 확인
 		for (String attrName : Collections.list(session.getAttributeNames())) {
 			System.out.println("Session Attribute - Name: " + attrName + ", Value: " + session.getAttribute(attrName));
@@ -98,6 +96,8 @@ public class ProductController {
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			return "result/fail";
 		}
+		session.setAttribute("sId", member_id);
+		System.out.println("판매자 아이디 : " + member_id);
 		//이미지 파일 업로드 처리
 		String uploadDir = "/resources/upload";
 		//
@@ -177,6 +177,8 @@ public class ProductController {
 		//------------------------------------------------------------------------------------------
 		//판매할 상품 등록 작업
 		System.out.println(product);
+		System.out.println("pd_price : " + product.getPd_price());
+		
 		int insertCount = service.registBoard(product);
 		//등록 결과를 판별
 		//성공 : 업로드 파일 - 실제 디렉토리에 이동시킨 후, productList 서블릿 리다이렉트
@@ -200,6 +202,8 @@ public class ProductController {
 				if(!pFile5.getOriginalFilename().equals("")) {
 					pFile5.transferTo(new File(saveDir, fileName5));
 				}
+				rResult = "true";
+				model.addAttribute("res",rResult);
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
