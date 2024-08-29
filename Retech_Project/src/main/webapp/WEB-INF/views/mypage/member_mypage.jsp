@@ -127,7 +127,7 @@
             <a href="MemberInfo">회원정보수정</a>
         </div>
 
-        <div class="content-area">
+        <div class="content-area"> 
             <div class="store-info">
                 <h2>상점 정보</h2>
                 <p>상점명: ${member.member_nickname}</p>
