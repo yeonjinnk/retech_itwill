@@ -77,7 +77,7 @@ public class ProductController {
 	//상품 등록 처리
 	@ResponseBody
 	@PostMapping("ProductRegistPro")
-	public String productRegistPro(ProductVO product, HttpSession session, Model model, HttpServletResponse request) {
+	public String ProductRegistPro(ProductVO product, HttpSession session, Model model, HttpServletResponse request) {
 		//JsonConverter 사용하기 위한 Map생성
 		Map<String,String> map = new HashMap<>();
 		//기본 리턴값 false
@@ -211,7 +211,7 @@ public class ProductController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return "result/success";
+			return rResult;
 		} else {//실패
 			model.addAttribute("msg", "상품 등록 실패!");
 			return "result/fail";
