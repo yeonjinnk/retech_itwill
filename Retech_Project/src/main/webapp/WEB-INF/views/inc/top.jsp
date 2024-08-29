@@ -36,7 +36,7 @@
 							</c:when>
 							<c:otherwise> <%-- 로그인 상태일 경우 --%>
 								<li class="top_list">
-									<a href="MyPageMain" class="top_link">${sessionScope.sName}님</a>
+									<a href="SaleHistory" class="top_link">${sessionScope.sName}님</a>
 								</li>
 								<li class="top_list">
 									<a href="javascript:confirmLogout()" class="top_link">로그아웃</a>

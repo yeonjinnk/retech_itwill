@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.itwillbs.retech_proj.mapper.CsMapper">
+	<select id="selectCsListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM cs	
+	</select>   
+	
+	<select id="selectCsList" resultType="cs">
+		SELECT *
+		FROM cs c
+		JOIN member m 
+		ON c.cs_member_id = m.member_id
+		WHERE
+			<choose>
+				<when test="isAdmin eq false">
+					c.cs_member_id = #{id}
+				</when>
+				<otherwise>
+					1=1
+				</otherwise>
+			</choose>
+		ORDER BY
+			c.cs_idx DESC
+		LIMIT
+			#{startRow}     
+			, #{listLimit}  
+	</select>
+	
+	<insert id="insertCs">
+		INSERT INTO cs
+		VALUES (
+			null
+			, #{cs_member_id}
+			, #{cs_category}
+			, #{cs_subject}
+			, #{cs_content}
+			, now()
+			, default
+			, null
+			, null
+		)
+	</insert>
+	
+	<select id="selectCs" resultType="cs">
+		SELECT *
+		FROM cs
+		WHERE cs_idx = #{cs_idx}
+	</select>
+</mapper>

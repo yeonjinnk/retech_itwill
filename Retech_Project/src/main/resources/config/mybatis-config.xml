@@ -7,5 +7,7 @@
 		<typeAlias type="com.itwillbs.retech_proj.vo.MemberVO" alias="member"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.BankToken" alias="bankToken"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.NoticeVO" alias="notice"/>
+		<typeAlias type="com.itwillbs.retech_proj.vo.FaqVO" alias="faq"/>
+		<typeAlias type="com.itwillbs.retech_proj.vo.CsVO" alias="cs"/>
 	</typeAliases>
 </configuration>
