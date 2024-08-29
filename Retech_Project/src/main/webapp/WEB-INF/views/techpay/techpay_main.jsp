@@ -8,10 +8,24 @@
 <title>Retech_테크페이</title>
 <%-- 외부 CSS 파일(css/default.css) 연결하기 --%>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
-	function 
+<script type="text/javascript">
+	// 새 창을 열어서 사용자 인증 서비스 요청
+	// => 금융결제원 오픈API - 2.1.1. 사용자인증 API (3-legged) 서비스	
+	function linkAuthWindow() {
+		let authWindow = window.open("about:blank", "authWindow", "width=500,height=700");
+		authWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
+								+ "response_type=code"
+								+ "&client_id=4066d795-aa6e-4720-9383-931d1f60d1a9"
+								+ "&redirect_uri=http://localhost:8081/retech_proj/callback"
+								+ "&scope=login inquiry transfer"
+								+ "&state=12345678901234567890123456789012"
+								+ "&auth_type=0";
+	}
+</script>
 </head>
 <body>
 	<header>
+		<%-- 기본 메뉴 표시 영역(inc/top.jsp) 페이지 삽입 --%>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
 	<section class="main_section">
@@ -26,16 +40,17 @@
 					<c:when test="${empty sessionScope.token}">
 						${sessionScope.sName}님,<br>
 						계좌 인증 시 사용 가능합니다.<br>
-						<input type="button" value="계좌연결" onclick="linkPayAgreement()">
+						<input type="button" value="계좌연결" onclick="linkAuthWindow()">
 					</c:when>
 				    <c:otherwise>
-						계좌인증완료
+						계좌인증완료 시 표시됨
 				    </c:otherwise>
 				</c:choose>
 			</div>
 		</div>
 	</section>
 	<footer>
+		<%-- 회사 소개 영역(inc/bottom.jsp) 페이지 삽입 --%>	
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
 	</footer>
 </body>

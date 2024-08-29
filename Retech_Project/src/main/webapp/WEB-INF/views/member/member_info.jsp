@@ -8,135 +8,134 @@
     <title>회원정보수정</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
      body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-	}
-	
-	.logo {
-	    margin: 20px 0;
-	}
-	
-	.logo img {
-	    max-width: 120px; /* 로고 이미지의 최대 너비를 줄였습니다 */
-	}
-	
-	.tab {
-	    width: 80%; /* 폭을 줄였습니다 */
-	    max-width: 500px; /* 최대 너비를 줄였습니다 */
-	    margin: 20px auto;
-	    background-color: #fff;
-	    border-radius: 8px;
-	    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-	}
-	
-	.tab h2 {
-	    margin: 0;
-	    padding: 15px;
-	    font-size: 22px;
-	    color: #fff;
-	    background-color: #007bff;
-	    border-radius: 8px 8px 0 0;
-	    text-align: center; /* 중앙 정렬 */
-	}
-	
-	.join {
-	    padding: 20px;
-	    width: 80%; /* 폭을 줄였습니다 */
-	    max-width: 500px; /* 최대 너비를 줄였습니다 */
-	    margin: 0 auto;
-	    background-color: #fff;
-	    border-radius: 8px;
-	    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-	}
-	
-	.join_detail {
-	    margin-bottom: 15px;
-	}
-	
-	.join_detail span {
-	    display: block;
-	    margin-bottom: 8px;
-	    font-weight: bold;
-	    color: #333;
-	}
-	
-	.join_detail input[type="text"], 
-	.join_detail input[type="password"] {
-	    width: 100%;
-	    padding: 10px;
-	    border: 1px solid #ccc;
-	    border-radius: 5px;
-	    font-size: 16px;
-	    box-sizing: border-box;
-	}
-	
-	.join_detail input[type="button"], 
-	.join_detail input[type="submit"], 
-	.join_detail input[type="reset"] {
-	    width: calc(100% - 22px);
-	    padding: 10px;
-	    border: none;
-	    border-radius: 5px;
-	    background-color: #007bff;
-	    color: #fff;
-	    cursor: pointer;
-	    margin: 5px 0;
-	    font-size: 16px;
-	    text-align: center;
-	}
-	
-	.join_detail input[type="button"]:hover, 
-	.join_detail input[type="submit"]:hover, 
-	.join_detail input[type="reset"]:hover {
-	    background-color: #0056b3;
-	}
-	
-	#checkPasswdResult, #checkPasswdResult2, #checkNameResult, #checkBirthResult, #checkPhoneResult {
-	    display: block;
-	    margin-top: 5px;
-	}
-	
-	#checkPasswdResult {
-	    color: red;
-	}
-	
-	#checkPasswdComplexResult {
-	    font-weight: bold;
-	}
-	
-	#checkPasswdComplexResult.green {
-	    color: green;
-	}
-	
-	#checkPasswdComplexResult.orange {
-	    color: orange;
-	}
-	
-	#checkPasswdComplexResult.red {
-	    color: red;
-	}
-	
-	.error {
-	    color: red;
-	}
-	
-	.form-buttons {
-	    text-align: center; /* 중앙 정렬 */
-	}
-	
-	.form-buttons input[type="button"], 
-	.form-buttons input[type="submit"], 
-	.form-buttons input[type="reset"] {
-	    width: auto; /* 버튼 너비를 콘텐츠에 맞게 조정 */
-	    margin: 5px;
-	}
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .logo {
+        margin: 20px 0;
+    }
+    
+    .logo img {
+        max-width: 120px; /* 로고 이미지의 최대 너비를 줄였습니다 */
+    }
+    
+    .tab {
+        width: 80%; /* 폭을 줄였습니다 */
+        max-width: 500px; /* 최대 너비를 줄였습니다 */
+        margin: 20px auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .tab h2 {
+        margin: 0;
+        padding: 15px;
+        font-size: 22px;
+        color: #fff;
+        background-color: #007bff;
+        border-radius: 8px 8px 0 0;
+        text-align: center; /* 중앙 정렬 */
+    }
+    
+    .join {
+        padding: 20px;
+        width: 80%; /* 폭을 줄였습니다 */
+        max-width: 500px; /* 최대 너비를 줄였습니다 */
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .join_detail {
+        margin-bottom: 15px;
+    }
+    
+    .join_detail span {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .join_detail input[type="text"], 
+    .join_detail input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+    
+    .join_detail input[type="button"], 
+    .join_detail input[type="submit"], 
+    .join_detail input[type="reset"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        margin: 5px 0;
+        font-size: 16px;
+        text-align: center;
+    }
+    
+    .join_detail input[type="button"]:hover, 
+    .join_detail input[type="submit"]:hover, 
+    .join_detail input[type="reset"]:hover {
+        background-color: #0056b3;
+    }
+    
+    #checkPasswdResult, #checkPasswdResult2, #checkNameResult, #checkBirthResult, #checkPhoneResult {
+        display: block;
+        margin-top: 5px;
+    }
+    
+    #checkPasswdResult {
+        color: red;
+    }
+    
+    #checkPasswdComplexResult {
+        font-weight: bold;
+    }
+    
+    #checkPasswdComplexResult.green {
+        color: green;
+    }
+    
+    #checkPasswdComplexResult.orange {
+        color: orange;
+    }
+    
+    #checkPasswdComplexResult.red {
+        color: red;
+    }
+    
+    .error {
+        color: red;
+    }
+    
+    .form-buttons {
+        text-align: center; /* 중앙 정렬 */
+    }
+    
+    .form-buttons input[type="button"], 
+    .form-buttons input[type="submit"], 
+    .form-buttons input[type="reset"] {
+        width: auto; /* 버튼 너비를 콘텐츠에 맞게 조정 */
+        margin: 5px;
+    }
 
-        
     </style>
     <script type="text/javascript">
         // 비밀번호 강도 확인 함수
@@ -215,7 +214,35 @@
             }
         }
 
+        // 주소 검색 기능
+        function searchAddress() {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    // 선택한 주소 정보 가져오기
+                    let addr = data.address;
+                    let extraAddr = '';
+
+                    // 기본 주소
+                    if(data.addressType === 'R') { // 동/리 단위 주소
+                        if(data.bname !== '') {
+                            extraAddr += data.bname;
+                        }
+                        if(data.buildingName !== '') {
+                            extraAddr += (extraAddr !== '' ? ', ' : '') + data.buildingName;
+                        }
+                        addr += (extraAddr !== '' ? ' (' + extraAddr + ')' : '');
+                    }
+
+                    // 우편번호와 주소 정보를 form에 삽입
+                    document.getElementById('postCode').value = data.zonecode;
+                    document.getElementById('address1').value = addr;
+                    document.getElementById('address2').focus();
+                }
+            }).open();
+        }
+
         $(document).ready(function() {
+            // 폼 제출 전 비밀번호 체크
             $("form").submit(function(event) {
                 checkPasswd(); 
                 checkSamePw();
@@ -232,6 +259,11 @@
                     $("#member_pw2").focus();
                     event.preventDefault(); 
                 }
+            });
+
+            // 주소 검색 버튼 클릭 이벤트
+            $("#btnSearchAddress").click(function() {
+                searchAddress();
             });
         });
     </script>

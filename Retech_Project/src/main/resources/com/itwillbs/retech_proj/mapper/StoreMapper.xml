@@ -24,4 +24,24 @@
     	WHERE store_idx = #{store_idx}
     </select>
     
+    <!-- 결제상품조회 -->
+    <select id="selectPayProduct" resultType="map">
+    	SELECT *
+    	FROM order_store
+    
+    </select>
+    <!-- 
+    <insert id="insertPayProduct">
+    	INSERT INTO order_store
+    	VALUES (
+    		null
+    		, #{order_store_item}
+    		, 'test123@naver.com'
+    		, now()
+    		, #{order_store_quantity}
+    		, #{order_store_pay}
+    		)
+    </insert>
+     -->
+    
     </mapper>

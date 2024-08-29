@@ -11,6 +11,13 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <!-- 포트원 결제 연동 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<!-- 포트원 라이브러리 추가 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<!-- 포트원 라이브러리 추가 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+
+</head>
+<body>
 <script type="text/javascript">
 	//공동현관 출입방법 따라 비밀번호 입력창 노출 제어
 	$(function() {
@@ -110,7 +117,9 @@
 					<tr class="table">
 					</tr>
 				</table>
-			
+				<table>
+				
+				</table>
 			</div>
 			<div class="select_product">
 			</div>
@@ -137,7 +146,8 @@
 						<td><c:out value="${final_price}"/>원</td>
 					</tr>
 				</table>
-						<button type="button" onclick="request_pay()">
+<!-- 						<button type="button" onclick="request_pay()"> -->
+						<button type="button" id="payment">
 							<span class="text">결제하기</span>
 						</button>
 			</div>
@@ -237,6 +247,13 @@
 	    	
 	    });
 	});
+	
+	//결제하기 버튼 클릭
+	$(function() {
+		$("#payment").click() {
+			
+		}
+	})
 	</script>
 	</article>
 		<footer>
