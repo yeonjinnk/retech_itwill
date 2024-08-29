@@ -185,7 +185,7 @@ footer {
 .main_section > div:not(.main_slide) {
 	width: 1200px;
 	align-items: center;
-    display: flex;
+/*     display: flex; */
     margin: auto;
 }
 /*---- body 영역 끝 ----*/
