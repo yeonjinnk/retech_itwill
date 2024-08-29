@@ -34,10 +34,9 @@ public class ProductController {
 	   private ProductService service;
 	
 	//중고상품목록페이지
-	//최신순으로 정렬
+	//최신순(날짜순)으로 기본적으로 정렬됨
 	@GetMapping("ProductList")
 	public String productList(@RequestParam(defaultValue = "1") int pageNum,
-			 
 			ProductVO product, Model model, HttpSession session) {
 		//공통코드 사용하여 카테고리별로 목록 표시
 		
@@ -56,7 +55,7 @@ public class ProductController {
 		model.addAttribute("productList",productList);
 		model.addAttribute("maxPage", maxPage);
 		model.addAttribute("listCount", listCount);//전체게시물수
-		System.out.println("리스트 : " + productList);
+//		System.out.println("리스트 : " + productList);
 		return"product/product_list";
 	}
 	

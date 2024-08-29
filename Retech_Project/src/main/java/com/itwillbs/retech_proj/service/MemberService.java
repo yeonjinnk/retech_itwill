@@ -69,6 +69,8 @@ public class MemberService {
         return mapper.selectTel(member);
     }
 
+
+}    
     // SMS 인증
 //    public void certifiedPhoneNumber(String phoneNumber, String numStr) {
 //        String api_key = "NCSZKCG2GR2BZDI7"; // 여기에 실제 발급받은 API 키를 입력하세요
@@ -95,4 +97,4 @@ public class MemberService {
 //        }
 //    }
     
-}
+

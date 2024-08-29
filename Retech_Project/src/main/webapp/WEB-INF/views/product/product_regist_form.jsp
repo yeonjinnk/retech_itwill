@@ -578,7 +578,7 @@
       if($('#imageFile4')[0].files[0]!=undefined){
          formData.append('file5',$('#imageFile4')[0].files[0]);
       }
-      formData.append('member_id', member_id);      // 유저idx
+      formData.append('member_id', member_id);      // 회원id
       formData.append('pd_subject',p_name);         // 상품명
       
       
