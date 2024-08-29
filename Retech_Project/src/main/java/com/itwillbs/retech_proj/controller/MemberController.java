@@ -393,33 +393,35 @@ public class MemberController {
 	   }
 	   
 	   @Autowired
-	    private ProductService productService;
-
-	    @GetMapping("SaleHistory")
-	    public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
+	   private ProductService productService;
+	   //판매내역
+	   @GetMapping("SaleHistory")
+	   public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
 	                              @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
 	                              Model model, HttpSession session,MemberVO member) {
-	    	String id = (String) session.getAttribute("sId");
+	    String id = (String) session.getAttribute("sId");
 			   // 세션에 사용자 ID가 존재하는 경우
-			   if (id != null) {
-				   member.setMember_id(id);
+			  if (id != null) {
+				  member.setMember_id(id);
 				   // 해당 ID의 회원 정보를 조회
-				   member = service.getMember(member);
-				   model.addAttribute("member", member);
-			   }
+				  member = service.getMember(member);
+				  model.addAttribute("member", member);
+			  }
 	    
-	        List<ProductVO> productList = productService.getProductList(startRow, listLimit);
-	        int totalProductCount = productService.getProductListCount();
+			  List<ProductVO> productList = productService.getProductList(startRow, listLimit);
+			  int totalProductCount = productService.getProductListCount();
 
-	        model.addAttribute("productList", productList);
-	        model.addAttribute("totalProductCount", totalProductCount);
+			  model.addAttribute("productList", productList);
+			  model.addAttribute("totalProductCount", totalProductCount);
 
-	        return "mypage/salehistory";
-	    }
+	       return "mypage/salehistory";
+	    }	   
 	
 	   // 구매내역
 	   @GetMapping("PurchaseHistory")
-	   public String Purchasehistory(Model model, HttpSession session,MemberVO member) {
+	   public String Purchasehistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
+						             @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+									 Model model, HttpSession session,MemberVO member) {
 		   
 		   String id = (String) session.getAttribute("sId");
 		   // 세션에 사용자 ID가 존재하는 경우
@@ -429,6 +431,13 @@ public class MemberController {
 			   member = service.getMember(member);
 			   model.addAttribute("member", member);
 		   }
+		   
+		   List<ProductVO> productList = productService.getProductList(startRow, listLimit);
+	       int totalProductCount = productService.getProductListCount();
+
+	       model.addAttribute("productList", productList);
+	       model.addAttribute("totalProductCount", totalProductCount);
+
 		   
 		   return "mypage/purchasehistory";
 	   }
