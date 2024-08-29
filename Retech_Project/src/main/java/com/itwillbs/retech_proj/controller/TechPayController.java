@@ -114,14 +114,41 @@ public class TechPayController {
 	}
 	
 	@GetMapping("PayInfo")
-	public String payInfo() {
+	public String payInfo(HttpSession session, Model model) {
+		// 로그인 완료 되어 있는 회원만 테크페이 정보 페이지로 진입 가능함
+		String id = (String)session.getAttribute("sId");		
+		if(id == null) {
+			model.addAttribute("msg", "로그인한 후에 이용 할 수 있습니다");
+			model.addAttribute("isClose", true);
+			model.addAttribute("targetURL", "MemberLogin");
+			session.setAttribute("prevURL", "TechPayMain");
+			
+			return "result/fail";
+		}
 		return "techpay/techpay_info";
 	}
 	
 	
 	@GetMapping("AccVerrify")
-	public String accVerify() {
+	public String accVerify(HttpSession session, Model model) {
+		// 로그인 완료 되어 있는 회원만 테크페이 계좌연결 페이지로 진입 가능함
+		String id = (String)session.getAttribute("sId");		
+		if(id == null) {
+			model.addAttribute("msg", "로그인한 후에 이용 할 수 있습니다!");
+//			model.addAttribute("msg", "로그인한 후에\n테크페이를 이용 할 수 있습니다!");
+			model.addAttribute("isClose", true);
+			model.addAttribute("targetURL", "MemberLogin");
+			session.setAttribute("prevURL", "TechPayMain");
+			
+			return "result/fail";
+		}		
 		return "techpay/account_verify";
+	}
+	
+	@GetMapping("PayCharge")	
+	public String payCharge() {
+		
+		return "techpay/techpay_charge";		
 	}
 	
 	

@@ -17,7 +17,7 @@
 	// => 금융결제원 오픈API - 2.1.1. 사용자인증 API (3-legged) 서비스	
 	$(document).ready(function() {
 		$("#verifyButton").on("click", function() {
-			let authWindow = window.open("about:blank", "authWindow", "width=500,height=700");
+			let authWindow = window.open("about:blank", "authWindow", "width=500,height=700,left=100,top=100");
 			authWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
 								+ "response_type=code"
 								+ "&client_id=4066d795-aa6e-4720-9383-931d1f60d1a9"
