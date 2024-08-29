@@ -12,62 +12,89 @@ import com.itwillbs.retech_proj.vo.StoreVO;
 
 @Service
 public class MemberService {
-   @Autowired
-   private MemberMapper mapper;
+    @Autowired
+    private MemberMapper mapper;
 
-   public int registMember(MemberVO member) {
-      return mapper.insertMember(member);
-   }
+    public int registMember(MemberVO member) {
+        return mapper.insertMember(member);
+    }
 
-   public MemberVO getMember(MemberVO member) {
-      return mapper.selectMember(member);
-   }
+    public MemberVO getMember(MemberVO member) {
+        return mapper.selectMember(member);
+    }
 
-   public int modifyMember(Map<String, String> map) {
-      return mapper.updateMember(map);
-   }
+    public int modifyMember(Map<String, String> map) {
+        return mapper.updateMember(map);
+    }
 
-   public int withdrawMember(MemberVO member) {
-      return mapper.updateWithdrawMember(member);
-   }
+    public int withdrawMember(MemberVO member) {
+        return mapper.updateWithdrawMember(member);
+    }
 
-   // 아이디 찾기
-   public MemberVO getMemberSearchId(MemberVO member) {
-	  return mapper.selectMemberSearchId(member);
-   }
-   public List<Map<String, String>> getorderticket2(int member_num) {
-	   return mapper.selectOrderticket2(member_num);
-   }
-   // 아이디값을 활용해서 멤버 넘 구하기
-   public int getMember_num(String id) {
-	   // TODO Auto-generated method stub
-	   return mapper.selectMember_num(id);
-   }
+    // 아이디 찾기
+    public MemberVO getMemberSearchId(MemberVO member) {
+        return mapper.selectMemberSearchId(member);
+    }
 
-   public List<Map<String, String>> getPaymentInfo(int member_num) {
-	   // TODO Auto-generated method stub
-	   return mapper.selectPaymentInfo(member_num);
-   }
+    public List<Map<String, String>> getorderticket2(int member_num) {
+        return mapper.selectOrderticket2(member_num);
+    }
 
-   public StoreVO getItem(StoreVO store) {
-	   // TODO Auto-generated method stub
-	   return mapper.selectItem2(store);
-   }
-// 회원 아이디로 비밀번호 찾기
-	public MemberVO isExistId(MemberVO member) {
-		return mapper.selectId(member);
-	}
-	
-	//회원 비밀번호 변경
-	public int modifyPasswd(Map<String, String> map) {
-		return mapper.updatePasswd(map);
-	}
+    // 아이디값을 활용해서 멤버 넘 구하기
+    public int getMember_num(String id) {
+        return mapper.selectMember_num(id);
+    }
 
-	// 회원 아이디 전화번호 비교
-		public MemberVO isExistPhonenumber(MemberVO member) {
-			System.out.println("전화번호 검색 요청 : " + member);
-			return mapper.selectTel(member);
-		}
+    public List<Map<String, String>> getPaymentInfo(int member_num) {
+        return mapper.selectPaymentInfo(member_num);
+    }
 
-	
-}
+    public StoreVO getItem(StoreVO store) {
+        return mapper.selectItem2(store);
+    }
+
+    // 회원 아이디로 비밀번호 찾기
+    public MemberVO isExistId(MemberVO member) {
+        return mapper.selectId(member);
+    }
+    
+    // 회원 비밀번호 변경
+    public int modifyPasswd(Map<String, String> map) {
+        return mapper.updatePasswd(map);
+    }
+
+    // 회원 아이디 전화번호 비교
+    public MemberVO isExistPhonenumber(MemberVO member) {
+        System.out.println("전화번호 검색 요청 : " + member);
+        return mapper.selectTel(member);
+    }
+
+
+}    
+    // SMS 인증
+//    public void certifiedPhoneNumber(String phoneNumber, String numStr) {
+//        String api_key = "NCSZKCG2GR2BZDI7"; // 여기에 실제 발급받은 API 키를 입력하세요
+//        String api_secret = "V3VJ27QUITAHGQS1HVWP97PIEFRG81JM"; // 여기에 실제 발급받은 API Secret을 입력하세요
+//
+//        // Coolsms 객체 생성
+//        Coolsms coolsms = new Coolsms(api_key, api_secret);
+//
+//        // SMS 발송 파라미터 설정
+//        HashMap<String, String> params = new HashMap<>();
+//        params.put("to", phoneNumber);    
+//        params.put("from", "본인의 휴대폰번호");   
+//        params.put("type", "SMS");
+//        params.put("text", "작성할내용 [" + numStr + "] 내용");
+//        params.put("app_version", "test app 1.2"); // application name and version
+//
+//        try {
+//            // SMS 발송 요청
+//            JSONObject obj = (JSONObject) coolsms.send(params);
+//            System.out.println(obj.toString());
+//        } catch (CoolsmsException e) {
+//            System.out.println(e.getMessage());
+//            System.out.println(e.getCode());
+//        }
+//    }
+    
+

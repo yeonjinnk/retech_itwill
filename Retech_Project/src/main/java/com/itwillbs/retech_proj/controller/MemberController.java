@@ -1,5 +1,6 @@
 package com.itwillbs.retech_proj.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.retech_proj.service.MemberService;
+import com.itwillbs.retech_proj.service.ProductService;
 import com.itwillbs.retech_proj.vo.MemberVO;
+import com.itwillbs.retech_proj.vo.ProductVO;
 
 
 @Controller
@@ -55,6 +58,13 @@ public class MemberController {
 	   @PostMapping("MemberJoinForm")
 	   public String memberJoinForm(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder) {
 	      System.out.println(member);
+	      
+	      // 전화번호 중복 체크
+	      if (service.isExistPhonenumber(member) != null) {
+	          model.addAttribute("msg", "이미 등록된 전화번호입니다.");
+	          return "result/fail"; // 실패 페이지로 이동
+	      }
+	      
 	      String securePasswd = passwordEncoder.encode(member.getMember_passwd());
 	      member.setMember_passwd(securePasswd);
 	      int insertCount = service.registMember(member);
@@ -253,7 +263,7 @@ public class MemberController {
 			   member = service.getMember(member);
 			   model.addAttribute("member", member);
 		   }
-		   return "member/member_mypage";
+		   return "mypage/member_mypage";
 	   }
 				
 //	   @PostMapping("MyPageMain")
@@ -314,6 +324,7 @@ public class MemberController {
 //	      }
 //	   }
 	   
+	   // 회원정보 수정
 	   @PostMapping("MemberModify")
 	   public String mypageinfo(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
 	       if (member == null || member.getMember_id() == null) {
@@ -350,11 +361,9 @@ public class MemberController {
 	           return "result/fail";
 	       }
 	   }
-
-
-	   
-	   
-
+	 	   
+	   	   
+	   // 회원 탈퇴 
 	   @GetMapping("MemberWithdraw")
 	   public String withdrawForm(HttpSession session, Model model) {
 	      String id = (String)session.getAttribute("sId");
@@ -389,4 +398,76 @@ public class MemberController {
 	         }
 	      }
 	   }
+	   
+	   @Autowired
+	   private ProductService productService;
+	   //판매내역
+	   @GetMapping("SaleHistory")
+	   public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
+	                              @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+	                              Model model, HttpSession session,MemberVO member) {
+	    String id = (String) session.getAttribute("sId");
+			   // 세션에 사용자 ID가 존재하는 경우
+			  if (id != null) {
+				  member.setMember_id(id);
+				   // 해당 ID의 회원 정보를 조회
+				  member = service.getMember(member);
+				  model.addAttribute("member", member);
+			  }
+	    
+			  List<ProductVO> productList = productService.getProductList(startRow, listLimit);
+			  int totalProductCount = productService.getProductListCount();
+
+			  model.addAttribute("productList", productList);
+			  model.addAttribute("totalProductCount", totalProductCount);
+
+	       return "mypage/salehistory";
+	    }	   
+	
+	   // 구매내역
+	   @GetMapping("PurchaseHistory")
+	   public String Purchasehistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
+						             @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+									 Model model, HttpSession session,MemberVO member) {
+		   
+		   String id = (String) session.getAttribute("sId");
+		   // 세션에 사용자 ID가 존재하는 경우
+		   if (id != null) {
+			   member.setMember_id(id);
+			   // 해당 ID의 회원 정보를 조회
+			   member = service.getMember(member);
+			   model.addAttribute("member", member);
+		   }
+		   
+		   List<ProductVO> productList = productService.getProductList(startRow, listLimit);
+	       int totalProductCount = productService.getProductListCount();
+
+	       model.addAttribute("productList", productList);
+	       model.addAttribute("totalProductCount", totalProductCount);
+
+		   
+		   return "mypage/purchasehistory";
+	   }
+	 
+	   // 찜한상품
+	   @GetMapping("Wishlist")
+	   public String Wishlist(Model model, HttpSession session,MemberVO member) {
+		   
+		   String id = (String) session.getAttribute("sId");
+		   // 세션에 사용자 ID가 존재하는 경우
+		   if (id != null) {
+			   member.setMember_id(id);
+			   // 해당 ID의 회원 정보를 조회
+			   member = service.getMember(member);
+			   model.addAttribute("member", member);
+		   }
+		   
+		   return "mypage/wishlist";
+	   }
+	   
+	   
+	   
+	   
+	   
+	   
 }

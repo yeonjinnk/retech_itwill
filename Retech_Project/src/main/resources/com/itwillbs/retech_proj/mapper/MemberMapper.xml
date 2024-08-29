@@ -35,7 +35,11 @@
 	<update id="updateMember">
 		UPDATE member 
 		SET
-			member_passwd = #{member_passwd}
+			member_postcode = #{member_postcode}
+			,member_address1 = #{member_address1}
+			,member_address2 = #{member_address2}
+			,member_passwd = #{member_passwd}
+			,member_phone = #{member_phone}
 		WHERE
 			member_id = #{member_id}		
 	</update>
@@ -83,5 +87,7 @@
 		WHERE 
 			member_phone = #{member_phone}
 	</select>
+	
+	
 </mapper>
 

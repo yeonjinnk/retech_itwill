@@ -108,7 +108,7 @@
         background-color: #fff;
         border: 1px solid #ccc;
         border-radius: 10px;
-    }
+    } 
 </style>
 
     
@@ -120,9 +120,9 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <a href="PurchaseHistory" class="selected">구매내역</a>
             <a href="SaleHistory">판매내역</a>
-            <a href="Wishlist">찜한상품</a>
+            <a href="PurchaseHistory">구매내역</a>
+            <a href="Wishlist" class="selected">찜한상품</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
 
@@ -134,8 +134,7 @@
             </div>
 
             <ul class="tabs">
-                <li><a href="#" class="selected">내상품</a></li>
-                <li><a href="#">리뷰</a></li>
+                <li><a href="#" class="selected">찜한상품</a></li>
             </ul>
 
             <div class="content">

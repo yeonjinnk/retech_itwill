@@ -20,6 +20,9 @@ body {
 }
 #articleForm {
 /* 		width: 100%; */
+	display: flex;
+	justify-content: space-between;
+/* 	gap: 20px; */
     margin: 30px auto;
 /*     overflow-x:auto; */
 /*     overflow-y:scroll; */
@@ -34,9 +37,12 @@ body {
 
 
  .left { 
+/*  	display:flex; */
+/*  	gap: 20px; */
  	float:left; 
  	margin: 5px 2px 5px 200px;
  	display: table;
+ 	width: auto;
 } 
 
 .img {
@@ -46,9 +52,11 @@ body {
 }
 
 .right {
-	float: right;
+/* 	float: right; */
 	padding: 5px 50px 5px 2px;
 /*     padding: 15px 0 30px 40px; */
+ 	width: auto;
+
 }
 
 /*  .img {  */

@@ -4,6 +4,29 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.itwillbs.retech_proj.mapper.ProductMapper">
 	
+	<!-- 리테크 상품 등록하기 -->
+	<insert id="insertProduct">
+		INSERT INTO
+			product
+		VALUES (
+			null								-- pd_idx
+			, #{pd_price}						-- 상품 가격
+			, #{pd_subject}
+			, #{pd_content}
+			, now()								-- 작성일 (pd_first_date)
+			, null								-- 등록일 (pd_update_date)
+			, 0									-- 조회수 (pd_readcount)
+			, pd_idx + 1						-- re_ref
+			, '판매중'							-- 상품상태(pd_status)
+			, #{member_id}						-- 상품 작성자
+			, #{pd_category}					-- 상품 카테고리(공통코드)
+			, #{pd_image1}
+			, #{pd_image2}
+			, #{pd_image3}
+			, #{pd_image4}
+			, #{pd_image5}
+		)
+	</insert>
 	<!-- 리테크 상품 목록 조회작업 -->
 	<select id="selectProductList" resultType="com.itwillbs.retech_proj.vo.ProductVO">
 		SELECT
@@ -11,19 +34,20 @@
 		FROM
 			product
 		ORDER BY
-			pd_reg_date DESC
+			pd_first_date DESC
 	</select>
 	
 	<!-- 리테크 상품 목록 개수 조회작업(페이징) -->
 	<select id="selectProductListCount" resultType="int">
-		SELECT 
+		SELECT
 			COUNT(*)
-		FROM 
+		FROM
 			product
 	</select>
 	
 	
-
-
-
 </mapper>
+
+
+
+

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,134 +9,153 @@
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
-     body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-    
-    .logo {
-        margin: 20px 0;
-    }
-    
-    .logo img {
-        max-width: 120px; /* 로고 이미지의 최대 너비를 줄였습니다 */
-    }
-    
-    .tab {
-        width: 80%; /* 폭을 줄였습니다 */
-        max-width: 500px; /* 최대 너비를 줄였습니다 */
-        margin: 20px auto;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .tab h2 {
-        margin: 0;
-        padding: 15px;
-        font-size: 22px;
-        color: #fff;
-        background-color: #007bff;
-        border-radius: 8px 8px 0 0;
-        text-align: center; /* 중앙 정렬 */
-    }
-    
-    .join {
-        padding: 20px;
-        width: 80%; /* 폭을 줄였습니다 */
-        max-width: 500px; /* 최대 너비를 줄였습니다 */
-        margin: 0 auto;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .join_detail {
-        margin-bottom: 15px;
-    }
-    
-    .join_detail span {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-        color: #333;
-    }
-    
-    .join_detail input[type="text"], 
-    .join_detail input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        box-sizing: border-box;
-    }
-    
-    .join_detail input[type="button"], 
-    .join_detail input[type="submit"], 
-    .join_detail input[type="reset"] {
-        width: calc(100% - 22px);
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-        margin: 5px 0;
-        font-size: 16px;
-        text-align: center;
-    }
-    
-    .join_detail input[type="button"]:hover, 
-    .join_detail input[type="submit"]:hover, 
-    .join_detail input[type="reset"]:hover {
-        background-color: #0056b3;
-    }
-    
-    #checkPasswdResult, #checkPasswdResult2, #checkNameResult, #checkBirthResult, #checkPhoneResult {
-        display: block;
-        margin-top: 5px;
-    }
-    
-    #checkPasswdResult {
-        color: red;
-    }
-    
-    #checkPasswdComplexResult {
-        font-weight: bold;
-    }
-    
-    #checkPasswdComplexResult.green {
-        color: green;
-    }
-    
-    #checkPasswdComplexResult.orange {
-        color: orange;
-    }
-    
-    #checkPasswdComplexResult.red {
-        color: red;
-    }
-    
-    .error {
-        color: red;
-    }
-    
-    .form-buttons {
-        text-align: center; /* 중앙 정렬 */
-    }
-    
-    .form-buttons input[type="button"], 
-    .form-buttons input[type="submit"], 
-    .form-buttons input[type="reset"] {
-        width: auto; /* 버튼 너비를 콘텐츠에 맞게 조정 */
-        margin: 5px;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .logo {
+            margin: 20px 0;
+        }
+        
+        .logo img {
+            max-width: 120px; 
+        }
+        
+        .tab {
+            width: 80%; 
+            max-width: 500px; 
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .tab h2 {
+            margin: 0;
+            padding: 15px;
+            font-size: 22px;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        
+        .join {
+            padding: 20px;
+            width: 80%; 
+            max-width: 500px; 
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .join_detail {
+            margin-bottom: 15px;
+        }
+        
+        .join_detail span {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .join_detail input[type="text"], 
+        .join_detail input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .join_detail input[type="button"], 
+        .join_detail input[type="submit"], 
+        .join_detail input[type="reset"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            margin: 5px 0;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .join_detail input[type="button"]:hover, 
+        .join_detail input[type="submit"]:hover, 
+        .join_detail input[type="reset"]:hover {
+            background-color: #0056b3;
+        }
+        
+        #checkPasswdResult, #checkPasswdResult2, #checkNameResult, #checkBirthResult, #checkPhoneResult {
+            display: block;
+            margin-top: 5px;
+        }
+        
+        #checkPasswdResult {
+            color: red;
+        }
+        
+        #checkPasswdComplexResult {
+            font-weight: bold;
+        }
+        
+        #checkPasswdComplexResult.green {
+            color: green;
+        }
+        
+        #checkPasswdComplexResult.orange {
+            color: orange;
+        }
+        
+        #checkPasswdComplexResult.red {
+            color: red;
+        }
+        
+        .error {
+            color: red;
+        }
+        
+        .form-buttons {
+            text-align: center; 
+        }
+        
+        .form-buttons input[type="button"], 
+        .form-buttons input[type="submit"], 
+        .form-buttons input[type="reset"] {
+            width: auto; 
+            margin: 5px;
+        }
 
+        .input_text {
+            margin-bottom: 15px;
+        }
+
+        .input_text input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .input_text input[type="button"] {
+            margin: 5px 0;
+            width: 100%;
+        }
     </style>
     <script type="text/javascript">
+        let code2 = "";
+
         // 비밀번호 강도 확인 함수
         function checkPasswd() {
             let passwd = $("#member_passwd").val();
@@ -265,6 +283,37 @@
             $("#btnSearchAddress").click(function() {
                 searchAddress();
             });
+
+            // 휴대폰 번호 인증
+            $("#phoneChk").click(function() {
+                alert('인증번호 발송이 완료되었습니다.\n휴대폰에서 인증번호 확인을 해주십시오.');
+                var phone = $("#phoneNumber").val();
+                $.ajax({
+                    type: "POST", // post 형식으로 발송
+                    url: "/shop/member/sendSMS1.do", // controller 위치
+                    data: { member_phone: phone }, // 전송할 데이터값 (회원 전화번호로 변경)
+                    cache: false,
+                    success: function(data) {
+                        if(data === "error") { // 실패시
+                            alert("휴대폰 번호가 올바르지 않습니다.");
+                        } else { // 성공시        
+                            alert("휴대폰 전송이 됨.");
+                            code2 = data; // 성공하면 데이터 저장
+                        }
+                    }
+                });
+            });
+            
+            // 휴대폰 인증번호 대조
+            $("#phoneChk2").click(function() {
+                if($("#phone2").val() === code2) { // 위에서 저장한 값과 비교
+                    alert('인증성공');
+                    // 인증 성공 시 전화번호 입력 필드에 값 설정
+                    $("#phoneNumber").val($("#phoneNumber").val());
+                } else {
+                    alert('인증실패');
+                }
+            });
         });
     </script>
 </head>
@@ -278,7 +327,7 @@
             <img src="${pageContext.request.contextPath}/resources/images/main_logo.png" alt="Main Logo">
         </a>
     </div>
-
+    
     <section>
         <div class="tab">
             <h2>회원정보수정</h2>
@@ -319,14 +368,13 @@
                 <input type="text" name="member_address1" id="address1" placeholder="기본주소" required>
                 <input type="text" name="member_address2" id="address2" placeholder="상세주소">
             </div>
-            <div class="join_detail">
-                <span>휴대폰번호</span>
-                <input type="text" name="member_phonenumber" id="member_phonenumber" value="${member.member_phone}" required>
-                <input type="button" value="인증번호 받기">
-            </div>
-            <div class="join_detail">
-                <span>인증번호 입력 (제한시간 3분)</span>
-                <input type="text" placeholder="인증번호 입력">
+            
+            <div class="input_text">
+                <input class="signin_pass" id="phoneNumber" type="text" name="member_phone" title="전화번호 입력" placeholder="전화번호 입력해주세요">
+                <input class="signin_pass" type="button" value="인증번호 받기" id="phoneChk">
+                
+                <input class="signin_pass" id="phone2" type="text" name="phone" title="인증번호 입력" placeholder="인증번호 입력해주세요">
+                <input class="signin_pass" type="button" value="인증확인" id="phoneChk2">
             </div>
             
             <div class="form-buttons">

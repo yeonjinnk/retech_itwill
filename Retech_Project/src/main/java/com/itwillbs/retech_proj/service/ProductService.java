@@ -25,12 +25,11 @@ public class ProductService {
 	}
 	//리텍트 상품 등록 처리
 	public int registBoard(ProductVO product) {
-		int insertcount = mapper.insertProduct(product);
-		return insertcount;
-	}
+		return mapper.insertProduct(product);
+	}	
 	//리테크 상품수정작업
-	public int modifyProduct(ProductVO product) {
-		return mapper.updateProduct(product);
-	}
+//	public int modifyProduct(ProductVO product) {
+//		return mapper.updateProduct(product);
+//	}
 
 }

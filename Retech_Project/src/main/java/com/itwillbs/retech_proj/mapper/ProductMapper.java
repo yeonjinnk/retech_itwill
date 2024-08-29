@@ -19,8 +19,8 @@ public interface ProductMapper {
 	int selectProductListCount();
 	//상품 등록 처리
 	int insertProduct(ProductVO product);
-	//리테크 상품 수정
-	int updateProduct(ProductVO product);
+//	//리테크 상품 수정
+//	int updateProduct(ProductVO product);
 
 
 }

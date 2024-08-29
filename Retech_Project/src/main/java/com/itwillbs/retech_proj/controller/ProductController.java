@@ -1,21 +1,19 @@
 package com.itwillbs.retech_proj.controller;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -28,10 +26,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.itwillbs.retech_proj.service.ProductService;
 import com.itwillbs.retech_proj.vo.ProductVO;
-
 @Controller
 public class ProductController {
 	@Autowired
@@ -50,7 +46,6 @@ public class ProductController {
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
 		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
-
 		//ProductService - getProductList() 호출하여 게시물목록 조회요청
 		//파라미터 : (검색타입,검색어), 시작행번호, 목록갯수
 		List<ProductVO> productList = service.getProductList(startRow, listLimit);
@@ -71,35 +66,38 @@ public class ProductController {
 	public String productRegistForm(HttpSession session, Model model) {
 		//미로그인시 "로그인이 필요합니다." 문구 출력 후 이전 페이지로 돌아감
 		//임시로 주석 처리
-//		String member_id = (String)session.getAttribute("member_id");
-//		System.out.println("member_id : " + member_id);
-//		if(member_id == null) {
-//			model.addAttribute("msg", "로그인이 필요합니다.");
-//			return"result/fail";
-//		}
+		String member_id = (String)session.getAttribute("sId");
+		System.out.println("member_id : " + member_id);
+		if(member_id == null) {
+			model.addAttribute("msg", "로그인이 필요합니다.");
+			return"result/fail";
+		}
 		return"product/product_regist_form";
 	}
 	//상품 등록 처리
 	@ResponseBody
 	@PostMapping("ProductRegistPro")
 	public String productRegistPro(ProductVO product, HttpSession session, Model model, HttpServletResponse request) {
-
 		//JsonConverter 사용하기 위한 Map생성
 		Map<String,String> map = new HashMap<>();
 		//기본 리턴값 false
 		String rResult = "false";
 		//리테크 상품 설명란 줄바꿈 하기
-		product.setPd_content(product.getPd_content().replaceAll("\r\n", "<br>"));
+//		product.setPd_content(product.getPd_content().replaceAll("\r\n", "<br>"));
 		
 		//판매자 아이디 저장
-		String member_id = (String)session.getAttribute("member_id");
-		System.out.println("판매자 아이디 : " + member_id);
-		session.setAttribute("member_id", member_id);
+		String member_id = (String)session.getAttribute("sId");
+		//세션에 값들이 잘 넘어오는지 확인
+		for (String attrName : Collections.list(session.getAttributeNames())) {
+			System.out.println("Session Attribute - Name: " + attrName + ", Value: " + session.getAttribute(attrName));
+		}
 		// 아이디가 null값일 경우 페이징 처리
 		if(member_id == null) {
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			return "result/fail";
 		}
+		session.setAttribute("sId", member_id);
+		System.out.println("판매자 아이디 : " + member_id);
 		//이미지 파일 업로드 처리
 		String uploadDir = "/resources/upload";
 		//
@@ -109,7 +107,7 @@ public class ProductController {
 		String subDir = "";
 		try {
 			// Mon Jun 19 11:26:52 KST 2023
-			Date date = new Date(); 
+			Date date = new Date();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 			subDir = sdf.format(date);
 			saveDir += "/" + subDir;
@@ -179,9 +177,11 @@ public class ProductController {
 		//------------------------------------------------------------------------------------------
 		//판매할 상품 등록 작업
 		System.out.println(product);
+		System.out.println("pd_price : " + product.getPd_price());
+		
 		int insertCount = service.registBoard(product);
 		//등록 결과를 판별
-		//성공 : 업로드 파일 - 실제 디렉토리에 이동시킨 후, productList 서블릿 리다이렉트 
+		//성공 : 업로드 파일 - 실제 디렉토리에 이동시킨 후, productList 서블릿 리다이렉트
 		//실패 : "글쓰기실패" 출력 후 이전 페이지 돌아가기 처리
 		
 		if(insertCount > 0) {//성공
@@ -202,6 +202,8 @@ public class ProductController {
 				if(!pFile5.getOriginalFilename().equals("")) {
 					pFile5.transferTo(new File(saveDir, fileName5));
 				}
+				rResult = "true";
+				model.addAttribute("res",rResult);
 			} catch (IllegalStateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -214,6 +216,7 @@ public class ProductController {
 			model.addAttribute("msg", "상품 등록 실패!");
 			return "result/fail";
 		}
+		
 	}
 	
 	
@@ -228,5 +231,9 @@ public class ProductController {
 	
 	
 	
-	   
+	  
 }
+
+
+
+

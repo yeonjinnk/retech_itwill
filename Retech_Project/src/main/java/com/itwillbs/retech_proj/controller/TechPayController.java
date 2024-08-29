@@ -1,6 +1,7 @@
 package com.itwillbs.retech_proj.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.retech_proj.service.TechPayService;
 import com.itwillbs.retech_proj.vo.BankToken;
@@ -105,8 +108,47 @@ public class TechPayController {
 		
 		model.addAttribute("msg", "계좌 인증 완료!");
 		model.addAttribute("isClose", true);		
+		model.addAttribute("targetURL", true);		
 		
 		return "result/success";
+	}
+	
+	@GetMapping("PayInfo")
+	public String payInfo(HttpSession session, Model model) {
+		// 로그인 완료 되어 있는 회원만 테크페이 정보 페이지로 진입 가능함
+		String id = (String)session.getAttribute("sId");		
+		if(id == null) {
+			model.addAttribute("msg", "로그인한 후에 이용 할 수 있습니다");
+			model.addAttribute("isClose", true);
+			model.addAttribute("targetURL", "MemberLogin");
+			session.setAttribute("prevURL", "TechPayMain");
+			
+			return "result/fail";
+		}
+		return "techpay/techpay_info";
+	}
+	
+	
+	@GetMapping("AccVerrify")
+	public String accVerify(HttpSession session, Model model) {
+		// 로그인 완료 되어 있는 회원만 테크페이 계좌연결 페이지로 진입 가능함
+		String id = (String)session.getAttribute("sId");		
+		if(id == null) {
+			model.addAttribute("msg", "로그인한 후에 이용 할 수 있습니다!");
+//			model.addAttribute("msg", "로그인한 후에\n테크페이를 이용 할 수 있습니다!");
+			model.addAttribute("isClose", true);
+			model.addAttribute("targetURL", "MemberLogin");
+			session.setAttribute("prevURL", "TechPayMain");
+			
+			return "result/fail";
+		}		
+		return "techpay/account_verify";
+	}
+	
+	@GetMapping("PayCharge")	
+	public String payCharge() {
+		
+		return "techpay/techpay_charge";		
 	}
 	
 	
