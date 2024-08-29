@@ -131,7 +131,84 @@
         .product-image {
             width: 100px; /* 적당한 이미지 크기 설정 */
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cancel-request {
+            background-color: #f44336; 
+        }
+
+        .confirm-request {
+            background-color: #4caf50;
+        }
+
+        .cancel-request:hover {
+            background-color: #d32f2f; 
+
+        .confirm-request:hover {
+            background-color: #388e3c; 
+        }
     </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.cancel-request').on('click', function() {
+                var productId = $(this).data('id');
+                if (confirm('거래를 취소하시겠습니까?')) {
+                    $.ajax({
+                        url: 'updateTransactionStatus',
+                        type: 'POST',
+                        data: {
+                            id: productId,
+                            status: 'canceled'
+                        },
+                        success: function(response) {
+                            if(response.success) {
+                                alert('거래가 취소되었습니다.');
+                                location.reload(); // 페이지 새로고침
+                            } else {
+                                alert('거래 취소 중 오류가 발생했습니다.');
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('.confirm-request').on('click', function() {
+                var productId = $(this).data('id');
+                if (confirm('거래 확정하시겠습니까?')) {
+                    $.ajax({
+                        url: 'updateTransactionStatus',
+                        type: 'POST',
+                        data: {
+                            id: productId,
+                            status: 'confirmed'
+                        },
+                        success: function(response) {
+                            if(response.success) {
+                                alert('거래가 확정되었습니다.');
+                                location.reload(); // 페이지 새로고침
+                            } else {
+                                alert('거래 확정 중 오류가 발생했습니다.');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -164,19 +241,16 @@
                     <table>
                         <thead>
                             <tr>
+                                <th>상품사진</th>
                                 <th>상품명</th>
                                 <th>상품가격</th>
                                 <th>등록날짜</th>
-                                <th>상품사진</th>
+                                <th>거래상태</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="product" items="${productList}">
                                 <tr>
-                                    <td>${product.pd_content}</td>
-                                    <td>${product.pd_price}</td>
-                                    <td>${product.pd_first_date}</td>
-<%--                                     <td><fmt:formatDate value="${product.pd_first_date}" pattern="yyyy-MM-dd"/></td> --%>
                                     <td>
                                         <c:choose>
                                             <c:when test="${not empty product.pd_image1}">
@@ -187,6 +261,13 @@
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
+                                    <td>${product.pd_content}</td>
+                                    <td>${product.pd_price}</td>
+                                    <td>${product.pd_first_date}</td>
+                                    <td>${product.pd_status}
+                                        <button class="cancel-request" data-id="${product.pd_status}">거래취소요청</button>
+                                        <button class="confirm-request" data-id="${product.pd_status}">거래확정</button>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -195,7 +276,7 @@
                 <c:if test="${empty productList}">
                     <table class="mypage">
                         <tr>
-                            <td align="center" colspan="4">검색결과가 없습니다.</td>
+                            <td align="center" colspan="6">검색결과가 없습니다.</td>
                         </tr>
                     </table>
                 </c:if>

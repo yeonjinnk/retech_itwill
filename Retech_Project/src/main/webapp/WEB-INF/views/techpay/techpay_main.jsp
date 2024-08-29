@@ -11,24 +11,7 @@
 
 <%-- 자바스크립트 연결 --%>
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script type="text/javascript">
-	// 새 창을 열어서 사용자 인증 서비스 요청
-	// => 금융결제원 오픈API - 2.1.1. 사용자인증 API (3-legged) 서비스	
-	$(document).ready(function() {
-		$("#authButton").on("click", function() {
-			let authWindow = window.open("about:blank", "authWindow", "width=500,height=700");
-			authWindow.location = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
-								+ "response_type=code"
-								+ "&client_id=4066d795-aa6e-4720-9383-931d1f60d1a9"
-								+ "&redirect_uri=http://localhost:8081/retech_proj/callback"
-								+ "&scope=login inquiry transfer"
-								+ "&state=12345678901234567890123456789012"
-								+ "&auth_type=0";
-		});
-	});	
 
-
-</script>
 </head>
 <body>
 	<header>
@@ -45,11 +28,7 @@
 					<%-- 세션 객체의 "token" 속성이 비어있을 경우, 계좌 미인증 회원이므로 계좌인증 수행하도록 표시 --%>
 					<c:when test="${empty sessionScope.token}">
         				<c:redirect url="AccVerrify"/>				    					    
-<%-- 						${sessionScope.sName}님,<br> --%>
-<!-- 						계좌 인증 시 사용 가능합니다.<br> -->
-<!-- 						<input type="button" value="계좌연결" id="authButton" > -->
 					</c:when>
-					<%-- 세션 객체의 "token" 속성이 비어있지 않을 경우, 계좌 인증 완료회원이므로 페이 정보페이지로 이동 --%>
 				    <c:otherwise>
         				<c:redirect url="PayInfo"/>				    					    
 				    </c:otherwise>
