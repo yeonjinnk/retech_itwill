@@ -58,6 +58,13 @@ public class MemberController {
 	   @PostMapping("MemberJoinForm")
 	   public String memberJoinForm(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder) {
 	      System.out.println(member);
+	      
+	      // 전화번호 중복 체크
+	      if (service.isExistPhonenumber(member) != null) {
+	          model.addAttribute("msg", "이미 등록된 전화번호입니다.");
+	          return "result/fail"; // 실패 페이지로 이동
+	      }
+	      
 	      String securePasswd = passwordEncoder.encode(member.getMember_passwd());
 	      member.setMember_passwd(securePasswd);
 	      int insertCount = service.registMember(member);

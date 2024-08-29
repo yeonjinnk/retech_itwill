@@ -142,7 +142,7 @@
             </ul>
         </div>
 
-        <form class="join" name="joinForm" action="MemberJoinForm" method="post">
+        <form class="join" name="joinForm" action="${pageContext.request.contextPath}/MemberJoinForm" method="post">
             <div class="join_detail">
                 <label for="postCode" class="title">주소</label>
                 <input type="text" name="member_postcode" id="postCode" placeholder="우편번호" required readonly>
