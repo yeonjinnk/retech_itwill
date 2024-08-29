@@ -172,7 +172,7 @@
                 <label for="member_name" class="title">이름</label>
                 <input type="text" name="member_name" id="member_name" placeholder="실명을 입력해주세요" required>
                 <span id="checkNameResult" class="check"></span>
-            </div>
+            </div> 
 
             <div class="join_detail">
                 <label for="member_nickname" class="title">상점이름(닉네임)</label>
