@@ -9,14 +9,12 @@
 </head>
 <body>
 	<header>
+		<jsp:include page="/WEB-INF/views/inc/admin_top.jsp"></jsp:include>	
 	</header>
 	<div class="inner">
 			<section class="wrapper">
 				<jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
 				<article>
-					<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-					<h1>관리자 화면</h1>
-					<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 				</article>
 			</section>
 		</div>
