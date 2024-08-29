@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.itwillbs.retech_proj.mapper.AdminCsMapper">
+  
+	<!-- 공지사항 목록 개수 -->
+	<select id="selectNoticeListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM notice
+		<if test="!searchKeyword.equals('')">
+			WHERE 
+				or notice_subject like concat('%',#{searchKeyword},'%')
+				or notice_content like concat('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<!-- 공지사항 목록 조회 -->
+	<select id="selectNoticeList" resultType="notice">
+		SELECT *
+		FROM notice
+		<if test="!searchKeyword.equals('')">
+			WHERE 
+				or notice_subject like concat('%',#{searchKeyword},'%')
+				or notice_content like concat('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY
+			notice_idx DESC		
+		LIMIT
+			#{startRow}     
+			, #{listLimit} 
+	</select>
+	
+	<!-- 관리자 공지사항 삭제 -->
+	<delete id="deleteNotice">
+		DELETE 
+		FROM notice
+		WHERE notice_idx = #{notice_idx}
+	</delete>
+	
+	<!-- 관리자 공지사항 등록 -->
+	<insert id="insertNotice">
+		INSERT INTO notice
+		VALUES (
+			null
+			, #{notice_subject}
+			, #{notice_content}
+			, now()
+		)
+	</insert>
+	
+	<!-- 관리자 - 공지사항 수정 (상세내용 가져오기) -->
+	<select id="selectNotice" resultType="notice">
+		SELECT *
+		FROM notice
+		WHERE 
+			notice_idx = #{notice_idx} 
+	</select>
+	
+	<!-- 관리자 - 공지사항 수정 작업 -->
+	<update id="updateNotice">
+		UPDATE notice
+		SET 
+			,notice_subject = #{notice_subject}
+			,notice_content = #{notice_content}
+		WHERE
+			notice_idx = #{notice_idx}
+	</update>
+	
+	<!-- ======================================================================================= -->
+	
+	<!-- 관리자 FAQ 개수 세기 -->
+	<select id="selectFaqListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM faq
+		<if test="!searchKeyword.equals('')">
+			WHERE 
+				FAQ_category like concat('%',#{searchKeyword},'%')
+				or FAQ_subject like concat('%',#{searchKeyword},'%')
+				or FAQ_content like concat('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<!-- 관리자 FAQ 목록 가져오기 -->
+	<select id="selectFaqList" resultType="faq">
+		SELECT *
+		FROM faq
+		<if test="!searchKeyword.equals('')">
+			WHERE 
+				FAQ_category like concat('%',#{searchKeyword},'%')
+				or FAQ_subject like concat('%',#{searchKeyword},'%')
+				or FAQ_content like concat('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY
+			FAQ_idx DESC		
+		LIMIT
+			#{startRow}     
+			, #{listLimit} 
+	</select>
+	
+	<!-- 관리자 FAQ 등록 -->
+	<insert id="insertFaq">
+		INSERT INTO faq
+		VALUES (
+			null
+			, #{FAQ_category}
+			, #{FAQ_subject}
+			, #{FAQ_content}
+			, now()
+		)
+	</insert>
+	
+	<!-- 관리자 FAQ 삭제 -->
+	<delete id="deleteFaq">
+		DELETE 
+		FROM faq
+		WHERE FAQ_idx = #{FAQ_idx}
+	</delete>
+	
+	<!-- 관리자 - FAQ 수정 (상세내용 가져오기) -->
+	<select id="selectFaq" resultType="faq">
+		SELECT *
+		FROM faq
+		WHERE FAQ_idx = #{FAQ_idx} 
+	</select>
+	
+	<!-- 관리자 - FAQ 수정  -->
+	<update id="updateFaq">
+		UPDATE faq
+		SET 
+			FAQ_category = #{FAQ_category}
+			,FAQ_subject = #{FAQ_subject}
+			,FAQ_content = #{FAQ_content}
+		WHERE
+			FAQ_idx = #{FAQ_idx}
+	</update>
+	
+	<!-- ======================================================================================= -->
+	
+	<!-- 관리자 1:1 문의 개수 세기 -->
+	<select id="selectCsCount" resultType="int">
+		SELECT COUNT(*)
+		FROM cs
+		<if test="!searchKeyword.equals('')">
+			WHERE 
+				cs_category like concat('%',#{searchKeyword},'%')
+				or cs_subject like concat('%',#{searchKeyword},'%')
+				or cs_content like concat('%',#{searchKeyword},'%')
+				or cs_consultant_name like concat('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<!-- 관리자 1:1 문의 목록 가져오기 -->
+	<select id="selectCsList" resultType="cs">
+		SELECT *
+		FROM cs
+		<if test="!searchKeyword.equals('')">
+			WHERE 
+				cs_category like concat('%',#{searchKeyword},'%')
+				or cs_subject like concat('%',#{searchKeyword},'%')
+				or cs_content like concat('%',#{searchKeyword},'%')
+				or cs_consultant_name like concat('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY
+			cs_idx DESC		
+		LIMIT
+			#{startRow}     
+			, #{listLimit} 
+	</select>
+	
+	<!-- 관리자 - 1:1 문의  (상세내용 가져오기) -->
+	<select id="selectCs" resultType="cs">
+		SELECT *
+		FROM cs
+		WHERE cs_idx = #{cs_idx} 
+	</select>
+	
+	
+	<!-- 관리자 1:1 문의 답변 등록 update -->
+	<update id="registReply">
+		UPDATE cs
+		SET
+			cs_check = "확인"
+			, cs_answer = #{cs_answer}
+			, cs_consultant_name = #{cs_consultant_name}
+		WHERE 
+			cs_idx = #{cs_idx}	
+	</update>
+</mapper>

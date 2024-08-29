@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.itwillbs.retech_proj.mapper.FaqMapper">
+	<select id="selectFaqListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM faq
+		<if test="!searchKeyword.equals('')">
+		WHERE 
+			FAQ_category like concat('%',#{searchKeyword},'%')
+			or FAQ_subject like concat('%',#{searchKeyword},'%')
+			or FAQ_content like concat('%',#{searchKeyword},'%')
+		</if>
+	</select>
+	
+	<select id="selectFaqList" resultType="faq">
+		SELECT *
+		FROM faq
+		<if test="!searchKeyword.equals('')">
+			WHERE 
+				FAQ_category like concat('%',#{searchKeyword},'%')
+				or FAQ_subject like concat('%',#{searchKeyword},'%')
+				or FAQ_content like concat('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY
+			FAQ_idx DESC
+		LIMIT
+			#{startRow}     
+			, #{listLimit}  
+	</select>
+	
+	<select id="selectFaq" resultType="faq">
+		SELECT *
+		FROM faq
+		WHERE 
+			FAQ_idx = #{FAQ_idx}
+	</select>
+</mapper>
+    
