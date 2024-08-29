@@ -60,6 +60,19 @@ public class NoticeController {
 
 				model.addAttribute("noticeList", noticeList);
 				model.addAttribute("pageInfo", pageInfo);
-				return "cs/notice";
+				return "notice/notice";
 	}
+	
+	// 공지사항 상세보기
+		@GetMapping("NoticeDetail") 
+		public String noticeDetail(@RequestParam(defaultValue = "0") int notice_idx, Model model) {
+//			System.out.println(notice_num);
+			NoticeVO selectedNotice = service.getNotice(notice_idx);
+			
+//			System.out.println(selectedNotice);
+			
+			model.addAttribute("selectedNotice", selectedNotice);
+			
+			return "cs/noticeContent";
+		}
 }
