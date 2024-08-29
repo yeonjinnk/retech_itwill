@@ -37,11 +37,9 @@ public class ProductController {
 	//최신순으로 정렬
 	@GetMapping("ProductList")
 	public String productList(@RequestParam(defaultValue = "1") int pageNum,
+			 
 			ProductVO product, Model model, HttpSession session) {
 		//공통코드 사용하여 카테고리별로 목록 표시
-		
-		
-		
 		
 		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
 		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
@@ -58,8 +56,24 @@ public class ProductController {
 		model.addAttribute("productList",productList);
 		model.addAttribute("maxPage", maxPage);
 		model.addAttribute("listCount", listCount);//전체게시물수
-		
+		System.out.println("리스트 : " + productList);
 		return"product/product_list";
+	}
+	
+	@ResponseBody
+	@GetMapping("productListJson")
+	public String ProductListJson(@RequestParam String pd_category, @RequestParam String pd_status, ProductVO product) {
+		System.out.println("pd_category : " + pd_category);
+		System.out.println("pd_status : " + pd_status);
+		
+		//선택한 카테고리와 거래상태에 해당하는 상품리스트 가져오기
+		List<ProductVO> selectedProductList = service.getSelectedProductList(pd_category, pd_status);
+		System.out.println("selectedProductList : " + selectedProductList);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("selectedProductList", selectedProductList);
+		
+		return jsonObject.toString();
 	}
 	//판매하기 클릭시 상품 등록 페이지로 이동
 	@GetMapping("ProductRegistForm")

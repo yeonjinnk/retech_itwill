@@ -1041,11 +1041,11 @@ td {
 				<tr>
 					<td class="td1" align="left" style="vertical-align: top;"><span class="pro_info">카테고리<span style="color: red">*</span></span></td>
 					<td class="td2" align="left"><select class="input-tag" id="c_id" name="c_id" style="width: 30%; height: 35px;">
-							<option value="0">카테고리 선택</option>
+							<option value="">카테고리 선택</option>
 							<option value="PC">PC</option>
 							<option value="NB">노트북</option>
 					</select> <select class="input-tag" id="c_id2" name="c_id2" style="width: 30%; height: 35px;">
-							<option value="0">카테고리 선택</option>
+							<option value="">카테고리 선택</option>
 							<option value="SA">삼성</option>
 							<option value="AP">애플</option>
 							<option value="LG">LG</option>
