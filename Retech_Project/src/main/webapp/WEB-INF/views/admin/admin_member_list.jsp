@@ -44,21 +44,6 @@
             text-align: center;
         }
     </style>
-    <script>
-        function showListLimit(limit){
-            location.href = "AdminMemberList?listLimit=" + limit;
-        }
-        
-        function confirmAdmin(id, isAdmin) {
-            let action = (isAdmin === 'Y') ? "해제" : "부여";
-            let newIsAdmin = (isAdmin === 'Y') ? 'N' : 'Y';  // 현재 상태와 반대 값으로 설정
-
-            if (confirm("관리자 권한을 " + action + "하시겠습니까?")) {
-                location.href = "ChangeAdminAuthorize?member_id=" + id + "&member_isAdmin=" + newIsAdmin;
-            }
-        }
-
-    </script>
 </head>
 <body>
     <header>
@@ -76,9 +61,8 @@
                             <th>이름</th>
                             <th>상점이름</th>
                             <th>전화번호</th>
+                            <th>생년월일</th>
                             <th>회원상태</th>
-                            <th>관리자여부</th>
-                            <th>관리자 권한관리</th>
                         </tr>
                         <c:set var="pageNum" value="1" />
                         <c:if test="${not empty param.pageNum}">
@@ -90,6 +74,7 @@
                                 <td>${member.member_name}</td>
                                 <td>${member.member_nickname}</td>
                                 <td>${member.member_phone}</td>
+                                <td>${member.member_birth}</td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${member.member_status eq '탈퇴'}">
@@ -97,27 +82,6 @@
                                         </c:when>
                                         <c:otherwise>
                                             <span class="status-o">O</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${member.member_isAdmin eq 'Y'}">
-                                            Y
-                                        </c:when>
-                                        <c:otherwise>
-                                            N
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${member.member_isAdmin eq 'Y'}">
-                                            <input type="button" value="관리자 권한 해제" id="yAdmin" onclick="confirmAdmin('${member.member_id}', '${member.member_isAdmin}')">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="button" value="관리자 권한 부여" onclick="confirmAdmin('${member.member_id}', '${member.member_isAdmin}')"
-                                                <c:if test="${member.member_status eq '탈퇴'}"> disabled</c:if>>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
