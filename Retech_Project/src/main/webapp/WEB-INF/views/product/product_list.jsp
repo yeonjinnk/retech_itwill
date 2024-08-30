@@ -14,8 +14,118 @@
 <title>Retech 상품목록</title>
 
 <script type="text/javascript">
+// 전역 변수 (함수바깥에 정의)
 let pd_category;
 let pd_status;
+let isOpen = "false"; // 정렬 목록에 사용할 함수 기본값 false
+let pageNum = 1; // 임의로 설정
+let maxPage = 1; // 최대 페이지 번호 미리 저장
+
+// 카테고리(최신순) 변수 정의
+let selectedCategory = "전체";
+let selectedSort = "최신순";
+// (처음 상품 페이지에 들어왔을 시) 목록 불러오기
+$(function() {
+	//정렬 목록 open/close 함수
+	$(".listInfoBtn").on("click", function() {
+		if(!isOpen) {// 정렬 목록이 열려있지 않다면
+			$(".listSort").css("display", "initial");
+			isOpen = true;
+		} else {// 정렬 목록이 열려 있다면
+			$(".listSort").css("display", "none");
+			isOpen = false;
+		}
+	}); // 카테고리(최신순, 인기순, 가격순)버튼 클릭 시 호출되는 함수 끝
+	
+
+	$(document).on("click", function(event) {
+       const target = $(event.target); // 클릭된 요소를 jQuery객체로 저장
+       // 클릭된 요소(target)가 .listInfoBtn 또는 .listSort 내부에 포함되지 않은 경우(즉, 이들 외의 요소를 클릭한 경우)      
+       if (!target.closest(".listInfoBtn").length && !target.closest(".listSort").length) {
+           $(".listSort").css("display", "none"); //정렬 목록을 숨김
+           isOpen = false; //목록이 닫힌 상태로 전환
+       } 
+	});	 // 정렬 목록이 열려있을 때 다른 곳을 누르면 목록 닫히게 하는 함수
+	
+	// 목록 정렬 순서 클릭 이벤트
+	$(".listSort li").on("click", function() {
+		$(".listSort li").find('i').remove();
+		selectedSort = $(this).text().trim();
+		loadList(selectedCategory, selectedSort);
+		$('.listInfoBtn').text(selectedSort + ' ');
+		$('.listSort').hide();
+		
+	})
+	
+	// 카테고리 선택시 해당하는 목록을 불러오는 함수
+	$("#categoryNav span").on("click", function () {
+		  $("#categoryNav span").removeClass("select");
+		  $(this).addClass("select");
+		  selectedCategory = $(this).text().trim();
+		  loadList(selectedCategory, selectedSort);
+//	 	  console.log("카테고리는 : " + selectedCategory);
+	});
+	
+	// 제한없이 내려가는 스크롤 기능 추가
+	// 웹브라우저의 스크롤바가 바닥에 닿으면 다음 목록 조회를 위해 loadList() 함수 호출
+	$(window).on("scroll", function() {
+		// window객체(웹페이지 내의 전체 브라우저 창)와 document 객체를 활용하여 
+		// 스크롤 관련 값을 가져와 제어
+		// => 스크롤바의 현재 위치, 문서가 표시되는 창(window)의 높이, 문서 전체 높이
+		let scrollTop = $(window).scrollTop(); // 스크롤 바의 현재 높이를 가지고 옴
+		let windowHeight = $(window).height(); // 브라우저 창의 높이를 가지고 옴
+		let documentHeight = $(document).height(); // 문서의 높이를 가지고 옴(창의 높이보다 크거나 같음)
+		let x = 50; // 여유값(픽셀 단위)
+		//스크롤바의 위치값 + 창의 높이 + x가 문서 전체 높이(documentHeight)보다 클 경우
+		//다음 페이지의 게시물 목록 로딩, 목록 하단에 추가
+		if(scrollTop + windowHeight + x >= documentHeight){
+			//최대 페이지 번호를 초과하면
+			if(pageNum < maxPage) {
+				pageNum++;
+				loadList(selectedCategory, selectedSort);
+			}
+		}
+		
+	}); //window() 끝
+}); // $(function(){}) 끝 => 28행에 있는 제이쿼리 시작부분
+
+//목록 불러오는 함수 정의
+function loadList(selectedCategory, selectedSort){
+	let url;
+	
+	//컨트롤러로 넘길 파라미터 처리
+	url = "productListJson?pageNum=" + pageNum + "&category=" + selectedCategory + "&sort=" + selectedSort;
+	
+	$.ajax({
+		type : "GET",
+		url : url,
+		dataType : "JSON",
+		success : function(data){
+			alert("글 목록 요청 성공!");
+			//무한 스크롤 시
+			maxPage = data.maxPage;
+			//목록 별로 상품의 갯수 조회하고 출력
+			$("#listCount").text(data.listCount);
+			//기존에 있던 리스트 삭제
+			$(".productListArea").empty();
+			//AJAX로 받아온 리스트 for문을 사용하여 반복 출력하기
+			for(let product of data.changedProductList){
+				let price = product.pd_price;
+				let formatted_price = Number(price).toLocaleString('en');
+				
+				//목록에 표시할 JSON 객체 1개 출력문 생성(= 1개 게시물 )=> 반복
+			}
+			
+		}
+	})
+}
+
+
+
+
+
+
+// 카테고리 적용하기 위한 코드 
 $(function () {
     $("select").eq(2).on("change", function() {
        let product = "PRODUCT";
@@ -26,14 +136,11 @@ $(function () {
 			pd_category = product +  product1 + product2;
 //        $("#pd_category_hidden").val(pd_category);
 //          $("#text").html("pd_category");
-       console.log("pd_category : " + pd_category);
+       console.log("pd_category : " + pd_category); // console.log 창에 카테고리 선택시 공통코드 띄우기
 //        console.log("pd_category_hidden : " +  $("#pd_category_hidden").val());
-       console.log("pd_status : " + pd_status);
+       console.log("pd_status : " + pd_status);//console.log 창에 상품 상태(판매중, 거래중, 판매완료) 띄우기
        loadList(pd_category, pd_status);
     });
-    
-    
-      
  });
  
  function loadList(selectedCategory, selectedStatus) {
@@ -44,15 +151,10 @@ $(function () {
 		success: function(data) {
 			console.log("성공!");
 			console.log("data : " + data);
-// 			$(".productListArea").append(
-					
-// 			)
-			
+// 			$(".productListArea").append()
 		}
 	});	// ajax 끝
  }
-
-
 </script>
 <style>
 /* General Reset for Better Consistency Across Browsers */
@@ -342,10 +444,9 @@ footer {
 				<button class="listInfoBtn">
 						최신순 
 				</button>
-					<%-- 정렬 방법(기본 : 보이지 않음, 클릭 : style 지우기) --%>
+					<%-- 정렬 방법(기본 형태는 보이지 않음, 클릭시 style 지우기) --%>
 					<ul class="listSort" style="display: none;"> <%-- style="display: none;" --%>
-						<li id="list1">최신순 
-						</li>
+						<li id="list1">최신순 </li>
 						<li id="list2">가격순 </li>
 						<li id="list3">인기순 </li>
 					</ul>

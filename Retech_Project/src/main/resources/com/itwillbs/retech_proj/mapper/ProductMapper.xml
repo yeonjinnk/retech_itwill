@@ -55,7 +55,12 @@
 			pd_category = #{pd_category}
 			and pd_status = #{pd_status}
 	</select>
-	
+	<!-- 상품 목록 정렬 변경 시 변경된 정렬로 목록 조회 작업 selectChangedProductList -->
+	<select id="selectChangedProductList">
+		SELECT *
+		FROM product
+		WHERE 
+	</select>
 	
 </mapper>
 

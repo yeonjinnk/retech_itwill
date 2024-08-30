@@ -58,21 +58,29 @@ public class ProductController {
 //		System.out.println("리스트 : " + productList);
 		return"product/product_list";
 	}
-	
+	//목록 메서드
 	@ResponseBody
 	@GetMapping("productListJson")
-	public String ProductListJson(@RequestParam String pd_category, @RequestParam String pd_status, ProductVO product) {
-		System.out.println("pd_category : " + pd_category);
-		System.out.println("pd_status : " + pd_status);
-		
-		//선택한 카테고리와 거래상태에 해당하는 상품리스트 가져오기
-		List<ProductVO> selectedProductList = service.getSelectedProductList(pd_category, pd_status);
-		System.out.println("selectedProductList : " + selectedProductList);
-		
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("selectedProductList", selectedProductList);
-		
-		return jsonObject.toString();
+	public String changedProductList(@RequestParam String pd_category, @RequestParam String pd_status, ProductVO product,
+		@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "") String category,
+		@RequestParam(defaultValue = "") String sort) {
+			System.out.println("pd_category : " + pd_category);
+			System.out.println("pd_status : " + pd_status);
+			int listLimit = 12; // 한 페이지에서 표시할 목록 갯수 지정
+			int startRow = (pageNum -1) * listLimit; //조회 시작 행(레코드 번호)
+			
+			//전달할 목록 값 받아오기 (거래중일 경우)
+			String type = "거래중";
+			List<HashMap<String, String>>changedProductList = service.getChangedProductList(pageNum, category, sort, startRow, listLimit, type);
+			
+			//선택한 카테고리와 거래상태에 해당하는 상품리스트 가져오기
+			List<ProductVO> selectedProductList = service.getSelectedProductList(pd_category, pd_status);
+			System.out.println("selectedProductList : " + selectedProductList);
+			
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("selectedProductList", selectedProductList);
+			
+			return jsonObject.toString();
 	}
 	//판매하기 클릭시 상품 등록 페이지로 이동
 	@GetMapping("ProductRegistForm")

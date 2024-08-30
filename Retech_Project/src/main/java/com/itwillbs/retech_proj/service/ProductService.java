@@ -34,8 +34,11 @@ public class ProductService {
 	
 	//선택한 카테고리와 거래상태에 해당하는 상품리스트 가져오기
 	public List<ProductVO> getSelectedProductList(String pd_category, String pd_status) {
-		// TODO Auto-generated method stub
 		return mapper.selectSelectedProductList(pd_category, pd_status);
+	}
+	//거래중 게시물 목록 조회
+	public List<HashMap<String, String>> getChangedProductList(int pageNum, String category, String sort, int startRow, int listLimit, String type) {
+		return mapper.selectChangedProductList(pageNum, category, sort, startRow, listLimit, type);
 	}
 
 }
