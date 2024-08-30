@@ -33,7 +33,8 @@ public interface AdminMemberMapper {
 // -------------------------------------------------------------------
 	
 	// 관리자 권한 부여
-	int updateAdminAuth(@Param("member_isAdmin") int member_isAdmin, @Param("member_id") String member_id);
+	int updateAdminAuth(@Param("member_isAdmin") String member_isAdmin, @Param("member_id") String member_id);
+
 
 
 	

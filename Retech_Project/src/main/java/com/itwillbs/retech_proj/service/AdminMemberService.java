@@ -17,7 +17,10 @@ public class AdminMemberService {
       return mapper.selectMemberList(startRow, listLimit, searchKeyword);
    }
    // 관리자 권한 부여/해제
-   public int changeAdminAuth(int member_isAdmin, String member_id) {
+   public int changeAdminAuth(String member_isAdmin, String member_id) {
       return mapper.updateAdminAuth(member_isAdmin, member_id);
    }
+   
+
+   
 }

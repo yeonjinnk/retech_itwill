@@ -49,18 +49,21 @@
             location.href = "AdminMemberList?listLimit=" + limit;
         }
         
-        function confirmAdmin(id, isAdmin, isAuthorize){
-            let action = (isAuthorize === 'Y') ? "해제" : "부여";
-            if(confirm("관리자 권한을 " + action + "하시겠습니까?")){
-                location.href = "ChangeAdminAuthorize?member_id=" + id + "&member_isAdmin=" + isAdmin + "&isAuthorize=" + isAuthorize;
+        function confirmAdmin(id, isAdmin) {
+            let action = (isAdmin === 'Y') ? "해제" : "부여";
+            let newIsAdmin = (isAdmin === 'Y') ? 'N' : 'Y';  // 현재 상태와 반대 값으로 설정
+
+            if (confirm("관리자 권한을 " + action + "하시겠습니까?")) {
+                location.href = "ChangeAdminAuthorize?member_id=" + id + "&member_isAdmin=" + newIsAdmin;
             }
         }
+
     </script>
 </head>
 <body>
     <header>
         <jsp:include page="/WEB-INF/views/inc/admin_top.jsp"></jsp:include>
-    </header>  
+    </header>
     <div class="inner">
         <section class="wrapper">
             <jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
@@ -110,10 +113,10 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${member.member_isAdmin eq 'Y'}">
-                                            <input type="button" value="관리자 권한 해제" id="yAdmin" onclick="confirmAdmin('${member.member_id}', '${member.member_isAdmin}', 'N')">
+                                            <input type="button" value="관리자 권한 해제" id="yAdmin" onclick="confirmAdmin('${member.member_id}', '${member.member_isAdmin}')">
                                         </c:when>
                                         <c:otherwise>
-                                            <input type="button" value="관리자 권한 부여" onclick="confirmAdmin('${member.member_id}', '${member.member_isAdmin}', 'Y')"
+                                            <input type="button" value="관리자 권한 부여" onclick="confirmAdmin('${member.member_id}', '${member.member_isAdmin}')"
                                                 <c:if test="${member.member_status eq '탈퇴'}"> disabled</c:if>>
                                         </c:otherwise>
                                     </c:choose>
@@ -128,7 +131,9 @@
                     </table>
                 </div>
                 <div id="pageList">
-                    <input type="button" value="이전" onclick="location.href='AdminMemberList?pageNum=${pageNum - 1}'">
+                    <input type="button" value="이전" 
+                        onclick="location.href='AdminMemberList?pageNum=${pageNum - 1}'" 
+                        <c:if test="${pageNum eq 1}"> disabled</c:if> >
                     <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
                         <c:choose>
                             <c:when test="${i eq pageNum}">
@@ -139,7 +144,9 @@
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
-                    <input type="button" value="다음" onclick="location.href='AdminMemberList?pageNum=${pageNum + 1}'">
+                    <input type="button" value="다음" 
+                        onclick="location.href='AdminMemberList?pageNum=${pageNum + 1}'"
+                        <c:if test="${pageNum eq pageInfo.endPage}"> disabled</c:if> >
                 </div>
             </article>
         </section>
