@@ -69,6 +69,13 @@ public class MemberService {
         return mapper.selectTel(member);
     }
 
+    //========================================================
+    //회원 아이디 조회(채팅용)
+	public String getMemberSearchId(String receiver_id) {
+		// TODO Auto-generated method stub
+		return mapper.selectMemberId(receiver_id);
+	}
+
 
 }    
     // SMS 인증

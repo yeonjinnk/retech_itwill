@@ -12,8 +12,85 @@
        user_id 컬럼값을 receiver_id 로 표기
 	-->
 	<select id="selectChatRoomList" resultType="chatRoom">
-	
+		SELECT
+			c.room_id
+			, c.title
+			, c.user_id AS sender_id
+			, (
+				SELECT user_id
+				FROM chat_room
+				
+			) AS receiver_id
+			, c.status
+		FROM chat_room AS c;
 	</select>
+	
+	<!-- 해당 사용자와의 기존 채팅방 정보 조회 - SELECT -->
+	<select id="selectChatRoom" resultType="chatRoom">
+		SELECT
+				c.room_id
+				, c.title
+				, c.user_id AS sender_id
+				, (
+					SELECT user_id
+					FROM chat_room
+					
+				) AS receiver_id
+				, c.status
+			FROM chat_room AS c;
+	</select>
+	
+	<!-- 새 채팅방 정보 추가 - INSERT -->
+	<!-- List 객체에 저장된 2개의 ChatRoom 객체를 각각 INSERT 필요 => VALUES (), () 활용 -->
+	<insert id="insertChatRoom">
+		INSERT INTO chat_room
+		VALUES
+		<!-- 
+		복수개의 항목을 한꺼번에 INSERT 할 때 마이바티스의 <foreach> 태그 활용
+		=> collection 속성 : 반복할 객체 타입(list 또는 array)
+			item 속성 : collection 속성에서 지정한 객체를 다른 이름으로 지정하여 사용 시 지정하는 이름
+			separator 속성 : 한 번 이상 반복되는 문장에서 문장들을 구별할 구분자
+			open 속성 : foreach문 시작 전에 추가할 문자열(현재는 불필요)
+			close 속성 : foreach문 종료 후에 추가할 문자열(현재는 불필요)
+		 -->
+		 <foreach collection="list" item="chatRoomList" separator=",">
+		 	(
+		 		#{chatRoomList.room_id}
+		 		, #{chatRoomList.title}
+		 		, #{chatRoomList.sender_id}		-- 사용자 아이디는 sender_id에 전달된 항목만 사용
+		 		, #{chatRoomList.status}
+		 	)
+		 </foreach>
+	</insert>
+	
+	<select id="selectChatMessageList" resultType="chatMessage">
+		SELECT *
+		FROM chat_message
+		WHERE room_id = #{room_id}
+	</select>
+	
+	<!-- 채팅 메세지 저장 -->
+	<insert id="insertChatMessage">
+		INSERT INTO chat_message
+		VALUES (
+		
+		)
+		
+	</insert>
+	
+	
+	
+	
 	
 
 </mapper>
+
+
+
+
+
+
+
+
+
+

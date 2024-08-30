@@ -14,6 +14,7 @@ public class ChatController {
 		return "chat/report";
 	}
 	
+	//채팅방 목록
 	@GetMapping("ChatList")
 	public String chatList(HttpSession session, Model model) {
 		//로그인 판별위해 session에서 sId 받아와서 id로 저장
@@ -26,5 +27,11 @@ public class ChatController {
 		} //로그인 O
 		
 		return "chat/chatList";
+	}
+	
+	//채팅방 1개 열기
+	@GetMapping("ChatRoom")
+	public String chatRoom() {
+		return "chat/chatRoom";
 	}
 }

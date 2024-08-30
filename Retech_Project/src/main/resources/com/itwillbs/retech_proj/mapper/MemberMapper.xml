@@ -88,6 +88,13 @@
 			member_phone = #{member_phone}
 	</select>
 	
+	<!-- ===================================================== -->
+	<!-- 회원 아이디 조회(채팅용) -->
+	<select id="selectMemberId" resultType="String">
+		SELECT member_id
+		FROM member
+		WHERE member_id = #{receiver_id}
+	</select>
 	
 </mapper>
 

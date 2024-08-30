@@ -20,7 +20,7 @@
 				<div class="titleText">채팅하기</div>
 			</div>
 			<!-- 채팅방 목록 -->
-			<div class="chatRoom"></div>
+			<div id="chatRoomListArea"></div>
 		</div>
 	</form>
 <script type="text/javascript">
@@ -29,6 +29,7 @@
 	});
 	
 	function startChat() {
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//일단 임시로 둠.. 나중에 상점의 판매자 아이디를 가져와야
 		let receiver_id = "receiver@naver.com";
 		console.log("receiver_id : " + receiver_id);
