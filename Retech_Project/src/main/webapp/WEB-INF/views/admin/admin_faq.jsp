@@ -140,7 +140,7 @@
 	</head>
 	<body>
 		<header>
-			<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+			<jsp:include page="/WEB-INF/views/inc/admin_top.jsp"></jsp:include>
 		</header>	
 		<div class="inner">
 			<section class="wrapper">
@@ -252,9 +252,8 @@
 				        	<span>카테고리</span> <br>
 					        <select class="category" name="FAQ_category" onchange="selectCategory(this.value)">
 					        	<option value="">선택</option>
-					        	<option value="영화관 이용">영화관 이용</option>
 					        	<option value="회원">회원</option>
-					        	<option value="관람권">관람권</option>
+					        	<option value="거래">거래</option>
 					        	<option value="스토어">스토어</option>
 					        </select>
 				        </div>

@@ -124,7 +124,7 @@
 	</head>
 	<body>
 		<header>
-			<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+			<jsp:include page="/WEB-INF/views/inc/admin_top.jsp"></jsp:include>
 		</header>	
 		<div class="inner">
 			<section class="wrapper">

@@ -19,7 +19,7 @@ public interface FaqMapper {
 							  @Param("listLimit") int listLimit,
 							  @Param("searchKeyword") String searchKeyword);
 
-	FaqVO selectFaq(int FAQ_idx);
+	FaqVO selectFaq(int faq_idx);
 
 
 	

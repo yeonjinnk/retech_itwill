@@ -67,9 +67,9 @@ public class FaqController {
 	
 	// FAQ 상세보기
 	@GetMapping("FaqDetail") 
-	public String faqDetail(@RequestParam(defaultValue = "0") int FAQ_idx, Model model) {
-//			System.out.println(notice_num);
-		FaqVO selectedFaq = service.getFaq(FAQ_idx);
+	public String faqDetail(@RequestParam(defaultValue = "0") int faq_idx, Model model) {
+//			System.out.println(notice_idx);
+		FaqVO selectedFaq = service.getFaq(faq_idx);
 		
 		model.addAttribute("selectedFaq", selectedFaq);
 		

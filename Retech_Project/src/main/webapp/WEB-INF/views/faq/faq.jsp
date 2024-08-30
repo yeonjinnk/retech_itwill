@@ -37,12 +37,12 @@
 			</c:if>
 			<c:forEach var="faq" items="${faqList}">
 				<tr>
-					<td>${faq.FAQ_idx}</td>
-					<td>${faq.FAQ_category}</td>
+					<td>${faq.faq_idx}</td>
+					<td>${faq.faq_category}</td>
 					<td id="subject">
-						<a href="FaqDetail?FAQ_idx=${faq.FAQ_idx}">${faq.FAQ_subject}</a>
+						<a href="FaqDetail?FAQ_idx=${faq.faq_idx}">${faq.faq_subject}</a>
 					</td>
-					<td>${faq.FAQ_create_date}</td>
+					<td>${faq.faq_date}</td>
 				</tr>
 			</c:forEach>
 		</table>

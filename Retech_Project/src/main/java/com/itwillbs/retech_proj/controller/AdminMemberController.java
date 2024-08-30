@@ -62,7 +62,7 @@ public class AdminMemberController {
    // =================================================================================================
    // 관리자 권한 부여 여부
    @GetMapping("ChangeAdminAuthorize")
-   public String changeAuthorize(@RequestParam(defaultValue = "N") int member_isAdmin, String member_id, String isAuthorize, Model model) {
+   public String changeAuthorize(@RequestParam(defaultValue = "N") String member_isAdmin, String member_id, String isAuthorize, Model model) {
       // -------------------------------------------------------------------------------------------
       // 관리자 권한 해제 (파라미터로 member_isAdmin, member_id 받은 상황 !)
       // 관리자 권한 부여면 member_isAdmin : Y

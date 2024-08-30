@@ -8,9 +8,9 @@
 		FROM faq
 		<if test="!searchKeyword.equals('')">
 		WHERE 
-			FAQ_category like concat('%',#{searchKeyword},'%')
-			or FAQ_subject like concat('%',#{searchKeyword},'%')
-			or FAQ_content like concat('%',#{searchKeyword},'%')
+			faq_category like concat('%',#{searchKeyword},'%')
+			or faq_subject like concat('%',#{searchKeyword},'%')
+			or faq_content like concat('%',#{searchKeyword},'%')
 		</if>
 	</select>
 	
@@ -19,12 +19,12 @@
 		FROM faq
 		<if test="!searchKeyword.equals('')">
 			WHERE 
-				FAQ_category like concat('%',#{searchKeyword},'%')
-				or FAQ_subject like concat('%',#{searchKeyword},'%')
-				or FAQ_content like concat('%',#{searchKeyword},'%')
+				faq_category like concat('%',#{searchKeyword},'%')
+				or faq_subject like concat('%',#{searchKeyword},'%')
+				or faq_content like concat('%',#{searchKeyword},'%')
 		</if>
 		ORDER BY
-			FAQ_idx DESC
+			faq_idx DESC
 		LIMIT
 			#{startRow}     
 			, #{listLimit}  
@@ -34,7 +34,7 @@
 		SELECT *
 		FROM faq
 		WHERE 
-			FAQ_idx = #{FAQ_idx}
+			faq_idx = #{faq_idx}
 	</select>
 </mapper>
     
