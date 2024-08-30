@@ -183,7 +183,7 @@ input[type="radio"]:checked + .tab_label {
 	          </div>
 	          <!-- 페이 충전/환급 버튼  -->
 	          <div class="btn_top">
-	            <button class="btn">충전하기</button>
+	            <button class="btn" onclick="location.href='PayCharge'">충전하기</button>
 	            <button class="btn">환급하기</button>
 	          </div>
 	        </div>

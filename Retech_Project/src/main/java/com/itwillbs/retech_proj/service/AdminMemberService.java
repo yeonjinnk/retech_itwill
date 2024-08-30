@@ -20,4 +20,7 @@ public class AdminMemberService {
    public int changeAdminAuth(String member_isAdmin, String member_id) {
       return mapper.updateAdminAuth(member_isAdmin, member_id);
    }
+   
+
+   
 }

@@ -36,6 +36,8 @@
 		ORDER BY
 			pd_first_date DESC
 	</select>
+		<!-- 중고상품 목록 조회작업 -->
+	<!-- 해당카테고리 조회 작업으로 뷰 생성 SECONDHAND_CATEGORY -->
 	
 	<!-- 리테크 상품 목록 개수 조회작업(페이징) -->
 	<select id="selectProductListCount" resultType="int">
@@ -43,6 +45,15 @@
 			COUNT(*)
 		FROM
 			product
+	</select>
+	
+	<!--선택한 카테고리와 거래상태에 해당하는 상품리스트 가져오기  -->
+	<select id="selectSelectedProductList" resultType="product">
+		SELECT *
+		FROM product
+		WHERE
+			pd_category = #{pd_category}
+			and pd_status = #{pd_status}
 	</select>
 	
 	

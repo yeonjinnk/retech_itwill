@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+body {
+	background-color: #f4f4fa;
+	margin: 0px;
+}
+
+/*top 해당 부분 숨김. top은 웹소켓 연결 위해 두기에 공간 절약을 위해 숨김*/
+.header_top {
+	display : none;
+}
+
+.header_main {
+	display : none;
+}
+
+/* 배경 */
+#chatListBody {
+	width: 100%; /* 부모 요소 기준으로 가득 참*/
+	height: 100%; /* 부모 요소 기준으로 가득 참*/
+}
+
+.chatTitle {
+	width: 100%; /* 부모 요소 기준으로 가득 참*/
+	height: 45px; /* 높이*/
+	text-align:center; /* 중앙정렬 */
+	background-color: rgb(255, 255, 255);
+	border-bottom: solid 2.2px #0a58ca; /* solid : 테두리 스타일 실선, px 굵기, 색상*/
+}
+
+.titleText {
+	padding-top: 13px; /* 패딩 상위 여백*/
+	font-size: 14px;
+	font-weight: bold; /* 글자 굵게*/
+}
+

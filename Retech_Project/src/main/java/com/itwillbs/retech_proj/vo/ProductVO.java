@@ -31,7 +31,6 @@ public class ProductVO {
 	private MultipartFile file3;
 	private MultipartFile file4;
 	private MultipartFile file5;
-	
 	List<ProductVO> image_list;
 }
 

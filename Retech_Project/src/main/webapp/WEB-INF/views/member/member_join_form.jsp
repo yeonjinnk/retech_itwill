@@ -142,12 +142,12 @@
             </ul>
         </div>
 
-        <form class="join" name="joinForm" action="${pageContext.request.contextPath}/MemberJoinForm" method="post">
+        <form class="join" name="joinForm" action="${pageContext.request.contextPath}/MemberJoinForm" method="post" onsubmit="return validateForm()">
             <div class="join_detail">
                 <label for="postCode" class="title">주소</label>
                 <input type="text" name="member_postcode" id="postCode" placeholder="우편번호" required readonly>
                 <button type="button" id="btnSearchAddress">주소검색</button>
-                <input type="text" name="member_address1" id="address1" placeholder="기본주소" required>
+                <input type="text" name="member_address1" id="address1" placeholder="기본주소" required readonly>
                 <input type="text" name="member_address2" id="address2" placeholder="상세주소">
             </div>
 
@@ -158,31 +158,31 @@
 
             <div class="join_detail">
                 <label for="member_passwd" class="title">비밀번호</label>
-                <input type="password" name="member_passwd" id="member_passwd" placeholder="영문, 숫자, 특수문자 중 2개 조합 8자 이상" required>
+                <input type="password" name="member_passwd" id="member_passwd" placeholder="영문, 숫자, 특수문자 중 2개 조합 8자 이상">
                 <span id="checkPasswdResult" class="check"></span>
             </div>
 
             <div class="join_detail">
                 <label for="member_passwd2" class="title">비밀번호 확인</label>
-                <input type="password" name="member_passwd2" id="member_passwd2" placeholder="비밀번호를 다시 입력해주세요" required>
-                <span id="checkPasswdResult" class="check"></span>
+                <input type="password" name="member_passwd2" id="member_passwd2" placeholder="비밀번호를 다시 입력해주세요">
+                <span id="checkPasswdResult2" class="check"></span>
             </div>
 
             <div class="join_detail">
                 <label for="member_name" class="title">이름</label>
-                <input type="text" name="member_name" id="member_name" placeholder="실명을 입력해주세요" required>
+                <input type="text" name="member_name" id="member_name" placeholder="실명을 입력해주세요">
                 <span id="checkNameResult" class="check"></span>
             </div> 
 
             <div class="join_detail">
                 <label for="member_nickname" class="title">상점이름(닉네임)</label>
-                <input type="text" name="member_nickname" id="member_nickname" placeholder="상점이름을 입력해주세요" required>
+                <input type="text" name="member_nickname" id="member_nickname" placeholder="상점이름을 입력해주세요">
                 <span id="checkNickNameResult" class="check"></span>
             </div>
 
             <div class="join_detail">
                 <label for="member_birth" class="title">생년월일</label>
-                <input type="text" name="member_birth" id="member_birth" placeholder="예) 1999-01-01" required>
+                <input type="text" name="member_birth" id="member_birth" placeholder="예) 1999-01-01">
                 <span id="checkBirthResult" class="check"></span>
             </div>
 
@@ -212,9 +212,9 @@
                 let passwd2 = $("#member_passwd2").val();
                 
                 if (passwd === passwd2) {
-                    $("#checkPasswdResult").text("비밀번호가 일치합니다.").addClass("success").removeClass("error");
+                    $("#checkPasswdResult2").text("비밀번호가 일치합니다.").addClass("success").removeClass("error");
                 } else {
-                    $("#checkPasswdResult").text("비밀번호가 일치하지 않습니다.").addClass("error").removeClass("success");
+                    $("#checkPasswdResult2").text("비밀번호가 일치하지 않습니다.").addClass("error").removeClass("success");
                     $("#member_passwd2").focus();
                 }
             }
@@ -223,7 +223,7 @@
                 let regex = /^[가-힣]{2,6}$/;
                 let name = $("#member_name").val();
                 
-                if (!regex.exec(name)) {
+                if (!regex.test(name)) {
                     $("#checkNameResult").text("한글로 이름을 입력해주세요.").addClass("error").removeClass("success");
                     $("#member_name").focus();
                 } else {
@@ -235,19 +235,27 @@
                 let regex = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
                 let birth = $("#member_birth").val();  
                 
-                if (!regex.exec(birth)) {
+                if (!regex.test(birth)) {
                     $("#checkBirthResult").text("0000-00-00의 형식으로 입력해주세요.").addClass("error").removeClass("success");
                     $("#member_birth").focus();
                 } else {
-                    $("#checkBirthResult").text("").removeClass("error success");
+                    let birthDate = new Date(birth);
+                    let maxDate = new Date('2010-01-01');
+
+                    if (birthDate >= maxDate) {
+                        $("#checkBirthResult").text("2010년 1월 1일 이전의 생년월일을 입력해주세요.").addClass("error").removeClass("success");
+                        $("#member_birth").focus();
+                    } else {
+                        $("#checkBirthResult").text("").removeClass("error success");
+                    }
                 }
             }
 
             function checkPhoneNum() {
-                let regex = /^[0-9]{11}$/;
+                let regex = /^[0-9]{10,11}$/;
                 let phone = $("#member_phone").val();  
                 
-                if (!regex.exec(phone)) {
+                if (!regex.test(phone)) {
                     $("#checkPhoneResult").text("숫자만 입력해주세요.").addClass("error").removeClass("success");
                     $("#member_phone").focus();
                 } else {
@@ -270,6 +278,33 @@
                     }
                 }).open();
             });
+
+            function validateForm() {
+                let isValid = true;
+
+                let birth = $("#member_birth").val();
+                let birthDate = new Date(birth);
+                let maxDate = new Date('2010-01-01');
+
+                if (birthDate >= maxDate) {
+                    $("#checkBirthResult").text("2010년 1월 1일 이전의 생년월일을 입력해주세요.").addClass("error").removeClass("success");
+                    isValid = false;
+                }
+
+                if ($("#checkPasswdResult").hasClass("error")) {
+                    isValid = false;
+                }
+
+                if ($("#checkNameResult").hasClass("error")) {
+                    isValid = false;
+                }
+
+                if ($("#checkPhoneResult").hasClass("error")) {
+                    isValid = false;
+                }
+
+                return isValid;
+            }
         });
     </script>
 </body>

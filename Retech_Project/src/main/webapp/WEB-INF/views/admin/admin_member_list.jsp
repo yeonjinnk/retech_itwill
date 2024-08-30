@@ -63,7 +63,7 @@
 <body>
     <header>
         <jsp:include page="/WEB-INF/views/inc/admin_top.jsp"></jsp:include>
-    </header>  
+    </header>
     <div class="inner">
         <section class="wrapper">
             <jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
@@ -75,8 +75,6 @@
                             <th>회원아이디</th>
                             <th>이름</th>
                             <th>회원상태</th>
-                            <th>관리자여부</th>
-                            <th>관리자 권한관리</th>
                         </tr>
                         <c:set var="pageNum" value="1" />
                         <c:if test="${not empty param.pageNum}">
@@ -86,7 +84,6 @@
                             <tr align="center">
                                 <td>${member.member_id}</td>
                                 <td>${member.member_name}</td>
-                                <td>
                                     <c:choose>
                                         <c:when test="${member.member_status eq '탈퇴'}">
                                             <span class="status-x">X</span>
@@ -120,7 +117,9 @@
                     </table>
                 </div>
                 <div id="pageList">
-                    <input type="button" value="이전" onclick="location.href='AdminMemberList?pageNum=${pageNum - 1}'">
+                    <input type="button" value="이전" 
+                        onclick="location.href='AdminMemberList?pageNum=${pageNum - 1}'" 
+                        <c:if test="${pageNum eq 1}"> disabled</c:if> >
                     <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
                         <c:choose>
                             <c:when test="${i eq pageNum}">
@@ -131,7 +130,9 @@
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
-                    <input type="button" value="다음" onclick="location.href='AdminMemberList?pageNum=${pageNum + 1}'">
+                    <input type="button" value="다음" 
+                        onclick="location.href='AdminMemberList?pageNum=${pageNum + 1}'"
+                        <c:if test="${pageNum eq pageInfo.endPage}"> disabled</c:if> >
                 </div>
             </article>
         </section>
