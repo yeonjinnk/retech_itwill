@@ -75,6 +75,8 @@
                             <th>회원아이디</th>
                             <th>이름</th>
                             <th>회원상태</th>
+                            <th>관리자 여부</th>
+                            <th>관리자 권한관리</th>
                         </tr>
                         <c:set var="pageNum" value="1" />
                         <c:if test="${not empty param.pageNum}">
@@ -84,6 +86,7 @@
                             <tr align="center">
                                 <td>${member.member_id}</td>
                                 <td>${member.member_name}</td>
+                                <td>
                                     <c:choose>
                                         <c:when test="${member.member_status eq '탈퇴'}">
                                             <span class="status-x">X</span>
