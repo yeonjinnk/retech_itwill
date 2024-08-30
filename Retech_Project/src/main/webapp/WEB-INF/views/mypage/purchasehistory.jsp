@@ -227,6 +227,7 @@
             <div class="store-info">
                 <h2>상점 정보</h2>
                 <p>상점명: ${member.member_nickname}</p>
+                <p>지역: ${member.member_address1}</p>
                 <p>신뢰지수: </p>
             </div>
 
