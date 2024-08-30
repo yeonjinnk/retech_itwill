@@ -240,7 +240,6 @@
                 <%-- 판매내역을 테이블로 출력 --%>
                 <c:if test="${not empty productList}">
                     <table>
-                        <thead>
                             <tr>
                                 <th>상품사진</th>
                                 <th>상품명</th>
@@ -248,9 +247,11 @@
                                 <th>등록날짜</th>
                                 <th>거래상태</th>
                             </tr>
-                        </thead>
-                        <tbody>
                             <c:forEach var="product" items="${productList}">
+                                <c:if test="${product.pd_status == '판매중' || 
+                                             product.pd_status == '판매완료' || 
+                                             product.pd_status == '거래취소 승인 대기' || 
+                                             product.pd_status == '거래취소 승인됨'}">
                                 <tr>
                                     <td>
                                         <c:choose>
@@ -270,8 +271,8 @@
                                         <button class="confirm-request" data-id="${product.pd_status}">거래확정</button>
                                     </td>
                                 </tr>
+                                </c:if>
                             </c:forEach>
-                        </tbody>
                     </table>
                 </c:if>
                 <c:if test="${empty productList}">
