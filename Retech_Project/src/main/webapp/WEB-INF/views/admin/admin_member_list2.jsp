@@ -44,21 +44,6 @@
             text-align: center;
         }
     </style>
-    <script>
-    function confirmAdmin(id, isadmin, isAuthorize){
-		let msg = "";
-		
-		if(isAuthorize == 'Y') {
-			msg = "부여";
-		} else {
-			msg = "해제";
-		}
-		
-		if(confirm("관리자 권한을 " + msg + "하시겠습니까?")){
-			location.href="ChangeAdminAuthorize?member_id=" + id + "&member_isAdmin=" + isadmin + "&isAuthorize=" + isAuthorize;
-		}
-	}
-    </script>
 </head>
 <body>
     <header>
@@ -74,9 +59,10 @@
                         <tr>
                             <th>회원아이디</th>
                             <th>이름</th>
+                            <th>상점이름</th>
+                            <th>전화번호</th>
+                            <th>생년월일</th>
                             <th>회원상태</th>
-                            <th>관리자 여부</th>
-                            <th>관리자 권한관리</th>
                         </tr>
                         <c:set var="pageNum" value="1" />
                         <c:if test="${not empty param.pageNum}">
@@ -86,6 +72,9 @@
                             <tr align="center">
                                 <td>${member.member_id}</td>
                                 <td>${member.member_name}</td>
+                                <td>${member.member_nickname}</td>
+                                <td>${member.member_phone}</td>
+                                <td>${member.member_birth}</td>
                                 <td>
                                     <c:choose>
                                         <c:when test="${member.member_status eq '탈퇴'}">
@@ -96,20 +85,6 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>${member.member_isAdmin}</td>
-                               <td>
-										<c:choose>
-											<c:when test="${member.member_isAdmin eq 'N'}">
-<%-- 												<input type="button" value="관리자 권한 부여" onclick="confirmYAdmin('${member.member_id}',${member.member_isAdmin})"> --%>
-												<input type="button" value="관리자 권한 부여" onclick="confirmAdmin('${member.member_id}',${member.member_isAdmin}, 'Y')"
-													<c:if test="${member.member_status eq '탈퇴'}"> disabled</c:if>>
-											</c:when>
-											<c:otherwise>
-<%-- 												<input type="button" value="관리자 권한 해제" onclick="confirmNAdmin('${member.member_id}',${member.member_isAdmin})"> --%>
-												<input type="button" value="관리자 권한 해제" id="yAdmin" onclick="confirmAdmin('${member.member_id}',${member.member_isAdmin}, 'N')">
-											</c:otherwise>
-										</c:choose>
-									</td>
                             </tr>
                         </c:forEach>
                         <c:if test="${empty memberList}">

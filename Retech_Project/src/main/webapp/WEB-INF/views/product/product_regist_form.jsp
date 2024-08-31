@@ -578,7 +578,7 @@
       if($('#imageFile4')[0].files[0]!=undefined){
          formData.append('file5',$('#imageFile4')[0].files[0]);
       }
-      formData.append('member_id', member_id);      // 유저idx
+      formData.append('member_id', member_id);      // 회원id
       formData.append('pd_subject',p_name);         // 상품명
       
       
@@ -599,20 +599,14 @@
          contentType : false,
          dataType : 'json',
          success  : function(res){
-            
             if(res == true){
                alert('해당 상품이 정상적으로 등록되었습니다!');
-   //               location.href='../mainpage/list.do';
-               location.href='${pageContext.request.contextPath }/product_list';
+               location.href='${pageContext.request.contextPath }/ProductList';
             }
-            
-         },error   : function(err){
+         },error  : function(err){
             alert('해당 상품에 실패했습니다. 관리자나 1:1 게시판에 문의하세요.');
          }
-         
       });
-   
-   
    }
    
    // 상품등록을 취소하게 하는 함수(procancel)   
@@ -993,7 +987,7 @@ td {
 						<!-- 이미지 등록 영역 -->
 						<div id="img_zone">
 							<div id="img_preview0">
-								<input type="image" id="imgup_sum" onclick="send_0();" src="" width="150px" height="150px"> 
+								<input type="image" id="imgup_sum" onclick="send_0();" src="" width="150px" height="150px" required="required"> 
 								<span id="sum_style">대표 이미지</span>
 								<!-- 삭제버튼 -->
 								<span id="del_sum" class="chk_style" onclick="del_sum();">x</span>
@@ -1047,11 +1041,11 @@ td {
 				<tr>
 					<td class="td1" align="left" style="vertical-align: top;"><span class="pro_info">카테고리<span style="color: red">*</span></span></td>
 					<td class="td2" align="left"><select class="input-tag" id="c_id" name="c_id" style="width: 30%; height: 35px;">
-							<option value="0">카테고리 선택</option>
+							<option value="">카테고리 선택</option>
 							<option value="PC">PC</option>
 							<option value="NB">노트북</option>
 					</select> <select class="input-tag" id="c_id2" name="c_id2" style="width: 30%; height: 35px;">
-							<option value="0">카테고리 선택</option>
+							<option value="">카테고리 선택</option>
 							<option value="SA">삼성</option>
 							<option value="AP">애플</option>
 							<option value="LG">LG</option>

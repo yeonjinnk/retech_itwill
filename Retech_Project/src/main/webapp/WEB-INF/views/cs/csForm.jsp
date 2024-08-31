@@ -7,37 +7,41 @@
 <title>1:1문의양식</title>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
-    body {
-        font-family: Arial, sans-serif;
-    }
-    table {
-        width: 60%; 
-        border-collapse: collapse; 
-    }
-    
-    #tr_top {
-		background: gray;
-		text-align: center;
-	}
-	
-    th, td {
-        border: 1px solid #ccc; 
-        padding: 8px; 
-        text-align: left; 
-    }
-    input[type="text"] {
-        width: 100%; 
-        padding: 8px; 
-        box-sizing: border-box; 
-    }
-    textarea{
-		resize: none;
-		width: 100%; 
-	}
-	.btn {
-		text-align: center; 
-	    padding-top: 10px; 
-	}
+body {
+	font-family: Arial, sans-serif;
+}
+
+table {
+	width: 60%;
+	border-collapse: collapse;
+}
+
+#tr_top {
+	background: gray;
+	text-align: center;
+}
+
+th, td {
+	border: 1px solid #ccc;
+	padding: 8px;
+	text-align: left;
+}
+
+input[type="text"] {
+	width: 100%;
+	padding: 8px;
+	box-sizing: border-box;
+}
+
+textarea {
+	resize: none;
+	width: 100%;
+}
+
+.btn {
+	text-align: center;
+	padding-top: 10px;
+}
 </style>
 </head>
 <body>

@@ -24,8 +24,8 @@ public class FaqService {
 	}
 
 	// FAQ 상세보기
-	public FaqVO getFaq(int FAQ_idx) {
-		return mapper.selectFaq(FAQ_idx);
+	public FaqVO getFaq(int faq_idx) {
+		return mapper.selectFaq(faq_idx);
 	}
 	
 

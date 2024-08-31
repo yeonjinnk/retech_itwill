@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 public class FaqVO {
 
-	private int FAQ_idx;
-	private String FAQ_category;
-	private String FAQ_subject;
-	private String FAQ_content;
-	private Date FAQ_create_date;
+	private int faq_idx;
+	private String faq_category;
+	private String faq_subject;
+	private String faq_content;
+	private Date faq_date;
 
 }

@@ -95,7 +95,7 @@ public class CsController {
 	public String csRegistform(HttpSession session, Model model, String cs_member_id) {
 //		System.out.println(member_id);
 		model.addAttribute("cs_member_id", cs_member_id);
-		return "cs/CsForm";
+		return "cs/csForm";
 	}
 	
 	// 1:1 문의 작성

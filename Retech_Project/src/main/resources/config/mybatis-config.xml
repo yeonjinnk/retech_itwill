@@ -9,6 +9,7 @@
 		<typeAlias type="com.itwillbs.retech_proj.vo.NoticeVO" alias="notice"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.FaqVO" alias="faq"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.CsVO" alias="cs"/>
+		<typeAlias type="com.itwillbs.retech_proj.vo.ProductVO" alias="product"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.ChatRoom" alias="chatRoom"/>
 	</typeAliases>
 </configuration>

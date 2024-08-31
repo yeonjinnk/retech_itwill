@@ -227,6 +227,7 @@
             <div class="store-info">
                 <h2>상점 정보</h2>
                 <p>상점명: ${member.member_nickname}</p>
+                <p>지역: ${member.member_address1}</p>
                 <p>신뢰지수: </p>
             </div>
 
@@ -250,6 +251,10 @@
                         </thead>
                         <tbody>
                             <c:forEach var="product" items="${productList}">
+                                <c:if test="${product.pd_status == '결제완료' || 
+                                             product.pd_status == '거래취소 요청' || 
+                                             product.pd_status == '거래취소 확정' || 
+                                             product.pd_status == '거래확정'}">
                                 <tr>
                                     <td>
                                         <c:choose>
@@ -268,6 +273,7 @@
                                         <button class="cancel-request" data-id="${product.pd_status}">거래취소승인</button>
                                     </td>
                                 </tr>
+                                </c:if>
                             </c:forEach>
                         </tbody>
                     </table>

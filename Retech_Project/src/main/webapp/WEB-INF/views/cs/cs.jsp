@@ -40,7 +40,7 @@
 			<c:forEach var="cs" items="${csList}">
 				<tr>
 					<td id="subject">
-						<a href="CsContent?cs_num=${cs.cs_idx}&pageNum=${pageNum}">${cs.cs_subject}</a>
+						<a href="CsContent?cs_idx=${cs.cs_idx}&pageNum=${pageNum}">${cs.cs_subject}</a>
 					</td>
 					<td>${cs.cs_content}</td>
 					<td>${cs.cs_check}</td>
