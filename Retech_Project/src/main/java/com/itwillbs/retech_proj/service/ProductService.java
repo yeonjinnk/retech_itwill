@@ -37,8 +37,16 @@ public class ProductService {
 		return mapper.selectSelectedProductList(pd_category, pd_status);
 	}
 	//거래중 게시물 목록 조회
-	public List<HashMap<String, String>> getChangedProductList(int pageNum, String category, String sort, int startRow, int listLimit, String type) {
-		return mapper.selectChangedProductList(pageNum, category, sort, startRow, listLimit, type);
+	public List<HashMap<String, String>> getChangedProductList(int pageNum, String pd_category, String sort, int startRow, int listLimit) {
+		return mapper.selectChangedProductList(pageNum, pd_category, sort, startRow, listLimit);
+	}
+	//전체 게시물 갯수 계산
+	public int getChangedProductListCount(int pageNum, String pd_category, String sort, String type) {
+		return mapper.selectChangedProductListCount(pageNum, pd_category, sort, type);
+	}
+	//상품 카테고리 목록
+	public List<HashMap<String, String>> getCategorylist() {
+		return mapper.selectCategoryList();
 	}
 
 }

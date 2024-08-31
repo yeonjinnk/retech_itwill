@@ -102,6 +102,9 @@ $(function() {
 		
 			<div class="left">
 				<div class="img">
+				<img src="https://postfiles.pstatic.net/MjAyNDA2MTBfNiAg/MDAxNzE3OTc4MjAzNzQz.AqNQ8cKvK54LCa263jhmG579YLTZdhC3wnBRahxRLH4g.hhKFMvuyWqTLk-Km1ijFUSK6__mDzXNqEsHER_hZkewg.PNG/image.png?type=w773">
+				<img src="https://postfiles.pstatic.net/MjAyNDA2MTBfMTc2/MDAxNzE3OTc4NjQyOTE1.CqGc4k2BPMfYQ-4qOOEqHlVHNZDplDtKkWD0hmLrzy4g.mW3ZbFBVndnpggKpT6kTC8Bz42p6J8uOpXWXAROFn1cg.PNG/image.png?type=w773">
+				<img src="https://contents.kyobobook.co.kr/sih/fit-in/600x0/gift/pdt/1124/hot1724210923098.jpg">
 					<div class="bigImage">
 						<img src="${Product.store_img1}" id="big"/>
 					</div>
