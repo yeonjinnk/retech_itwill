@@ -27,4 +27,11 @@ public class ChatController {
 		
 		return "chat/chatList";
 	}
+	
+	
+	
+	@GetMapping("ChatRoom")
+	public String chatRoom() {
+		return "chat/chatRoom";
+	}
 }

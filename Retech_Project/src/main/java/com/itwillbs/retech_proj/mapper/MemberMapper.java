@@ -36,6 +36,10 @@ public interface MemberMapper {
 	 
 	   List<Map<String, String>> selectPaymentInfo(int member_num);
 
-	   StoreVO selectItem2(StoreVO store);	
+	   StoreVO selectItem2(StoreVO store);
+
+	 //=====================================================================================
+	 //회원 아이디 조회(채팅용)
+	   String selectMemberId(String receiver_id);	
 
 }
