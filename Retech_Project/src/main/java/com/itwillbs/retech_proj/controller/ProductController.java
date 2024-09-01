@@ -33,52 +33,67 @@ public class ProductController {
 	@Autowired
 	   private ProductService service;
 	
-	//중고상품목록페이지
+	//리테크상품목록페이지
 	//최신순(날짜순)으로 기본적으로 정렬됨
 	@GetMapping("ProductList")
-	public String productList(@RequestParam(defaultValue = "1") int pageNum,
-			ProductVO product, Model model, HttpSession session) {
-		//공통코드 사용하여 카테고리별로 목록 표시
-		
-		// 페이징 처리를 위해 조회 목록 갯수 조절 시 사용될 변수 선언
-		int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
-		int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
-		//ProductService - getProductList() 호출하여 게시물목록 조회요청
-		//파라미터 : (검색타입,검색어), 시작행번호, 목록갯수
-		List<ProductVO> productList = service.getProductList(startRow, listLimit);
-		
-		//페이징처리 위한 계산작업----------------------------------------------------
-		//1. ProductService - getProductListCount() 호출하여 전체게시물 수 조회요청
-		int listCount = service.getProductListCount();
-		//2. 전체페이지 목록 개수 계산
-		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
-		model.addAttribute("productList",productList);
-		model.addAttribute("maxPage", maxPage);
-		model.addAttribute("listCount", listCount);//전체게시물수
-//		System.out.println("리스트 : " + productList);
-		return"product/product_list";
+	public String productList(
+	        @RequestParam(defaultValue = "1") int pageNum,
+	        ProductVO product,
+	        Model model,
+	        HttpSession session) {
+	    
+	    int listLimit = 10; // 한 페이지에서 표시할 목록 갯수 지정
+	    int startRow = (pageNum - 1) * listLimit; // 조회 시작 행(레코드) 번호
+	    
+	    // ProductService - getProductList() 호출하여 게시물 목록 조회 요청
+	    List<ProductVO> productList = service.getProductList(startRow, listLimit);
+	    
+	    // 페이징 처리를 위한 계산작업
+	    int listCount = service.getProductListCount(); // 전체 게시물 수 조회
+	    int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+	    
+	    model.addAttribute("productList", productList);
+	    model.addAttribute("maxPage", maxPage);
+	    model.addAttribute("listCount", listCount); // 전체 게시물 수
+	    
+	    return "product/product_list";
 	}
+
 	//목록 메서드
 	@ResponseBody
 	@GetMapping("productListJson")
-	public String changedProductList(@RequestParam String pd_category, @RequestParam String pd_status, ProductVO product,
-		@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "") String category,
-		@RequestParam(defaultValue = "") String sort) {
+	public String changedProductList(@RequestParam String pd_category, ProductVO product,
+		@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "") String sort) {
+			System.out.println("changedProductList 호출됨!");
 			System.out.println("pd_category : " + pd_category);
-			System.out.println("pd_status : " + pd_status);
+//			System.out.println("pd_status : " + pd_status);
 			int listLimit = 12; // 한 페이지에서 표시할 목록 갯수 지정
 			int startRow = (pageNum -1) * listLimit; //조회 시작 행(레코드 번호)
 			
 			//전달할 목록 값 받아오기 (거래중일 경우)
 			String type = "거래중";
-			List<HashMap<String, String>>changedProductList = service.getChangedProductList(pageNum, category, sort, startRow, listLimit, type);
+			List<HashMap<String, String>>changedProductList = service.getChangedProductList(pageNum, pd_category, sort, startRow, listLimit);
+			System.out.println("changedProductList : " + changedProductList);
+			//전체 게시물 갯수 계산
+			int listCount = service.getChangedProductListCount(pageNum, pd_category, sort, type);
+			
+			//전체페이지 목록 개수 계산
+			int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
+			// => 이것도 리턴값으로 들고가고 싶다 => 객체로 넣기(boardList = XX, maxPage = xx) => JSONObject
+			
+			// 최대 페이지번호(maxPage) 값도 JSON 데이터로 함께 넘기기
+			JSONObject jsonObject = new JSONObject();
+			
+			jsonObject.put("changedProductList", changedProductList);
+			jsonObject.put("maxPage", maxPage);
+			jsonObject.put("listCount", listCount);
+			System.out.println(jsonObject);
 			
 			//선택한 카테고리와 거래상태에 해당하는 상품리스트 가져오기
-			List<ProductVO> selectedProductList = service.getSelectedProductList(pd_category, pd_status);
-			System.out.println("selectedProductList : " + selectedProductList);
+//			List<ProductVO> selectedProductList = service.getSelectedProductList(pd_category, pd_status);
+//			System.out.println("selectedProductList : " + selectedProductList);
 			
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("selectedProductList", selectedProductList);
+//			jsonObject.put("selectedProductList", selectedProductList);
 			
 			return jsonObject.toString();
 	}
@@ -93,12 +108,19 @@ public class ProductController {
 			model.addAttribute("msg", "로그인이 필요합니다.");
 			return"result/fail";
 		}
+		//중고 카테고리 값 전달 
+		List<HashMap<String, String>> categorylist = service.getCategorylist();
+		model.addAttribute("categorylist", categorylist);
+		System.out.println("카테고리 리스트!!!!!!!!!!!!!!!!! : " + categorylist);
+		
 		return"product/product_regist_form";
 	}
 	//상품 등록 처리
 	@ResponseBody
 	@PostMapping("ProductRegistPro")
 	public String ProductRegistPro(ProductVO product, HttpSession session, Model model, HttpServletResponse request) {
+		System.out.println("넘어온 product : " + product);
+
 		//JsonConverter 사용하기 위한 Map생성
 		Map<String,String> map = new HashMap<>();
 		//기본 리턴값 false
