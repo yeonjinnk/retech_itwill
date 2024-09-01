@@ -64,80 +64,63 @@
 			pd_category = #{pd_category}
 			and pd_status = #{pd_status}
 	</select>
+	
+	
 	<!-- 상품 목록 정렬 변경 시 변경된 정렬로 목록 조회 작업 selectChangedProductList -->
 	<select id="selectChangedProductList" resultType="hashmap">
 	    SELECT *
 	    FROM product
-	    <if test="pd_category != ''">
-	        <choose>
-	            <when test="pd_category == 'PC'">
-	                WHERE pd_category = 'PC'
-	            </when>
-	            <when test="pd_category == '노트북'">
-	                WHERE pd_category = 'NB'
-	            </when>
-	            <when test="pd_category == '삼성'">
-	                WHERE pd_category = 'SA'
-	            </when>
-	            <when test="pd_category == 'LG'">
-	                WHERE pd_category = 'LG'
-	            </when>
-	            <when test="pd_category == '애플'">
-	                WHERE pd_category = 'AP'
-	            </when>
-	            <when test="pd_category == '기타'">
-	                WHERE pd_category = 'ET'
-	            </when>
-	        </choose>
-	    </if>
-	    <if test="sort != ''"> 
-	        <choose>
-	            <when test="sort == '최신순'">
-	                ORDER BY pd_first_date DESC 
-	            </when>
-	            <when test="sort == '가격순'">
-	                ORDER BY pd_price 
-	            </when>
-	            <when test="sort == '인기순'">
-	                ORDER BY pd_readcount DESC 
-	            </when>
-	        </choose>
-	    </if>
-	    LIMIT #{startRow}, #{listLimit}
-	</select>
+	    WHERE 1 = 1
+	      <!-- 카테고리 필터링 -->
+	      <if test="pd_category != ''">
+	        AND pd_category like CONCAT('%',#{pd_category},'%')
+	      </if>
+	      <!-- 제조사 필터링 -->
+	      <if test="pd_selectedManufacturer != ''">
+	        AND pd_category like CONCAT('%',#{pd_selectedManufacturer},'%')
+	      </if>
+	      <!-- 거래 상태 필터링 -->
+	 	  <if test="pd_selectedPdStatus != ''">
+	        AND pd_status like CONCAT('%',#{pd_selectedPdStatus},'%')
+	      </if>
+		    ORDER BY 
+	      <choose>
+	        <when test="sort == '최신순'">
+	          pd_first_date DESC
+	        </when>
+	        <when test="sort == '가격순'">
+	          pd_price
+	        </when>
+	        <when test="sort == '인기순'">
+	          pd_readcount DESC
+	        </when>
+	        <otherwise>
+	          pd_first_date DESC
+	        </otherwise>
+	      </choose>
+	    LIMIT #{pageNum}, 12
+	</select> 
+	     
+	     
+	     
 
 	<!-- 상품목록 정렬변경시 변경된정렬 목록 개수 조회작업 selectChangedSecondhandListCount -->
 	<select id="selectChangedProductListCount" resultType="int">
-			SELECT
-			COUNT(*)
-			FROM 
-				product
-			<if test="!pd_category.equals('')">
-				<choose>
-					<when test="pd_category.equals('PC')">
-						WHERE pd_category = 'PRODUCTPC'
-					</when>
-					<when test="pd_category.equals('노트북')">
-						WHERE pd_category = 'PRODUCTNB'
-					</when>
-					<when test="pd_category.equals('삼성')">
-						WHERE pd_category = 'PRODUCTPCSA'
-						OR pd_category = 'PRODUCTNBSA'
-					</when>
-					<when test="pd_category.equals('LG')">
-						WHERE pd_category = 'PRODUCTPCLG'
-						OR pd_category + 'PRODUCTNBLG'
-					</when>
-					<when test="pd_category.equals('애플')">
-						WHERE pd_category = 'PRODUCTPCAP'
-						OR pd_category = 'PRODUCTNBAP'
-					</when>
-					<when test="pd_category.equals('기타')">
-						WHERE pd_category = 'PRODUCTPCET'
-						OR pd_category = 'PRODUCTNBET'
-					</when>
-				</choose>
-			</if>
+			SELECT COUNT(*)
+			FROM product
+	    	WHERE 1 = 1
+	    <!-- 카테고리 필터링 -->
+	      <if test="pd_category != ''">
+	        AND pd_category like CONCAT('%',#{pd_category},'%')
+	      </if>
+	      <!-- 제조사 필터링 -->
+	      <if test="pd_selectedManufacturer != ''">
+	        AND pd_category like CONCAT('%',#{pd_selectedManufacturer},'%')
+	      </if>
+	      <!-- 거래 상태 필터링 -->
+	 	  <if test="pd_selectedPdStatus != ''">
+	        AND pd_status like CONCAT('%',#{pd_selectedPdStatus},'%')
+	      </if>
 	</select>
 	
 </mapper>

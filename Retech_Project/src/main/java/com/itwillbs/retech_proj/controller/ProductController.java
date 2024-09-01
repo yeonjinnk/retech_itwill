@@ -62,20 +62,23 @@ public class ProductController {
 	//목록 메서드
 	@ResponseBody
 	@GetMapping("productListJson")
-	public String changedProductList(@RequestParam String pd_category, ProductVO product,
-		@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "") String sort) {
+	public String changedProductList(@RequestParam String pd_category, ProductVO product, @RequestParam String pd_selectedManufacturer, 
+		@RequestParam String pd_selectedPdStatus,
+		@RequestParam int pageNum, @RequestParam(defaultValue = "") String sort) {
 			System.out.println("changedProductList 호출됨!");
-			System.out.println("pd_category : " + pd_category);
+//			System.out.println("pd_category : " + pd_category);
+			System.out.println("pd_pd_selectedManufacturer : " + pd_selectedManufacturer);
 //			System.out.println("pd_status : " + pd_status);
 			int listLimit = 12; // 한 페이지에서 표시할 목록 갯수 지정
 			int startRow = (pageNum -1) * listLimit; //조회 시작 행(레코드 번호)
 			
 			//전달할 목록 값 받아오기 (거래중일 경우)
 			String type = "거래중";
-			List<HashMap<String, String>>changedProductList = service.getChangedProductList(pageNum, pd_category, sort, startRow, listLimit);
+			System.out.println("pageNum :                 " + pageNum);
+			List<HashMap<String, String>>changedProductList = service.getChangedProductList(pageNum, pd_category, pd_selectedManufacturer, pd_selectedPdStatus, sort, startRow, listLimit);
 			System.out.println("changedProductList : " + changedProductList);
 			//전체 게시물 갯수 계산
-			int listCount = service.getChangedProductListCount(pageNum, pd_category, sort, type);
+			int listCount = service.getChangedProductListCount(pageNum, pd_category, pd_selectedManufacturer, pd_selectedPdStatus, sort, type);
 			
 			//전체페이지 목록 개수 계산
 			int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
