@@ -18,7 +18,7 @@
 let pd_category;
 let pd_status;
 let isOpen = "false"; // 정렬 목록에 사용할 함수 기본값 false
-let pageNum = 1; // 임의로 설정
+let pageNum = 0; // 임의로 설정
 let maxPage = 1; // 최대 페이지 번호 미리 저장
 
 // 카테고리(최신순) 변수 정의
@@ -76,6 +76,28 @@ $(function() {
 	            loadList(selectedCategory, selectedSort);
 	        }
 	    });
+	    // 두 번째 카테고리 선택 이벤트 추가
+	    $("#categoryNav select").on("change", function () {
+	        var selectedManufacturer = $("#c_id2 option:selected").val();  // 두 번째 select 박스에서 선택된 값
+	        console.log("선택된 제조사: " + selectedManufacturer);
+	        $("#selectedCategorySpan").text("선택된 카테고리: " + selectedCategory);
+	        // 추가적으로 처리할 로직을 여기에 작성 (예: 상품 목록 로드)
+	        if (selectedCategory) {
+	            // 필요하다면 선택된 제조사에 따라 목록을 다시 로드하거나 다른 작업 수행
+	            loadList(selectedCategory, selectedSort);
+	        }
+	    });
+	    // 세 번째 카테고리 선택 이벤트 추가
+	    $("#categoryNav select").on("change", function () {
+	        var selectedManufacturer = $("#c_id3 option:selected").val();  // 두 번째 select 박스에서 선택된 값
+	        console.log("선택된 제조사: " + selectedManufacturer);
+	        $("#selectedCategorySpan").text("선택된 카테고리: " + selectedCategory);
+	        // 추가적으로 처리할 로직을 여기에 작성 (예: 상품 목록 로드)
+	        if (selectedCategory) {
+	            // 필요하다면 선택된 제조사에 따라 목록을 다시 로드하거나 다른 작업 수행
+	            loadList(selectedCategory, selectedSort);
+	        }
+	    });
 	});
 	
 	// 제한없이 내려가는 스크롤 기능 추가
@@ -93,7 +115,7 @@ $(function() {
 		if(scrollTop + windowHeight + x >= documentHeight){
 			//최대 페이지 번호를 초과하면
 			if(pageNum < maxPage) {
-				pageNum++;
+// 				pageNum++;
 				loadList(selectedCategory, selectedSort);
 			}
 		}
@@ -103,85 +125,77 @@ $(function() {
 
 //목록 불러오는 함수 정의
 function loadList(selectedCategory, selectedSort) {
-	let url;
-	
-	// 컨트롤러로 보낼때 파라미터 처리
-	url = "productListJson?pageNum=" + pageNum + "&pd_category=" + selectedCategory + "&sort=" + selectedSort;
-	
-	
-	
-	
-	$.ajax({
-		type: "GET",
-		url: url,
-		dataType: "JSON",
-		success: function(data) {
-// 			alert("글목록요청 성공");
+    let url;
 
-			// 1. 
-			maxPage = data.maxPage;
-// 			console.log("maxPage : " + maxPage);
-			// => 무한스크롤 시 
-			
-			
-			//목록별 상품의 개수 조회 출력
-			$("#listCount").text(data.listCount);
-			
-			// 기존에 있던 리스트 삭제
-			$(".productListArea").empty();
-			
-			//ajax로받아온리스트 for문으로 반복출력하기
-			for(let product of data.changedProductList) {
-				let price = product.pd_price;
-				let formatted_price = Number(price).toLocaleString('en');
-				
-				
-				// 목록에 표시할 JSON 객체 1개 출력문 생성(= 1개 게시물) => 반복
-				$(".productListArea").append(
-						
-						'<div class="col-lg-3 col-mid-4">'
-						+'	<div class="card border-0" >'
-						<!-- 썸네일이미지 -->
-						+'		<div class="photoDiv">	'
-						+'			<a href="product_detail?pd_idx=' + product.pd_idx + '&member_id= ' + product.member_id + '">'
-						+'				<img src="${pageContext.request.contextPath }/resources/upload/' + product.pd_image1 +'" class="card-img-top" >'
-						+'			</a>	'
-						<!-- 찜하기 버튼 -->
-						+'			<span class="likebtn" data-product-idx="' + product.pd_idx + '">'	
-						+'				<a href="#" style="align:right;">'	
-						+'					<img src="${pageContext.request.contextPath }/resources/images/heartIcon.png" width="30px" height="30px">'	
-						+'				</a>'	
-						+'			</span>'		
-						<!-- 거래상태 버튼 -->
-						+'			<span class="dealStatus"><button class="btn btn-dark">' + product.pd_status + '</button></span>'			
-						+'		</div>'			
-						+'		<div class="card-body">'		
-									<!-- 카테고리 가져오기 -->
-						+'			<div class="category" style="font-size:0.8rem; ">'
-						+				product.pd_category
-						+'			</div>'			
-						+'			<div class="card-title" style="white-space: nowrap; overflow:hidden; text-overflow: elipsis;">'
-										<!-- 제목 링크 -->
-						+'				<a href="product_detail?pd_idx=' + product.pd_idx + '&member_id=' + product.member_id + '">'
-						+					product.pd_subject		
-						+'				</a>'
-						+'			</div>'			
-						+'			<p>' + product.pd_price + '원 </p>'			
-						+'			<p>' + product.product_first_date + '</p>'
-						+'		</div>'
-						+'	</div>'
-						+'</div>'
-								
-						
-				); //append끝
-			}	// for문 종료
-			
-		}, error: function() {
-			alert("글 목록 요청 실패!");
-		}
-	});	// ajax 끝
-	
+    // 각 필터의 선택된 값 가져오기
+    var selectedCategory = $("#c_id option:selected").val();   // 첫 번째 select 박스에서 선택된 값
+    var selectedManufacturer = $("#c_id2 option:selected").val();  // 두 번째 select 박스에서 선택된 값
+    var selectedPdStatus = $("#c_id3 option:selected").val();  // 세 번째 select 박스에서 선택된 값
+	console.log("선택된 카테고리 피시 올 노트북 : " + selectedCategory);
+	console.log("선택된 카테고리 제조사아아아아 : " + selectedManufacturer);
+    
+    // 컨트롤러로 보낼 때 파라미터 처리
+    url = "productListJson?pageNum=" + pageNum 
+        + "&pd_category=" + selectedCategory
+        + "&pd_selectedManufacturer=" + selectedManufacturer
+        + "&pd_selectedPdStatus=" + selectedPdStatus;
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "JSON",
+        success: function(data) {
+            // 서버에서 받아온 데이터를 사용하여 페이지 업데이트
+            maxPage = data.maxPage;
+
+            // 목록별 상품의 개수 조회 출력
+            $("#listCount").text(data.listCount);
+
+            // 기존에 있던 리스트 삭제
+            $(".productListArea").empty();
+
+            // AJAX로 받아온 리스트를 반복 출력
+            for (let product of data.changedProductList) {
+                let price = product.pd_price;
+                let formatted_price = Number(price).toLocaleString('en');
+
+                // 목록에 표시할 JSON 객체 1개 출력문 생성(= 1개 게시물) => 반복
+                $(".productListArea").append(
+                    '<div class="col-lg-3 col-mid-4">'
+                    + '    <div class="card border-0">'
+                    + '        <div class="photoDiv">'
+                    + '            <a href="product_detail?pd_idx=' + product.pd_idx + '&member_id=' + product.member_id + '">'
+                    + '                <img src="${pageContext.request.contextPath}/resources/upload/' + product.pd_image1 + '" class="card-img-top">'
+                    + '            </a>'
+                    + '            <span class="likebtn" data-product-idx="' + product.pd_idx + '">'
+                    + '                <a href="#" style="align:right;">'
+                    + '                    <img src="${pageContext.request.contextPath}/resources/images/heartIcon.png" width="30px" height="30px">'
+                    + '                </a>'
+                    + '            </span>'
+                    + '            <span class="dealStatus"><button class="btn btn-dark">' + product.pd_status + '</button></span>'
+                    + '        </div>'
+                    + '        <div class="card-body">'
+                    + '            <div class="category" style="font-size:0.8rem;">'
+                    + '                ' + product.pd_category
+                    + '            </div>'
+                    + '            <div class="card-title" style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis;">'
+                    + '                <a href="product_detail?pd_idx=' + product.pd_idx + '&member_id=' + product.member_id + '">'
+                    + '                    ' + product.pd_subject
+                    + '                </a>'
+                    + '            </div>'
+                    + '            <p>' + formatted_price + '원 </p>'
+                    + '            <p>' + product.product_first_date + '</p>'
+                    + '        </div>'
+                    + '    </div>'
+                    + '</div>'
+                ); // append 끝
+            } // for문 종료
+        }, 
+        error: function() {
+            alert("글 목록 요청 실패!");
+        }
+    }); // ajax 끝
 } // loadList() 끝
+
 
 </script>
 <link href="${pageContext.request.contextPath}/resources/css/product/product_list.css" rel="stylesheet" type="text/css">
@@ -191,7 +205,7 @@ function loadList(selectedCategory, selectedSort) {
 	<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 </header>
 <%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1로 설정) --%>
-<c:set var="pageNum" value="1" />
+<c:set var="pageNum" value="0" />
 <c:if test="${not empty param.pageNum }">
 	<c:set var="pageNum" value="${param.pageNum }"></c:set>
 </c:if>
@@ -217,7 +231,7 @@ function loadList(selectedCategory, selectedSort) {
 		        <option value="">거래상태 선택</option>
 		        <option value="판매중">판매중</option>
 		        <option value="거래중">거래중</option>
-		        <option value="판매완료">판매완료</option>
+		        <option value="결제완료">결제완료</option>
 		    </select> 
 		    <input type="hidden" name="pd_category" id="pd_category_hidden" value="${product.pd_category}">
 		    <span id="selectedCategorySpan">
