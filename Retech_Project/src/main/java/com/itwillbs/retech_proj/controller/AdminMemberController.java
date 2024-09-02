@@ -81,12 +81,13 @@ public class AdminMemberController {
 //   
    // 관리자 권한 부여
    @GetMapping("ChangeAdminAuthorize")
-   public String changeAuthorize(@RequestParam(defaultValue = "N") String member_isAdmin, String member_id, String isAuthorize, Model model) {
+   public String changeAuthorize(@RequestParam(defaultValue = "0") String member_isAdmin, String member_id, String isAuthorize, Model model) {
       // -------------------------------------------------------------------------------------------
       // 관리자 권한 해제 (파라미터로 member_isAdmin, member_id 받은 상황 !)
-      // 관리자 권한 부여면 member_isAdmin : Y
-      // 관리자 권한 해제면 member_isAdmin : N
+      // 관리자 권한 부여면 member_isAdmin : 1
+      // 관리자 권한 해제면 member_isAdmin : 0
       int adminRegCount = service.changeAdminAuth(member_isAdmin, member_id);
+      System.out.println("member_isAdmin" + member_isAdmin + isAuthorize);
       if(adminRegCount > 0) {
          model.addAttribute("msg", "성공적으로 처리되었습니다.");
          model.addAttribute("targetURL", "AdminMemberList");
@@ -96,26 +97,7 @@ public class AdminMemberController {
 //         model.addAttribute("targetURL", "AdminMemberList?pageNum=1");
          return "result/fail";
       }
-      }
-   public String changeAuthorize(@RequestParam String member_isAdmin, @RequestParam String member_id, Model model) {
-       // member_isAdmin 값이 'Y' 또는 'N'인지 확인
-       if (!member_isAdmin.equals("Y") && !member_isAdmin.equals("N")) {
-           model.addAttribute("msg", "잘못된 요청입니다.");
-           model.addAttribute("targetURL", "AdminMemberList?pageNum=1");
-           return "result/fail";
-       }
-       
-       int adminRegCount = service.changeAdminAuth(member_isAdmin, member_id);
-
-       if (adminRegCount > 0) {
-           model.addAttribute("msg", "성공적으로 처리되었습니다.");
-           model.addAttribute("targetURL", "AdminMemberList");
-           return "result/success";
-       } else {
-           model.addAttribute("msg", "권한 변경에 실패했습니다.");
-           model.addAttribute("targetURL", "AdminMemberList?pageNum=1");
-           return "result/fail";
-       }
+      
    }
 
 

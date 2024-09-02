@@ -18,5 +18,5 @@ public class MemberVO {
 	private String member_address1; 
 	private String member_address2;  
 	private String member_profile; 
-	private String member_isAdmin;
+	private int member_isAdmin;
 }

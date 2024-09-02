@@ -193,14 +193,14 @@
 							
 							<c:forEach var="faq" items="${faqList}">
 								<tr align="center">
-									<td>${faq.FAQ_idx}</td>
-									<td>${faq.FAQ_category}</td>
-									<td>${faq.FAQ_subject}</td>
-									<td id="faq_content">${faq.FAQ_content}</td>
-									<td>${faq.FAQ_create_date}</td>
+									<td>${faq.faq_idx}</td>
+									<td>${faq.faq_category}</td>
+									<td>${faq.faq_subject}</td>
+									<td id="faq_content">${faq.faq_content}</td>
+									<td>${faq.faq_date}</td>
 									<td>
-										<button value="${faq.FAQ_idx}" class="modifyBtn">수정</button>
-										<input type="button" class="delete" value="삭제" onclick="confirmDelete('${faq.FAQ_idx}')">
+										<button value="${faq.faq_idx}" class="modifyBtn">수정</button>
+										<input type="button" class="delete" value="삭제" onclick="confirmDelete('${faq.faq_idx}')">
 									</td>
 								</tr>
 							</c:forEach>
@@ -297,7 +297,7 @@
 			let closeBtn = document.querySelectorAll('.close_btn');
 			
 			// 삭제
-			function confirmDelete(FAQ_idx){
+			function confirmDelete(faq_idx){
 				if(confirm("삭제하시겠습니까?")) {
 					location.href="AdminFaqDelete?FAQ_num=" + FAQ_idx;
 				}
