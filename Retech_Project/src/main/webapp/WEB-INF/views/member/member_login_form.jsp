@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<head>
+<head>  
     <meta charset="UTF-8">
     <title>로그인 페이지</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
