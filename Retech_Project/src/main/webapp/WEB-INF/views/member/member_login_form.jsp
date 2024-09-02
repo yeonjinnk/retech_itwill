@@ -3,13 +3,39 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<head>
+<head>  
     <meta charset="UTF-8">
     <title>로그인 페이지</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+	<script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
     <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_1.3.2.js"></script>
+   
+    <%-- RSA 양방향 암호화 자바스크립트 라이브러리 추가 --%>
+	<script src="${pageContext.request.servletContext.contextPath}/resources/js/rsa/rsa.js"></script>
+	<script src="${pageContext.request.servletContext.contextPath}/resources/js/rsa/jsbn.js"></script>
+	<script src="${pageContext.request.servletContext.contextPath}/resources/js/rsa/prng4.js"></script>
+	<script src="${pageContext.request.servletContext.contextPath}/resources/js/rsa/rng.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			// form 태그 submit 이벤트 핸들링
+			$("form").submit(function() {
+				// ================ RSA 알고리즘을 활용한 비대칭키 방식 암호화 ================
+				// 자바스크립트 외부 라이브러리를 통해 양방향 암호화를 수행할 RSAKey 객체 생성
+				let rsa = new RSAKey();
+				// RSAKey 객체의 setPublic() 메서드를 호출하여 전달받은 공개키(Modulus, Exponent)값 전달
+				rsa.setPublic("${RSAModulus}", "${RSAExponent}");
+				// 입력받은 평문 아이디와 평문 패스워드 암호화 => RSAKey 객체의 encrypt() 메서드 활용
+				// => 16진수 문자열로 변환된 암호문을 hidden 속성 value 값으로 저장
+				$("#hiddenId").val(rsa.encrypt($("#member_id").val())); // 아이디에 대한 암호화는 생략 가능
+				$("#hiddenPasswd").val(rsa.encrypt($("#member_passwd").val())); // 패스워드 암호화는 필수!!
+				
+				// hidden 속성에 암호문 저장 완료 후 자동으로 submit 동작 수행 => Login 비즈니스로직 요청
+				// => 전송 과정에서 암호문이 노출되더라도 개인키를 모르면 복호화가 불가능하다!
+			});
+		});
+	
+		</script>
     <style>
         body {
             font-family: 'Noto Sans', sans-serif;
@@ -248,14 +274,17 @@
                 <form action="MemberLogin" method="post" name="login" onsubmit="return validateForm();">
                     <div class="info">
                         <span>아이디(이메일)</span>
-                        <input type="text" name="member_id" id="member_id" value="${cookie.rememberId.value}" placeholder="이메일을 입력해주세요" required> 
+                        <input type="text" id="member_id" value="${cookie.rememberId.value}" placeholder="이메일을 입력해주세요" required> 
                     </div>
                     
                     <div class="info">
                         <span>비밀번호</span>
-                        <input type="password" name="member_passwd" id="member_passwd" placeholder="영문, 숫자 포함 8자 이상" required>
+                        <input type="password" id="member_passwd" placeholder="영문, 숫자 포함 8자 이상" required>
                     </div>
-                    
+
+					<input type="hidden" name="member_id" id="hiddenId">
+					<input type="hidden" name="member_passwd" id="hiddenPasswd">	
+						
                     <div class="search">
                         <label>
                             <input type="checkbox" name="rememberId" <c:if test="${not empty cookie.rememberId}">checked</c:if>>아이디 기억

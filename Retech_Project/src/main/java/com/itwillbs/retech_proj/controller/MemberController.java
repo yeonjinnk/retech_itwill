@@ -1,5 +1,6 @@
 package com.itwillbs.retech_proj.controller;
 
+import java.security.PrivateKey;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itwillbs.retech_proj.handler.RsaKeyGenerator;
 import com.itwillbs.retech_proj.service.MemberService;
 import com.itwillbs.retech_proj.service.ProductService;
 import com.itwillbs.retech_proj.vo.MemberVO;
@@ -34,7 +36,16 @@ public class MemberController {
 	   }
 
 	   @PostMapping("MemberJoin")
-	   public String memberDupId(MemberVO member, Model model) {
+	   public String memberDupId(MemberVO member, Model model, String rememberId, BCryptPasswordEncoder passwordEncoder) {
+		  String securePasswd = passwordEncoder.encode(member.getMember_passwd());
+		  System.out.println("평문 : " + member.getMember_passwd()); // admin123
+		  System.out.println("암호문 : " + securePasswd); // $2a$10$hw02bLaTVPfeCbZ3vdXU0uWDZu52Ov1rof5pZCFkngtuA5Ld9BSxq
+		  // => 단, 매번 생성되는 암호문은 솔트(Salt)값에 의해 항상 달라진다!
+			
+		  // 3. 암호화 된 패스워드를 다시 MemberVO 객체의 passwd 값에 저장(덮어쓰기)
+		  member.setMember_passwd(securePasswd);
+			
+			
 		  MemberVO dbmember = service.getMember(member);
 			  
 		  System.out.println("찾은 id : " + dbmember);
@@ -83,14 +94,40 @@ public class MemberController {
 
 	   // 로그인 -------------------------------------------------------------------------------------------
 	   @GetMapping("MemberLogin")
-	   public String memberLogin() {
-	      return "member/member_login_form";
+	   public String memberLogin(HttpSession session, Model model) {
+//		   아이디와 패스워드 암호화 과정에서 사용할 공개키/개인키 생성
+		   Map<String, Object> rsaKey = RsaKeyGenerator.generateKey();
+		   session.setAttribute("RSAPrivateKey", rsaKey.get("RSAPrivateKey"));
+		   model.addAttribute("RSAModulus", rsaKey.get("RSAModulus"));
+		   model.addAttribute("RSAExponent", rsaKey.get("RSAExponent"));
+		   
+		   return "member/member_login_form";
 	   }
 
 	   @PostMapping("MemberLogin")
 	   public String loginPro(MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model,
-		        HttpSession session, HttpServletResponse response, String rememberId) {
-
+		        HttpSession session, HttpServletResponse response, String rememberId) throws Exception {
+		   	
+//		   	System.out.println(member);
+//			System.out.println("아이디 기억 : " + rememberId); // 체크 : "on" , 미체크 : null
+//			 =============================== 아이디/패스워드 복호화 ===============================
+			System.out.println("암호화 된 아이디 : " + member.getMember_id());
+			System.out.println("암호화 된 패스워드 : " + member.getMember_passwd());
+			
+			// 세션에서 개인키 가져오기
+			PrivateKey privateKey = (PrivateKey)session.getAttribute("RSAPrivateKey");
+			
+			// RsaKeyGenerator 클래스의 decrypt() 메서드 호출하여 전달받은 암호문 복호화
+			// => 파라미터 : 세션에 저장된 개인키, 암호문   리턴타입 : String
+			String id = RsaKeyGenerator.decrypt(privateKey, member.getMember_id());
+			String passwd = RsaKeyGenerator.decrypt(privateKey, member.getMember_passwd());
+			System.out.println("복호화 된 아이디 : " + id);
+			System.out.println("복호화 된 패스워드 : " + passwd);
+			
+			// MemberVO 객체에 복호화 된 아이디, 패스워드 저장
+			member.setMember_id(id);
+			member.setMember_passwd(passwd);	   
+		   
 		    MemberVO dbMember = service.getMember(member);
 		    
 		    if (dbMember == null || !passwordEncoder.matches(member.getMember_passwd(), dbMember.getMember_passwd())) {
@@ -123,6 +160,7 @@ public class MemberController {
 		    }
 			
 		}
+	   
 	   
 	   
 	   // 로그아웃 -------------------------------------------------------------------------------------------

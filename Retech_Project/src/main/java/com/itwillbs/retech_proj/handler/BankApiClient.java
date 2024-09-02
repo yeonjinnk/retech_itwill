@@ -7,14 +7,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.google.gson.JsonObject;
 import com.itwillbs.retech_proj.vo.BankToken;
 
 @Component
@@ -108,6 +112,128 @@ public class BankApiClient {
 		// => ResponseEntity 객체를 직접 리턴하지 않고 getBody() 메서드 호출 결과인
 		//    파싱 정보를 관리하는 객체를 리턴
 		return responseEntity.getBody();
+	}
+
+	// 2.2.3. 등록계좌조회 API 
+	public Map<String, Object> requestAccountList(BankToken token) {
+		// 1. HTTP 요청에 필요한 URI 정보 관리할 URI 객체 생성
+		URI uri = UriComponentsBuilder	
+					.fromUriString(base_url)
+					.path("/v2.0/account/list")
+					.queryParam("user_seq_no", token.getUser_seq_no())
+					.queryParam("include_cancel_yn", "Y")
+					.queryParam("D")
+					.encode()
+					.build()
+					.toUri();
+		
+		// 2. API 요청 헤더정보 관리할 HttpHeaders 객체 생성
+		HttpHeaders headers = new HttpHeaders();
+		// 헤더정보에 액세스 토큰값 설정
+		headers.setBearerAuth(token.getAccess_token());
+		
+		// 3. 헤더와 바디를 묶어서 관리하는 HttpEntity 객체 생성, HttpHeaders 객체 전달
+		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+		
+		// 4. RESTful API 요청을 위한 RestTemplate 객체 생성
+		RestTemplate restTemplate = new RestTemplate();
+		// exchange 메서드 호출하여 HTTP(REST API) 요청 수행
+		ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String,Object>>() {};
+		ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, responseType);
+	
+		return responseEntity.getBody();
+	}
+
+	// 2.2.1. 사용자정보조회 API
+	public Map<String, Object> requestUserInfo(BankToken token) {
+		// 1. HTTP 요청에 필요한 URI 정보 관리할 URI 객체 생성
+		URI uri = UriComponentsBuilder	
+					.fromUriString(base_url)
+					.path("/v2.0/user/me")
+					.queryParam("user_seq_no", token.getUser_seq_no())
+					.encode()
+					.build()
+					.toUri();
+		
+		// 2. API 요청 헤더정보 관리할 HttpHeaders 객체 생성
+		HttpHeaders headers = new HttpHeaders();
+		// 헤더정보에 액세스 토큰값 설정
+		headers.setBearerAuth(token.getAccess_token());
+		
+		// 3. 헤더와 바디를 묶어서 관리하는 HttpEntity 객체 생성, HttpHeaders 객체 전달
+		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+		
+		// 4. RESTful API 요청을 위한 RestTemplate 객체 생성
+		RestTemplate restTemplate = new RestTemplate();
+		// exchange 메서드 호출하여 HTTP(REST API) 요청 수행
+		ParameterizedTypeReference<Map<String, Object>> responseType = new ParameterizedTypeReference<Map<String,Object>>() {};
+		ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, responseType);
+	
+		return responseEntity.getBody();		
+	}
+
+	// 2.5.1. 출금이체 API
+	public Map<String, String> requestWithdraw(Map<String, Object> map) {
+		BankToken token = (BankToken)map.get("token");
+		String id = (String)map.get("id");
+		
+		// 요청에 사용될 bank_tran_id, tran_dtime 값 생성
+		String bank_tran_id = bankValueGenerator.getBankTranId(client_use_code);
+		String tran_dtime = bankValueGenerator.getTranDTime();
+		
+		// 1. HTTP 요청에 필요한 URI 정보 관리할 URI 객체 생성
+		URI uri = UriComponentsBuilder	
+				.fromUriString(base_url)
+				.path("/v2.0/transfer/withdraw/fin_num")
+				.queryParam("user_seq_no", token.getUser_seq_no())
+				.encode()
+				.build()
+				.toUri();
+		
+		// 2. API 요청 헤더정보 관리할 HttpHeaders 객체 생성
+		HttpHeaders headers = new HttpHeaders();
+		// 헤더정보에 액세스 토큰값 설정
+		headers.setBearerAuth(token.getAccess_token());
+		// 전송 요청 타입이 "application/json; charset=UTF-8"이므로 HttpHeaders 객체를 JSON 타입으로 설정
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		
+		// 3. 요청 파라미터를 JSON 형식 데이터로 생성
+		JsonObject jsonObject = new JsonObject();
+		
+		// ----- 핀테크 이용기관 정보 -----
+		jsonObject.addProperty("bank_tran_id", bank_tran_id);
+		jsonObject.addProperty("cntr_account_type", "N");
+		jsonObject.addProperty("cntr_account_num", cntr_account_num);
+		jsonObject.addProperty("dps_print_content", id.substring(0, 7));
+		
+		// ----- 요청 고객(출금계좌) 정보 -----
+		jsonObject.addProperty("fintech_use_num", (String)map.get("withdraw_fintech_use_num"));
+		jsonObject.addProperty("wd_print_content", "리테크_입금");
+		jsonObject.addProperty("tran_amt", (String)map.get("tran_amt"));
+		jsonObject.addProperty("tran_dtime", tran_dtime);
+		jsonObject.addProperty("req_client_name", (String)map.get("withdraw_client_name"));
+		jsonObject.addProperty("req_client_fintech_use_num", (String)map.get("withdraw_fintech_use_num"));
+		jsonObject.addProperty("req_client_num", "YOU1004");
+		jsonObject.addProperty("transfer_purpose", "ST");
+		
+		// ----- 수취 고객(실제 최종 입금 대상) 정보 -----
+		jsonObject.addProperty("recv_client_name", cntr_account_holder_name);
+		jsonObject.addProperty("recv_client_bank_code", "002");
+		jsonObject.addProperty("recv_client_account_num", cntr_account_num);
+		
+		System.out.println("-------------------jsonObject : " + jsonObject.toString());
+		
+		
+		// 4. 헤더와 바디를 묶어서 관리하는 HttpEntity 객체 생성
+		HttpEntity<String> httpEntity = new HttpEntity<String>(jsonObject.toString(), headers);
+		
+		// 5. RESTful API 요청을 위한 RestTemplate 객체 생성
+		RestTemplate restTemplate = new RestTemplate();
+		// exchange 메서드 호출하여 HTTP(REST API) 요청 수행
+		ParameterizedTypeReference<Map<String, String>> responseType = new ParameterizedTypeReference<Map<String,String>>() {};
+		ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(uri, HttpMethod.POST, httpEntity, responseType);
+		
+		return responseEntity.getBody();		
 	}
 	
 

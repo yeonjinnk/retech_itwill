@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,12 +47,6 @@
         });    
      
      
-     
-     
-     
-     
-     
-        
     });
 </script>
 
@@ -125,7 +120,7 @@
 			</div>				
           <div class="pay_balance">
 	        <h2>페이잔액</h2> 
-	        <h2>xxxx원</h2>
+	        <h2><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h2>
           </div>
           <div class="charge_amount">
 	        <h2>충전금액</h2>
@@ -139,7 +134,29 @@
 				</div>
             <button class="charge_btn">충전하기</button>
           </div>
-	          
+          <div class="pay_account_list">	
+ 		        <table border="1">
+		        	<c:forEach var="account" items="${accountList.res_list}">
+		        		<tr>
+		        			<td>1</td>
+		        			<td><b>${account.account_alias}</b><br>
+		        				${account.bank_name}<br>
+		        				
+		        				${account.account_num_masked}<br>
+		        			</td>
+		        			<td>${account.account_holder_name}</td>
+		        			<td>
+		        				<form action="ChargeBankWithdraw" method="post">
+		        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
+		        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
+		        					<input type="text" name="tran_amt" value="50000">
+		        					<input type="submit" value="충전하기">
+		        				</form>
+		        			</td>
+		        		</tr>
+		        	</c:forEach>	
+	        	</table>        		        
+          </div>
         </div>
 	</section>
 	<footer>

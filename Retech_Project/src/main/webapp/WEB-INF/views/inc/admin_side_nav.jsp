@@ -4,7 +4,7 @@
 	<ul>
 		<li><a href="AdminHome" id="AdHome">관리자페이지 홈</a></li>
 		<li class="depth01">
-			<a href="AdminMemberList">회원관리</a>
+			<a href="AdminMemberList2">회원관리</a>
 			<ul class="depth02">
 				<li><a href=""></a></li>
 			</ul>			

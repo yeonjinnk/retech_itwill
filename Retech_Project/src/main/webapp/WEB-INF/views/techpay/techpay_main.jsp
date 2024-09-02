@@ -33,6 +33,11 @@
         				<c:redirect url="PayInfo"/>				    					    
 				    </c:otherwise>
 				</c:choose>
+<!-- 				페이관리자라면 이용기관 토큰 발급 버튼 표시 -->
+				<c:if test="${sessionScope.sId eq 'payadmin@gmail.com'}">
+<!-- 					페이관리자용 엑세스토큰 발급 -->
+					<input type="button" value="센터인증 이용기관 토큰발급" onclick="location.href='AdminBankRequestToken'">
+				</c:if>
 			</div>
 		</div>
 	</section>
