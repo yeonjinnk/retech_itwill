@@ -102,7 +102,7 @@
 	<insert id="insertFaq">
 		INSERT INTO faq
 		VALUES (
-			null
+			#{FAQ_idx} + 1
 			, #{FAQ_category}
 			, #{FAQ_subject}
 			, #{FAQ_content}

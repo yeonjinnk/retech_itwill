@@ -70,21 +70,23 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	// 현재 시스템의 날짜 및 시각 정보를 yyyy-MM-dd HH:mm:ss 형태로 변환하여 리턴하는 메서드
 	private String getDateTimeForNow() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+		System.out.println("시스템 시간날짜 구하기 위한 getDateTimeForNow 호출됨!");
+		System.out.println("시스템 시간은 얼마일까요 : " + LocalDateTime.now().format(dtf));
 		return LocalDateTime.now().format(dtf);
 	}
 	
+	//(서버 -> 클라이언트)
 	//각 웹소켓 세션(채팅방 사용자)들에게 메세지를 전송하는 sendMessage() 메서드
-	public void sendMessage(WebSocketSession session, ChatMessage chatMessage) throws Exception {
-		//ChatMessage 객체를 JSON 문자열로 변환하여 클라이언트측으로 전송
-		//자바스크립트 웹소켓 이벤트 중 ONMESSAGE 이벤트에 의한 onMessage() 함수 호출됨
+	public void sendMessage(WebSocketSession session, ChatMessage chatMessage) throws Exception{
+		//chatmessage 객체를 JSON 문자열로 변환하여 클라이언트측으로 전송
+		//자바스크립트 웹소켓 이벤트 중 onmessage 이벤트에 의한 onMessage() 함수 호출됨
 		session.sendMessage(new TextMessage(gson.toJson(chatMessage)));
 	}
 	
-	//룸 아이디 생성을 위한 getRoomId() 메서드 정의
+	//룸아이디 생성을 위한 getRoomId() 메서드 정의
 	private String getRoomId() {
 		return UUID.randomUUID().toString();
 	}
-	
 	//=====================================================================================================
 	
 	//------------------------------------------------------------------------------------------------------
@@ -139,9 +141,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		// -----------------------------------------------------------------------------------
 		// 수신된 메세지 타입 판별
 		
-		//INIT -> 기존 채팅방 있는지 확인 후, 있으면 기존 채팅방 목록 메세지에 추가해 전송
+		//1. 채팅페이지 초기 진입
+		// -> 기존 채팅방 목록 조회 후 전송
 		if(chatMessage.getType().equals(ChatMessage.TYPE_INIT)) { // 채팅페이지 초기 진입 메세지
-			System.out.println("!!!!!!! 채팅 메세지 타입 INIT !!!!!!!");
 			// DB 에 저장된 기존 채팅방 목록(= 자신의 아이디가 포함된 채팅) 조회 후 목록 전송
 			List<ChatRoom> chatRoomList = chatService.getChatRoomList(sender_id);
 			System.out.println("기존 채팅방 목록 : " + chatRoomList);
@@ -149,153 +151,162 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			//조회 결과를 JSON 형식으로 변환하여 메세지로 설정
 			chatMessage.setMessage(gson.toJson(chatRoomList));
 			
-			//sendMessage() 메서드 호출하여 클라이언트측으로 메세지 전송
+			//(서버->클라이언트) 
+			//메세지 전송
 			sendMessage(session, chatMessage);
 			
+			System.out.println("INIT : 기존 채팅방 목록 조회 후 전송함");
+			System.out.println("보내는 메세지 : " + chatMessage);
+		// -----------------------------------------------------------------------------------
+		//2. 채팅페이지 초기화 완료
+		//기본) 상대방 있고 접속해 있으면 채팅방 목록에 생성해 띄움.
+		//그 외에는 오류메세지나 채팅방 목록 띄우지 않음.
 		} else if(chatMessage.getType().equals(ChatMessage.TYPE_INIT_COMPLETE)) {
-			System.out.println("!!!!!!! 채팅 메세지 타입 INIT_COMPLETE !!!!!!!");
-			//채팅페이지 초기화 완료 메시지
 			
-			//--------------------------------------------------------------
-			//1. 메세지에 수신자 아이디(receiver_id) 존재 유무
-			//	A. 있으면 -> 2번
-			//	B. 없으면 -> 채팅방 목록만 표시
+			//1. 메세지에 수신자 포함 여부
+			// 1-A. 수신자 O -> 2번
+			// 1-B. 수신자 X -> 메세지 전송 X
 			
-			//2. 사용자(receiver_id) 접속 유무
-			//	A. 접속 o -> 3번
-			//	B. 접속 x -> 3번
+			//2. 상대방 접속 여부
+			// 2-A. 접속 O -> 4번
+			// 2-B. 접속 X -> 3번
 			
-			//3. DB에 상대방 아이디(dbReceiverId) 존재 여부
-			// A. 존재 O -> 4번
-			// B. 존재 X -> (서버 -> 클라이언트)오류메시지 전송
+			//3. DB에 상대방 ID 검색
+			// 3-A. 존재 O -> 4번
+			// 3-B. 존재 X -> 오류메세지 전송
 			
-			//4. 기존 채팅방 존재 여부
-			// A. 기존 채팅방 O -> 5-A번
-			// B. 기존 채팅방 X -> 5-B번
+			//4. 채팅방 조회
+			// 4-A. 기존 채팅방 O -> 6번
+			// 4-B. 기존 채팅방 X -> 5. 채팅방 생성
 			
-			//5. 채팅방 작업
-			// A. 채팅방 생성
-			// B. 기존 채팅방 정보 가져오기
+			//5. 채팅방 생성
+			// 5-1. 방번호 생성
+			// 5-2. 송신자 수신자 각각 생성해서 2개의 채팅방 생성
 			
-			//6. 메세지에 채팅방 및 추가 정보 설정
-			// A. 다음 단계 위해 TYPE_START 메세지에 세팅
-			// B. 기존 채팅방 및 생성한 채팅방 정보 메세지에 세팅
+			//6. 메세지 설정 및 전송
+			// 6-1. 설정) 채팅 시작 위한 START 타입 설정
+			// 6-2. 설정) 채팅방 정보 설정(룸아이디, 방제목, 송신자, 수신자, 상태값)
+			// 6-3. 전송) 메세지 전송(sendMessage)
 			
-			//7. (서버 -> 클라이언트)메세지 전송
-			//--------------------------------------------------------------
+			//---------------------------------------------------------------------------------------------------------------------------
 			
-			//초기화 완료 메세지의 수신자 포함 여부 판별
-			//1-A. 수신자 아이디(receiver_id) O
+			//1. 메세지에 수신자 포함 여부
+			//receiver.id 가 "" 인지 아닌지
+			
+			// 1-A. 수신자 O -> 2번
 			if(!receiver_id.equals("")) {
 				System.out.println("1-A. 수신자 아이디 있음!");
 				
-				//접속중 판별 위해 httpsessionid 필요 -> users에 저장되어 있음
-				boolean isConnectUser = users.get(receiver_id) == null ? false : true;
+				//2. 상대방 접속 여부
+				//users.get(receiver_id) 가 null인지 아닌지
 				
-				//2-B. 사용자 접속중 X
-				if(!isConnectUser) {
-					System.out.println("2-B. 사용자 접속 안함!");
-					// DB에 (receiver_id)에 해당하는 ID 존재 판별 위해 아이디 조회
-					String dbReceiverId = memberService.getMemberSearchId(receiver_id);
+				// 2-B. 접속 X -> 3번
+				if(users.get(receiver_id) == null) {
+					System.out.println("2-B. 수신자 접속 X -> 3. DB에 수신자 검색!");
 					
-					//3-B. DB에 상대방 아이디 존재X
+					//3. DB에 상대방 ID 검색
+					//member 테이블에서 receiver_id와 같은 member_id 검색
+					
+					String dbReceiverId = memberService.getMemberId(receiver_id);
+					
+					// 3-B. 존재 X -> 오류메세지 전송
 					if(dbReceiverId == null) {
-						System.out.println("3-B. 상대방 아이디 존재하지 않음!");
-						//(서버 -> 클라이언트)오류메시지 전송
+						System.out.println("3-B. DB에 수신자 ID X -> 오류메세지 전송!");
 						
-						//메세지 세팅
+						//메세지 설정
 						//ChatMessage(type, sender_id, receiver_id, room_id, message, send_time)
+						ChatMessage errorMessage = new ChatMessage(ChatMessage.TYPE_ERROR, "", sender_id, "", "사용자가 존재하지 않습니다!", "");
 						
-						//type : error, sender_id : 서버니까 "", receiver_id : 받는사람 sender, room_id : 없으니까 "", message : 에러메세지, send_time : 메세지 송수신시만 ""
-						ChatMessage errorMessage = new ChatMessage
-								(ChatMessage.TYPE_ERROR, "", sender_id, "", "사용자가 존재하지 않습니다!", "");
-						
-						//메세지 전송
-						sendMessage(session, chatMessage);
-						System.out.println("상대방 아이디 존재하지 않으므로 에러 메세지 전송함");
-						return;
-					} 
-				} //2-A. 사용자(receiver_id) 접속중 O
-				System.out.println("2-A. 사용자 접속 중임");
-					//3-A. DB에 상대방 아이디 존재O 
-					System.out.println("3-A. 상대방 아이디 존재함!");
-					
-					//상대방 존재할 경우 채팅방 표시(신규 채팅방 or 기존 채팅방)
-					//4. 기존 채팅방 존재 여부 판별
-					ChatRoom chatRoom = chatService.getChatRoom(sender_id, receiver_id);
-					
-					//4-B. 기존 채팅방 X
-					if(chatRoom == null) {
-						System.out.println("4-B. 기존 채팅방 없음 - 5-A. 새로운 채팅방 생성!");
-						
-						//5-A. 채팅방 생성
-						
-						//1) 방번호(room_id) 생성
-						chatMessage.setRoom_id(getRoomId());
-						System.out.println("5-A-1. 방번호 생성 후 채팅 메세지 chatMessage : " + chatMessage);
-						
-						//2) 새 채팅방 정보 저장을 위해 채팅방 담을 List 객체 생성
-						//1개의 채팅방 정보(룸아이디, 제목, 사용자아이디, 상태)를 갖는 
-						//ChatRoom 객체를 송신자와 수신자 각각에 대해 생성하여 List 객체에 추가
-						List<ChatRoom> chatRoomList = new ArrayList<ChatRoom>();
-						
-						//3) List 객체에 채팅방 정보 추가
-						//status 값은 정상적인 채팅방 표시로 1 전달
-						//a) sender 측 채팅방 - receiver 님과의 대화
-						chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), receiver_id + "님과의 대화", sender_id, receiver_id, 1));
-						//b) receiver 측 채팅방 - sender 님과의 대화
-						chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), sender_id + "님과의 대화", receiver_id, sender_id, 1));
-						
-						System.out.println("chatRoomList : " + chatRoomList);
-						
-						//3) 새 채팅방 정보(List)를 DB에 저장
-						chatService.addChatRoom(chatRoomList);
-						
-						//6. 메세지에 채팅방 및 추가 정보 설정
-						//6-A. 다음 단계 위해 TYPE_START 메세지에 세팅
-						chatMessage.setType(ChatMessage.TYPE_START);
-						
-						//6-B. 생성한 채팅방 정보 메세지에 세팅
-						//sender 측 채팅방을 보내야 함 그래서 index가 0
-						chatRoom = chatRoomList.get(0);
-						System.out.println("6-B. 생성한 chatRoom : " + chatRoom);
-						chatMessage.setMessage(gson.toJson(chatRoom));
-						
-						//7. (서버 -> 클라이언트)메세지 전송
-						sendMessage(session, chatMessage);
-						System.out.println("7. 기존 채팅방 없을 시 생성한 chatRoom 정보 메세지 전송함");
-					} else { //4-A. 기존 채팅방 O
-						System.out.println("4-A. 기존 채팅방 있음! - 새로운 채팅방 생성 불필요!");
-						
-						//기존 채팅방이 존재하므로 DB 작업은 불필요
-						//5-B. 기존 채팅방 정보 가져오기
-						//6. 메세지에 채팅방 및 추가 정보 설정
-						//채팅 메세지 객체 정보 설정
-						//조회된 룸 아이디 저장
-						chatMessage.setRoom_id(chatRoom.getRoom_id());
-						
-						//채팅 시작을 위한 START 타입 설정
-						//6-A. 다음 단계 위해 TYPE_START 메세지에 세팅
-						chatMessage.setType(ChatMessage.TYPE_START);
-						
-						//6-B. 기존 채팅방 정보 메세지에 세팅
-						// => 조회된 채팅방 정보(ChatRoom 객체)를 JSON 으로 변환하여 저장
-						chatMessage.setMessage(gson.toJson(chatRoom));
-						
-						//7. (서버 -> 클라이언트)메세지 전송
-						sendMessage(session, chatMessage);
-						System.out.println("7. 기존 채팅방 있을 시 조회한 chatRoom 정보 메세지 전송함");
-					}
-			//1-A. 수신자 아이디(receiver_id) X
-			} else {
-				//수신자 아이디 없을 경우 채팅방 목록만 표시하면 되므로
-				//실제로는 else문 자체가 불필요
-				System.out.println("1-B. 수신자 아이디 없음!");
-			}
-		} else if(chatMessage.getType().equals(ChatMessage.TYPE_REQUEST_CHAT_LIST)) {
-			System.out.println("!!!!!!! 채팅 메세지 타입 REQUEST_CHAT_LIST !!!!!!!");
+						//(서버 -> 클라이언트) 메세지 전송
+						sendMessage(session, errorMessage);
+						System.out.println("INIT_COMPLETE : DB에 수신자 X -> 오류메세지 전송!");
+						System.out.println("보내는 메세지 : " + chatMessage);
 
-			//기존 채팅 내역 불러오기
+					} // 3-B 끝.
+					
+					System.out.println("3-A. 존재 O -> 4번 채팅방 조회함!");
+				} // 2-B 끝.
+				
+				//4. 채팅방 조회
+				//상대방 존재할 경우 신규 or 기존 채팅방 표시
+				
+				//상대방과의 기존 채팅방 존재 여부 확인
+				ChatRoom chatRoom = chatService.getChatRoom(sender_id, receiver_id);
+				System.out.println("4. 채팅방 조회함!");
+				
+				// 4-B. 기존 채팅방 X -> 5. 채팅방 생성
+				if(chatRoom == null) {
+					System.out.println("4-B. 기존 채팅방 X -> 5. 채팅방 생성 필요");
+					
+					//5. 채팅방 생성
+					System.out.println("5. 채팅방 생성 시작함!");
+					
+					// 5-1. 방번호 생성
+					chatMessage.setRoom_id(getRoomId());
+					System.out.println("5-1. 방번호 생성 후 채팅메세지 : " + chatMessage);
+					
+					
+					// 5-2. 송신자 수신자 각각 생성해서 2개의 채팅방 생성
+					//List 객체에 추가
+					List<ChatRoom> chatRoomList = new ArrayList<ChatRoom>();
+					
+					//chatRoom(room_id, title, sender_id, receiver_id, status)
+					//송신자 채팅방
+					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), "상대방 id : " + receiver_id, sender_id, receiver_id, 1));
+					//수신자 채팅방
+					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), "상대방 id : " + sender_id, receiver_id, sender_id, 1));
+					
+					System.out.println("5-1. 생성한 채팅방 리스트 chatRoomList : " + chatRoomList);
+					//송,수신자 채팅방 총 2개 DB에 저장
+					chatService.addChatRoom(chatRoomList);
+					
+					//6. 메세지 설정 및 전송
+					// 6-1. 설정) 채팅 시작 위한 START 타입 설정
+					chatMessage.setType(ChatMessage.TYPE_START);
+					
+					// 6-2. 설정) 채팅방 정보 설정(룸아이디, 방제목, 송신자, 수신자, 상태값)
+					// 조회된 채팅방 정보(chatRoom 객체)를 JSON으로 변환하여 저장
+					chatRoom = chatRoomList.get(0);
+					chatMessage.setMessage(gson.toJson(chatRoom));
+					
+					// 6-3. 전송) 메세지 전송(sendMessage)
+					sendMessage(session, chatMessage);
+					System.out.println("INIT_COMPLETE : 상대방과 기존 채팅방 없으므로 채팅방 생성 후 전송!");
+					System.out.println("보내는 메세지 : " + chatMessage);
+
+					
+				} else {
+					// 4-A. 기존 채팅방 O -> 6. 채팅방 조회 
+					System.out.println("4-A. 기존 채팅방 O -> 6. 채팅방 조회!");
+					
+					//조회된 룸 아이디 저장
+					chatMessage.setRoom_id(chatRoom.getRoom_id());
+					
+					//6. 메세지 설정 및 전송
+					// 6-1. 설정) 채팅 시작 위한 START 타입 설정
+					chatMessage.setType(ChatMessage.TYPE_START);
+					
+					// 6-2. 설정) 채팅방 정보 설정(룸아이디, 방제목, 송신자, 수신자, 상태값)
+					// 조회된 채팅방 정보(chatRoom 객체)를 JSON으로 변환하여 저장
+					chatMessage.setMessage(gson.toJson(chatRoom));
+					
+					// 6-3. 전송) 메세지 전송(sendMessage)
+					sendMessage(session, chatMessage);
+					System.out.println("INIT_COMPLETE : 상대방과 채팅방 있으므로 기존 채팅방 전송!");
+					System.out.println("보내는 메세지 : " + chatMessage);
+
+				}
+				
+			} else {
+				// 1-B. 수신자 X -> 메세지 전송 X
+				System.out.println("1-B. 수신자 아이디 없음! - 메세지 전송 X");
+			}
+			
+		// -----------------------------------------------------------------------------------
+		//3. 채팅 내역 전송
+		} else if(chatMessage.getType().equals(ChatMessage.TYPE_REQUEST_CHAT_LIST)) {
+			
+			//기존 채팅 내역 조회 요청
 			List<ChatMessage> chatMessageList = chatService.getChatMessageList(chatMessage.getRoom_id());
 			
 			//기존 채팅 내역 존재할 경우에만 클라이언트측으로 전송
@@ -303,21 +314,65 @@ public class WebSocketHandler extends TextWebSocketHandler {
 				//채팅 내역을 JSON 형식으로 변환하여 메세지로 전송
 				chatMessage.setMessage(gson.toJson(chatMessageList));
 				sendMessage(session, chatMessage);
+				
+				System.out.println("REQUEST_CHAT_LIST : 기존 채팅 내역 전송함!");
+				System.out.println("보내는 메세지 : " + chatMessage);
+
 			}
 		} else if(chatMessage.getType().equals(ChatMessage.TYPE_TALK)) {
-			System.out.println("!!!!!!! 채팅 메세지 타입 TALK !!!!!!!");
-
+		// -----------------------------------------------------------------------------------
+		//4. 뷰페이지에 입력한 채팅 내역 DB에 저장 및 수신자에게 입력받은 채팅 전송
+			
+			//현재 시스템 날짜 및 시각 정보 저장하기
+			chatMessage.setSend_time(getDateTimeForNow());
+			
 			//채팅 메세지 DB 저장 요청
 			chatService.addChatMessage(chatMessage);
 			
-			//현재 수신자가 접속해 있을 경우 상대방에게도 메세지 전송
-			if(users.get(receiver_id) != null) { 
-				//탐색된 receiver_id 에 해당하는 웹소켓 세션 객체의 세션 아이디를 활용하여
+			//채팅 메세지 전송할 사용자 확인(user 객체에 receiver_id를 통해 판별
+			if(users.get(receiver_id) != null) { //현재 수신자가 접속해 있을 경우
+				
+				//수신자에게 메세지 보내야 하기에 수신자의 웹소켓을 가져와야 함.
+				
+				//탐색된 receiver_id에 해당하는 웹소켓 세션 객체의 세션 아이디를 활용하여
 				//userSessions 객체의 웹소켓 세션 객체를 가져와서 메세지 전송 요청
 				WebSocketSession receiver_ws = userSessions.get(users.get(receiver_id));
 				
 				sendMessage(receiver_ws, chatMessage);
+				System.out.println("TALK : 입력받은 채팅 DB 저장 & 수신자에게 메세지 전송함!");
+				System.out.println("보내는 메세지 : " + chatMessage);
+
+
+			}
+			
+		} else if(chatMessage.getType().equals(ChatMessage.TYPE_LEAVE)) {
+		// -----------------------------------------------------------------------------------
+		//5. 채팅방 종료
+			
+			//채팅방 상태값 변경(자신 = 0, 상대방 = 2)
+			chatService.quitChatRoom(chatMessage.getRoom_id(), chatMessage.getSender_id());
+			
+			//현재 시스템 날짜 및 시각 정보 저장하기
+			chatMessage.setSend_time(getDateTimeForNow());
+			
+			//나갔습니다 메세지 저장
+			chatMessage.setMessage(chatMessage.getSender_id() + " 님이 나갔습니다.");
+			
+			//채팅 메세지 DB 저장 요청
+			chatService.addChatMessage(chatMessage);
+			
+			//채팅 종료 신호를 상대방에게도 전달
+			//채팅 메세지 전송할 사용자 확인
+			//user 객체에 receiver_id를 통해 판별
+			if(users.get(receiver_id) != null) { //현재 수신자가 접속해 있을 경우
+				//탐색된 receiver_id에 해당하는 웹소켓 세션 객체의 세션 아이디를 활용하여
+				//userSessions 객체의 웹소켓 세션 객체를 가져와서 메세지 전송 요청
+				WebSocketSession receiver_ws = userSessions.get(users.get(receiver_id));
 				
+				sendMessage(receiver_ws, chatMessage);
+				System.out.println("LEAVE : 채팅방 상태값 변경 & 나갔습니다 메세지 저장 & 상대방에게도 퇴장 전송!");
+				System.out.println("보내는 메세지 : " + chatMessage);
+
 			}
 		}
 	}
@@ -332,6 +387,20 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println("웹소켓 연결 해제됨(afterConnectionClosed)");
+		
+		//클라이언트 정보가 저장된 Map 객체(userSessions) 내에서
+		//종료 요청이 발생한 웹소켓 세션 객체 제거
+		//Map 객체의 remove() 메서드 호출하여 전달받은 WebSocketSession 객체의 아이디를 키로 지정
+		userSessions.remove(getWebSocketSessionId(session));
+		
+		//사용자 정보가 저장된 Map 객체(users) 내에서
+		//종료 요청이 발생한 웹소켓의 세션 아이디 제거(널스트링으로 변경)
+		//Map객체의 remove() 메서드 호출하여 HttpSession 객체의 세션 아이디를 키로 지정
+		//단, HttpSession 객체의 세션 아이디(users의 키)는 유지
+		users.put(getHttpSessionId(session), "");
+		
+		System.out.println("클라이언트 목록(" + userSessions.keySet().size() + "명) : " + userSessions);
+		System.out.println("사용자 목록(" + users.keySet().size() + "명) : " + users);
 	}
 
 	

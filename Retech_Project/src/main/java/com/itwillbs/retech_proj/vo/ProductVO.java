@@ -17,6 +17,7 @@ public class ProductVO {
 	private String pd_update_date;
 	private int pd_readcount; //조회수
 	private int pd_re_ref;
+	private int category_idx;
 	
 	private String pd_image1;
 	private String pd_image2;
@@ -31,6 +32,8 @@ public class ProductVO {
 	private MultipartFile file3;
 	private MultipartFile file4;
 	private MultipartFile file5;
+	private String category_name;
+	private String category_type;
 	List<ProductVO> image_list;
 }
 

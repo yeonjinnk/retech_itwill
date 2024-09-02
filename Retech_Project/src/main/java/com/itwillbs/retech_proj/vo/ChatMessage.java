@@ -34,6 +34,7 @@ public class ChatMessage {
 	private String room_id;      // 채팅방 아이디
 	private String message;      // 채팅 메세지
 	private String send_time;    // 메세지 전송 시각
+//	private int pd_idx;    // 메세지 전송 시각
 	
 	// type 변수값으로 활용될 값을 상수로 생성
 	public static final String TYPE_ENTER = "ENTER";

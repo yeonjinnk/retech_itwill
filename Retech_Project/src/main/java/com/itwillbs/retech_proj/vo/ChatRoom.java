@@ -36,4 +36,5 @@ public class ChatRoom {
 	private String sender_id;
 	private String receiver_id;
 	private int status;
+//	private int pd_idx;
 }

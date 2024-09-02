@@ -34,3 +34,27 @@ body {
 	font-weight: bold; /* 글자 굵게*/
 }
 
+/*채팅방 목록*/
+.chatRoomList {
+	width: 100%;
+    z-index: 1;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    background: rgb(255, 255, 255);
+    color: rgb(94, 92, 107);
+    border: none;
+}
+
+/*채팅방 목록 마우스 올렸을 때 */
+.chatRoomList:hover {
+    cursor: pointer;
+    background: rgb(234, 233, 241);
+}
+
+.chatRoomList {
+	display: block;
+	width: 100%;
+	text-align: left;
+	justify-content: space-between;
+}

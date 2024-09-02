@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.itwillbs.retech_proj.vo.ReportChatVO;
+
 @Controller
 public class ChatController {
 
@@ -14,7 +16,6 @@ public class ChatController {
 		return "chat/report";
 	}
 	
-	//채팅방 목록
 	@GetMapping("ChatList")
 	public String chatList(HttpSession session, Model model) {
 		//로그인 판별위해 session에서 sId 받아와서 id로 저장
@@ -29,9 +30,10 @@ public class ChatController {
 		return "chat/chatList";
 	}
 	
-	//채팅방 1개 열기
+	
+	
 	@GetMapping("ChatRoom")
-	public String chatRoom() {
+	public String chatRoom(ReportChatVO reportChat) {
 		return "chat/chatRoom";
 	}
 }

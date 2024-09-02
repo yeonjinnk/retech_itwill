@@ -31,7 +31,7 @@
 	function startChat() {
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//일단 임시로 둠.. 나중에 상점의 판매자 아이디를 가져와야
-		let receiver_id = "receiver@naver.com";
+		let receiver_id = "${param.receiver_id}";
 		console.log("receiver_id : " + receiver_id);
 		
 		//top.jsp에 WebSocket 객체를 ws 변수에 저장해놓았으므로 ws 변수 접근 가능

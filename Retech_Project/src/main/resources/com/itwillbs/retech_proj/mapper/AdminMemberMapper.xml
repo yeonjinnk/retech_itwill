@@ -36,17 +36,17 @@
 	</select>
 	
 	<!-- 관리자 권한 부여 / 해제 
-		 파라미터로 받은 int member_isAdmin 으로 바꿔주기 -->
+		 파라미터로 받은 String member_isAdmin 으로 바꿔주기 -->
 	
 	<update id="updateAdminAuth">
 		UPDATE member
 		SET 
 			<choose>
-				<when test="member_isAdmin == Y">
-					member_isAdmin = Y
+				<when test="member_isAdmin == 'N'">
+					member_isAdmin = 'Y'
 				</when>
 				<otherwise>
-					member_isAdmin = N
+					member_isAdmin = 'N'
 				</otherwise>
 			</choose>
 		WHERE member_id = #{member_id}

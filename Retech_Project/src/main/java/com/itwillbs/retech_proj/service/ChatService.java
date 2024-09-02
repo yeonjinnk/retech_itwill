@@ -27,7 +27,6 @@ public class ChatService {
 	//새 채팅방 생성(추가)
 	public void addChatRoom(List<ChatRoom> chatRoomList) {
 		mapper.insertChatRoom(chatRoomList);
-		
 	}
 
 	//기존 채팅 내역 조회
@@ -38,6 +37,11 @@ public class ChatService {
 	//채팅 메세지 저장
 	public void addChatMessage(ChatMessage chatMessage) {
 		mapper.insertChatMessage(chatMessage);
+	}
+
+	//채팅방 종료
+	public void quitChatRoom(String room_id, String sender_id) {
+		mapper.updateChatRoomStatusForQuitRoom(room_id, sender_id);
 	}
 
 }
