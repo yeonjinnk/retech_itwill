@@ -123,8 +123,8 @@
 	        <h2><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h2>
           </div>
           <div class="charge_amount">
-	        <h2>충전금액</h2>
-	        <input type="text" id="chargeAmount" onkeypress="checkDigit(event)" placeholder="충전을 원하시는 금액을 입력해주세요">
+	        <h2>환급금액</h2>
+	        <input type="text" id="chargeAmount" onkeypress="checkDigit(event)" placeholder="환급을 원하시는 금액을 입력해주세요">
 	        <div id="onlyDigitMessage" style="color: red; display: none;">숫자만 입력 가능합니다</div>	
 				<div id="chargeButtons">
 				    <button type="button" class="charge-btn" data-amount="10000">+1만원</button>
@@ -132,7 +132,7 @@
 				    <button type="button" class="charge-btn" data-amount="50000">+5만원</button>
 				    <button type="button" class="charge-btn" data-amount="100000">+10만원</button>
 				</div>
-            <button class="charge_btn">충전하기</button>
+            <button class="charge_btn">환급하기</button>
           </div>
           <div class="pay_account_list">	
  		        <table border="1">
@@ -146,11 +146,11 @@
 		        			</td>
 		        			<td>${account.account_holder_name}</td>
 		        			<td>
-		        				<form action="ChargeBankWithdraw" method="post">
-		        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
-		        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
+		        				<form action="RefundBankDeposit" method="post">
+		        					<input type="hidden" name="withdraw_fintech_use_num" val="${account.fintech_use_num}">
+		        					<input type="hidden" name="withdraw_client_name" val="${account_holder_name}">
 		        					<input type="text" name="tran_amt" value="50000">
-		        					<input type="submit" value="충전하기">
+		        					<input type="submit" value="환급하기">
 		        				</form>
 		        			</td>
 		        		</tr>
