@@ -274,16 +274,16 @@
                 <form action="MemberLogin" method="post" name="login" onsubmit="return validateForm();">
                     <div class="info">
                         <span>아이디(이메일)</span>
-                        <input type="text" id="id" value="${cookie.rememberId.value}" placeholder="이메일을 입력해주세요" required> 
+                        <input type="text" id="member_id" value="${cookie.rememberId.value}" placeholder="이메일을 입력해주세요" required> 
                     </div>
                     
                     <div class="info">
                         <span>비밀번호</span>
-                        <input type="password" id="passwd" placeholder="영문, 숫자 포함 8자 이상" required>
+                        <input type="password" id="member_passwd" placeholder="영문, 숫자 포함 8자 이상" required>
                     </div>
 
-					<input type="hidden" name="id" id="hiddenId">
-					<input type="hidden" name="passwd" id="hiddenPasswd">	
+					<input type="hidden" name="member_id" id="hiddenId">
+					<input type="hidden" name="member_passwd" id="hiddenPasswd">	
 						
                     <div class="search">
                         <label>
