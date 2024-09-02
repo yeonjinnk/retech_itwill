@@ -68,24 +68,34 @@
    //프리뷰 파트 끝==========================================================================================
    
     // 상품 카테고리 공통코드 사용 함수
-      let pd_category;
-      $(function () {
-          $("select").eq(0).on("change", function() {
-             let product = "PRODUCT";
-             let product1 = $("#c_id").val();
-             let product2 = $("#c_id2").val();
-//                $("#pd_category_hidden").hidden = pd_category;
-				pd_category = product +  product1 + product2;
-             $("#pd_category_hidden").val(pd_category);
-//                $("#text").html("pd_category");
-             console.log("product : " + product);
-             console.log("product1 : " + product1);
-             console.log("product2 : " + product2);
-             console.log("pd_category : " + pd_category);
-             console.log("pd_category : " +  $("#pd_category_hidden").val());
-          });
-            
-       });
+   $(function () {
+    // 첫 번째 select 요소에 change 이벤트 핸들러 추가
+	    $("select").eq(0).on("change", function() {
+	        updatePdCategory();
+	    });
+	
+	    // 두 번째 select 요소에 change 이벤트 핸들러 추가
+	    $("select").eq(1).on("change", function() {
+	        updatePdCategory();
+	    });
+	});
+	
+	// pd_category 값을 업데이트하고 콘솔에 출력하는 함수
+	function updatePdCategory() {
+	    let product = "PRODUCT";
+	    let product1 = $("#c_id").val(); // 첫 번째 select 값
+	    let product2 = $("#c_id2").val(); // 두 번째 select 값
+	
+	    pd_category = product + product1 + product2;
+	    $("#pd_category_hidden").val(pd_category);
+	
+	    console.log("product : " + product);
+	    console.log("product1 : " + product1);
+	    console.log("product2 : " + product2); // 이제 console에 제대로 출력될 것입니다.
+	    console.log("pd_category : " + pd_category);
+	    console.log("pd_category : " + $("#pd_category_hidden").val());
+	}
+
    	
     
      
@@ -486,7 +496,7 @@
       
       //세션으로부터 받은 member_id값
       let member_id = $("#member_id").val().trim();
-      
+      console.log("member_id : " + member_id);
       let p_name = $("#p_name").val().trim();
       let c_id = $("#c_id").val();
       let c_id2 = $("#c_id2").val();
@@ -726,226 +736,10 @@
 
 </script>
 
-<style>
-body {
-	font-family: 'Gowun Dodum', sans-serif;
-}
-
-#root {
-	/*       background: #ccffcc; */
-	width: 100%;
-	height: 100%;
-}
-
-/* 실제 전체 div */
-#insert_box {
-	width: 1020px;
-	margin: auto;
-	padding-top: 160px;
-	/*       background: gray; */
-	min-height: 1000px;
-	text-align: center;
-}
-
-/* 인클루드 한 메인프레임 */
-#mainframe {
-	/* position : absolute; */
-	/* z-index: 999; */
-	
-}
-
-#title {
-	font-size: 40px;
-}
-
-/* span태그 */
-.pro_info {
-	font-size: 20px;
-}
-
-/* 전체 인풋태그 css */
-/* 현재 CSS에서 입력 필드에 접근성을 높이기 위해 z-index를 조정할 수 있습니다. */
-.input-tag {
-	/*        position: relative; /* position 속성을 추가 */ */
-	/* z-index 값을 추가하여 다른 요소보다 위로 표시되도록 합니다. */
-	display: inline-block;
-	height: 35px;
-	padding: 5px;
-	vertical-align: middle;
-	border: 1px solid black;
-	width: 100%;
-	color: black;
-	font-size: 15px;
-	border-radius: 5px;
-}
-
-/* 혹시 다른 요소들이 입력 필드 위에 겹치는 경우를 대비하여 */
-#insert_box {
-	position: relative;
-	z-index: 5; /* 필요한 경우 z-index 값을 낮게 설정합니다. */
-}
-
-/* 부모 요소나 관련된 다른 요소에서 pointer-events 속성을 확인합니다. */
-input, select, textarea {
-	pointer-events: auto; /* pointer-events가 none으로 설정된 경우 auto로 변경합니다. */
-}
-
-/* 이미지 미리보기 css */
-#img_preview0, #img_preview1, #img_preview2, #img_preview3,
-	#img_preview4, #img_preview5 {
-	display: none;
-	position: relative;
-	margin: 5px;
-	width: 150px;
-	height: 150px;
-
-	/*       border: 2px solid black; */
-}
-/* footer부분 밑으로 고정css*/
-footer {
-	background-color: #f8f9fa; /* 원하는 배경색으로 설정 */
-	padding: 10px;
-	text-align: center;
-	position: relative; /* 필요한 경우 relative로 설정 */
-	bottom: -100;
-	width: 100%;
-}
-/* 미리보기 삭제버튼 css */
-#sum_style {
-	text-align: center;
-	width: 75px;
-	height: 20spx;
-	position: absolute;
-	font-size: 12px;
-	outline: none;
-	border: none;
-	border-radius: 15px;
-	right: 70px;
-	bottom: 130px;
-	/* z-index:1; */
-	background-color: rgba(0, 0, 0, 0.5);
-	color: white;
-}
-
-.chk_style {
-	vertical-align: middle;
-	text-align: center;
-	width: 28px;
-	height: 28px;
-	position: absolute;
-	/* font-size:20px; */
-	outline: none;
-	border: none;
-	border-radius: 18px;
-	right: 9px;
-	bottom: 115px;
-	/* z-index:1; */
-	background-color: rgba(0, 0, 0, 0.5);
-	color: #ffcccc;
-}
-
-/* 미리보기 삭제 css */
-#del_img1, #del_img2, #del_img3, #del_img4, #del_sum {
-	cursor: pointer;
-	display: none;
-}
-
-#imgup {
-	margin-top: 5px;
-}
-
-/* 이미지 미리보기 css */
-#imgup_1, #imgup_2, #imgup_3, #imgup_4, #imgup_sum {
-	cursor: pointer;
-	display: none;
-}
-
-.input-tag:focus {
-	outline: none;
-	border: 1px solid black;
-}
-
-/* 제목입력창 넓이 */
-#p_name {
-	width: 88%;
-}
-
-/* 제품설명 textarea css */
-#p_exp {
-	padding: 15px;
-	width: 100%;
-	height: 150px;
-	resize: none;
-}
-
-/* 주소버튼 */
-#addrfind, #myaddr {
-	background: white;
-	cursor: pointer;
-	border: 1px solid black;
-	width: 90px;
-	height: 40px;
-}
-
-/* 상품 상태 */
-/*    #p_condition { */
-/*       width: 15px; */
-/*       height: 15px; */
-/*    } */
-
-/* 거래 방법*/
-#p_delivery_type {
-	width: 15px;
-	height: 15px;
-}
-
-/* 결제방법 */
-#p_paymentType {
-	width: 15px;
-	height: 15px;
-}
-
-input {
-	accent-color: red;
-}
-
-/* 테이블 간의 간격 */
-td {
-	width: 1020px;
-	/*       padding: 0.8em 1.4em 0.5em 0.8em; */
-}
-
-.td1 {
-	width: 20%;
-	vertical-align: top;
-}
-
-.td2 {
-	width: 80%;
-}
-
-#img_zone {
-	/* background-color: black; */
-	margin: auto;
-	width: 65%;
-	min-height: 50px;
-	margin-bottom: 50px;
-}
-
-#img_intro {
-	font-size: 16px;
-	color: skyblue;
-	/* background-color: #ccffcc; */
-	margin: auto;
-	width: 65%;
-	min-height: 50px;
-}
-</style>
-
-
 <title>Retech 메인페이지</title>
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/product/product_regist_form.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<header>
@@ -961,7 +755,7 @@ td {
 		<input type="file" id="imageFile5" style="display: none;" accept=".jpg, .jpeg, .png">
 	</form>
 	<div id="root">
-		<input type="hidden" id="member_id" value="${sessionScope.member_id}">
+		<input type="hidden" id="member_id" value="${sessionScope.sId}">
 
 		<div id="insert_box">
 			<span id="title">상품등록</span>
@@ -1040,17 +834,20 @@ td {
 				<!-- 카테고리 -->
 				<tr>
 					<td class="td1" align="left" style="vertical-align: top;"><span class="pro_info">카테고리<span style="color: red">*</span></span></td>
-					<td class="td2" align="left"><select class="input-tag" id="c_id" name="c_id" style="width: 30%; height: 35px;">
+					<td class="td2" align="left">
+					<select class="input-tag" id="c_id" name="c_id" style="width: 30%; height: 35px;">
 							<option value="">카테고리 선택</option>
 							<option value="PC">PC</option>
 							<option value="NB">노트북</option>
-					</select> <select class="input-tag" id="c_id2" name="c_id2" style="width: 30%; height: 35px;">
+					</select> 
+					<select class="input-tag" id="c_id2" name="c_id2" style="width: 30%; height: 35px;">
 							<option value="">카테고리 선택</option>
 							<option value="SA">삼성</option>
 							<option value="AP">애플</option>
 							<option value="LG">LG</option>
 							<option value="ET">기타</option>
-					</select> <input type="hidden" name="pd_category" id="pd_category_hidden"></td>
+					</select> 
+					<input type="hidden" name="pd_category" id="pd_category_hidden"></td>
 				</tr>
 				<tr>
 					<td colspan="2"><hr></td>

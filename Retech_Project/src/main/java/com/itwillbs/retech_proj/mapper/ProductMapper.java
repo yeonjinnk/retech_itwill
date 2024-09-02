@@ -28,11 +28,22 @@ public interface ProductMapper {
 	
 	//정렬변경시 정렬변경된 중고상품 목록 조회 요청 
 	List<HashMap<String, String>> selectChangedProductList(@Param("pageNum") int pageNum,
-														   @Param("category")String category, 
-														   @Param("sort") String sort, 
+														   @Param("pd_category")String pd_category, 
+														   @Param("pd_selectedManufacturer") String pd_selectedManufacturer, 
+														   @Param("pd_selectedPdStatus") String pd_selectedPdStatus, 
+														   @Param("sort") String sort,
 														   @Param("startRow") int startRow,
-														   @Param("listLimit") int listLimit,
-														   @Param("type") String type);
+														   @Param("listLimit") int listLimit);
+	// 정렬변경시 정렬변경된 중고상품 목록개수 조회 요청
+	int selectChangedProductListCount(@Param("pageNum") int pageNum, 
+									  @Param("pd_category") String pd_category, 
+									  @Param("pd_selectedManufacturer") String pd_selectedManufacturer, 
+									  @Param("pd_selectedPdStatus") String pd_selectedPdStatus, 
+									  @Param("sort") String sort, 
+									  @Param("type") String type
+									 );
+	//카테고리 리스트 조회 요청
+	List<HashMap<String, String>> selectCategoryList();
 	
 
 //	//리테크 상품 수정

@@ -1,0 +1,242 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+  padding-top: 70px; /* Adjust for fixed header */
+}
+
+/* Main Article Styling */
+#mainArticle {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* General Link Styling */
+a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #007bff;
+}
+
+/* Category and Filter Section Styling */
+#category {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.pro_info {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.input-tag {
+  width: 30%;
+  height: 35px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Product List Information and Sorting */
+.listInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.listInfoCount {
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.listInfoBtn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.listInfoBtn:hover {
+  background-color: #0056b3;
+}
+
+.listSort {
+  display: none;
+  list-style: none;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  position: absolute;
+  top: 70%;
+  right: 0;
+  z-index: 1000;
+}
+
+.listSort li {
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.listSort li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Product List Styling */
+.productListArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.productListArea .col-lg-3 {
+  width: 23%;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.productListArea .col-lg-3:hover {
+  transform: translateY(-5px);
+}
+
+/* Product Card Styling */
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.photoDiv {
+  position: relative;
+}
+
+/* Like Button Styling */
+.likebtn {
+  font-size: 1.0rem;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.likebtn:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/* Product Status Button Styling */
+.pd_status {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.btn.btn-dark {
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: default;
+}
+
+/* Product Details Styling */
+.card-body {
+  padding: 15px;
+  text-align: center;
+}
+
+.category {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-title a {
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.card-title a:hover {
+  color: #007bff;
+}
+
+.card-body p {
+  font-size: 1rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Footer Styling */
+footer {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .productListArea .col-lg-3 {
+    width: 30%;
+  }
+}
+
+@media (max-width: 992px) {
+  .productListArea .col-lg-3 {
+    width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .productListArea .col-lg-3 {
+    width: 100%;
+  }
+}
+

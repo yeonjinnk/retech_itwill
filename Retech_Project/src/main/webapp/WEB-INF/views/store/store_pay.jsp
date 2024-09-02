@@ -9,6 +9,10 @@
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/store/store_pay.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<!-- 포트원 결제 연동 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<!-- 포트원 라이브러리 추가 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <!-- 포트원 라이브러리 추가 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
@@ -27,8 +31,38 @@
 			}
 		})
 	});
+	
+	//포트원 결제 코드
+	//1. SDK 초기화하기
+	IMP.init("imp50610540"); // 예: 'imp00000000'
 
+	//2. 결제창 불러오기
+	IMP.request_pay(
+		{
+			pg: "{PG사 코드}.{상점 ID}",
+			pay_method: "card",
+			merchant_uid: `payment-${crypto.randomUUID()}`, // 주문 고유 번호
+			name: "노르웨이 회전 의자",
+			amount: 64900,
+			buyer_email: "gildong@gmail.com",
+			buyer_name: "홍길동",
+			buyer_tel: "010-4242-4242",
+			buyer_addr: "서울특별시 강남구 신사동",
+			buyer_postcode: "01181",
+	 	},
+		 function (response) {
+		 	// 결제 종료 시 호출되는 콜백 함수
+		 	// response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
+		 	// 결제 결과를 처리하는 로직을 작성합니다.
+		 	},
+	 );
+	
+	
+	
 </script>
+
+</head>
+<body>
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
@@ -112,6 +146,7 @@
 						<td><c:out value="${final_price}"/>원</td>
 					</tr>
 				</table>
+<!-- 						<button type="button" onclick="request_pay()"> -->
 						<button type="button" id="payment">
 							<span class="text">결제하기</span>
 						</button>
