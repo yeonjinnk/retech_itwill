@@ -5,13 +5,13 @@
 <!-- 
 [ 엑세스토큰 및 핀테크 사용자 정보를 관리할 bank_user_info 테이블 정의 ]
 CREATE TABLE techpay_user_info (
-	techpay_mem_id VARCHAR(100) PRIMARY KEY,
+	id VARCHAR(100) PRIMARY KEY,
 	access_token VARCHAR(400) UNIQUE,
 	refresh_token VARCHAR(400) UNIQUE,
 	user_seq_no VARCHAR(10) UNIQUE,
 	user_ci VARCHAR(100) UNIQUE,
 	fintech_use_num VARCHAR(30) UNIQUE,
-	FOREIGN KEY (techpay_mem_id) REFERENCES member(member_id) ON DELETE CASCADE
+	FOREIGN KEY (id) REFERENCES member(member_id) ON DELETE CASCADE
 );
 -->     
 <mapper namespace="com.itwillbs.retech_proj.mapper.TechPayMapper"> 
@@ -22,16 +22,39 @@ CREATE TABLE techpay_user_info (
 		SELECT *
 		FROM techpay_user_info AS b
 		LEFT JOIN member AS m
-		ON b.techpay_mem_id = m.member_id
-		WHERE b.techpay_mem_id = #{id}
+		ON b.id = m.member_id
+		WHERE b.id = #{id}
 	</select>
+
+	<!-- 테크페이 비밀번호 정보 조회 - SELECT -->
+	<select id="selectPayPwd">
+		SELECT pay_pwd
+		FROM techpay_pay_info
+		WHERE id = #{id}
+	</select>
+
+	<!-- 테크페이 잔액 정보 조회 - SELECT -->
+	<select id="selectPayBalance">
+		SELECT pay_balance
+		FROM techpay_pay_info
+		WHERE id = #{id}	
+	</select>
+	
+	<!-- 테크페이 비밀번호 정보 저장 - UPDATE -->
+	<update id="updatePayPwd">
+		UPDATE techpay_pay_info
+		SET
+			pay_pwd = #{pay_pwd}
+		WHERE
+			id = #{id}	
+	</update>
 
 	<!-- 사용자 엑세스 토큰 정보 조회 - SELECT -->
 	<!-- 전달받은 Map 객체 내의 "id" 속성을 활용하여 아이디 조회 -->
 	<select id="selectId" resultType="string">
-		SELECT techpay_mem_id
+		SELECT id
 		FROM techpay_user_info
-		WHERE techpay_mem_id = #{id}	
+		WHERE id = #{id}	
 	</select>
 
 	<!-- 핀테크 엑세스토큰 정보 등록 - INSERT -->
@@ -54,7 +77,27 @@ CREATE TABLE techpay_user_info (
 			access_token = #{token.access_token}
 			, refresh_token = #{token.refresh_token}
 		WHERE
-			techpay_mem_id = #{id}	
+			id = #{id}	
 	</update>
+
+	<!-- 테크페이 초기 정보 저장 - INSERT -->
+	<insert id="insertPayInfo">
+		INSERT INTO techpay_pay_info (id, pay_balance)
+		VALUES (
+			#{id}
+			, 0 			
+		)
+	</insert>
+	
+	
+	<!-- 핀테크 잔액 정보 갱신 - UPDATE -->
+	<update id="updatePayBalance">
+		UPDATE techpay_pay_info
+		SET
+			pay_balance  = pay_balance + #{amt}
+		WHERE
+			id = #{id}	
+	</update>
+	
 
 </mapper>
