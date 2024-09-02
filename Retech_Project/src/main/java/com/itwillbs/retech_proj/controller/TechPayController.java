@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class TechPayController {
 	private static final Logger logger = LoggerFactory.getLogger(TechPayController.class);
 	
 	@GetMapping("TechPayMain")
-	public String techPayMain(HttpSession session, Model model) {
+	public String techPayMain(HttpSession session, Model model, HttpServletResponse response) {
 		// 로그인 완료 되어 있는 회원만 테크페이 메인 페이지로 진입 가능함
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
@@ -39,8 +40,12 @@ public class TechPayController {
 			session.setAttribute("prevURL", "TechPayMain");
 			
 			return "result/fail";
+		
+		// 페이 관리자 아이디로 접속 시, 테크페이 관리자 페이지로 진입함
+		} else if (id.equals("payadmin@gmail.com")) {
+			return "techpay/techpay_admin_main";	
 		}
-
+		
 		// 핀테크 엑세스토큰 정보 조회하여 저장
 		// => 실제 정보 조회는 로그인 시(MemberLogin - loginPro()) 수행되고 있지만
 		//    현재 개발 서버(localhost)와 운영 서버(localhost)가 모두 이클립스가 관리하는 톰캣이므로
@@ -53,7 +58,6 @@ public class TechPayController {
 		
 		// 조회 결과를 세션 객체에 저장
 		session.setAttribute("token", token);
-		
 		
 		// 테크페이 비밀번호 정보 조회
 		String pay_pwd = techPayService.getPayPwd(id);
@@ -70,7 +74,13 @@ public class TechPayController {
 		session.setAttribute("pay_balance", pay_balance);
 		
 		
-		return "techpay/techpay_main";
+		if(token == null) {
+			System.out.println("토큰 없음");
+			return "techpay/account_verify";			
+		} else {
+			return "techpay/techpay_info";			
+		}
+		
 	}
 	
 	// 2.1.1. 사용자인증 API (3-legged)
@@ -135,36 +145,46 @@ public class TechPayController {
 		return "result/success";
 	}
 	
-	@GetMapping("PayInfo")
-	public String payInfo(HttpSession session, Model model) {
-		// 로그인 완료 되어 있는 회원만 테크페이 정보 페이지로 진입 가능함
+	@GetMapping("AdminBankRequestToken")
+	public String adminBankRequestToken(HttpSession session, Model model) {
 		String id = (String)session.getAttribute("sId");		
+		// 로그인 완료 되어 있는 회원만 테크페이 해당 페이지로 진입 가능함
 		if(id == null) {
-			model.addAttribute("msg", "로그인한 후에 이용 할 수 있습니다");
-			model.addAttribute("isClose", true);
+			model.addAttribute("msg", "로그인 필수!");
 			model.addAttribute("targetURL", "MemberLogin");
-			session.setAttribute("prevURL", "TechPayMain");
-			
+			session.setAttribute("prevURL", "AdminBankRequestToken");
+			return "result/fail";
+		// 페이 관리자 아이디가 아닌 회원은 해당 페이지 진입 불가능함
+		} else if (!id.equals("payadmin@gmail.com"))	 {
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("targetURL", "./");
 			return "result/fail";
 		}
-		return "techpay/techpay_info";
-	}
-	
-	
-	@GetMapping("AccVerrify")
-	public String accVerify(HttpSession session, Model model) {
-		// 로그인 완료 되어 있는 회원만 테크페이 계좌연결 페이지로 진입 가능함
-		String id = (String)session.getAttribute("sId");		
-		if(id == null) {
-			model.addAttribute("msg", "로그인한 후에 이용 할 수 있습니다!");
-//			model.addAttribute("msg", "로그인한 후에\n테크페이를 이용 할 수 있습니다!");
+		
+		// 2.1.2. 관리자 토큰발급 API (2-legged) - 관리자 엑세스토큰 발급용
+		BankToken adminToken = techPayService.getAdminAccessToken();
+		System.out.println("---------------관리자 토큰 발급 결과 : " + adminToken);
+
+		// 요청 결과 판별
+		// => BankToken 객체가 null 이거나 엑세스토큰 값이 null 일 경우 요청 에러 처리
+		if(adminToken == null || adminToken.getAccess_token() == null) {
+			model.addAttribute("msg", "토큰 발급 실패! 재인증 필요!");
+			// 인증을 위해 새 창이 열려있으며 해당 창 닫기 위해 "isClose" 속성값에 true 값 저장
 			model.addAttribute("isClose", true);
-			model.addAttribute("targetURL", "MemberLogin");
-			session.setAttribute("prevURL", "TechPayMain");
-			
 			return "result/fail";
-		}		
-		return "techpay/account_verify";
+		}	
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("token", adminToken);
+		
+		// TechPayService - registAdminAccessToken() 메서드 호출하여 관리자 토큰 관련 정보 저장
+		techPayService.registAdminAccessToken(map);
+		
+		model.addAttribute("msg", "관리자 토큰 발급 성공!");
+		model.addAttribute("targetURL", "TechPayMain");
+		
+		return "result/success";
 	}
 	
 	@GetMapping("PayCharge")	
@@ -178,7 +198,7 @@ public class TechPayController {
 			model.addAttribute("msg", "로그인 필수!");
 			model.addAttribute("targetURL", "MemberLogin");
 			// 로그인 후 현재 페이지로 돌아옴
-			session.setAttribute("prevURL", "PayManage");
+			session.setAttribute("prevURL", "PayCharge");
 			return "result/fail";
 		} else if(token == null || token.getAccess_token() == null) {
 			model.addAttribute("msg", "계좌인증 필수!");
@@ -221,7 +241,7 @@ public class TechPayController {
 			model.addAttribute("msg", "로그인 필수!");
 			model.addAttribute("targetURL", "MemberLogin");
 			// 로그인 후 현재 페이지로 돌아옴
-			session.setAttribute("prevURL", "PayManage");
+			session.setAttribute("prevURL", "ChargeBankWithdraw");
 			return "result/fail";
 		} else if(token == null || token.getAccess_token() == null) {
 			model.addAttribute("msg", "계좌인증 필수!");
@@ -262,7 +282,7 @@ public class TechPayController {
 			model.addAttribute("msg", "로그인 필수!");
 			model.addAttribute("targetURL", "MemberLogin");
 			// 로그인 후 현재 페이지로 돌아옴
-			session.setAttribute("prevURL", "PayManage");
+			session.setAttribute("prevURL", "PayRefund");
 			return "result/fail";
 		} else if(token == null || token.getAccess_token() == null) {
 			model.addAttribute("msg", "계좌인증 필수!");
@@ -286,8 +306,45 @@ public class TechPayController {
 	
 	@PostMapping("RefundBankDeposit")
 	public String refundBankDeposit(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		System.out.println("입금 이체 요청 파라미터 : " + map);
 		
-		return "techpay/techpay_charge_result";
+		String id = (String)session.getAttribute("sId");
+		// 회원 엑세스토큰 정보 저장된 BankToken객체 session에서 꺼내서 'token'으로 저장
+		BankToken token = (BankToken)session.getAttribute("token");
+		
+		// 1) 로그인 안 되어 있으면 로그인페이지로 이동
+		// 2) session에 token 없거나 token에 엑세스 토큰 없으면 계좌인증페이지로 이동
+		if(session.getAttribute("sId") == null) {
+			model.addAttribute("msg", "로그인 필수!");
+			model.addAttribute("targetURL", "MemberLogin");
+			// 로그인 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "RefundBankDeposit");
+			return "result/fail";
+		} else if(token == null || token.getAccess_token() == null) {
+			model.addAttribute("msg", "계좌인증 필수!");
+			model.addAttribute("targetURL", "TechPayMain");
+			// 계좌인증 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "PayManage");
+			return "result/fail";			
+		}
+				
+		map.put("id", (String)session.getAttribute("sId"));
+		System.out.println("입금 이체 요청 파라미터 : " + map);
+		
+		// 2.5.2. 입금 이체 API
+		// TechPayService - requestDeposit() 메서드	
+		Map<String, Object> refundDepositResult = techPayService.requestDeposit(map);
+		System.out.println("------------- 입금이체 결과 : " + refundDepositResult);
+
+		// Model 객체에 입금이체 결과 저장		
+		model.addAttribute("refundDepositResult", refundDepositResult);
+		
+		// 테크페이 잔액 차감
+		// TechPayService - registRefund() 메서드
+		String amt = "70000"; // 임의 금액 설정
+		techPayService.registRefund(id, amt);		
+		
+		return "techpay/techpay_refund_result";
 	}
 	
 	@GetMapping("PayManage")	
