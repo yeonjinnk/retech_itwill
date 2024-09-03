@@ -12,6 +12,7 @@
 <%-- 자바스크립트 연결 --%>
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
+
 </head>
 <body>
 	<header>
@@ -23,16 +24,8 @@
 			<h2>테크페이 메인</h2>
 			<br>
 			<div align="center">
-				<%-- 엑세스토큰 정보 존재 여부에 따라 다른 링크 표시 --%>
-				<c:choose>
-					<%-- 세션 객체의 "token" 속성이 비어있을 경우, 계좌 미인증 회원이므로 계좌인증 수행하도록 표시 --%>
-					<c:when test="${empty sessionScope.token}">
-        				<c:redirect url="AccVerrify"/>				    					    
-					</c:when>
-				    <c:otherwise>
-        				<c:redirect url="PayInfo"/>				    					    
-				    </c:otherwise>
-				</c:choose>
+				<%-- 페이관리자용 엑세스토큰 발급 --%>
+				<input type="button" value="센터인증 이용기관 토큰발급" onclick="location.href='AdminBankRequestToken'">
 			</div>
 		</div>
 	</section>

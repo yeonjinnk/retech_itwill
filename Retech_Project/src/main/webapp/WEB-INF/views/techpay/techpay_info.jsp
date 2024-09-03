@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -175,16 +176,16 @@ input[type="radio"]:checked + .tab_label {
 	       <div class="pay_card">
 			  <div class="title">
 				<h2>${sessionScope.sName} 님</h2>
-				<img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="40" width="80">
+				<input type="button" value="테크페이 관리" onclick="location.href='PayManage'">
 			  </div>
 	          <div class="pay_balance">
 		        <h2>페이잔액</h2> 
-		        <h2>xxxx원</h2>
+	        	<h2><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h2>
 	          </div>
 	          <!-- 페이 충전/환급 버튼  -->
 	          <div class="btn_top">
 	            <button class="btn" onclick="location.href='PayCharge'">충전하기</button>
-	            <button class="btn">환급하기</button>
+	            <button class="btn" onclick="location.href='PayRefund'">환급하기</button>
 	          </div>
 	        </div>
 			<!-- 페이 이용내역  -->

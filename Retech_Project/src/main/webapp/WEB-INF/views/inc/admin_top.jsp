@@ -39,7 +39,7 @@
 								</li>
 								
 								<!-- 관리자 계정일 경우 관리자 페이지 링크 표시 -->
-								<c:if test="${sessionScope.sIsAdmin eq 'Y'}">
+								<c:if test="${sessionScope.sIsAdmin eq '1'}">
 									<li class="top_list">
 										<a href="AdminMemberList" class="top_link">관리자정보</a>
 									</li>

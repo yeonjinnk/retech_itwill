@@ -71,7 +71,7 @@
 								</li>
 								
 								<!-- 관리자 계정일 경우 관리자 페이지 링크 표시 -->
-								<c:if test="${sessionScope.sIsAdmin eq 'Y'}">
+								<c:if test="${sessionScope.sIsAdmin eq 1}">
 									<li class="top_list">
 										<a href="AdminHome" class="top_link">관리자페이지</a>
 									</li>
@@ -235,7 +235,7 @@
 			// => 전송할 메세지를 toJsonString() 함수를 통해 JSON 형식으로 변환하여 전송
 			ws.send(toJsonString(type, sender_id, receiver_id, room_id, message));
 		}
-		
+// 		이ㅓ
 			
 		// ======================================================================
 		// 채팅방 목록 영역에 1개 채팅방 정보를 추가하는 함수

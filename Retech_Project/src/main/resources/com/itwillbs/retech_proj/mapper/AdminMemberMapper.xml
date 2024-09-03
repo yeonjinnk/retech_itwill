@@ -40,17 +40,17 @@
 	
 	<update id="updateAdminAuth">
 		UPDATE member
-		SET 
+		SET
 			<choose>
-				<when test="member_isAdmin == 'N'">
-					member_isAdmin = 'Y'
+				<when test="member_isAdmin == 0">
+					member_isAdmin = 1
 				</when>
 				<otherwise>
-					member_isAdmin = 'N'
+					member_isAdmin = 0
 				</otherwise>
 			</choose>
 		WHERE member_id = #{member_id}
-	</update>
+</update>
 
 	
 

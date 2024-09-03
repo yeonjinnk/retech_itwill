@@ -42,9 +42,16 @@
 	<insert id="insertNotice">
 		INSERT INTO notice
 		VALUES (
-			null
+			#{notice_idx} + 1
+			, #{notice_sell}
 			, #{notice_subject}
-			, #{notice_content}
+			, now()
+			, #{board_num} + 1  -- board_re_ref(selectKey 를 통회 조회된 게시물 번호 + 1 값 사용)
+			, 0                 -- notice_re_lev
+			, 0                 -- notice_re_seq
+			, 0                 -- notice_readcount
+			, now()
+			, #{board_writer_ip}
 			, now()
 		)
 	</insert>
@@ -75,9 +82,9 @@
 		FROM faq
 		<if test="!searchKeyword.equals('')">
 			WHERE 
-				FAQ_category like concat('%',#{searchKeyword},'%')
-				or FAQ_subject like concat('%',#{searchKeyword},'%')
-				or FAQ_content like concat('%',#{searchKeyword},'%')
+				faq_category like concat('%',#{searchKeyword},'%')
+				or faq_subject like concat('%',#{searchKeyword},'%')
+				or faq_content like concat('%',#{searchKeyword},'%')
 		</if>
 	</select>
 	
@@ -87,12 +94,12 @@
 		FROM faq
 		<if test="!searchKeyword.equals('')">
 			WHERE 
-				FAQ_category like concat('%',#{searchKeyword},'%')
-				or FAQ_subject like concat('%',#{searchKeyword},'%')
-				or FAQ_content like concat('%',#{searchKeyword},'%')
+				faq_category like concat('%',#{searchKeyword},'%')
+				or faq_subject like concat('%',#{searchKeyword},'%')
+				or faq_content like concat('%',#{searchKeyword},'%')
 		</if>
 		ORDER BY
-			FAQ_idx DESC		
+			faq_idx DESC		
 		LIMIT
 			#{startRow}     
 			, #{listLimit} 
@@ -102,10 +109,10 @@
 	<insert id="insertFaq">
 		INSERT INTO faq
 		VALUES (
-			#{FAQ_idx} + 1
-			, #{FAQ_category}
-			, #{FAQ_subject}
-			, #{FAQ_content}
+			#{faq_idx} + 1
+			, #{faq_category}
+			, #{faq_subject}
+			, #{faq_content}
 			, now()
 		)
 	</insert>
@@ -114,25 +121,25 @@
 	<delete id="deleteFaq">
 		DELETE 
 		FROM faq
-		WHERE FAQ_idx = #{FAQ_idx}
+		WHERE faq_idx = #{faq_idx}
 	</delete>
 	
 	<!-- 관리자 - FAQ 수정 (상세내용 가져오기) -->
 	<select id="selectFaq" resultType="faq">
 		SELECT *
 		FROM faq
-		WHERE FAQ_idx = #{FAQ_idx} 
+		WHERE faq_idx = #{faq_idx} 
 	</select>
 	
 	<!-- 관리자 - FAQ 수정  -->
 	<update id="updateFaq">
 		UPDATE faq
 		SET 
-			FAQ_category = #{FAQ_category}
-			,FAQ_subject = #{FAQ_subject}
-			,FAQ_content = #{FAQ_content}
+			faq_category = #{faq_category}
+			,faq_subject = #{faq_subject}
+			,faq_content = #{faq_content}
 		WHERE
-			FAQ_idx = #{FAQ_idx}
+			faq_idx = #{faq_idx}
 	</update>
 	
 	<!-- ======================================================================================= -->
