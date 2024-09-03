@@ -1,5 +1,7 @@
 package com.itwillbs.retech_proj.vo;
 
+import java.sql.Time;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

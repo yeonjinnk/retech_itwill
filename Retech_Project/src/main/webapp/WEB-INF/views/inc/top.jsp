@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link href="${pageContext.request.contextPath}/resources/css/inc/top.css" rel="stylesheet">
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 	function confirmLogout() {
@@ -11,6 +12,59 @@
 			location.href = "MemberLogout";
 		}
 	}
+	
+	//알림
+	
+	//알림창 열림 상태 기본 false로
+	let isAlarmListOpen = false;
+	
+// 	알림창 열고 닫는 함수
+	function alarmListOpen() {
+		console.log("알림창 여닫는 alarmListOpen 함수 호출됨!");
+		if(!isAlarmListOpen) {//알림창 열기
+			console.log("알림창 열기!");
+			$(".layer_box").css("display", "");
+			isAlarmListOpen = true;
+		} else { //알림창 닫기
+			console.log("알림창 닫기!");
+			$(".layer_box").css("display", "none");
+			isAlarmListOpen = false;
+		}
+	}
+
+	//정렬 목록이 열려있을 때 다른 곳을 누르면 목록 닫히게 하는 함수
+	$(document).on("click", function(event) {
+		let target = $(event.target);
+		
+		//클릭된 요소의 가장 가까운 조상 중 .alarmLi 및 .layer_box 클래스를 가진 요소가 있는지 확인
+		//length는 존재여부 확인 - 선택된 요소의 개수를 반환하는 속성
+		//length가 0이면 선택된 요소 개수가 없
+		//클릭된 요소가 .alarmLi 클래스의 자식 요소가 아니고
+		//.layer_box 클래스의 자식 요소가 아닐 때
+		if(!target.closest(".alarmLi").length && !target.closest(".layer_box").length) {
+			console.log("알림창 외부 클릭 - 알림창 닫습니다!");
+			//.layer_box를 닫습니다.
+			$(".layer_box").css("display", "none");
+			//닫으니까 isAlarmListOpen(열림 상태)를 false로 변경
+			isAlarmListOpen = false;
+		}
+			
+	});
+	
+	
+	//알림 메세지
+	let alarmMessage;
+	let ws2;
+	
+	//로그인했을 경우만 알림 가능하게 하기 - 세션아이디 유무 판별
+	let receiver = "${sessionScope.sId}";
+	if(receiver != "") { //로그인 O
+		//웹소켓 주소 설정 - 알림창 동기 설정
+		
+	}
+
+
+
 </script>
 <!-- 탑 최상단 영역 -->
 <div class="header_top">
@@ -22,6 +76,18 @@
 				<ul class="top_area">
 					<li class="top_list">
 						<a href="TechPayMain" class="top_link" id="top_link1">테크페이</a>
+					</li>
+					<li class="top_list alarmLi">
+						<a class="top_link" id="top_link1" onclick="alarmListOpen()">알림
+							<!-- 채팅 수신 시 알림 포인터 -->
+							<span id="alarmPoint" style="display: none;">● </span>
+						</a>
+						<div class="layer_box" id="alram1" style="display: none;">
+							<div class="box_content">
+								<%@ include file="/WEB-INF/views/alarm/alarm_list.jsp"%>
+<%-- 								<jsp:include page="/WEB-INF/views/alarm/alarm_list.jsp"></jsp:include> --%>
+							</div>
+						</div>
 					</li>
 					<li class="top_list">
 					<!-- 채팅하기 새 창으로 열기 -->
@@ -262,7 +328,27 @@
 				//새로 생성할 채팅방 목록 1개의 div 태그 작성
 				//<div class="chatRoomList 룸아이디 status_상태">제목</div>
 				let divRoom = "<div class='chatRoomList " + room.room_id + " status_" + status + "'>"
+							+ "<div class='title'>" //title 시작
 							+ title
+							+ "</div>" //title 끝
+							+ "<div class='message'>" //message 시작
+							+ "<div class='message-avatar'>" //message-avatar 시작
+							+ "<img src='https://ssl.pstatic.net/static/pwe/address/img_profile.png'>"
+							+ "</div>" //message-avatar 끝
+							+ "<div class='message-body'>" //message-body 시작
+							+ "<div class='message-body-heading'>" //message-bod-heading 시작
+							+ "<h5>"
+							+ room.receiver_id
+							+ "</h5>"
+							+ "<span>"
+							+ room.last_send_time
+							+ "</span>"
+							+ "</div>" //message-bod-heading 끝
+							+ "<p>"
+							+ room.last_message
+							+ "</p>"
+							+ "</div>" //message-body 끝
+							+ "</div>" //message 끝
 							+ "</div>"
 							
 				$("#chatRoomListArea").append(divRoom);

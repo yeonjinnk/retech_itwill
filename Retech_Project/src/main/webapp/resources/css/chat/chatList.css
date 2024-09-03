@@ -58,3 +58,60 @@ body {
 	text-align: left;
 	justify-content: space-between;
 }
+.message {
+	display: flex;
+}
+
+
+.message-avatar {
+	margin-left: 20px;
+	justify-content: space-between;
+    left: 30px;
+    top: 50%;
+    transform: translateY(10%);
+}
+
+.message-avatar img {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.message-body {
+	justify-content: space-between;
+	margin-left: 30px;
+    font-size: 15px;
+    color: #62748F;
+    width: 100%;
+}
+
+.message-body-heading {
+	display: block;
+    unicode-bidi: isolate;
+}
+
+.message-body-heading h5 {
+	width: 100%;
+    font-weight: 500;
+    display: inline;
+    color: #62748F;
+    margin: 0 0 7px 0;
+    padding: 0;
+}
+
+.message-body-heading span {
+    float: right;
+    margin-right: 20px;
+    color: #62748F;
+    font-size: 14px;
+}
+
+p {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+}

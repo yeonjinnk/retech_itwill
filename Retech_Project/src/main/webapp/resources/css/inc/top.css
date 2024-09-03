@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+/* .layer_box { */
+/* 	display: none; */
+/* } */
+#top_link1 {
+	cursor: pointer;
+}
+.layer_box {
+/* 	float: left; */
+	position: relative;
+	display: inline-block;
+/* 	top: 28px; */
+/* 	left: -13px; */
+}
+
+.box_content{
+  display : none;
+  position : absolute;
+  z-index : 1; /*다른 요소들보다 앞에 배치*/
+  font-weight: 400;
+  background-color: #f9f9f9;
+  min-width : 200px;
+}
+
+.box_content a{
+  display : block;
+  text-decoration : none;
+  color : rgb(37, 37, 37);
+  font-size: 12px;
+  padding : 12px 20px;
+}
+
+.box_content a:hover{
+  background-color : #ececec
+}
+
+.layer_box .box_content {
+  display: block;
+}
+
+.layer_box::before {
+    left: 13px;
+}
+.layer_box::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -13px;
+/*     background-image: url(https://pm.pstatic.net/resources/asset/sp_main.89f0d213.png); */
+    background-size: 434px 422px;
+    background-position: -165px -114px;
+    background-repeat: no-repeat;
+    width: 22px;
+    height: 13px;
+}

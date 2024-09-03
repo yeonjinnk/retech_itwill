@@ -213,6 +213,7 @@ body {
 
 /*메세지 출력창*/
 #chatRoomArea {
+	height: 100%;
 	vertical-align: bottom;
 	padding : 10px 0;
 	width: 100%;
@@ -310,6 +311,11 @@ body {
 .chatMessage:focus, .chatMessage:hover {
 	outline: none;
 	border-width: 2px;
+}
+
+.commandArea {
+	display: inline-block;
+	text-align: center;
 }
 
 /*전송버튼*/
