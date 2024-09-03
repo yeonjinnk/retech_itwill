@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,21 +12,25 @@
 
 </head>
 <body>
-	<form action="">
-		거래하기 확인
-		<hr>
-		최종 거래금액 : 
-		<input type="number" value="" disabled>원<br>
-		배송지 입력<br>
-		  <label for="postCode" class="title">주소</label>
-                <input type="text" name="member_postcode" id="postCode" placeholder="우편번호" required readonly>
-                <button type="button" id="btnSearchAddress">주소검색</button><br>
-                <input type="text" name="member_address1" id="address1" placeholder="기본주소" required readonly><br>
-                <input type="text" name="member_address2" id="address2" placeholder="상세주소">
-		<hr>
-		<button type="submit" id="btnDeliverySubmit">신고하기</button>
-		<button type="button" id="btnDeliveryClose">닫기</button>
-	</form>
+	<div class="modalOpen">
+		<form action="">
+			거래하기 확인
+			<hr>
+			최종 거래금액 : 
+			<input type="number" value="" disabled>원<br>
+			배송지 입력<br>
+			  <label for="postCode" class="title">주소</label>
+	                <input type="text" name="member_postcode" id="postCode" placeholder="우편번호" required readonly>
+	                <button type="button" id="btnSearchAddress">주소검색</button><br>
+	                <input type="text" name="member_address1" id="address1" placeholder="기본주소" required readonly><br>
+	                <input type="text" name="member_address2" id="address2" placeholder="상세주소">
+			<hr>
+			<div class="modalBtn">
+				<button type="submit" id="btnDeliverySubmit">신고하기</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="button" id="btnDeliveryClose">닫기</button>
+			</div>
+		</form>
+	</div>
 	<script type="text/javascript">
 		function readFile(input){
 		  	let reader = new FileReader(); //파일 읽는 기능

@@ -13,21 +13,68 @@
 	-->
 	<select id="selectChatRoomList" resultType="chatRoom">
 		SELECT
-			c.room_id
-			, c.title
-			, c.user_id AS sender_id
-			, (
-				SELECT user_id
-				FROM chat_room
-				WHERE
-					room_id = c.room_id
-					AND user_id != #{sender_id}
-			) AS receiver_id
-			, c.status
-		FROM chat_room AS c
-		WHERE
-			user_id = #{sender_id}
-			AND c.status > 0; -- 채팅방 상태가 0(자신이 종료함)이 아닌 채팅방만 조회
+    c.room_id,
+    c.title,
+    c.user_id AS sender_id,
+    (
+        SELECT user_id
+        FROM chat_room
+        WHERE
+            room_id = c.room_id
+            AND user_id != #{sender_id}
+    ) AS receiver_id,
+    c.status,
+    (
+        SELECT message
+        FROM chat_message
+        WHERE
+            sender_id = #{sender_id}
+            AND receiver_id = (
+                SELECT user_id
+                FROM chat_room
+                WHERE room_id = c.room_id
+                AND user_id != #{sender_id}
+            )
+            AND send_time = (
+                SELECT MAX(send_time)
+                FROM chat_message
+                WHERE sender_id = #{sender_id}
+                AND receiver_id = (
+                    SELECT user_id
+                    FROM chat_room
+                    WHERE room_id = c.room_id
+                    AND user_id != #{sender_id}
+                )
+            )
+    ) AS last_message,
+    (
+        SELECT DATE_FORMAT(send_time, '%Y-%m-%d %H:%i:%s')
+        FROM chat_message
+        WHERE
+            sender_id = #{sender_id}
+            AND receiver_id = (
+                SELECT user_id
+                FROM chat_room
+                WHERE room_id = c.room_id
+                AND user_id != #{sender_id}
+            )
+            AND send_time = (
+                SELECT MAX(send_time)
+                FROM chat_message
+                WHERE sender_id = #{sender_id}
+                AND receiver_id = (
+                    SELECT user_id
+                    FROM chat_room
+                    WHERE room_id = c.room_id
+                    AND user_id != #{sender_id}
+                )
+            )
+    ) AS last_send_time
+FROM chat_room AS c
+WHERE
+    c.user_id = 'sender@naver.com'
+    AND c.status > 0;
+
 			
 	</select>
 	
@@ -51,8 +98,26 @@
 		WHERE
 			user_id = #{sender_id}
 			AND title = CONCAT('상대방 id : ', #{receiver_id})
-			AND c.status > 0; -- 채팅방 상태가 0(자신이 종료함)이 아닌 채팅방만 조회
+			AND c.status = 1; -- 채팅방 상태가 0(자신이 종료함)이 아닌 채팅방만 조회
 	</select>
+	
+	<!-- 채팅방 목록에 띄울 최근 정보 조회 - SELECT -->
+	<select id="selectLastInfo" resultType="map">
+		SELECT
+			message
+			, DATE_FORMAT(send_time, '%Y-%m-%d %H:%i:%s') AS send_time
+		FROM chat_message
+		WHERE
+			sender_id = #{sender_id}
+			AND receiver_id = #{receiver_id}
+			AND send_time = 
+				(SELECT MAX(send_time)
+				FROM chat_message
+				WHERE sender_id = #{sender_id}
+				AND receiver_id = #{receiver_id});
+	</select>
+	
+	
 
 	<!-- 새 채팅방 정보 추가 - INSERT -->
 	<!-- LiST 객체에 저장된 2개의 ChatRoom 객체를 각각 INSERT 필요 => VALUES (), () 활용 -->

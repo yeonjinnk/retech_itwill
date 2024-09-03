@@ -1,6 +1,7 @@
 package com.itwillbs.retech_proj.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,5 +29,8 @@ public interface ChatMapper {
 
 	//채팅방 종료
 	void updateChatRoomStatusForQuitRoom(@Param("room_id") String room_id, @Param("sender_id") String sender_id);
+
+	//채팅방 목록에 띄울 날짜, 마지막메세지 조회
+	Map<String, String> selectLastInfo(@Param("sender_id") String sender_id, @Param("receiver_id") String receiver_id);
 
 }

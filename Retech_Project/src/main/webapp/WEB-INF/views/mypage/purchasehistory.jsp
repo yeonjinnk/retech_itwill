@@ -25,7 +25,7 @@
         .main-content {
             display: flex;
             flex: 1;
-            margin-top: 150px; /* Header의 높이만큼 여백을 추가 */
+            margin-top: 150px;
             overflow: hidden;
         }
 
@@ -34,8 +34,8 @@
             background-color: #f4f4f4;
             padding: 20px;
             box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-            height: calc(100vh - 150px); /* Header 높이를 제외한 전체 화면 높이 */
-            overflow-y: auto; /* 사이드바의 스크롤을 활성화 */
+            height: calc(100vh - 150px);
+            overflow-y: auto;
         }
 
         .sidebar a {
@@ -61,7 +61,7 @@
             flex: 1;
             padding: 20px;
             background-color: #f9f9f9;
-            overflow-y: auto; /* 콘텐츠 영역의 스크롤을 활성화 */
+            overflow-y: auto;
         }
 
         .store-info {
@@ -129,15 +129,15 @@
         }
 
         .product-image {
-            width: 100px; /* 적당한 이미지 크기 설정 */
+            width: 100px;
         }
 
-        .action-buttons {
+        .status-buttons {
             display: flex;
             gap: 10px;
         }
 
-        .action-buttons button {
+        .status-buttons button {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
@@ -151,14 +151,23 @@
         }
 
         .confirm-request {
-            background-color: #4caf50;
+            background-color: #4caf50; 
+        }
+
+        .review-request {
+            background-color: #2196F3; 
         }
 
         .cancel-request:hover {
-            background-color: #d32f2f; 
+            background-color: #d32f2f;
+        }
 
         .confirm-request:hover {
-            background-color: #388e3c; 
+            background-color: #388e3c;
+        }
+
+        .review-request:hover {
+            background-color: #1976D2;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -172,7 +181,7 @@
                         type: 'POST',
                         data: {
                             id: productId,
-                            status: 'canceled'
+                            status: '거래취소 확정'
                         },
                         success: function(response) {
                             if(response.success) {
@@ -194,7 +203,7 @@
                         type: 'POST',
                         data: {
                             id: productId,
-                            status: 'confirmed'
+                            status: '거래확정'
                         },
                         success: function(response) {
                             if(response.success) {
@@ -206,6 +215,11 @@
                         }
                     });
                 }
+            });
+
+            $('.review-request').on('click', function() {
+                var productId = $(this).data('id');
+                window.location.href = '${pageContext.request.contextPath}/writeReview?id=' + productId;
             });
         });
     </script>
@@ -237,7 +251,7 @@
             </ul>
 
             <div class="content">
-                <%-- 판매내역을 테이블로 출력 --%>
+                <%-- 구매내역을 테이블로 출력 --%>
                 <c:if test="${not empty productList}">
                     <table>
                         <thead>
@@ -255,24 +269,40 @@
                                              product.pd_status == '거래취소 요청' || 
                                              product.pd_status == '거래취소 확정' || 
                                              product.pd_status == '거래확정'}">
-                                <tr>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${not empty product.pd_image1}">
-                                                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                No Image
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>${product.pd_content}</td>
-                                    <td>${product.pd_price}</td>
-                                    <td>${product.pd_first_date}</td>
-                                    <td>${product.pd_status}
-                                        <button class="cancel-request" data-id="${product.pd_status}">거래취소승인</button>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${not empty product.pd_image1}">
+                                                    <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    No Image
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>${product.pd_content}</td>
+                                        <td>${product.pd_price}</td>
+                                        <td>${product.pd_first_date}</td>
+                                        <td>
+                                            ${product.pd_status}
+                                            <div class="status-buttons">
+                                                <c:choose>
+                                                    <c:when test="${product.pd_status == '결제완료'}">
+                                                        <!-- No buttons -->
+                                                    </c:when>
+                                                    <c:when test="${product.pd_status == '거래취소 요청'}">
+                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소승인</button>
+                                                    </c:when>
+                                                    <c:when test="${product.pd_status == '거래확정'}">
+                                                        <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <!-- Handle other cases if needed -->
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </c:if>
                             </c:forEach>
                         </tbody>
@@ -294,3 +324,4 @@
     </footer>
 </body>
 </html>
+  

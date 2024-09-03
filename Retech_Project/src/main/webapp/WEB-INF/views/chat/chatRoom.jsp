@@ -57,31 +57,35 @@
 		<div class="subjectText">
 		
 		</div>
-		<div class="shopInfo">
-			<img id="pdImg">
-			<span id="pd_status">판매중</spa10>
-			<span id="pd_subject">노트북</span>
-			<span id="pd_price">10,000원</span>
+		<div class="top">
+			<div class="art_firstRow">
+				<div class="product_photo co01">
+					<img id="pdImg">
+				</div>
+				<div class="co02">
+					<div class="co02-1">판매중</div><br>
+					<div class="co02-2">노트북</div><br>
+					<div class="co02-2\3">10,000원</div>
+				</div>
+			</div>
+			<div class="btnClose">
+				<img src="${pageContext.request.contextPath}/resources/images/x_icon.png" id="closeChat" >
+			</div>
 		</div>
-		<div class="btnClose">
-			<img src="${pageContext.request.contextPath}/resources/images/x_icon.png" id="closeChat" >
-		</div>
-		<div class="buttonArea">
-			<!-- 판매자 '거래하기' 버튼 -->
-			<div id="seller_trade">
-				<button id="btnTrade">거래하기</button>
+		<div class="art_secondRow">
+			<div class="left">
+				<!-- 판매자 '거래하기' 버튼 -->
+				<button id="btnTrade"><span>거래하기</span></button>
+				<!-- 구매자 '테크페이(택배)' 버튼 -->
+				<button id="btnDelivery"><span>테크페이(택배)</span></button>
+				<!-- 구매자 '테크페이(직거래)' 버튼 -->
+				<button id="btnDirect"><span>테크페이(직거래)</span></button>
 			</div>
-			<!-- 구매자 '테크페이(택배)' 버튼 -->
-			<div id="buyer_delivery">
-				<button id="btnDelivery">테크페이(택배)</button>
+			<div class="right">
+				<!-- 신고하기 버튼 -->
+				<img src="${pageContext.request.contextPath}/resources/images/chat_report_img.png" id="btnReport" >
+				<span id="reportTitle">신고하기</span>
 			</div>
-			<!-- 구매자 '테크페이(직거래)' 버튼 -->
-			<div id="buyer_direct">
-				<button id="btnDirect">테크페이(직거래)</button>
-			</div>
-			<!-- 신고하기 버튼 -->
-			<img src="${pageContext.request.contextPath}/resources/images/chat_report_img.png" id="btnReport" >
-			<span id="reportTitle">신고하기</span>
 		</div>
 		<!-- 닫기 x 아이콘 -->
 		
@@ -143,6 +147,7 @@
 					createChatRoom(data);
 				}
 			}, 500);
+			
 		}
 		
 		// ======================================================================
@@ -258,15 +263,19 @@
 			//채팅 메세지 날짜 변환하기
 			//send_time 값이 비어있을 경우(undefined 현재 시스템 날짜 설정
 			let date;
+			let hours;
+			let minutes;
 			if(send_time == undefined) {
 				date = new Date();
 				console.log("send_time이 비어있으므로 date 객체 생성 date : " + date);
 			} else {
 				date = new Date(send_time);
 			}
+				hours = String(date.getHours()).padStart(2, '0');
+				minutes = String(date.getMinutes()).padStart(2, '0');
 			
 			//기본적으로 시각(시:분)은 표시되므로 먼저 전송 시각 저장
-			send_time = date.getHours() + ":" + date.getMinutes();
+			send_time = hours + ":" + minutes;
 			
 			//----------날짜가 오늘이 아닐 경우 전송 날짜를 추가----------------------------------------
 			let now = new Date(); //시스템 날짜를 기준으로 Date 객체 생성
@@ -296,7 +305,7 @@
 			} else if(receiver_id == "${sId}") { // 상대방 메세지(수신자가 자신인 경우)
 				console.log("상대방이 보낸 메세지임!");
 				// 좌측 정렬을 통해 상대방 아이디와 메세지 표시
-				div_message = "<div class='chat-box'><div class='sender_id'>" + sender_id + "</div><br><span class='chat'>" + message + "</span><span class='send_time'>" + send_time + "</span></div>";
+				div_message = "<div class='chat-box'><div class='sender_id'>" + sender_id + "</div><span class='chat'>" + message + "</span><span class='send_time'>" + send_time + "</span></div>";
 			}
 			
 			//룸 아이디가 일치하는 채팅방 영역 탐색
@@ -313,7 +322,7 @@
 			//채팅 메세지 출력창의 스크롤바를 항상 맨 밑으로 유지
 			//div 영역의 크기 대신 스크롤바의 크기를 구한 뒤 (요소 (배열 0번의 인덱스)의 scrollHeight)
 			//해당 크기를 채팅 메세지 표시 영역의 스크롤바 위치로 지정
-			$(chatMessageArea).scrollTop($(chatMessageArea)[0].scrollHeight);
+			$(chatRoomArea).scrollTop($(chatRoomArea)[0].scrollHeight);
 			
 			
 			

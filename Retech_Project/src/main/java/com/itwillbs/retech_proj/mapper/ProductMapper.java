@@ -49,5 +49,8 @@ public interface ProductMapper {
 //	//리테크 상품 수정
 //	int updateProduct(ProductVO product);
 
+	// 상품 거래 상태 업데이트
+	int updateProductStatus(@Param("pd_idx") int pd_idx, 
+							@Param("pd_status") String pd_status);
 
 }

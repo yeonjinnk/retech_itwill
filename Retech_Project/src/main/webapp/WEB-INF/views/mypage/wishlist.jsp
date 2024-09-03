@@ -25,7 +25,7 @@
     .main-content {
         display: flex;
         flex: 1;
-        margin-top: 150px; /* Header의 높이만큼 여백을 추가 */
+        margin-top: 150px;
         overflow: hidden;
     }
 
@@ -34,8 +34,8 @@
         background-color: #f4f4f4;
         padding: 20px;
         box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-        height: calc(100vh - 150px); /* Header 높이를 제외한 전체 화면 높이 */
-        overflow-y: auto; /* 사이드바의 스크롤을 활성화 */
+        height: calc(100vh - 150px); 
+        overflow-y: auto; 
     }
 
     .sidebar a {
@@ -61,7 +61,7 @@
         flex: 1;
         padding: 20px;
         background-color: #f9f9f9;
-        overflow-y: auto; /* 콘텐츠 영역의 스크롤을 활성화 */
+        overflow-y: auto; 
     }
 
     .store-info {
@@ -111,7 +111,6 @@
     } 
 </style>
 
-    
 </head>
 <body>
     <header>

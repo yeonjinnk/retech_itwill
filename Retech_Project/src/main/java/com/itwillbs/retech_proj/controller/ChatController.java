@@ -5,6 +5,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import com.itwillbs.retech_proj.vo.ReportChatVO;
 
 @Controller
 public class ChatController {
@@ -31,7 +34,14 @@ public class ChatController {
 	
 	
 	@GetMapping("ChatRoom")
-	public String chatRoom() {
+	public String chatRoom(ReportChatVO reportChat) {
 		return "chat/chatRoom";
+	}
+	
+	
+	@PostMapping("ReportRegist")
+	public String reportRegist(ReportChatVO reportChat) {
+		System.out.println("넘어온 데이터(reportChat) : " + reportChat);
+		return"";
 	}
 }
