@@ -50,4 +50,8 @@ public class ProductService {
 		return mapper.selectCategoryList();
 	}
 
+	// 거래 상태 업데이트
+    public int updateProductStatus(int pd_idx, String pd_status) {
+        return mapper.updateProductStatus(pd_idx, pd_status);
+    }
 }

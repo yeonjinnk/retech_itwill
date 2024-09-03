@@ -25,7 +25,7 @@
         .main-content {
             display: flex;
             flex: 1;
-            margin-top: 150px; /* Header의 높이만큼 여백을 추가 */
+            margin-top: 150px;
             overflow: hidden;
         }
 
@@ -34,8 +34,8 @@
             background-color: #f4f4f4;
             padding: 20px;
             box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-            height: calc(100vh - 150px); /* Header 높이를 제외한 전체 화면 높이 */
-            overflow-y: auto; /* 사이드바의 스크롤을 활성화 */
+            height: calc(100vh - 150px);
+            overflow-y: auto;
         }
 
         .sidebar a {
@@ -61,7 +61,7 @@
             flex: 1;
             padding: 20px;
             background-color: #f9f9f9;
-            overflow-y: auto; /* 콘텐츠 영역의 스크롤을 활성화 */
+            overflow-y: auto;
         }
 
         .store-info {
@@ -129,7 +129,7 @@
         }
 
         .product-image {
-            width: 100px; /* 적당한 이미지 크기 설정 */
+            width: 100px;
         }
 
         .action-buttons {
@@ -147,18 +147,19 @@
         }
 
         .cancel-request {
-            background-color: #f44336; 
+            background-color: #f44336; /* 취소 요청 버튼 색상 */
         }
 
         .confirm-request {
-            background-color: #4caf50;
+            background-color: #4caf50; /* 거래 확정 버튼 색상 */
         }
 
         .cancel-request:hover {
-            background-color: #d32f2f; 
+            background-color: #d32f2f; /* 취소 요청 버튼 호버 색상 */
+        }
 
         .confirm-request:hover {
-            background-color: #388e3c; 
+            background-color: #388e3c; /* 거래 확정 버튼 호버 색상 */
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -172,7 +173,7 @@
                         type: 'POST',
                         data: {
                             id: productId,
-                            status: 'canceled'
+                            status: '거래취소'
                         },
                         success: function(response) {
                             if(response.success) {
@@ -194,7 +195,7 @@
                         type: 'POST',
                         data: {
                             id: productId,
-                            status: 'confirmed'
+                            status: '거래확정'
                         },
                         success: function(response) {
                             if(response.success) {
@@ -240,6 +241,7 @@
                 <%-- 판매내역을 테이블로 출력 --%>
                 <c:if test="${not empty productList}">
                     <table>
+                        <thead>
                             <tr>
                                 <th>상품사진</th>
                                 <th>상품명</th>
@@ -247,32 +249,62 @@
                                 <th>등록날짜</th>
                                 <th>거래상태</th>
                             </tr>
+                        </thead>
+                        <tbody>
                             <c:forEach var="product" items="${productList}">
-                                <c:if test="${product.pd_status == '판매중' || 
-                                             product.pd_status == '판매완료' || 
-                                             product.pd_status == '거래취소 승인 대기' || 
-                                             product.pd_status == '거래취소 승인됨'}">
-                                <tr>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${not empty product.pd_image1}">
-                                                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                No Image
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td>${product.pd_content}</td>
-                                    <td>${product.pd_price}</td>
-                                    <td>${product.pd_first_date}</td>
-                                    <td>${product.pd_status}
-                                        <button class="cancel-request" data-id="${product.pd_status}">거래취소요청</button>
-                                        <button class="confirm-request" data-id="${product.pd_status}">거래확정</button>
-                                    </td>
-                                </tr>
-                                </c:if>
+                                <c:choose>
+                                    <c:when test="${product.pd_status == '판매중' || 
+                                                 product.pd_status == '거래취소 승인됨'}">
+                                        <!-- 상태가 '판매중' 또는 '거래취소 승인됨'일 때 -->
+                                        <tr>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${not empty product.pd_image1}">
+                                                        <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        No Image
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                            <td>${product.pd_content}</td>
+                                            <td>${product.pd_price}</td>
+                                            <td>${product.pd_first_date}</td>
+                                            <td>${product.pd_status}</td>
+                                        </tr>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <!-- 나머지 상태에 대해 버튼 표시 -->
+                                        <tr>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${not empty product.pd_image1}">
+                                                        <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        No Image
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
+                                            <td>${product.pd_content}</td>
+                                            <td>${product.pd_price}</td>
+                                            <td>${product.pd_first_date}</td>
+                                            <td>
+                                                ${product.pd_status}
+                                                <c:choose>
+                                                    <c:when test="${product.pd_status == '결제완료' || product.pd_status == '거래취소 승인 대기'}">
+                                                        <div class="action-buttons">
+                                                            <button class="cancel-request" data-id="${product.pd_idx}">거래취소요청</button>
+                                                            <button class="confirm-request" data-id="${product.pd_idx}">거래확정</button>
+                                                        </div>
+                                                    </c:when>
+                                                </c:choose>
+                                            </td>
+                                        </tr>
+                                    </c:otherwise>
+                                </c:choose>
                             </c:forEach>
+                        </tbody>
                     </table>
                 </c:if>
                 <c:if test="${empty productList}">

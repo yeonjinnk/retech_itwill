@@ -123,6 +123,13 @@
 	      </if>
 	</select>
 	
+	<!-- 상품 거래 상태 업데이트 -->
+	<update id="updateProductStatus">
+		UPDATE product
+		SET pd_status = #{pd_status}
+		WHERE pd_idx = #{pd_idx}
+	</update>
+	
 </mapper>
 
 
