@@ -1,6 +1,7 @@
 package com.itwillbs.retech_proj.controller;
 
 import java.security.PrivateKey;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.retech_proj.handler.RsaKeyGenerator;
 import com.itwillbs.retech_proj.service.MemberService;
@@ -503,8 +505,24 @@ public class MemberController {
 		   return "mypage/wishlist";
 	   }
 	   
+	   // 거래상태 업데이트
+	   @PostMapping("/updateTransactionStatus")
+	   @ResponseBody
+	   public Map<String, Object> updateTransactionStatus(@RequestParam("id") int productId,
+	                                                       @RequestParam("status") String status) {
+		   Map<String, Object> response = new HashMap<>();
+	       int success = productService.updateProductStatus(productId, status);
+	       response.put("success", success);
+	       response.put("status", status);
+	       return response;
+	    }
 	   
 	   
+//	   @GetMapping("Review")
+//	   public String review() {
+//		return "review_popup";
+//		   
+//	   }
 	   
 	   
 	   
