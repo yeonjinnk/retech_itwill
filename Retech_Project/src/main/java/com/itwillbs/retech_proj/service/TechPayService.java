@@ -80,11 +80,6 @@ public class TechPayService {
 		return bankApiClient.requestWithdraw(map);
 	}
 
-	// 테크페이 잔액 충전	
-	public void registCharge(String id, String amt) {
-		mapper.updatePayBalance(id, amt);
-	}
-
 	// 2.1.2. 관리자 토큰발급 API (2-legged) - 관리자 엑세스토큰 발급용
 	public BankToken getAdminAccessToken() {
 		return bankApiClient.requestAdminAccessToken();
@@ -116,9 +111,14 @@ public class TechPayService {
 		return bankApiClient.requestDeposit(map);
 	}
 
-	// 테크페이 잔액 차감
-	public void registRefund(String id, String amt) {
-		mapper.updatePayBalance2(id, amt);
+	// 테크페이 잔액 업데이트 - 충전, 환급, 사용, 수익
+	public void registPayBalance(Map<String, Object> map2) {
+		mapper.updatePayBalance(map2);
+	}
+	
+	// 테크페이 내역 DB에 추가	
+	public void registPayHistory(Map<String, Object> map) {
+		mapper.insertPayHistory(map);
 	}
 	
 	

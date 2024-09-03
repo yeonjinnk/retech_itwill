@@ -45,12 +45,12 @@
 .paycharge_container {
 	max-width: 500px;
 	margin: auto;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 	margin-top: 20px;
 	border: 1px solid gray;
 	border-radius: 10px;
-	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-	padding: 20px 50px;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
+	padding: 20px 50px 40px 50px;
 	box-sizing: border-box;
 	display: block;
 }
@@ -67,15 +67,15 @@
 	font-size: 15px;
 	box-sizing: border-box;
 }
-/*---- 충전하기버튼 ----*/
-.btn_top {
-	display: flex;
-	justify-content: space-between;
-	gap: 10px;
-	margin-bottom: 20px;
+
+.pay_account_list, .account_list_table {
 	margin-top: 20px;
-	
 }
+
+.chargeButtons {
+	margin-top: 10px;
+}
+
 .charge_btn {
 	padding: 10px 20px;
 	border: none;
@@ -83,10 +83,17 @@
 	background-color: skyblue;
 	color: white;
 	cursor: pointer;
-	font-size: 14px;
+	font-size: 10px;
 	width: 100%;
-	margin-top: 20px;
 }
+
+.bank_symbol {
+	margin-top: 5px 0px 5px 0px;
+	width: 40px;
+	height: 30px;
+}
+
+
 </style>
 </head>
 <body>
@@ -117,30 +124,34 @@
 				    <button type="button" class="charge-btn" data-amount="50000">+5만원</button>
 				    <button type="button" class="charge-btn" data-amount="100000">+10만원</button>
 				</div>
-            <button class="charge_btn">충전하기</button>
           </div>
           <div class="pay_account_list">	
- 		        <table border="1">
+			<form action="ChargeBankWithdraw" method="post">
+				원하는 계좌의 '충전하기' 버튼을 누르시면,<br>
+				테크페이 비밀번호 확인 후, 충전이 진행됩니다.
+ 		        <table border="1" class="account_list_table">
 		        	<c:forEach var="account" items="${accountList.res_list}">
 		        		<tr>
-		        			<td>1</td>
-		        			<td><b>${account.account_alias}</b><br>
-		        				${account.bank_name}<br>
-		        				
+		        			<td>
+			        			<c:if test="${account.bank_code_std eq '002'}">
+			        				<img src="${pageContext.request.servletContext.contextPath}/resources/img/kdb_symbol2.png" class="bank_symbol">
+			        			</c:if>
+		        			</td>
+		        			<td><b>${account.account_alias}</b></td>
+		        			<td>${account.bank_name}<br>
 		        				${account.account_num_masked}<br>
 		        			</td>
 		        			<td>${account.account_holder_name}</td>
 		        			<td>
-		        				<form action="ChargeBankWithdraw" method="post">
-		        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
-		        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
-		        					<input type="text" name="tran_amt" value="50000">
-		        					<input type="submit" value="충전하기">
-		        				</form>
+	        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
+	        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
+	        					<input type="hidden" name="tran_amt" value="50000">
+	        					<input type="submit" class="charge_btn" value="충전하기">
 		        			</td>
 		        		</tr>
 		        	</c:forEach>	
-	        	</table>        		       
+	        	</table>      
+     		</form>
           </div>
         </div>
 	</section>

@@ -33,13 +33,25 @@ public interface TechPayMapper {
 	// 테크페이 비밀번호 정보 저장
 	void updatePayPwd(@Param("id") String id, @Param("pay_pwd") String pay_pwd);
 
-	// 테크페이 잔액 충전
-	void updatePayBalance(@Param("id") String id, @Param("amt") String amt);
-
 	// 관리자 엑세스토큰 조회
 	BankToken selectAdminAccessToken();
+	
+	// 테크페이 잔액 충전
+//	void updatePayBalance(@Param("id") String id, @Param("tran_amt") String tran_amt);
 
 	// 테크페이 잔액 환급
-	void updatePayBalance2(@Param("id") String id, @Param("amt") String amt);
+//	void updatePayBalance2(@Param("id") String id, @Param("amt") String amt);
+
+	// 테크페이 잔액 차감 - 사용	
+//	void updatePayBalance3(@Param("id") String id, @Param("paymentAmount") String paymentAmount);
+
+	// 테크페이 잔액 충전 - 수익		
+//	void updatePayBalance4(@Param("id") String id, @Param("profitAmount") String profitAmount);
+
+	// 테크페이 내역 DB에 추가		
+	void insertPayHistory(Map<String, Object> map);
+
+	// 테크페이 잔액 업데이트
+	void updatePayBalance(Map<String, Object> map2);
 
 }
