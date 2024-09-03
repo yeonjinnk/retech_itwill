@@ -84,6 +84,42 @@ public class TechPayService {
 	public void registCharge(String id, String amt) {
 		mapper.updatePayBalance(id, amt);
 	}
+
+	// 2.1.2. 관리자 토큰발급 API (2-legged) - 관리자 엑세스토큰 발급용
+	public BankToken getAdminAccessToken() {
+		return bankApiClient.requestAdminAccessToken();
+	}
+
+	// 관리자 엑세스토큰 저장
+	public void registAdminAccessToken(Map<String, Object> map) {
+		String id = mapper.selectId(map);
+		System.out.println("관리자 엑세스 토큰 아이디 정보 : " + id);
+		
+		// 조회된 아이디가 없을 경우(= 엑세스토큰 정보 없음) 새 엑세스토큰 정보 추가(INSERT) - insertAccessToken()
+		// 조회된 아이디가 있을 경우(= 엑세스토큰 정보 있음) 새 엑세스토큰 정보 갱신(UPDATE) - updateAccessToken()
+		if(id == null) {
+			System.out.println("-----------insertAccessToken-----------");
+			mapper.insertAccessToken(map);
+		} else {
+			System.out.println("-----------updateAccessToken-----------");
+			mapper.updateAccessToken(map);
+		}		
+	}
+
+	// 2.5.2. 입금 이체 API
+	public Map<String, Object> requestDeposit(Map<String, Object> map) {
+		// TechPayMapper - selectAdminAccessToken() 메서드 호출하여 관리자 엑세스토큰 조회
+		BankToken adminToken = mapper.selectAdminAccessToken();
+		
+		map.put("token", adminToken);
+		
+		return bankApiClient.requestDeposit(map);
+	}
+
+	// 테크페이 잔액 차감
+	public void registRefund(String id, String amt) {
+		mapper.updatePayBalance2(id, amt);
+	}
 	
 	
 	

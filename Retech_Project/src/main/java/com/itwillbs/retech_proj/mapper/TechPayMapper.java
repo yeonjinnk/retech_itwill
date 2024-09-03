@@ -36,4 +36,10 @@ public interface TechPayMapper {
 	// 테크페이 잔액 충전
 	void updatePayBalance(@Param("id") String id, @Param("amt") String amt);
 
+	// 관리자 엑세스토큰 조회
+	BankToken selectAdminAccessToken();
+
+	// 테크페이 잔액 환급
+	void updatePayBalance2(@Param("id") String id, @Param("amt") String amt);
+
 }

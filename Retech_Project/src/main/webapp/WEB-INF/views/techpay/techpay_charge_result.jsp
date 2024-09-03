@@ -18,7 +18,7 @@
 		<%-- 현재 위치는 컨텍스트 루트(/MVC_Board = webapp) 이므로 inc 디렉토리의 top.jsp 지정 --%>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 	</header>
-	<article>
+	<section>
 		<%-- 본문 표시 영역 --%>
 		<h1>충전이체 결과</h1>
 		<div align="center">
@@ -55,13 +55,12 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="button" value="계좌관리 홈" onclick="location.href='BankMain'">
+						<input type="button" value="계좌관리 홈" onclick="location.href='TechPayMain'">
 					</td>
 				</tr>
 			</table>
-			<input type="button" value="돌아가기" onclick="history.back()">
 		</div>
-	</article>
+	</section>
 	<footer>
 		<%-- 회사 소개 영역(inc/bottom.jsp) 페이지 삽입 --%>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
