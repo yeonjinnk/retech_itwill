@@ -55,12 +55,12 @@
 .payrefund_container {
 	max-width: 500px;
 	margin: auto;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 	margin-top: 20px;
 	border: 1px solid gray;
 	border-radius: 10px;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
-	padding: 20px 50px;
+	padding: 20px 50px 40px 50px;
 	box-sizing: border-box;
 	display: block;
 }
@@ -80,26 +80,19 @@
 	box-sizing: border-box;
 }
 
-/*---- 충전하기버튼 ----*/
-.btn_top {
-	display: flex;
-	justify-content: space-between;
-	gap: 10px;
-	margin-bottom: 20px;
+.refund_amount, .pay_account_list, .account_list_table {
 	margin-top: 20px;
-	
 }
 
 .refund_btn { 
-	padding: 10px 20px; 
-	border: none; 
-	border-radius: 2px; 
-	background-color: skyblue; 
-	color: white; 
-	cursor: pointer; 
-	font-size: 14px;  
+	padding: 10px 20px;
+	border: none;
+	border-radius: 2px;
+	background-color: skyblue;
+	color: white;
+	cursor: pointer;
+	font-size: 10px;
 	width: 100%;
-	margin-top: 20px;
 } 
 
 </style>
@@ -132,13 +125,16 @@
 				    <button type="button" class="refund-btn" data-amount="50000">+5만원</button>
 				    <button type="button" class="refund-btn" data-amount="100000">+10만원</button>
 				</div>
-            <button class="refund_btn">환급하기</button>
           </div>
           <div class="pay_account_list">	
- 		        <table border="1">
+     		<form action="RefundBankDeposit" method="post">
+				원하는 계좌의 '환급하기' 버튼을 누르시면,<br>
+				테크페이 비밀번호 확인 후, 환급이 진행됩니다.     		
+ 		        <table border="1" class="account_list_table">
 		        	<c:forEach var="account" items="${accountList.res_list}">
 		        		<tr>
 		        			<td>1</td>
+		        			
 		        			<td><b>${account.account_alias}</b><br>
 		        				${account.bank_name}<br>
 		        				
@@ -146,16 +142,17 @@
 		        			</td>
 		        			<td>${account.account_holder_name}</td>
 		        			<td>
-		        				<form action="RefundBankDeposit" method="post">
-		        					<input type="hidden" name="deposit_fintech_use_num" value="${account.fintech_use_num}">
-		        					<input type="hidden" name="deposit_client_name" value="${account.account_holder_name}">
-		        					<input type="text" name="tran_amt" value="70000">
-		        					<input type="submit" value="환급하기">
-		        				</form>
+		        			</td>
+		        			<td>
+	        					<input type="hidden" name="deposit_fintech_use_num" value="${account.fintech_use_num}">
+	        					<input type="hidden" name="deposit_client_name" value="${account.account_holder_name}">
+	        					<input type="hidden" name="tran_amt" value="70000">
+		       					<input type="submit" class="refund_btn" value="환급하기">
 		        			</td>
 		        		</tr>
 		        	</c:forEach>	
 	        	</table>        		        
+		    </form>
           </div>
         </div>
 	</section>
@@ -163,6 +160,5 @@
 		<%-- 회사 소개 영역(inc/bottom.jsp) 페이지 삽입 --%>	
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
 	</footer>
-
 </body>
 </html>

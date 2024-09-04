@@ -148,6 +148,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			List<ChatRoom> chatRoomList = chatService.getChatRoomList(sender_id);
 			System.out.println("기존 채팅방 목록 : " + chatRoomList);
 			
+			
 			//조회 결과를 JSON 형식으로 변환하여 메세지로 설정
 			chatMessage.setMessage(gson.toJson(chatRoomList));
 			
@@ -252,9 +253,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 					
 					//chatRoom(room_id, title, sender_id, receiver_id, status)
 					//송신자 채팅방
-					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), "상대방 id : " + receiver_id, sender_id, receiver_id, 1));
+					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), "상대방 id : " + receiver_id, sender_id, receiver_id, 1, "", ""));
 					//수신자 채팅방
-					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), "상대방 id : " + sender_id, receiver_id, sender_id, 1));
+					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), "상대방 id : " + sender_id, receiver_id, sender_id, 1, "", ""));
 					
 					System.out.println("5-1. 생성한 채팅방 리스트 chatRoomList : " + chatRoomList);
 					//송,수신자 채팅방 총 2개 DB에 저장
@@ -278,6 +279,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
 				} else {
 					// 4-A. 기존 채팅방 O -> 6. 채팅방 조회 
 					System.out.println("4-A. 기존 채팅방 O -> 6. 채팅방 조회!");
+					
+					//채팅방 목록에 띄울 날짜, 마지막메세지 조회
+					Map<String, String> lastInfo = chatService.getLastInfo(sender_id, receiver_id);
+					System.out.println("마지막 정보 조회 : " + lastInfo);
+					
+					chatRoom.setLast_message(lastInfo.get("message"));
+					chatRoom.setLast_send_time(lastInfo.get("send_time"));
 					
 					//조회된 룸 아이디 저장
 					chatMessage.setRoom_id(chatRoom.getRoom_id());

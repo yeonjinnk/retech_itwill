@@ -9,21 +9,25 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 </head>
 <body>
-	<form action="">
-		거래하기 확인
-		<hr>
-		정말 상대방과 거래하시겠습니까?<br>
-		최종 거래금액을 입력하고 진행하실 거래방법을 눌러주세요.<br>
-		최종 거래금액 : 
-		<input type="number" placeholder="거래금액을 입력해주세요.">원<br>
-		<input type="radio" name="trade" id="direct" value="direct">
-			<label for="direct">직거래</label>
-		<input type="radio" name="trade" id="delivery" value="delivery">
-			<label for="delivery">택배거래</label>
-		<hr>
-		<button type="submit" id="btnTradeSubmit">거래하기</button>
-		<button type="button" id="btnTradeClose">닫기</button>
-	</form>
+	<div class="modalOpen">
+		<form action="">
+			거래하기 확인
+			<hr>
+			정말 상대방과 거래하시겠습니까?<br>
+			최종 거래금액을 입력하고 진행하실 거래방법을 눌러주세요.<br>
+			최종 거래금액 : 
+			<input type="number" placeholder="거래금액을 입력해주세요.">원<br>
+			<input type="radio" name="trade" id="direct" value="direct">
+				<label for="direct">직거래</label>
+			<input type="radio" name="trade" id="delivery" value="delivery">
+				<label for="delivery">택배거래</label>
+			<hr>
+			<div class="modalBtn">
+				<button type="submit" id="btnTradeSubmit">거래하기</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="button" id="btnTradeClose">닫기</button>
+			</div>
+		</form>
+	</div>
 	<script type="text/javascript">
 		function readFile(input){
 		  	let reader = new FileReader(); //파일 읽는 기능

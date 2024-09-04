@@ -1,6 +1,7 @@
 package com.itwillbs.retech_proj.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,11 @@ public class ChatService {
 	//채팅방 종료
 	public void quitChatRoom(String room_id, String sender_id) {
 		mapper.updateChatRoomStatusForQuitRoom(room_id, sender_id);
+	}
+
+	//채팅방 목록에 띄울 날짜, 마지막메세지 조회
+	public Map<String, String> getLastInfo(String sender_id, String receiver_id) {
+		return mapper.selectLastInfo(sender_id, receiver_id);
 	}
 
 }
