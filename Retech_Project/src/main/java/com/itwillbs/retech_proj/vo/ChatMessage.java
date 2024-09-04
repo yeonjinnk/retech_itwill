@@ -36,6 +36,8 @@ public class ChatMessage {
 	private String room_id;      // 채팅방 아이디
 	private String message;      // 채팅 메세지
 	private String send_time;    // 메세지 전송 시각
+	
+//	private String alarm;
 //	private int pd_idx;    // 메세지 전송 시각
 	
 	// type 변수값으로 활용될 값을 상수로 생성
@@ -48,5 +50,9 @@ public class ChatMessage {
 	public static final String TYPE_ADD_LIST = "ADD_LIST";
 	public static final String TYPE_START = "START";
 	public static final String TYPE_REQUEST_CHAT_LIST = "REQUEST_CHAT_LIST";
+	
+	public static final String ALARM_ENTER = "입장";
+	public static final String ALARM_RECEIVE = "채팅 수신";
+	public static final String ALARM_LEAVE = "퇴장";
 }
 
