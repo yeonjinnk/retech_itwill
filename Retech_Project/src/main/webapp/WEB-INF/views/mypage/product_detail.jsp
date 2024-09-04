@@ -99,7 +99,7 @@
                     <h1>${product.pd_content}</h1>
                     <p class="price">${product.pd_price} 원</p>
                     <p class="status">상태: ${product.pd_status}</p>
-                    <!-- 날짜 형식이 올바른지 확인, String 타입일 경우 직접 포맷 -->
+                    <p class="status">설명: ${product.pd_content}</p>
                     <p>등록날짜: ${product.pd_first_date}</p>
                     <p>${product.pd_description}</p>
                 </div>
