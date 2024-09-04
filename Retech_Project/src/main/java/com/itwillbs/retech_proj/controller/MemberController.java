@@ -167,6 +167,10 @@ public class MemberController {
 		}
 	   
 	   // 카카오톡 로그인
+	   @GetMapping("/retech_proj/kakao-callback")
+	    public String handleKakaoCallback(@RequestParam String code) {
+	        return "redirect:/"; // 또는 적절한 응답
+	    }
 
 	  
 	   
