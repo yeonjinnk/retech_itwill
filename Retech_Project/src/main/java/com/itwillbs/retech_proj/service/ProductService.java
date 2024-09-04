@@ -13,7 +13,7 @@ import com.itwillbs.retech_proj.vo.ProductVO;
 @Service
 public class ProductService {
 	
-	 @Autowired
+	@Autowired
 	 private ProductMapper mapper;
 	 // 상품 목록 페이지
 	 public List<ProductVO> getProductList(int startRow, int listLimit) {
@@ -37,9 +37,9 @@ public class ProductService {
 		return mapper.selectSelectedProductList(pd_category, pd_status);
 	}
 	//거래중 게시물 목록 조회
-	public List<HashMap<String, String>> getChangedProductList(int pageNum, String pd_category,  String pd_selectedManufacturer, String pd_selectedPdStatus, String sort, int startRow, int listLimit) {
+	public List<HashMap<String, String>> getChangedProductList(int pageNum, String pd_category,  String pd_selectedManufacturer, String pd_selectedPdStatus, String sort, int endRow, int startRow, int listLimit) {
 		System.out.println("쿼리 실행 전 확인!!!pd_selectedManufacturer : " + pd_selectedManufacturer);
-		return mapper.selectChangedProductList(pageNum, pd_category, pd_selectedManufacturer, pd_selectedPdStatus, sort, startRow, listLimit);
+		return mapper.selectChangedProductList(pageNum, pd_category, pd_selectedManufacturer, pd_selectedPdStatus, sort, endRow, startRow, listLimit);
 	}
 	//전체 게시물 갯수 계산
 	public int getChangedProductListCount(int pageNum, String pd_category,  String pd_selectedManufacturer, String pd_selectedPdStatus, String sort, String type) {
