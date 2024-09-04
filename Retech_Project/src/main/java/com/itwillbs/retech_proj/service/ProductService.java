@@ -59,4 +59,23 @@ public class ProductService {
     public ProductVO getProductById(int pd_Idx) {
         return mapper.selectProductById(pd_Idx);
     }
+  //상품번호에 해당하는 상품의 정보조회작업
+	public ProductVO getProduct(int pd_idx) {
+		ProductVO product = mapper.selectProduct(pd_idx);
+		
+		//조회결과 있을경우(조회성공시 -> 조회수 증가작업요청 -> updateReadCount()
+		if(product != null) {
+			// secondhandVO에 secondhand_idx 포함되어있으므로
+			// 파라미터로 secondahndVO객체 전달시 -> 값변경되면 별도리턴없어도 주소값변경O
+			//=> 사용된VO객체의 변경된 값 함께 공유!
+			mapper.updateReadCount(product);
+		}
+		
+		return product;
+	}
+	
+	public HashMap<String, String> getSellerInfo(int pd_idx, String member_id) {
+		System.out.println("Serviece+++++++++++++++++++++++" + pd_idx + " ," + member_id);
+		return mapper.selectSellerInfo(pd_idx, member_id);
+	}
 }
