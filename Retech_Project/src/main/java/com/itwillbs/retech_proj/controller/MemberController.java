@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.retech_proj.handler.RsaKeyGenerator;
+import com.itwillbs.retech_proj.service.CsService;
 import com.itwillbs.retech_proj.service.MemberService;
 import com.itwillbs.retech_proj.service.ProductService;
+import com.itwillbs.retech_proj.vo.CsVO;
 import com.itwillbs.retech_proj.vo.MemberVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
 
@@ -496,7 +498,9 @@ public class MemberController {
 	 
 	   // 찜한상품
 	   @GetMapping("Wishlist")
-	   public String Wishlist(Model model, HttpSession session,MemberVO member) {
+	   public String Wishlist(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
+			   				  @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+			   				  Model model, HttpSession session,MemberVO member) {
 		   
 		   String id = (String) session.getAttribute("sId");
 		   // 세션에 사용자 ID가 존재하는 경우
@@ -505,10 +509,61 @@ public class MemberController {
 			   // 해당 ID의 회원 정보를 조회
 			   member = service.getMember(member);
 			   model.addAttribute("member", member);
+			   
+			   List<ProductVO> productList = productService.getProductList(startRow, listLimit);
+		       int totalProductCount = productService.getProductListCount();
+
+		       model.addAttribute("productList", productList);
+		       model.addAttribute("totalProductCount", totalProductCount);
 		   }
 		   
 		   return "mypage/wishlist";
 	   }
+	   
+	   // 상품 상세정보
+	   @GetMapping("/productDetail")
+	    public String productDetail(@RequestParam("pd_idx") int pd_Idx, Model model) {
+	        // 상품 세부정보를 조회
+	        ProductVO product = productService.getProductById(pd_Idx);
+
+	        // 상품 정보가 있는 경우 모델에 추가
+	        if (product != null) {
+	            model.addAttribute("product", product);
+	        } else {
+	            model.addAttribute("errorMessage", "상품 정보를 찾을 수 없습니다.");
+	        }
+
+	        // 상품 상세 페이지로 이동
+	        return "mypage/product_detail";
+	    }
+	   
+	   
+	   @Autowired
+	   private CsService csService;
+	   @GetMapping("CsHistory")
+	    public String csHistory(Model model, HttpSession session) {
+	        String id = (String) session.getAttribute("sId");
+
+	        if (id != null) {
+	            // 회원 정보를 가져오는 로직 (추가 필요시)
+	            MemberVO member = new MemberVO();
+	            member.setMember_id(id);
+	            model.addAttribute("member", member);
+
+	            // 페이징을 고려한 변수 설정 (예: 현재 페이지, 페이지당 항목 수)
+	            int startRow = 0; // 시작 행 (페이지 계산에 따라 동적으로 설정 필요)
+	            int listLimit = 10; // 한 페이지에 보여줄 항목 수
+
+	            // 총 문의 수를 가져옴
+	            int totalCsCount = csService.getCsListCount();
+	            model.addAttribute("totalCsCount", totalCsCount);
+
+	            // 문의 리스트 가져오기
+	            List<CsVO> csList = csService.getCsList(startRow, listLimit, false, id);
+	            model.addAttribute("csList", csList);
+	        }
+	        return "mypage/mycs";
+	    }
 	   
 	   // 거래상태 업데이트
 	   @PostMapping("/updateTransactionStatus")
@@ -521,6 +576,8 @@ public class MemberController {
 	       response.put("status", status);
 	       return response;
 	    }
+	   
+	   
 	   
 	   
 //	   @GetMapping("Review")

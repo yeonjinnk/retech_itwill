@@ -53,4 +53,7 @@ public interface ProductMapper {
 	int updateProductStatus(@Param("pd_idx") int pd_idx, 
 							@Param("pd_status") String pd_status);
 
+	// 상품 상세정보
+	ProductVO selectProductById(int pd_Idx);
+
 }

@@ -54,4 +54,9 @@ public class ProductService {
     public int updateProductStatus(int pd_idx, String pd_status) {
         return mapper.updateProductStatus(pd_idx, pd_status);
     }
+    
+    // 상품 IDX로 상품 정보를 조회
+    public ProductVO getProductById(int pd_Idx) {
+        return mapper.selectProductById(pd_Idx);
+    }
 }

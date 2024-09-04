@@ -130,6 +130,13 @@
 		WHERE pd_idx = #{pd_idx}
 	</update>
 	
+	<!-- 상품 상세 정보 조회 -->
+	<select id="selectProductById" parameterType="int" resultType="com.itwillbs.retech_proj.vo.ProductVO">
+	    SELECT * FROM product
+	    WHERE pd_idx = #{pd_idx}
+	</select>
+
+	
 </mapper>
 
 

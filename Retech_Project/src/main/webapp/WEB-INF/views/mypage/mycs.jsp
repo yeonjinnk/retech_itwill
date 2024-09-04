@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>찜한상품</title>
+    <title>문의내역</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
     <style type="text/css">
         html, body {
@@ -34,8 +34,8 @@
             background-color: #f4f4f4;
             padding: 20px;
             box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-            height: calc(100vh - 150px); 
-            overflow-y: auto; 
+            height: calc(100vh - 150px);
+            overflow-y: auto;
         }
 
         .sidebar a {
@@ -61,7 +61,7 @@
             flex: 1;
             padding: 20px;
             background-color: #f9f9f9;
-            overflow-y: auto; 
+            overflow-y: auto;
         }
 
         .store-info {
@@ -128,8 +128,26 @@
             background-color: #f4f4f4;
         }
 
-        .product-image {
-            width: 100px;
+        .status-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-buttons button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .view-detail {
+            background-color: #2196F3; 
+        }
+
+        .view-detail:hover {
+            background-color: #1976D2;
         }
     </style>
 </head>
@@ -142,8 +160,8 @@
         <div class="sidebar">
             <a href="SaleHistory">판매내역</a>
             <a href="PurchaseHistory">구매내역</a>
-            <a href="Wishlist" class="selected">찜한상품</a>
-            <a href="CsHistory">문의내역</a>
+            <a href="Wishlist">찜한상품</a>
+            <a href="CsHistory" class="selected">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
 
@@ -156,49 +174,40 @@
             </div>
 
             <ul class="tabs">
-                <li><a href="#" class="selected">찜한상품</a></li>
+                <li><a href="#" class="selected">문의내역</a></li>
             </ul>
 
             <div class="content">
-                <c:if test="${not empty productLike}">
+                <c:if test="${not empty csList}">
                     <table>
                         <thead>
                             <tr>
-                                <th>상품사진</th>
-                                <th>상품명</th>
-                                <th>상품가격</th>
-                                <th>등록날짜</th>
-                                <th>거래상태</th>
+                                <th>문의번호</th>
+                                <th>제목</th>
+                                <th>작성자</th>
+                                <th>작성일</th>
+                                <th>확인여부</th>
+                                <th>상세보기</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="product" items="${productLike}">
+                            <c:forEach var="cs" items="${csList}">
                                 <tr>
+                                    <td>${cs.cs_idx}</td>
+                                    <td>${cs.cs_subject}</td>
+                                    <td>${cs.cs_member_id}</td>
+                                    <td><fmt:formatDate value="${cs.cs_date}" pattern="yyyy-MM-dd"/></td>
+                                    <td>${cs.cs_check}</td>
                                     <td>
-                                        <c:choose>
-                                            <c:when test="${not empty product.pd_image1}">
-                                                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                No Image
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <a href="${pageContext.request.contextPath}/inquiryDetail?cs_idx=${cs.cs_idx}" class="view-detail">상세보기</a>
                                     </td>
-                                    <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
-                                    <td>${product.pd_price}</td>
-                                    <td>${product.pd_first_date}</td>
-                                    <td>${product.pd_status}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
                 </c:if>
-                <c:if test="${empty productLike}">
-                    <table class="mypage">
-                        <tr>
-                            <td align="center" colspan="5">찜한 상품이 없습니다.</td>
-                        </tr>
-                    </table>
+                <c:if test="${empty csList}">
+                    <p>문의내역이 없습니다.</p>
                 </c:if>
             </div>
         </div>

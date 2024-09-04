@@ -221,7 +221,7 @@
             <a href="SaleHistory" class="selected">판매내역</a>
             <a href="PurchaseHistory">구매내역</a>
             <a href="Wishlist">찜한상품</a>
-            <a href="">문의내역</a>
+            <a href="CsHistory">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
 
@@ -267,7 +267,8 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
-                                            <td>${product.pd_content}</td>
+                                            <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
+<%--                                             <td>${product.pd_content}</td> --%>
                                             <td>${product.pd_price}</td>
                                             <td>${product.pd_first_date}</td>
                                             <td>${product.pd_status}</td>
