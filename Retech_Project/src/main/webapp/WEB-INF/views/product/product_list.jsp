@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%> 
@@ -14,151 +13,110 @@
 <title>Retech 상품목록</title>
 
 <script type="text/javascript">
-// 전역 변수 (함수바깥에 정의)
-let pd_category;
-let pd_status;
-let isOpen = "false"; // 정렬 목록에 사용할 함수 기본값 false
-let pageNum = 0; // 임의로 설정
+let isOpen = false; // 정렬 목록에 사용할 함수 기본값 false
+let pageNum = 1; // 임의로 설정
 let maxPage = 1; // 최대 페이지 번호 미리 저장
+let isLoading = false; // AJAX 요청이 진행 중인지 확인
+let selectedCategory = "전체"; // 기본값 설정
+let selectedSort = "최신순"; // 기본값 설정
 
-// 카테고리(최신순) 변수 정의
-let selectedCategory = "전체";
-let selectedSort = "최신순";
-// (처음 상품 페이지에 들어왔을 시) 목록 불러오기
 $(function() {
-	//정렬 목록 open/close 함수
-	$(".listInfoBtn").on("click", function() {
-	    if(!isOpen) { // 정렬 목록이 열려있지 않다면
-	        $(".listSort").css("display", "initial");
-	        isOpen = true;
-	    } else { // 정렬 목록이 열려 있다면
-	        $(".listSort").css("display", "none");
-	        isOpen = false;
-	    }
-	});
+    // 정렬 목록 open/close 함수
+    $(".listInfoBtn").on("click", function() {
+        if (!isOpen) {
+            $(".listSort").css("display", "initial");
+            isOpen = true;
+        } else {
+            $(".listSort").css("display", "none");
+            isOpen = false;
+        }
+    });
 
-	
+    $(document).on("click", function(event) {
+        const target = $(event.target);
+        if (!target.closest(".listInfoBtn").length && !target.closest(".listSort").length) {
+            $(".listSort").css("display", "none");
+            isOpen = false;
+        }
+    });
 
-	$(document).on("click", function(event) {
-       const target = $(event.target); // 클릭된 요소를 jQuery객체로 저장
-       // 클릭된 요소(target)가 .listInfoBtn 또는 .listSort 내부에 포함되지 않은 경우(즉, 이들 외의 요소를 클릭한 경우)      
-       if (!target.closest(".listInfoBtn").length && !target.closest(".listSort").length) {
-           $(".listSort").css("display", "none"); //정렬 목록을 숨김
-           isOpen = false; //목록이 닫힌 상태로 전환
-       } 
-	});	 // 정렬 목록이 열려있을 때 다른 곳을 누르면 목록 닫히게 하는 함수
-	
-	// 목록 정렬 순서 클릭 이벤트
-	$(".listSort li").on("click", function() {
-	    $(".listSort li").find('i').remove();
-	    selectedSort = $(this).text().trim();
-	    console.log("selectedCategory : " + selectedCategory);
-	    console.log("selectedSort : " + selectedSort);
-	    loadList(selectedCategory, selectedSort);
-	    $('.listInfoBtn').text(selectedSort + ' ');
-	    $('.listSort').hide();
-	    isOpen = false; // 목록을 닫았으므로 isOpen을 false로 설정
-	});
+    $(".listSort li").on("click", function() {
+    	pageNum = 1;
+        selectedSort = $(this).text().trim();
+        loadList(selectedCategory, selectedSort, true);
+        $('.listInfoBtn').text(selectedSort + ' ');
+        $('.listSort').hide();
+        isOpen = false;
+    });
 
+    // 카테고리 변경 이벤트 핸들러
+    $("#categoryNav select").on("change", function () {
+    	pageNum = 1; // pageNum을 카테고리를 클릭하면 1로 고정해서 처음행부터 해당 페이지 행까지 다시 불러옴
+        selectedCategory = $("#c_id option:selected").val();   // 첫 번째 select 박스에서 선택된 값
+        var selectedManufacturer = $("#c_id2 option:selected").val();  // 두 번째 select 박스에서 선택된 값
+        var selectedPdStatus = $("#c_id3 option:selected").val();  // 세 번째 select 박스에서 선택된 값
+
+//         console.log("선택된 카테고리: " + selectedCategory);
+//         console.log("선택된 제조사: " + selectedManufacturer);
+//         console.log("선택된 제품 상태: " + selectedPdStatus);
+
+        $("#selectedCategorySpan").text("선택된 카테고리: " + selectedCategory);
+
+        // 목록 로드
+        loadList(selectedCategory, selectedSort, true);
+	 });
 	
-	// 카테고리 클릭 이벤트 함수
-	$(document).ready(function() {
-    // 카테고리 선택 이벤트
-	    $("#categoryNav select").on("change", function () {
-	        var selectedCategory = $("#c_id option:selected").val();  // 첫 번째 select 박스에서 선택된 값
-	        console.log("선택된 카테고리: " + selectedCategory);
-	        
-	        // 선택된 카테고리 값을 화면에 출력
-	        $("#selectedCategorySpan").text("선택된 카테고리: " + selectedCategory);
-	        
-	        // 카테고리 값에 따라 동작 수행 (예: 상품 목록 로드)
-	        if(selectedCategory) {
-	            loadList(selectedCategory, selectedSort);
+	    $(window).on("scroll", function() {
+	        if (isLoading) return;
+	
+	        let scrollTop = $(window).scrollTop();
+	        let windowHeight = $(window).height();
+	        let documentHeight = $(document).height();
+	        let threshold = 50;
+	
+	        if (scrollTop + windowHeight + threshold >= documentHeight) {
+	            if (pageNum < maxPage) {
+	                pageNum++;
+	                isLoading = true;
+	                loadList(selectedCategory, selectedSort, false);
+	            }
 	        }
 	    });
-	    // 두 번째 카테고리 선택 이벤트 추가
-	    $("#categoryNav select").on("change", function () {
-	        var selectedManufacturer = $("#c_id2 option:selected").val();  // 두 번째 select 박스에서 선택된 값
-	        console.log("선택된 제조사: " + selectedManufacturer);
-	        $("#selectedCategorySpan").text("선택된 카테고리: " + selectedCategory);
-	        // 추가적으로 처리할 로직을 여기에 작성 (예: 상품 목록 로드)
-	        if (selectedCategory) {
-	            // 필요하다면 선택된 제조사에 따라 목록을 다시 로드하거나 다른 작업 수행
-	            loadList(selectedCategory, selectedSort);
-	        }
-	    });
-	    // 세 번째 카테고리 선택 이벤트 추가
-	    $("#categoryNav select").on("change", function () {
-	        var selectedManufacturer = $("#c_id3 option:selected").val();  // 두 번째 select 박스에서 선택된 값
-	        console.log("선택된 제조사: " + selectedManufacturer);
-	        $("#selectedCategorySpan").text("선택된 카테고리: " + selectedCategory);
-	        // 추가적으로 처리할 로직을 여기에 작성 (예: 상품 목록 로드)
-	        if (selectedCategory) {
-	            // 필요하다면 선택된 제조사에 따라 목록을 다시 로드하거나 다른 작업 수행
-	            loadList(selectedCategory, selectedSort);
-	        }
-	    });
-	});
-	
-	// 제한없이 내려가는 스크롤 기능 추가
-	// 웹브라우저의 스크롤바가 바닥에 닿으면 다음 목록 조회를 위해 loadList() 함수 호출
-	$(window).on("scroll", function() {
-		// window객체(웹페이지 내의 전체 브라우저 창)와 document 객체를 활용하여 
-		// 스크롤 관련 값을 가져와 제어
-		// => 스크롤바의 현재 위치, 문서가 표시되는 창(window)의 높이, 문서 전체 높이
-		let scrollTop = $(window).scrollTop(); // 스크롤 바의 현재 높이를 가지고 옴
-		let windowHeight = $(window).height(); // 브라우저 창의 높이를 가지고 옴
-		let documentHeight = $(document).height(); // 문서의 높이를 가지고 옴(창의 높이보다 크거나 같음)
-		let x = 50; // 여유값(픽셀 단위)
-		//스크롤바의 위치값 + 창의 높이 + x가 문서 전체 높이(documentHeight)보다 클 경우
-		//다음 페이지의 게시물 목록 로딩, 목록 하단에 추가
-		if(scrollTop + windowHeight + x >= documentHeight){
-			//최대 페이지 번호를 초과하면
-			if(pageNum < maxPage) {
-// 				pageNum++;
-				loadList(selectedCategory, selectedSort);
-			}
-		}
-		
-	}); //window() 끝
-}); // $(function(){}) 끝 => 28행에 있는 제이쿼리 시작부분
+});
 
-//목록 불러오는 함수 정의
-function loadList(selectedCategory, selectedSort) {
+function loadList(selectedCategory, selectedSort, resetPage) {
     let url;
 
-    // 각 필터의 선택된 값 가져오기
-    var selectedCategory = $("#c_id option:selected").val();   // 첫 번째 select 박스에서 선택된 값
-    var selectedManufacturer = $("#c_id2 option:selected").val();  // 두 번째 select 박스에서 선택된 값
-    var selectedPdStatus = $("#c_id3 option:selected").val();  // 세 번째 select 박스에서 선택된 값
-	console.log("선택된 카테고리 피시 올 노트북 : " + selectedCategory);
-	console.log("선택된 카테고리 제조사아아아아 : " + selectedManufacturer);
-    
-    // 컨트롤러로 보낼 때 파라미터 처리
+    var selectedCategory = $("#c_id option:selected").val(); // 다시 확인
+    var selectedManufacturer = $("#c_id2 option:selected").val();
+    var selectedPdStatus = $("#c_id3 option:selected").val();
+
+    console.log("선택된 카테고리: " + selectedCategory);
+    console.log("선택된 제조사: " + selectedManufacturer);
+    console.log("선택된 제품 상태: " + selectedPdStatus);
+    console.log("pageNum 상태: " + pageNum);
+
     url = "productListJson?pageNum=" + pageNum 
-        + "&pd_category=" + selectedCategory
-        + "&pd_selectedManufacturer=" + selectedManufacturer
-        + "&pd_selectedPdStatus=" + selectedPdStatus;
+	        + "&pd_category=" + selectedCategory
+	        + "&pd_selectedManufacturer=" + selectedManufacturer
+	        + "&pd_selectedPdStatus=" + selectedPdStatus
+	        + "&sort=" + encodeURIComponent(selectedSort);
+
     $.ajax({
         type: "GET",
         url: url,
         dataType: "JSON",
         success: function(data) {
-            // 서버에서 받아온 데이터를 사용하여 페이지 업데이트
             maxPage = data.maxPage;
-
-            // 목록별 상품의 개수 조회 출력
             $("#listCount").text(data.listCount);
 
-            // 기존에 있던 리스트 삭제
-            $(".productListArea").empty();
+            if (resetPage) {
+                $(".productListArea").empty();
+            }
 
-            // AJAX로 받아온 리스트를 반복 출력
             for (let product of data.changedProductList) {
                 let price = product.pd_price;
                 let formatted_price = Number(price).toLocaleString('en');
-
-                // 목록에 표시할 JSON 객체 1개 출력문 생성(= 1개 게시물) => 반복
                 $(".productListArea").append(
                     '<div class="col-lg-3 col-mid-4">'
                     + '    <div class="card border-0">'
@@ -187,25 +145,28 @@ function loadList(selectedCategory, selectedSort) {
                     + '        </div>'
                     + '    </div>'
                     + '</div>'
-                ); // append 끝
-            } // for문 종료
+                );
+            }
+            isLoading = false;
         }, 
         error: function() {
             alert("글 목록 요청 실패!");
+            isLoading = false;
         }
-    }); // ajax 끝
-} // loadList() 끝
-
-
+    });
+}
 </script>
+
+
 <link href="${pageContext.request.contextPath}/resources/css/product/product_list.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <header>
 	<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
 </header>
+
 <%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1로 설정) --%>
-<c:set var="pageNum" value="0" />
+<c:set var="pageNum" value="1" />
 <c:if test="${not empty param.pageNum }">
 	<c:set var="pageNum" value="${param.pageNum }"></c:set>
 </c:if>
