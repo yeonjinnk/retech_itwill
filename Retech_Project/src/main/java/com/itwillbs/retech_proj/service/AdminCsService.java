@@ -66,18 +66,18 @@ public class AdminCsService {
 	}
 
 	// 관리자 - faq 삭제
-	public int removeFaq(int FAQ_idx) {
-		return mapper.deleteFaq(FAQ_idx);
+	public int removeFaq(int faq_idx) {
+		return mapper.deleteFaq(faq_idx);
 	}
 	
 	// 관리자 - faq (상세내용 가져오기)
-	public FaqVO getFaq(int FAQ_idx) {
-		return mapper.selectFaq(FAQ_idx);
+	public FaqVO getFaq(int faq_idx) {
+		return mapper.selectFaq(faq_idx);
 	}
 
 	// 관리자 - faq 수정
-	public int adminFaqModify(int FAQ_idx, String FAQ_category, String FAQ_subject, String FAQ_content) {
-		return mapper.updateFaq(FAQ_idx,FAQ_category,FAQ_subject,FAQ_content);
+	public int adminFaqModify(int faq_idx, String faq_category, String faq_subject, String faq_content) {
+		return mapper.updateFaq(faq_idx,faq_category,faq_subject,faq_content);
 	}
 	
 	// ===================================================================================================

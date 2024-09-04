@@ -32,6 +32,7 @@ public interface ProductMapper {
 														   @Param("pd_selectedManufacturer") String pd_selectedManufacturer, 
 														   @Param("pd_selectedPdStatus") String pd_selectedPdStatus, 
 														   @Param("sort") String sort,
+														   @Param("endRow") int endRow,
 														   @Param("startRow") int startRow,
 														   @Param("listLimit") int listLimit);
 	// 정렬변경시 정렬변경된 중고상품 목록개수 조회 요청
@@ -46,8 +47,8 @@ public interface ProductMapper {
 	List<HashMap<String, String>> selectCategoryList();
 	
 
-//	//리테크 상품 수정
-//	int updateProduct(ProductVO product);
+//		//리테크 상품 수정
+//		int updateProduct(ProductVO product);
 
 	// 상품 거래 상태 업데이트
 	int updateProductStatus(@Param("pd_idx") int pd_idx, 

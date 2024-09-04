@@ -7,6 +7,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+.bottom_area {
+	box-sizing: border-box;
+	display: block;
+	width: 100%;	
+	background-color: lightgray;
+	margin: auto;
+    bottom: 0; 
+}
+</style>
 </head>
 <body>
 <header>

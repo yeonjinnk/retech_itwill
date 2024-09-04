@@ -45,15 +45,15 @@ public interface AdminCsMapper {
 	int insertFaq(FaqVO faq);
 
 	// 관리자 - faq 삭제
-	int deleteFaq(int FAQ_idx);
+	int deleteFaq(int fAQ_idx);
 
 	// 관리자 - faq (상세내용 가져오기)
 	FaqVO selectFaq(int fAQ_idx);
 
-	int updateFaq(@Param("FAQ_num")int FAQ_idx, 
-				  @Param("FAQ_category")String FAQ_category, 
-				  @Param("FAQ_subject")String FAQ_subject, 
-				  @Param("FAQ_content")String FAQ_content);
+	int updateFaq(@Param("faq_idx")int faq_idx, 
+				  @Param("faq_category")String faq_category, 
+				  @Param("faq_subject")String faq_subject, 
+				  @Param("faq_content")String faq_content);
 
 	// ===============================================================================================================
 	

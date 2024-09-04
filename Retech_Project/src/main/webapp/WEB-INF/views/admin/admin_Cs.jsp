@@ -285,7 +285,7 @@
 					$.ajax({
 						url:"CsReplyRegist",
 	    				data:{
-	    					"cs_num": $(this).val()
+	    					"cs_idx": $(this).val()
 	    					},
 	    				method:"get",
 	    				success: function (response) {
@@ -331,9 +331,6 @@
 			}
 		</script>
 		
-		<footer>
-			<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-		</footer>
 	</body>
 </html>
 

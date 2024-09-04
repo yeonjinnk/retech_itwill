@@ -8,7 +8,9 @@
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
 body {
-	font-family: Arial, sans-serif;
+ 	font-family: Arial, sans-serif;
+ 	margin-top: 200px;
+ 	
 }
 
 table {
@@ -58,7 +60,7 @@ textarea {
 					<input type="radio" name="cs_category" value="문의">문의
 					<input type="radio" name="cs_category" value="건의">건의
 					<input type="radio" name="cs_category" value="칭찬">칭찬
-					<input type="radio" name="cs_category" value="불만">불만
+					<input type="radio" name="cs_category" value="신고">신고
 					<input type="radio" name="cs_category" value="기타">기타
 				</td>
 			</tr>
