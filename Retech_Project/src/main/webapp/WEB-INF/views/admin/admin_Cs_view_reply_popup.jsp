@@ -21,7 +21,7 @@
 
 <div>
 	<span>답변자</span> <br>
-	<input type="text" name="cs_consultant_name" value="${selectedCs.cs_consultant_name}" readOnly>
+	<input type="text" name="cs_consultant_name" value="${selectedCs.cs_member_id}" readOnly>
 </div>
 
 

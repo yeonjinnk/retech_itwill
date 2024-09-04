@@ -71,11 +71,11 @@ public class AdminCsController {
 	
 	// 공지사항 삭제
 	@GetMapping("AdminNoticeDelete")
-	public String adminNoticeDelete(@RequestParam(defaultValue = "0") int notice_num, Model model) {
+	public String adminNoticeDelete(@RequestParam(defaultValue = "0") int notice_idx, Model model) {
 		
 		//AdminCsService.java - removeNotice()  ==> delete 구문 사용 예정
 		// 파라미터 : review_num   리턴타입 : int
-		int deleteCount = service.removeNotice(notice_num);
+		int deleteCount = service.removeNotice(notice_idx);
 		
 		if(deleteCount > 0) {
 			model.addAttribute("msg", "성공적으로 처리되었습니다.");
@@ -211,9 +211,9 @@ public class AdminCsController {
 	
 	//자주 묻는 질문 삭제
 	@GetMapping("AdminFaqDelete")
-	public String adminFaqDelete(@RequestParam(defaultValue = "0") int FAQ_idx, Model model) {
+	public String adminFaqDelete(@RequestParam(defaultValue = "0") int faq_idx, Model model) {
 		
-		int deleteCount = service.removeFaq(FAQ_idx);
+		int deleteCount = service.removeFaq(faq_idx);
 		
 		if(deleteCount > 0) {
 			model.addAttribute("msg", "성공적으로 처리되었습니다.");
@@ -229,8 +229,8 @@ public class AdminCsController {
 	
 	// 자주 묻는 질문 수정 - 상세내용 가져오기
 	@GetMapping("AdminFaqModify")
-	public String adminFaqModify(@RequestParam(defaultValue = "0") int FAQ_idx, Model model) {
-		FaqVO selectedFaq = service.getFaq(FAQ_idx);
+	public String adminFaqModify(@RequestParam(defaultValue = "0") int faq_idx, Model model) {
+		FaqVO selectedFaq = service.getFaq(faq_idx);
 		
 		model.addAttribute("selectedFaq", selectedFaq);
 		
@@ -239,12 +239,12 @@ public class AdminCsController {
 	
 	// 자주 묻는 질문 수정 - post
 	@PostMapping("AdminFaqModify")
-	public String adminFaqModifyPro (Model model, @RequestParam(defaultValue = "0") int FAQ_idx, 
-										@RequestParam(defaultValue = "") String FAQ_category, 
-										@RequestParam(defaultValue = "") String FAQ_subject, 
-										@RequestParam(defaultValue = "") String FAQ_content) {
+	public String adminFaqModifyPro (Model model, @RequestParam(defaultValue = "0") int faq_idx, 
+										@RequestParam(defaultValue = "") String faq_category, 
+										@RequestParam(defaultValue = "") String faq_subject, 
+										@RequestParam(defaultValue = "") String faq_content) {
 		// 수정 (update)
-		int updateCount = service.adminFaqModify(FAQ_idx,FAQ_category,FAQ_subject,FAQ_content);
+		int updateCount = service.adminFaqModify(faq_idx,faq_category,faq_subject,faq_content);
 		
 		if(updateCount > 0) {
 			model.addAttribute("msg", "수정되었습니다.");

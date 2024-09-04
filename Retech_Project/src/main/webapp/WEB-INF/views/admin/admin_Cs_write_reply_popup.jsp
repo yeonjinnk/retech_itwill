@@ -24,7 +24,7 @@
 
 <div>
 	<span>답변자(선택)</span> <br>
-	<input type="text" name="cs_consultant_name">
+	<input type="text" name="cs_member_id">
 </div>
 
 

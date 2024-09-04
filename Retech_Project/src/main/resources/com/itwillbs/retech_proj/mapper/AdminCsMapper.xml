@@ -46,7 +46,7 @@
 			, #{notice_sell}
 			, #{notice_subject}
 			, now()
-			, #{board_num} + 1  -- board_re_ref(selectKey 를 통회 조회된 게시물 번호 + 1 값 사용)
+			, #{notice_idx} + 1  -- board_re_ref(selectKey 를 통회 조회된 게시물 번호 + 1 값 사용)
 			, 0                 -- notice_re_lev
 			, 0                 -- notice_re_seq
 			, 0                 -- notice_readcount
@@ -153,7 +153,7 @@
 				cs_category like concat('%',#{searchKeyword},'%')
 				or cs_subject like concat('%',#{searchKeyword},'%')
 				or cs_content like concat('%',#{searchKeyword},'%')
-				or cs_consultant_name like concat('%',#{searchKeyword},'%')
+				or cs_member_id like concat('%',#{searchKeyword},'%')
 		</if>
 	</select>
 	
@@ -166,7 +166,7 @@
 				cs_category like concat('%',#{searchKeyword},'%')
 				or cs_subject like concat('%',#{searchKeyword},'%')
 				or cs_content like concat('%',#{searchKeyword},'%')
-				or cs_consultant_name like concat('%',#{searchKeyword},'%')
+				or cs_member_id like concat('%',#{searchKeyword},'%')
 		</if>
 		ORDER BY
 			cs_idx DESC		
@@ -189,7 +189,7 @@
 		SET
 			cs_check = "확인"
 			, cs_answer = #{cs_answer}
-			, cs_consultant_name = #{cs_consultant_name}
+			, cs_member_id = #{cs_member_id}
 		WHERE 
 			cs_idx = #{cs_idx}	
 	</update>

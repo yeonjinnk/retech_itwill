@@ -250,7 +250,7 @@
 		        	<form action="AdminFaqRegist" method="post" name="registForm">
 				        <div>
 				        	<span>카테고리</span> <br>
-					        <select class="category" name="FAQ_category" onchange="selectCategory(this.value)">
+					        <select class="category" name="faq_category" onchange="selectCategory(this.value)">
 					        	<option value="">선택</option>
 					        	<option value="회원">회원</option>
 					        	<option value="거래">거래</option>
@@ -259,12 +259,12 @@
 				        </div>
 				        <div>
 				        	<span>제목</span> <br>
-				        	<input type="text" name="FAQ_subject">
+				        	<input type="text" name="faq_subject">
 				        </div>
 				        
 				        <div>
 				        	<span>내용</span> <br>
-				        	<textarea rows="15" cols="40" name="FAQ_content" required></textarea>
+				        	<textarea rows="15" cols="40" name="faq_content" required></textarea>
 				        </div>
 						<div class="btnArea" style="text-align : center">
 				        	<input type="submit" class="regist_btn" value="등록">
@@ -299,7 +299,7 @@
 			// 삭제
 			function confirmDelete(faq_idx){
 				if(confirm("삭제하시겠습니까?")) {
-					location.href="AdminFaqDelete?FAQ_num=" + FAQ_idx;
+					location.href="AdminFaqDelete?faq_idx=" + faq_idx;
 				}
 			}
 
@@ -325,7 +325,7 @@
 					$.ajax({
 						url:"AdminFaqModify",
 	    				data:{
-	    					"FAQ_idx": $(this).val()
+	    					"faq_idx": $(this).val()
 	    					},
 	    				method:"get",
 	    				success: function (response) {
