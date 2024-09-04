@@ -1,7 +1,7 @@
 package com.itwillbs.retech_proj.controller;
 
+import java.security.PrivateKey;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -10,17 +10,19 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.retech_proj.handler.BankValueGenerator;
+import com.itwillbs.retech_proj.handler.RsaKeyGenerator;
 import com.itwillbs.retech_proj.handler.TechPayIdxGenerator;
 import com.itwillbs.retech_proj.service.TechPayService;
 import com.itwillbs.retech_proj.vo.BankToken;
+import com.itwillbs.retech_proj.vo.TechPayInfoVO;
 
 @Controller
 public class TechPayController {
@@ -152,6 +154,160 @@ public class TechPayController {
 		
 		return "result/success";
 	}
+
+	@GetMapping("AccVerify")
+	public String accVerify(HttpSession session, Model model) {
+		// 로그인 완료 되어 있는 회원만 테크페이 계좌연결 페이지로 진입 가능함
+		String id = (String)session.getAttribute("sId");		
+		if(id == null) {
+			model.addAttribute("msg", "로그인한 후에 이용 할 수 있습니다!");
+//			model.addAttribute("msg", "로그인한 후에\n테크페이를 이용 할 수 있습니다!");
+			model.addAttribute("isClose", true);
+			model.addAttribute("targetURL", "MemberLogin");
+			session.setAttribute("prevURL", "TechPayMain");
+			
+			return "result/fail";
+		}		
+		return "techpay/account_verify";
+	}	
+
+	
+	@GetMapping("PayManage")	
+	public String payManage(TechPayInfoVO techPayInfoVO, HttpSession session, Model model) {
+		// 회원 엑세스토큰 정보 저장된 BankToken객체 session에서 꺼내서 'token'으로 저장
+		BankToken token = (BankToken)session.getAttribute("token");
+		System.out.println("-------------PayManage - token : " + token);
+		
+		
+//		 =============================== 아이디/패스워드 복호화 ===============================
+//		System.out.println("암호화 된 패스워드 : " + techPayInfoVO.getPay_pwd()); // 테크페이 비밀번호 VO 가져오기 
+		
+		// 테크페이 비밀번호 암호화 과정에서 사용할 공개키/개인키 생성
+//		Map<String, Object> rsaKey = RsaKeyGenerator.generateKey();
+//		
+//		session.setAttribute("RSAPrivateKey", rsaKey.get("RSAPrivateKey"));
+//		model.addAttribute("RSAModulus", rsaKey.get("RSAModulus"));
+//		model.addAttribute("RSAExponent", rsaKey.get("RSAExponent"));		
+		
+		
+		// 1) 로그인 안 되어 있으면 로그인페이지로 이동
+		// 2) session에 token 없거나 token에 엑세스 토큰 없으면 계좌인증페이지로 이동
+		if(session.getAttribute("sId") == null) {
+			model.addAttribute("msg", "로그인 필수!");
+			model.addAttribute("targetURL", "MemberLogin");
+			// 로그인 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "PayManage");
+			return "result/fail";
+		} else if(token == null || token.getAccess_token() == null) {
+			model.addAttribute("msg", "계좌인증 필수!");
+			model.addAttribute("targetURL", "TechPayMain");
+			// 계좌인증 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "PayManage");
+			return "result/fail";			
+		}
+		
+		// 2.2.3. 등록계좌조회 API
+		// TechPayService - getBankAccountList() 메서드
+		Map<String, Object> accountList = techPayService.getBankAccountList(token);
+		System.out.println("------------- 등록계좌조회 결과 : " + accountList);
+		logger.info(">>>>>>>>>>>>> 등록계좌조회 결과 : " + accountList);
+		
+		System.out.println(accountList.get("rsp_code"));
+		
+		// 액세스토큰 오류 시, 계좌인증 재진행
+		if(accountList.get("rsp_code").equals("O0002")) {
+			model.addAttribute("msg", "인증 오류! 계좌인증을 다시 진행해주세요!");
+			model.addAttribute("targetURL", "AccVerify");
+			// 계좌인증 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "PayManage");
+			return "result/fail";			
+		}
+		
+		model.addAttribute("accountList", accountList);
+		
+		return "techpay/techpay_manage";		
+	}	
+	
+	
+	@GetMapping("PayPwdSet")
+	public String payPwdSet(TechPayInfoVO techPayInfoVO, BCryptPasswordEncoder passwordEncoder, HttpSession session, Model model, @RequestParam Map<String, String> map) {
+		String id = (String)session.getAttribute("sId");	
+		String pay_pwd = map.get("pay_pwd");
+		System.out.println("비밀번호설정 ----------------- pay_pwd : " + map.get("pay_pwd"));
+		
+		// 회원 엑세스토큰 정보 저장된 BankToken객체 session에서 꺼내서 'token'으로 저장
+		BankToken token = (BankToken)session.getAttribute("token");		
+		
+		// 1) 로그인 안 되어 있으면 로그인페이지로 이동
+		// 2) session에 token 없거나 token에 엑세스 토큰 없으면 계좌인증페이지로 이동
+		if(session.getAttribute("sId") == null) {
+			model.addAttribute("msg", "로그인 필수!");
+			model.addAttribute("targetURL", "MemberLogin");
+			// 로그인 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "PayManage");
+			return "result/fail";
+		} else if(token == null || token.getAccess_token() == null) {
+			model.addAttribute("msg", "계좌인증 필수!");
+			model.addAttribute("targetURL", "TechPayMain");
+			// 계좌인증 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "PayManage");
+			return "result/fail";			
+		}
+		
+		// TechPayService - registPayPwd() 메서드 호출하여 테크페이 비밀번호 정보 저장
+		techPayService.setPayPwd(id, pay_pwd);
+		
+		model.addAttribute("msg", "비밀번호 설정 완료!");
+		model.addAttribute("targetURL", "TechPayMain");	
+		
+		return "result/success";
+	}	
+	
+	@GetMapping("AccountDetail")
+	public String accountDetail(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		logger.info(">>>>>>>잔액 조회 요청 파라미터 : " + map);
+		
+		// 회원 엑세스토큰 정보 저장된 BankToken객체 session에서 꺼내서 'token'으로 저장
+		BankToken token = (BankToken)session.getAttribute("token");		
+		
+		// 1) 로그인 안 되어 있으면 로그인페이지로 이동
+		// 2) session에 token 없거나 token에 엑세스 토큰 없으면 계좌인증페이지로 이동
+		if(session.getAttribute("sId") == null) {
+			model.addAttribute("msg", "로그인 필수!");
+			model.addAttribute("targetURL", "MemberLogin");
+			// 로그인 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "PayManage");
+			return "result/fail";
+		} else if(token == null || token.getAccess_token() == null) {
+			model.addAttribute("msg", "계좌인증 필수!");
+			model.addAttribute("targetURL", "TechPayMain");
+			// 계좌인증 후 현재 페이지로 돌아옴
+			session.setAttribute("prevURL", "PayManage");
+			return "result/fail";			
+		}
+		
+		// 파라미터가 저장된 Map 객체에 BankToken 객체 추가
+		map.put("token", token);
+		
+		
+		// 2.3.1. 잔액조회 API
+		Map<String, String> accountDetail = techPayService.getAccountDetail(map);
+		System.out.println("---------------잔액조회 결과 : " + accountDetail);		
+		
+		// API 응답코드가 "A0000"이 아닐 경우, 요청 처리 실패
+		if(!accountDetail.get("rsp_code").equals("A0000")) {
+			model.addAttribute("msg", accountDetail.get("rsp_code"));
+			return "result/fail";
+		}
+		
+		model.addAttribute("accountDetail", accountDetail);
+		model.addAttribute("account_holder_name", map.get("account_holder_name"));
+		model.addAttribute("account_num_masked", map.get("account_num_masked"));
+		
+		
+		return "techpay/account_detail";
+	}
+	
 	
 	@GetMapping("AdminBankRequestToken")
 	public String adminBankRequestToken(HttpSession session, Model model) {
@@ -194,6 +350,15 @@ public class TechPayController {
 		
 		return "result/success";
 	}
+
+	@GetMapping("CheckPayPwd")
+	public String checkPayPwd(HttpSession session, Model model) {
+		
+		
+		return "techpay/check_pay_pwd";
+	}
+	
+	
 	
 	@GetMapping("PayCharge")	
 	public String payCharge(HttpSession session, Model model) {
@@ -280,25 +445,29 @@ public class TechPayController {
 			return "result/fail";			
 		}
 		
-
-
 		String tran_amt = "50000"; // 임의 금액 설정
+		
+		
+		// 테크페이 잔액 업데이트에 필요한 정보 map 객체에 저장		
+		map2.put("id", id);
+		map2.put("tran_amt", tran_amt);
+		map2.put("techpay_type", techpay_type);
+		
+		
+		// 테크페이 내역 DB에 추가에 필요한 정보 map 객체에 저장		
+		map2.put("techpay_idx", techpay_idx);
+		map2.put("techpay_tran_dtime", techpay_tran_dtime);
+		map2.put("pay_balance", session.getAttribute("pay_balance"));
 
 		
-//		map2.put("techpay_idx", techpay_idx);
-		map2.put("tran_amt", tran_amt);
-//		map2.put("techpay_tran_dtime", techpay_tran_dtime);
-//		map2.put("pay_balance", session.getAttribute("pay_balance"));
-		map2.put("techpay_type", techpay_type);
-		map2.put("id", id);
-
 		// 테크페이 잔액 업데이트 - 충전		
 		// TechPayService - registPayBalance() 메서드
 		techPayService.registPayBalance(map2);		
 		
 		
 		// 테크페이 내역 DB에 추가
-//		techPayService.registPayHistory(map);
+		// TechPayService - registPayHistory() 메서드
+		techPayService.registPayHistory(map2);
 		
 		
 		return "techpay/techpay_charge_result";
@@ -337,21 +506,6 @@ public class TechPayController {
 		return "techpay/techpay_refund";
 	}
 
-	@GetMapping("AccVerify")
-	public String accVerify(HttpSession session, Model model) {
-		// 로그인 완료 되어 있는 회원만 테크페이 계좌연결 페이지로 진입 가능함
-		String id = (String)session.getAttribute("sId");		
-		if(id == null) {
-			model.addAttribute("msg", "로그인한 후에 이용 할 수 있습니다!");
-//			model.addAttribute("msg", "로그인한 후에\n테크페이를 이용 할 수 있습니다!");
-			model.addAttribute("isClose", true);
-			model.addAttribute("targetURL", "MemberLogin");
-			session.setAttribute("prevURL", "TechPayMain");
-			
-			return "result/fail";
-		}		
-		return "techpay/account_verify";
-	}
 		
 	
 	@PostMapping("RefundBankDeposit")
@@ -392,98 +546,43 @@ public class TechPayController {
 		
 		// 테크페이 타입 지정
 		int techpay_type = 2;
+
+		// 테크페이 거래 시간 생성
+		String techpay_tran_dtime = bankValueGenerator.getTranDTime();
+		System.out.println("-------------techpay_tran_dtime : " + techpay_tran_dtime);
+		
+		// 테크페이 idx 생성
+		String techpay_idx = techPayIdxGenerator.generateTechPayIdx(id, techpay_type);
+		System.out.println("---------------------techpay_idx : " + techpay_idx);		
 		
 		String tran_amt = "70000"; // 임의 금액 설정
 
+		// 테크페이 잔액 업데이트에 필요한 정보 map 객체에 저장	
 		map2.put("id", id);		
 		map2.put("techpay_type", techpay_type);	
 		map2.put("tran_amt", tran_amt);	
+		
+		
+		// 테크페이 내역 DB에 추가에 필요한 정보 map 객체에 저장		
+		map2.put("techpay_idx", techpay_idx);
+		map2.put("techpay_tran_dtime", techpay_tran_dtime);
+		map2.put("pay_balance", session.getAttribute("pay_balance"));		
+		
 		
 		// 테크페이 잔액 업데이트 - 환급
 		// TechPayService - registPayBalance() 메서드
 		techPayService.registPayBalance(map2);
 		
+		
+		// 테크페이 내역 DB에 추가
+		// TechPayService - registPayHistory() 메서드
+		techPayService.registPayHistory(map2);		
+		
+		
 		return "techpay/techpay_refund_result";
 	}
-	
-	@GetMapping("PayManage")	
-	public String payManage(HttpSession session, Model model) {
-		// 회원 엑세스토큰 정보 저장된 BankToken객체 session에서 꺼내서 'token'으로 저장
-		BankToken token = (BankToken)session.getAttribute("token");
-		System.out.println("-------------PayManage - token : " + token);
-		
-		// 1) 로그인 안 되어 있으면 로그인페이지로 이동
-		// 2) session에 token 없거나 token에 엑세스 토큰 없으면 계좌인증페이지로 이동
-		if(session.getAttribute("sId") == null) {
-			model.addAttribute("msg", "로그인 필수!");
-			model.addAttribute("targetURL", "MemberLogin");
-			// 로그인 후 현재 페이지로 돌아옴
-			session.setAttribute("prevURL", "PayManage");
-			return "result/fail";
-		} else if(token == null || token.getAccess_token() == null) {
-			model.addAttribute("msg", "계좌인증 필수!");
-			model.addAttribute("targetURL", "TechPayMain");
-			// 계좌인증 후 현재 페이지로 돌아옴
-			session.setAttribute("prevURL", "PayManage");
-			return "result/fail";			
-		}
-		
-		// 2.2.3. 등록계좌조회 API
-		// TechPayService - getBankAccountList() 메서드
-		Map<String, Object> accountList = techPayService.getBankAccountList(token);
-		System.out.println("------------- 등록계좌조회 결과 : " + accountList);
-		logger.info(">>>>>>>>>>>>> 등록계좌조회 결과 : " + accountList);
-		
-		System.out.println(accountList.get("rsp_code"));
-		
-		// 액세스토큰 오류 시, 계좌인증 재진행
-		if(accountList.get("rsp_code").equals("O0002")) {
-			model.addAttribute("msg", "인증 오류! 계좌인증을 다시 진행해주세요!");
-			model.addAttribute("targetURL", "AccVerify");
-			// 계좌인증 후 현재 페이지로 돌아옴
-			session.setAttribute("prevURL", "PayManage");
-			return "result/fail";			
-		}
-		
-		model.addAttribute("accountList", accountList);
-		
-		return "techpay/techpay_manage";		
-	}
-	
-	@GetMapping("PayPwdSet")
-	public String payPwdSet(HttpSession session, Model model, @RequestParam Map<String, String> map) {
-		String id = (String)session.getAttribute("sId");	
-		String pay_pwd = map.get("pay_pwd");
-		System.out.println("pay_pwd : " + map.get("pay_pwd"));
-		
-		// 회원 엑세스토큰 정보 저장된 BankToken객체 session에서 꺼내서 'token'으로 저장
-		BankToken token = (BankToken)session.getAttribute("token");		
-		
-		// 1) 로그인 안 되어 있으면 로그인페이지로 이동
-		// 2) session에 token 없거나 token에 엑세스 토큰 없으면 계좌인증페이지로 이동
-		if(session.getAttribute("sId") == null) {
-			model.addAttribute("msg", "로그인 필수!");
-			model.addAttribute("targetURL", "MemberLogin");
-			// 로그인 후 현재 페이지로 돌아옴
-			session.setAttribute("prevURL", "PayManage");
-			return "result/fail";
-		} else if(token == null || token.getAccess_token() == null) {
-			model.addAttribute("msg", "계좌인증 필수!");
-			model.addAttribute("targetURL", "TechPayMain");
-			// 계좌인증 후 현재 페이지로 돌아옴
-			session.setAttribute("prevURL", "PayManage");
-			return "result/fail";			
-		}
-		
-		// TechPayService - registPayPwd() 메서드 호출하여 테크페이 비밀번호 정보 저장
-		techPayService.setPayPwd(id, pay_pwd);
-		
-		model.addAttribute("msg", "비밀번호 설정 완료!");
-		model.addAttribute("isClose", true);		
-		model.addAttribute("targetURL", "PayManage");	
-		
-		return "result/success";
-	}
+
+
 	
 	@GetMapping("TechPayments")
 	public String techPayments(HttpSession session, Model model, Map<String, String> map) {
@@ -543,20 +642,36 @@ public class TechPayController {
 			return "result/fail";			
 		}		
 		
-		
-		
 		// 테크페이 타입 지정
-		int techpay_type = 3;
+		int techpay_type = 4;
 
-		String tran_amt = map.get("tran_amt");
+		// 테크페이 거래 시간 생성
+		String techpay_tran_dtime = bankValueGenerator.getTranDTime();
+		System.out.println("-------------techpay_tran_dtime : " + techpay_tran_dtime);
 		
+		// 테크페이 idx 생성
+		String techpay_idx = techPayIdxGenerator.generateTechPayIdx(id, techpay_type);
+		System.out.println("---------------------techpay_idx : " + techpay_idx);			
+		
+		String tran_amt = map.get("tran_amt");
+
+		// 테크페이 잔액 업데이트에 필요한 정보 map 객체에 저장			
 		map2.put("id", id);		
 		map2.put("techpay_type", techpay_type);		
 		map2.put("tran_amt", tran_amt);		
 		
+		// 테크페이 내역 DB에 추가에 필요한 정보 map 객체에 저장		
+		map2.put("techpay_idx", techpay_idx);
+		map2.put("techpay_tran_dtime", techpay_tran_dtime);
+		map2.put("pay_balance", session.getAttribute("pay_balance"));			
+		
 		// 테크페이 잔액 업데이트 - 사용
 		// TechPayService - registPayBalance() 메서드
 		techPayService.registPayBalance(map2);
+		
+		// 테크페이 내역 DB에 추가
+		// TechPayService - registPayHistory() 메서드
+		techPayService.registPayHistory(map2);			
 		
 		model.addAttribute("msg", "결제 완료!");
 		model.addAttribute("targetURL", "./");
@@ -571,20 +686,37 @@ public class TechPayController {
 		// 회원 엑세스토큰 정보 저장된 BankToken객체 session에서 꺼내서 'token'으로 저장
 		BankToken token = (BankToken)session.getAttribute("token");			
 
-		
 		// 상품 금액 임의 설정
 		String tran_amt = "150000"; // 상품 금액 임의 설정		
 		
 		// 테크페이 타입 지정
-		int techpay_type = 4;
+		int techpay_type = 3;
 
+		// 테크페이 거래 시간 생성
+		String techpay_tran_dtime = bankValueGenerator.getTranDTime();
+		System.out.println("-------------techpay_tran_dtime : " + techpay_tran_dtime);
+		
+		// 테크페이 idx 생성
+		String techpay_idx = techPayIdxGenerator.generateTechPayIdx(id, techpay_type);
+		System.out.println("---------------------techpay_idx : " + techpay_idx);			
+
+		// 테크페이 잔액 업데이트에 필요한 정보 map 객체에 저장	
 		map2.put("id", id);
 		map2.put("techpay_type", techpay_type);			
-		map2.put("tran_amt", tran_amt);			
+		map2.put("tran_amt", tran_amt);		
+		
+		// 테크페이 내역 DB에 추가에 필요한 정보 map 객체에 저장		
+		map2.put("techpay_idx", techpay_idx);
+		map2.put("techpay_tran_dtime", techpay_tran_dtime);
+		map2.put("pay_balance", session.getAttribute("pay_balance"));			
 		
 		// 테크페이 잔액 업데이트 - 수익
 		// TechPayService - registPayBalance() 메서드
 		techPayService.registPayBalance(map2);
+		
+		// 테크페이 내역 DB에 추가
+		// TechPayService - registPayHistory() 메서드
+		techPayService.registPayHistory(map2);	
 		
 		return "techpay/techpay_profit";
 	}

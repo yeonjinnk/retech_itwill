@@ -13,6 +13,10 @@
 <!-- 외부 CSS 파일(css/default.css) 연결 -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
+	function checkPayPwd() {
+		window.open('/paymentPasswordWindow', '결제 비밀번호 입력', 'width=400,height=300');
+	}
+
     // 충전금액 텍스트박스에 반영하기
     $(document).ready(function() {
         $('#chargeButtons').on('click', '.charge-btn', function() {
@@ -126,9 +130,11 @@
 				</div>
           </div>
           <div class="pay_account_list">	
-			<form action="ChargeBankWithdraw" method="post">
+<!-- 			<form action="ChargeBankWithdraw" method="post"> -->
+			<form action="CheckPayPwd" method="post">
+				테크페이 충전 안내<br>
 				원하는 계좌의 '충전하기' 버튼을 누르시면,<br>
-				테크페이 비밀번호 확인 후, 충전이 진행됩니다.
+				테크페이 비밀번호 확인 후, 해당 계좌에서 출금하여 테크페이로 충전됩니다.
  		        <table border="1" class="account_list_table">
 		        	<c:forEach var="account" items="${accountList.res_list}">
 		        		<tr>
@@ -146,7 +152,7 @@
 	        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
 	        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
 	        					<input type="hidden" name="tran_amt" value="50000">
-	        					<input type="submit" class="charge_btn" value="충전하기">
+	        					<input type="submit" class="charge_btn" value="충전하기" onclick="checkPayPwd()">
 		        			</td>
 		        		</tr>
 		        	</c:forEach>	

@@ -13,16 +13,101 @@
 <!-- 외부 CSS 파일(css/default.css) 연결 -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 
+<%-- RSA 양방향 암호화 자바스크립트 라이브러리 추가 --%>
+<script src="${pageContext.request.servletContext.contextPath}/resources/js/rsa/rsa.js"></script>
+<script src="${pageContext.request.servletContext.contextPath}/resources/js/rsa/jsbn.js"></script>
+<script src="${pageContext.request.servletContext.contextPath}/resources/js/rsa/prng4.js"></script>
+<script src="${pageContext.request.servletContext.contextPath}/resources/js/rsa/rng.js"></script>
+
 <script type="text/javascript">
-	function deleteAccount() {
-		let deleteAccountConfirm = confirm("테크페이에서 해당 계좌를 삭제하시겠습니까?");
-		console.log(deleteAccountConfirm);
-		if(deleteAccountConfirm == true) {
-			
-		}
-	}
+<!-- $(function() { -->
+//          $("#payPwdSetForm").submit(function() { 
+<!--             // ================ RSA 알고리즘을 활용한 비대칭키 방식 암호화 ================ -->
+//              let rsa = new RSAKey();
+//             rsa.setPublic("${RSAModulus}", "${RSAExponent}");
+//              $("#hiddenTechPasswd").val(rsa.encrypt($("#techpay_passwd").val())); // 아이디 암호화
+//             $("#hiddenTechPasswd2").val(rsa.encrypt($("#techpay_passwd2").val())); // 패스워드 암호화		 
+//  	}); 
 
 
+</script>
+
+
+<script>
+    // 전체 폼 유효성 검사
+    function validateForm() {
+        let isValid = true;
+
+        // 비밀번호 유효성 검사 및 비밀번호 확인 일치 여부 검사
+        if (!validatepayPassword()) isValid = false;
+        if (!checkSamePw()) isValid = false;
+
+        return isValid;
+    }
+
+    // 테크페이 비밀번호 유효성 검사
+    function validatepayPassword() {
+        let passwd = $("#techpay_passwd").val(); 
+        // 정규식을 통해 숫자 6자리인지 확인
+        let isNumeric = /^\d{6}$/.test(passwd);  
+
+        if (!isNumeric) {
+            $("#checkPasswdResult").text("숫자 6자리여야 합니다.").addClass("error").removeClass("success");
+            return false;
+        } else {
+            $("#checkPasswdResult").text("유효한 비밀번호입니다!").addClass("success").removeClass("error");
+            return true;
+        }
+    }
+
+    // 작성한 새 비밀번호와 비밀번호 입력 확인 값 일치 여부 검사
+    function checkSamePw() {
+        let passwd = $("#techpay_passwd").val();
+        let passwd2 = $("#techpay_passwd2").val();
+        if (passwd !== passwd2) {
+            $("#checkPasswdResult2").text("비밀번호가 일치하지 않습니다.").addClass("error").removeClass("success");
+            return false;
+        } else {
+            $("#checkPasswdResult2").text("비밀번호가 일치합니다.").addClass("success").removeClass("error");
+            return true;
+        }
+    }
+
+    // 현재 비밀번호가 세션의 비밀번호와 같은지 비교
+    function validateCurrentPassword() {
+        let enteredPassword = $("#techpay_passwd_db").val();  
+        let sessionPassword = "${sessionScope.pay_pwd}";     
+
+        if (enteredPassword !== sessionPassword) {
+            return false;
+        }
+        return true;
+    }
+
+    $(document).ready(function() {
+        // payPwdSetForm 제출 처리
+        $('#payPwdSetForm').on('submit', function(e) {
+        	
+        	// 새 비밀번호 유효성 검사
+            let isValid = validateForm(); 
+         	// 현재 비밀번호 유효성 검사
+            let isCurrentPwdValid = validateCurrentPassword(); 
+            
+            // 유효하지 않으면 폼 제출 막기
+            if (!isCurrentPwdValid || !isValid) {
+            	// 폼 제출 방지
+                e.preventDefault(); 
+				
+            	// 유효하지 않은 상황에 맞는 alert창 띄우기
+                if (!isCurrentPwdValid) {
+                    alert("현재 비밀번호를 올바르게 입력해주세요!"); 
+                    $("#techpay_passwd_db").focus(); 
+                } else if (!isValid) {
+                    alert("테크페이 비밀번호를 다시 확인해주세요!"); 
+                }
+            }
+        });
+    });
 </script>
 
 <style type="text/css">
@@ -77,6 +162,22 @@
 	margin-top: 20px;
 } 
 
+/*---- 유효성 체크 영역 ----*/
+.check {
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.check.success {
+    color: #4CAF50;
+}
+
+.check.error {
+    color: #e74c3c;
+}
+
+
+
 </style>
 </head>
 <body>
@@ -99,10 +200,18 @@
 							<h2>페이 비밀번호 설정</h2>					
 						</div>
 						<div class="pay_pwd_contents">
-							<form action="PayPwdSet">
+							<form action="PayPwdSet" id="payPwdSetForm">
 							 	테크페이 비밀번호 
-								<input type="password" name="pay_pwd" placeholder="테크페이 비밀번호"><br>
+								<input type="password" name="pay_pwd" id="techpay_passwd" placeholder="숫자 6자리를 입력해주세요" onkeyup="validatepayPassword()" ><br>
+								<span id="checkPasswdResult" class="check"></span><br>
+							 	테크페이 비밀번호 확인
+								<input type="password" id ="techpay_passwd2" placeholder="비밀번호를 다시 입력해주세요" onkeyup="checkSamePw()"><br>
+				                <span id="checkPasswdResult2" class="check"></span><br>
 								<input type="submit" value="비밀번호 설정">
+								
+								<input type="hidden" name="pay_pwd" id="hiddenTechPasswd">
+                    			<input type="hidden" name="pay_pwd2" id="hiddenTechPasswd2">   								
+								
 							</form>
 						</div>			
 					</div>
@@ -115,12 +224,18 @@
 							<h2>페이 비밀번호 변경</h2>					
 						</div>
 						<div class="pay_pwd_contents">
-							<form action="PayPwdSet">
-								현재 비밀번호 
-								<input type="password" placeholder="현재 비밀번호"><br>
-								새 비밀번호
-								<input type="password" name="pay_pwd" placeholder="새 비밀번호"><br>
-								<input type="submit" value="비밀번호 변경">
+							<form action="PayPwdSet" id="payPwdSetForm">
+								현재 테크페이 비밀번호 
+								<input type="password" id="techpay_passwd_db" placeholder="현재 비밀번호"><br>
+								
+							 	새 테크페이 비밀번호 
+								<input type="password" name="pay_pwd" id="techpay_passwd" placeholder="새 비밀번호" onkeyup="validatepayPassword()" ><br>
+								<span id="checkPasswdResult" class="check"></span><br>
+							 	새 테크페이 비밀번호 확인
+								<input type="password" name="pay_pwd2" id ="techpay_passwd2" placeholder="새 비밀번호 확인" onkeyup="checkSamePw()"><br>
+				                <span id="checkPasswdResult2" class="check"></span><br>			
+								<input type="submit" value="비밀번호 설정">			
+								
 							</form>
 						</div>			
 					</div>
@@ -139,8 +254,8 @@
 		        		<td>No.</td>
 		        		<td>계좌</td>
 		        		<td>예금주명</td>
-		        		<td>더보기</td>
-		        		<td>삭제하기</td>
+		        		<td>상세정보</td>
+<!-- 		        		<td>삭제하기</td> -->
 		        	</tr>
 		        	<c:forEach var="account" items="${accountList.res_list}">
 		        		<tr>
@@ -151,19 +266,21 @@
 		        			</td>
 		        			<td>${account.account_holder_name}</td>
 		        			<td>
-		        				<form action="AccountDetail" method="get">
-		        					<input type="submit" value="더보기">
+		        				<form action="AccountDetail" method="get" id="accountDetailForm">
+		        					<input type="hidden" name="fintech_use_num" value="${account.fintech_use_num}">
+		        					<input type="hidden" name=account_holder_name value="${account.account_holder_name}">
+		        					<input type="hidden" name="account_num_masked" value="${account.account_num_masked}">
+		        					<input type="button" value="계좌정보">
 		        				</form>
 		        			</td>
-		        			<td>
-		        				<input type="button" value="삭제" onclick="deleteAccount()">		        				
-		        			</td>
+<!-- 		        			<td> -->
+<!-- 		        				<input type="button" value="삭제" onclick="deleteAccount()">		        				 -->
+<!-- 		        			</td> -->
 		        		</tr>
 		        	</c:forEach>
 		        </table>
 	          </div>
 	       </div>
-	       
         </div>
 	</section>
 	<footer>

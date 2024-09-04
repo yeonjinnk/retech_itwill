@@ -342,6 +342,43 @@ public class BankApiClient {
 		return responseEntity.getBody();
 	}
 
+	// 2.3.1. 잔액조회 API	
+	public Map<String, String> requestAccountDetail(Map<String, Object> map) {
+		BankToken token = (BankToken)map.get("token");		
+		
+		// 요청에 사용될 bank_tran_id, tran_dtime 값 생성
+		String bank_tran_id = bankValueGenerator.getBankTranId(client_use_code);
+		String tran_dtime = bankValueGenerator.getTranDTime();
+		
+		// 1. HTTP 요청에 필요한 URI 정보 관리할 URI 객체 생성
+		URI uri = UriComponentsBuilder	
+				.fromUriString(base_url)
+				.path("/v2.0/account/balance/fin_num")
+				.queryParam("bank_tran_id", bank_tran_id)				
+				.queryParam("fintech_use_num", map.get("fintech_use_num"))				
+				.queryParam("tran_dtime", tran_dtime)				
+				.encode()
+				.build()
+				.toUri();			
+		
+		// 2. API 요청 헤더정보 관리할 HttpHeaders 객체 생성
+		HttpHeaders headers = new HttpHeaders();
+		// 헤더정보에 액세스 토큰값 설정
+		headers.setBearerAuth(token.getAccess_token());
+		
+		// 3. 헤더와 바디를 묶어서 관리하는 HttpEntity 객체 생성
+		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+
+		// 4. RESTful API 요청을 위한 RestTemplate 객체 생성
+		RestTemplate restTemplate = new RestTemplate();
+		// exchange 메서드 호출하여 HTTP(REST API) 요청 수행
+		ParameterizedTypeReference<Map<String, String>> responseType = new ParameterizedTypeReference<Map<String,String>>() {};
+		
+		ResponseEntity<Map<String, String>> responseEntity = restTemplate.exchange(uri, HttpMethod.GET, httpEntity, responseType);		
+		
+		return responseEntity.getBody();
+	}
+
 }
 	
 

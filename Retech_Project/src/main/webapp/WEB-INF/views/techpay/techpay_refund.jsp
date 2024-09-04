@@ -72,7 +72,7 @@
     margin-bottom: 20px;
 }
 
-/*---- 충전금액 영역 ----*/
+/*---- 환급금액 영역 ----*/
 .refund_amount input[type="text"] {
 	width: 100%;
 	padding: 5px 10px;
@@ -80,8 +80,12 @@
 	box-sizing: border-box;
 }
 
-.refund_amount, .pay_account_list, .account_list_table {
+.pay_account_list, .account_list_table {
 	margin-top: 20px;
+}
+
+.refundButtons {
+	margin-top: 10px;
 }
 
 .refund_btn { 
@@ -94,6 +98,12 @@
 	font-size: 10px;
 	width: 100%;
 } 
+
+.bank_symbol {
+	margin-top: 5px 0px 5px 0px;
+	width: 40px;
+	height: 30px;
+}
 
 </style>
 </head>
@@ -128,21 +138,22 @@
           </div>
           <div class="pay_account_list">	
      		<form action="RefundBankDeposit" method="post">
+     			테크페이 환급 안내<br>
 				원하는 계좌의 '환급하기' 버튼을 누르시면,<br>
-				테크페이 비밀번호 확인 후, 환급이 진행됩니다.     		
+				테크페이 비밀번호 확인 후, 테크페이에서 해당 계좌로 환급이 진행됩니다.     		
  		        <table border="1" class="account_list_table">
 		        	<c:forEach var="account" items="${accountList.res_list}">
 		        		<tr>
-		        			<td>1</td>
-		        			
-		        			<td><b>${account.account_alias}</b><br>
-		        				${account.bank_name}<br>
-		        				
+		        			<td>
+			        			<c:if test="${account.bank_code_std eq '002'}">
+			        				<img src="${pageContext.request.servletContext.contextPath}/resources/img/kdb_symbol2.png" class="bank_symbol">
+			        			</c:if>
+		        			</td>
+		        			<td><b>${account.account_alias}</b></td>
+		        			<td>${account.bank_name}<br>
 		        				${account.account_num_masked}<br>
 		        			</td>
 		        			<td>${account.account_holder_name}</td>
-		        			<td>
-		        			</td>
 		        			<td>
 	        					<input type="hidden" name="deposit_fintech_use_num" value="${account.fintech_use_num}">
 	        					<input type="hidden" name="deposit_client_name" value="${account.account_holder_name}">

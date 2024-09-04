@@ -89,42 +89,6 @@ CREATE TABLE techpay_user_info (
 		)
 	</insert>
 	
-	<!-- 핀테크 잔액 정보 갱신 (충전) - UPDATE -->
-<!-- 	<update id="updatePayBalance"> -->
-<!-- 		UPDATE techpay_pay_info -->
-<!-- 		SET -->
-<!-- 			pay_balance  = pay_balance + #{tran_amt} -->
-<!-- 		WHERE -->
-<!-- 			id = #{id}	 -->
-<!-- 	</update> -->
-	
-	<!-- 핀테크 잔액 정보 갱신2 (차감 - 환급) - UPDATE -->
-<!-- 	<update id="updatePayBalance2"> -->
-<!-- 		UPDATE techpay_pay_info -->
-<!-- 		SET -->
-<!-- 			pay_balance  = pay_balance - #{amt} -->
-<!-- 		WHERE -->
-<!-- 			id = #{id}	 -->
-<!-- 	</update> -->
-	
-	<!-- 핀테크 잔액 정보 갱신3 (차감 - 사용) - UPDATE -->
-<!-- 	<update id="updatePayBalance3"> -->
-<!-- 		UPDATE techpay_pay_info -->
-<!-- 		SET -->
-<!-- 			pay_balance  = pay_balance - #{paymentAmount} -->
-<!-- 		WHERE -->
-<!-- 			id = #{id}	 -->
-<!-- 	</update> -->
-	
-	<!-- 핀테크 잔액 정보 갱신4 (충전 - 수익) - UPDATE -->
-<!-- 	<update id="updatePayBalance4"> -->
-<!-- 		UPDATE techpay_pay_info -->
-<!-- 		SET -->
-<!-- 			pay_balance  = pay_balance + #{profitAmount} -->
-<!-- 		WHERE -->
-<!-- 			id = #{id}	 -->
-<!-- 	</update> -->
-	
 	<!-- 테크페이 잔액 업데이트 - UPDATE -->
 	<update id="updatePayBalance">
 		UPDATE techpay_pay_info
@@ -151,13 +115,17 @@ CREATE TABLE techpay_user_info (
 	
 	
 	<!-- 테크페이 내역 DB에 추가 - INSERT -->
-<!-- 	<insert id="insertPayHistory"> -->
-<!-- 		INSERT INTO techpay_history (id, pay_balance) -->
-<!-- 		VALUES ( -->
-<!-- 			#{id} -->
-<!-- 			, 0 			 -->
-<!-- 		)	 -->
-<!-- 	</insert> -->
+	<insert id="insertPayHistory">
+		INSERT INTO techpay_history
+		VALUES (
+			#{techpay_idx}
+		    , #{tran_amt}
+		    , #{techpay_tran_dtime}
+		    , #{pay_balance}
+		    , #{techpay_type}
+		    , #{id}
+		);
+	</insert>
 	
 
 </mapper>
