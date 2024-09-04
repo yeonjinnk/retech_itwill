@@ -1,5 +1,6 @@
 package com.itwillbs.retech_proj.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,16 @@ public class ChatService {
 	//채팅방 목록에 띄울 날짜, 마지막메세지 조회
 	public Map<String, String> getLastInfo(String sender_id, String receiver_id) {
 		return mapper.selectLastInfo(sender_id, receiver_id);
+	}
+
+	//DB에 알람 정보 저장하기
+	public boolean insertAlarm(Map<String, String> alarmInfo) {
+		return mapper.insertAlarm(alarmInfo);
+	}
+
+	//DB에서 알람 가져오기
+	public List<HashMap<String, Object>> getAlarmList(String id) {
+		return mapper.selectAlarm(id);
 	}
 
 }

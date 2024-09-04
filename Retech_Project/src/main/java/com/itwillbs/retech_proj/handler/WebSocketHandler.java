@@ -334,6 +334,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			//현재 시스템 날짜 및 시각 정보 저장하기
 			chatMessage.setSend_time(getDateTimeForNow());
 			
+			//알림 타입 설정
+//			chatMessage.setAlarm(ChatMessage.ALARM_RECEIVE);
+			
 			//채팅 메세지 DB 저장 요청
 			chatService.addChatMessage(chatMessage);
 			

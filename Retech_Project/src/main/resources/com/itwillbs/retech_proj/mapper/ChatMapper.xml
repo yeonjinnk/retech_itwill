@@ -174,6 +174,28 @@ WHERE
 		WHERE
 			room_id = #{room_id}
 	</update>
+	
+	<insert id="insertAlarm">
+		INSERT INTO alarm
+		VALUES (
+			#{member_id}
+			, #{room_id}
+			, #{sender_id}
+			, #{message}
+			, #{time}
+			)
+	</insert>
+	
+	<!-- DB에서 알람 가져오기 -->
+	<select id="selectAlarm" resultType="hashmap">
+		SELECT room_id, sender_id, message, time
+		FROM alarm
+		WHERE member_id = #{id}
+		ORDER BY time desc
+		LIMIT 8
+	
+	
+	</select>
 </mapper>
 
 

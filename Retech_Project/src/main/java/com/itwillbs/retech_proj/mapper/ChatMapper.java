@@ -1,5 +1,6 @@
 package com.itwillbs.retech_proj.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,5 +33,11 @@ public interface ChatMapper {
 
 	//채팅방 목록에 띄울 날짜, 마지막메세지 조회
 	Map<String, String> selectLastInfo(@Param("sender_id") String sender_id, @Param("receiver_id") String receiver_id);
+
+	//DB에 알람 정보 저장하기
+	boolean insertAlarm(Map<String, String> alarmInfo);
+
+	//DB에서 알람 가져오기
+	List<HashMap<String, Object>> selectAlarm(String id);
 
 }

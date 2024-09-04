@@ -1,0 +1,142 @@
+@charset "UTF-8";
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* 헤더와 푸터 */
+header, footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+/* 메인 콘텐츠 영역 */
+article {
+    margin: 20px auto;
+    max-width: 1200px; /* 페이지 중앙 정렬 및 너비 제한 */
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 컨테이너 */
+.container {
+    padding: 20px;
+}
+
+/* 슬라이드 */
+.carousel-inner img {
+    width: 100%;
+    height: auto; /* 이미지 비율 유지 */
+}
+
+/* 버튼 스타일 */
+.btn-dark {
+    background-color: #343a40;
+    border: none;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.btn-dark:hover {
+    background-color: #23272b;
+}
+
+/* 버튼 그룹 */
+.icon, .chatButtonArea {
+    margin-top: 10px;
+}
+
+/* 상품 정보 */
+.product-info {
+    margin-top: 20px;
+}
+
+.product-info h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* 조회수와 등록일 */
+.readcount, .registDate {
+    color: gray;
+}
+
+/* 신고 모달 */
+.modal-title {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.modal-body {
+    font-size: 14px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+}
+
+/* 판매자 정보 */
+.seller-info {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.seller-info img {
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.seller-info b {
+    font-size: 1.2em;
+}
+
+/* 썸네일 이미지 */
+.sumnail img {
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.sumnail img:hover {
+    transform: scale(1.05);
+}
+
+/* 거래 방법과 카테고리 */
+.category-payment {
+    margin-top: 20px;
+}
+
+.category-payment b {
+    font-size: 1.2em;
+}
+
+.category-payment button {
+    margin-right: 10px;
+}
+
+.slider-controls {
+  position: absolute;
+  top: 50%;
+  left: 10px; /* 좌측으로 이동 */
+  transform: translateY(-50%);
+}
+
+.slider-controls .prev, .slider-controls .next {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
