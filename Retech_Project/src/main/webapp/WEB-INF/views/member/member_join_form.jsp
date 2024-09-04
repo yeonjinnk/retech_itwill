@@ -142,7 +142,7 @@
             </ul>
         </div>
 
-        <form class="join" name="joinForm" action="${pageContext.request.contextPath}/MemberJoinForm" method="post" onsubmit="return validateForm()">
+        <form class="join" name="joinForm" id="joinform" action="${pageContext.request.contextPath}/MemberJoinForm" method="post" onsubmit="return validateForm()">
             <div class="join_detail">
                 <label for="postCode" class="title">주소</label>
                 <input type="text" name="member_postcode" id="postCode" placeholder="우편번호" required readonly>
@@ -217,7 +217,7 @@
             }).open();
         });
 
-        // 개별 필드 유효성 검사 
+         // 개별 필드 유효성 검사 
         function validateField() {
             let isValid = true;
             let field = $(this).attr('id');
@@ -327,15 +327,13 @@
             return isValid;
         }
 
-        // 폼 제출 시 유효성 검사 
-        $('form[name="joinForm"]').on('submit', function(e) {
-            let isValid = validateForm();
-
-            // 유효하지 않은 필드가 있는 경우 폼 제출을 막고 경고 메시지 표시
-            if (!isValid) {
-                e.preventDefault();
-                alert("입력한 정보를 다시 확인해주세요.");  // 경고 메시지 표시
-            }
+        $(document).ready(function() {
+            $('#joinForm').on('submit', function(e) {
+                if (!validateForm()) {
+                    e.preventDefault();
+                    alert("입력한 정보를 다시 확인해주세요.");
+                }
+            });
         });
     });
 </script>

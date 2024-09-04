@@ -3,6 +3,10 @@
 /* .layer_box { */
 /* 	display: none; */
 /* } */
+#alarmList {
+	padding-inline-start: 10px;
+}
+
 #top_link1 {
 	cursor: pointer;
 }
@@ -35,6 +39,10 @@
   background-color : #ececec
 }
 
+.alarmItem:hover{
+  background-color : #ececec
+}
+
 .layer_box .box_content {
   display: block;
 }
@@ -53,4 +61,79 @@
     background-repeat: no-repeat;
     width: 22px;
     height: 13px;
+}
+
+/*알람 수신 시 빨간 점 표시*/
+#alarmPoint {
+	color: red;
+	font-size: 15px;
+    position: absolute;
+/*     right: -9px; */
+    top: 0.5px;
+}
+
+
+/* ---------- 알람창 크기조절 ----------------- */
+.alarmArticle {
+	width: inherit;
+	min-height: 100%;
+	background-color: #f4f6f8;
+	border: 3px solid #f4f6f8;
+    border-radius: 20px;
+}
+.alarmContainer {
+	margin: auto;
+/* 	max-width: 300px; */
+	padding: 15px;
+	cursor: auto;
+}
+.alarmContentArea {
+	margin: auto;
+	padding: 10px;
+	border-radius: 10px;
+	background-color: white;
+	width: 320px;
+    min-height: 380px;
+}
+.alarmTitleArea {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 5px;
+}
+.alarmTitle {
+	font-weight: bold;
+	margin-left: 5px;
+	font-size: 20px;
+}
+.moreAlarm {
+	text-decoration: none;
+	color: #555;
+	font-size: 14px;
+}
+
+
+
+
+.alarmTitle {
+	font-size: 17px;
+	text-decoration: none;
+	color: black;
+}
+
+
+/*알람 목록 시간*/
+.alarmTime {
+	padding-left: 5px;
+	font-size: 12px;
+	color: #aaa;
+}
+
+.alarmContent {
+	font-size: 15px;
+	color: gray;
+	padding-left: 5px;
+	max-width: 330px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

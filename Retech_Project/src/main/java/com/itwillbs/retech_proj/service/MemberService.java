@@ -46,10 +46,6 @@ public class MemberService {
         return mapper.selectPaymentInfo(member_num);
     }
 
-    public StoreVO getItem(StoreVO store) {
-        return mapper.selectItem2(store);
-    }
-
     // 회원 아이디로 비밀번호 찾기
     public MemberVO isExistId(MemberVO member) {
         return mapper.selectId(member);

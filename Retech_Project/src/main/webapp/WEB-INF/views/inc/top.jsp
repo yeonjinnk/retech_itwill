@@ -276,6 +276,9 @@
 			} else if(data.type == "TALK") { //채팅 메세지 수신
 				console.log("TALK 타입 - 채팅 메세지 수신!");
 
+				//알림 창에 목록 추가
+				appendMsgToAlarm(data);
+			
 				//채팅방 생성(표시) 및 채팅방 목록 표시
 				appendChatRoomToRoomList(data);
 				createChatRoom(data);
@@ -303,6 +306,196 @@
 		}
 // 		이ㅓ
 			
+		// ======================================================================
+		// 알림 창에 목록 추가
+		function appendMsgToAlarm(msg) {
+			console.log("!!!!!!!!!!!알림 창에 목록 추가하는 appendMsgToAlarm 함수 호출됨!");
+			console.log("appendMsgToAlarm에 넘어온 데이터 확인 : " + msg);
+			console.log("room_id : " + msg.room_id + ", receiver_id : " + msg.receiver_id
+					+ ", sender_id : " + msg.sender_id + ", status : " + msg.status);
+			console.log("msg.send_time : " + msg.send_time);
+	
+			//알림 시간 포맷
+			let date = new Date(msg.send_time);
+			console.log("date : " + date);
+			
+			 // 연도, 월, 일, 시, 분을 추출
+		    let year = date.getFullYear() % 100; // 2024
+		    let month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1 필요
+		    let day = date.getDate();
+		    let hours = date.getHours();
+		    let minutes = date.getMinutes();
+			console.log("year : " + year + ", month : " + month + ", day : " + day + ", hours : " + hours + ", minutes : " + minutes);
+			
+		    // 원하는 형식으로 문자열을 생성
+		    let formattedTime = year + "년 " + month + "월 " + day + "일 " + hours + "시 " + minutes + "분";
+			console.log("formattedTime : " + formattedTime);
+			
+			
+			//알림 개수 제한
+			// 알림 목록의 개수 구하기
+			let alarmListCount = $(".alarmItem").length;
+			console.log("클래스가 alarmItem인 요소의 개수 : " + alarmListCount);
+			
+			// 알림 목록 7개 넘어가면 오래된 알림 삭제
+			if(alarmListCount > 7) {
+				$(".alarmItem").last().remove();
+				console.log("알림이 7개 넘어가면 오래된 알림 삭제함!");
+			}
+			
+			// 알림 목록 html 태그 작성함
+			let divAlarm = "<li class='alarmItem'>" // alarmItem 시작
+				divAlarm += 	"<div class='alarmLink'>" // alarmLink 시작
+				divAlarm +=		 "<div class='alarmTitle'>" // alarmTitle 시작
+				divAlarm += 		"<span class='alarmTime'>" // alarmTime 시작
+				divAlarm += 			formattedTime
+				divAlarm += 		"</span>" // alarmTime 끝
+				divAlarm += 		"</div>" // alarmTitle 끝
+				divAlarm +=		 "<div class='alarmContent'>" // alarmContent 시작
+				divAlarm +=		 	msg.sender_id
+				divAlarm +=		 	" : "
+				divAlarm +=		 	msg.message
+				divAlarm += 	"</div>" // alarmContent 끝
+				divAlarm += 	"</div>" // alarmLink 끝
+				divAlarm += "</li>" // alarmItem 끝
+				
+				
+			$("#alarmList").prepend(divAlarm);
+			$("#alarmPoint").css("display", "");
+			
+			//해당 채팅방 목록 div 태그에 더블클릭 이벤트 핸들링
+			$(".alarmLink").on("click", function() {
+				console.log("알림 목록 클릭 해 채팅창 열림!");
+				window.open("ChatRoom?room_id=" + msg.room_id + "&receiver_id=" 
+							+ msg.receiver_id + "&sender_id=" + msg.sender_id 
+// 							+ "&status=" + msg.status
+							,msg.room_id, "width=600px, height=600px");
+			});
+		
+			//알림 내용을 DB에 저장하기
+			$.ajax({
+				data: {
+					'sender_id':msg.sender_id,
+					'message': msg.message,
+					'room_id': msg.room_id,
+					'time': msg.send_time
+				},
+				url: "AlarmRemember",
+				type: "POST",
+				success: function(data) {
+					console.log("성공한 boolean 값 : " + data);
+					console.log("알림 내용 DB에 저장 성공!");
+				},
+				error: function(request, status, error) {
+// 					alert("code:"+request.status+"\n"
+// 							+"message:"+request.responseText+"\n"
+// 							+"error:"+error);
+	 				console.log("알림 내용 DB 저장 실패");
+				}
+			});
+			
+			
+			
+			
+		} //appendMsgToAlarm 함수 끝
+		
+// 		// prepend 될 때마다 알림 표시
+// 		function onItemPrepended() {
+// 	        console.log("New item prepended.");
+// 	        // 여기에서 추가된 항목에 대한 작업을 수행할 수 있습니다.
+// 	        // 예를 들어, 새 항목에 클릭 이벤트를 추가하는 등.
+// 	        $(".alarmItem").last().on('click', function() {
+// 	            console.log("Alarm item clicked!");
+// 	        });
+		
+		
+// 		function openChatRoom() {
+			
+// 		}
+		
+		// ======================================================================
+		// 알림 목록에 DB에 저장된 알림 가져오는 함수
+		$(function() {
+			let id = ${sessionScope.sId};
+			console.log("로그인한 아이디 " + id);
+			
+			$.ajax({
+				data: {
+					'member_id': id
+				},
+				url: "alarmCheck",
+				type: "POST",
+				success: function(data) {
+					console.log("DB에서 알람 가져오기 성공!");
+					console.log("가져온 데이터 확인 : " + data);
+					
+					//알림 시간 포맷
+					let date = new Date(data.send_time);
+					console.log("date : " + date);
+					
+					 // 연도, 월, 일, 시, 분을 추출
+				    let year = date.getFullYear() % 100; // 2024
+				    let month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1 필요
+				    let day = date.getDate();
+				    let hours = date.getHours();
+				    let minutes = date.getMinutes();
+					console.log("year : " + year + ", month : " + month + ", day : " + day + ", hours : " + hours + ", minutes : " + minutes);
+					
+				    // 원하는 형식으로 문자열을 생성
+				    let formattedTime = year + "년 " + month + "월 " + day + "일 " + hours + "시 " + minutes + "분";
+					console.log("formattedTime : " + formattedTime);
+					
+					
+					for(let alarmItem of data) {
+						// 알림 목록 html 태그 작성함
+						let divAlarm = "<li class='alarmItem'>" // alarmItem 시작
+							divAlarm += 	"<div class='alarmLink'>" // alarmLink 시작
+							divAlarm +=		 "<div class='alarmTitle'>" // alarmTitle 시작
+							divAlarm += 		"<span class='alarmTime'>" // alarmTime 시작
+							divAlarm += 			formattedTime
+							divAlarm += 		"</span>" // alarmTime 끝
+							divAlarm += 		"</div>" // alarmTitle 끝
+							divAlarm +=		 "<div class='alarmContent'>" // alarmContent 시작
+							divAlarm +=		 	alarmItem.sender_id
+							divAlarm +=		 	" : "
+							divAlarm +=		 	alarmItem.message
+							divAlarm += 	"</div>" // alarmContent 끝
+							divAlarm += 	"</div>" // alarmLink 끝
+							divAlarm += "</li>" // alarmItem 끝
+							
+							
+						$("#alarmList").prepend(divAlarm);
+						$("#alarmPoint").css("display", "");
+						
+
+						//해당 채팅방 목록 div 태그에 더블클릭 이벤트 핸들링
+						$(".alarmLink").on("click", function() {
+							console.log("알림 목록 클릭 해 채팅창 열림!");
+							window.open("ChatRoom?room_id=" + msg.room_id + "&receiver_id=" 
+										+ msg.receiver_id + "&sender_id=" + msg.sender_id 
+//			 							+ "&status=" + msg.status
+										,msg.room_id, "width=600px, height=600px");
+						});
+					}
+				},
+				error: function(request,status,error) {
+					alert("code:"+request.status+"\n"
+							+"message:"+request.responseText+"\n"
+							+"error:"+error);
+	 				console.log("DB 가져오기 실패");
+				}
+			});
+			
+			
+		}
+			});
+		function appendMsgToAlarm(msg) {
+		
+		
+		
+		
+		
+		
 		// ======================================================================
 		// 채팅방 목록 영역에 1개 채팅방 정보를 추가하는 함수
 		function appendChatRoomToRoomList(room) {
@@ -356,7 +549,8 @@
 				//해당 채팅방 목록 div 태그에 더블클릭 이벤트 핸들링
 				$(".chatRoomList." + room.room_id).on("dblclick", function() {
 					console.log("채팅방 목록 더블클릭 해 채팅창 열림!");
-					window.open("ChatRoom?room_id=" + room.room_id + "&receiver_id=" + room.receiver_id + "&sender_id=" + room.sender_id + "&status=" + room.status,
+					window.open("ChatRoom?room_id=" + room.room_id + "&receiver_id=" 
+								+ room.receiver_id + "&sender_id=" + room.sender_id + "&status=" + room.status,
 								room.room_id, "width=600px, height=600px");
 				});
 			}
