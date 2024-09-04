@@ -217,7 +217,7 @@
             }).open();
         });
 
-        // 개별 필드 유효성 검사 
+         // 개별 필드 유효성 검사 
         function validateField() {
             let isValid = true;
             let field = $(this).attr('id');
