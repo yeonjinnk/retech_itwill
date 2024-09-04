@@ -133,7 +133,7 @@
                 <p>지역: ${member.member_address1}</p>
                 <p>신뢰지수: </p>
             </div>
-
+<!-- ㄴ -->
             <ul class="tabs">
                 <li><a href="#" class="selected">찜한상품</a></li>
             </ul>
