@@ -29,7 +29,7 @@ import com.itwillbs.retech_proj.vo.ProductVO;
 public class MemberController {
 	@Autowired
 	   private MemberService service;
-
+		
 	   // 회원 가입 -------------------------------------------------------------------------------------------
 	   @GetMapping("MemberJoin")
 	   public String memberJoin() {
@@ -39,13 +39,14 @@ public class MemberController {
 
 	   @PostMapping("MemberJoin")
 	   public String memberDupId(MemberVO member, Model model, String rememberId, BCryptPasswordEncoder passwordEncoder) {
-		  String securePasswd = passwordEncoder.encode(member.getMember_passwd());
-		  System.out.println("평문 : " + member.getMember_passwd()); // admin123
-		  System.out.println("암호문 : " + securePasswd); // $2a$10$hw02bLaTVPfeCbZ3vdXU0uWDZu52Ov1rof5pZCFkngtuA5Ld9BSxq
-		  // => 단, 매번 생성되는 암호문은 솔트(Salt)값에 의해 항상 달라진다!
-			
-		  // 3. 암호화 된 패스워드를 다시 MemberVO 객체의 passwd 값에 저장(덮어쓰기)
-		  member.setMember_passwd(securePasswd);
+		
+//		   String securePasswd = passwordEncoder.encode(member.getMember_passwd());
+//		  System.out.println("평문 : " + member.getMember_passwd()); // admin123
+//		  System.out.println("암호문 : " + securePasswd); // $2a$10$hw02bLaTVPfeCbZ3vdXU0uWDZu52Ov1rof5pZCFkngtuA5Ld9BSxq
+//		  // => 단, 매번 생성되는 암호문은 솔트(Salt)값에 의해 항상 달라진다!
+//			
+//		  // 3. 암호화 된 패스워드를 다시 MemberVO 객체의 passwd 값에 저장(덮어쓰기)
+//		  member.setMember_passwd(securePasswd);
 			
 			
 		  MemberVO dbmember = service.getMember(member);
@@ -162,6 +163,10 @@ public class MemberController {
 		    }
 			
 		}
+	   
+	   // 카카오톡 로그인
+
+	  
 	   
 	   
 	   
@@ -520,8 +525,8 @@ public class MemberController {
 	   
 //	   @GetMapping("Review")
 //	   public String review() {
-//		return "review_popup";
-//		   
+//		
+//	   return "mypage/review_popup";
 //	   }
 	   
 	   

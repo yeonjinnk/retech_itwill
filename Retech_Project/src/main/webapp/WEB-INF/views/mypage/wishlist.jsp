@@ -122,6 +122,7 @@
             <a href="SaleHistory">판매내역</a>
             <a href="PurchaseHistory">구매내역</a>
             <a href="Wishlist" class="selected">찜한상품</a>
+            <a href="">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
 
@@ -138,7 +139,6 @@
             </ul>
 
             <div class="content">
-                <%-- 본문 내용은 여기에 삽입됩니다 --%>
                 <c:if test="${empty orderticket2}">
                     <table class="mypage">
                         <tr>

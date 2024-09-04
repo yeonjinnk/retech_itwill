@@ -75,7 +75,6 @@ public class MemberService {
 		return mapper.selectMemberId(receiver_id);
 	}
 
-
 }    
     // SMS 인증
 //    public void certifiedPhoneNumber(String phoneNumber, String numStr) {

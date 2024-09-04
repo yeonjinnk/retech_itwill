@@ -221,6 +221,7 @@
             <a href="SaleHistory" class="selected">판매내역</a>
             <a href="PurchaseHistory">구매내역</a>
             <a href="Wishlist">찜한상품</a>
+            <a href="">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
 
@@ -238,7 +239,6 @@
             </ul>
 
             <div class="content">
-                <%-- 판매내역을 테이블로 출력 --%>
                 <c:if test="${not empty productList}">
                     <table>
                         <thead>

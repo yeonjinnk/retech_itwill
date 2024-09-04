@@ -234,6 +234,7 @@
             <a href="SaleHistory">판매내역</a>
             <a href="PurchaseHistory" class="selected">구매내역</a>
             <a href="Wishlist">찜한상품</a>
+            <a href="">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
 
@@ -251,7 +252,6 @@
             </ul>
 
             <div class="content">
-                <%-- 구매내역을 테이블로 출력 --%>
                 <c:if test="${not empty productList}">
                     <table>
                         <thead>
@@ -296,9 +296,6 @@
                                                     <c:when test="${product.pd_status == '거래확정'}">
                                                         <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
                                                     </c:when>
-                                                    <c:otherwise>
-                                                        <!-- Handle other cases if needed -->
-                                                    </c:otherwise>
                                                 </c:choose>
                                             </div>
                                         </td>
