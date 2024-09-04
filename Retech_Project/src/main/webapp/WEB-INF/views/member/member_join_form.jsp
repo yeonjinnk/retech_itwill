@@ -158,31 +158,31 @@
 
             <div class="join_detail">
                 <label for="member_passwd" class="title">비밀번호</label>
-                <input type="password" name="member_passwd" id="member_passwd" placeholder="영문, 숫자, 특수문자 중 2개 조합 8자 이상">
+                <input type="password" name="member_passwd" id="member_passwd" placeholder="영문, 숫자, 특수문자 중 2개 조합 8자 이상" required>
                 <span id="checkPasswdResult" class="check"></span>
             </div>
 
             <div class="join_detail">
                 <label for="member_passwd2" class="title">비밀번호 확인</label>
-                <input type="password" name="member_passwd2" id="member_passwd2" placeholder="비밀번호를 다시 입력해주세요">
+                <input type="password" name="member_passwd2" id="member_passwd2" placeholder="비밀번호를 다시 입력해주세요" required>
                 <span id="checkPasswdResult2" class="check"></span>
             </div>
 
             <div class="join_detail">
                 <label for="member_name" class="title">이름</label>
-                <input type="text" name="member_name" id="member_name" placeholder="실명을 입력해주세요">
+                <input type="text" name="member_name" id="member_name" placeholder="실명을 입력해주세요" required>
                 <span id="checkNameResult" class="check"></span>
             </div> 
 
             <div class="join_detail">
                 <label for="member_nickname" class="title">상점이름(닉네임)</label>
-                <input type="text" name="member_nickname" id="member_nickname" placeholder="상점이름을 입력해주세요">
+                <input type="text" name="member_nickname" id="member_nickname" placeholder="상점이름을 입력해주세요" required>
                 <span id="checkNickNameResult" class="check"></span>
             </div>
 
             <div class="join_detail">
                 <label for="member_birth" class="title">생년월일</label>
-                <input type="text" name="member_birth" id="member_birth" placeholder="예) 1999-01-01">
+                <input type="text" name="member_birth" id="member_birth" placeholder="예) 1999-01-01" required>
                 <span id="checkBirthResult" class="check"></span>
             </div>
 
@@ -201,111 +201,145 @@
     </footer>
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            $("#member_passwd2").on("blur", checkSamePw);
-            $("#member_name").on("blur", checkName);
-            $("#member_birth").on("blur", checkBirth);
-            $("#member_phone").on("blur", checkPhoneNum);
+    $(document).ready(function() {
+        // 각 입력 유효성 검사
+        $("#member_passwd, #member_passwd2, #member_name, #member_birth, #member_phone").on("blur", validateField);
 
-            function checkSamePw() {
-                let passwd = $("#member_passwd").val();
-                let passwd2 = $("#member_passwd2").val();
-                
-                if (passwd === passwd2) {
-                    $("#checkPasswdResult2").text("비밀번호가 일치합니다.").addClass("success").removeClass("error");
-                } else {
-                    $("#checkPasswdResult2").text("비밀번호가 일치하지 않습니다.").addClass("error").removeClass("success");
-                    $("#member_passwd2").focus();
+        // 주소 검색 버튼 클릭 시 우편번호 및 주소 입력 필드 자동 채우기
+        $("#btnSearchAddress").click(function() {
+            new daum.Postcode({
+                oncomplete: function(data) { 
+                    $("#postCode").val(data.zonecode);
+                    let address = data.address + (data.buildingName ? ` (${data.buildingName})` : '');
+                    $("#address1").val(address);
+                    $("#address2").focus(); // 주소 검색 후 상세주소로 포커스 이동
                 }
+            }).open();
+        });
+
+        // 개별 필드 유효성 검사 
+        function validateField() {
+            let isValid = true;
+            let field = $(this).attr('id');
+
+            switch(field) {
+                case "member_passwd":
+                    isValid = validatePassword();
+                    break;
+                case "member_passwd2":
+                    isValid = checkSamePw();
+                    break;
+                case "member_name":
+                    isValid = checkName();
+                    break;
+                case "member_birth":
+                    isValid = checkBirth();
+                    break;
+                case "member_phone":
+                    isValid = checkPhoneNum();
+                    break;
             }
 
-            function checkName() {
-                let regex = /^[가-힣]{2,6}$/;
-                let name = $("#member_name").val();
-                
-                if (!regex.test(name)) {
-                    $("#checkNameResult").text("한글로 이름을 입력해주세요.").addClass("error").removeClass("success");
-                    $("#member_name").focus();
-                } else {
-                    $("#checkNameResult").text("").removeClass("error success");
-                }
+            return isValid;
+        }
+
+        // 비밀번호 유효성 검사 
+        function validatePassword() {
+            let passwd = $("#member_passwd").val();
+            let hasUpperCase = /[A-Z]/.test(passwd);
+            let hasLowerCase = /[a-z]/.test(passwd);
+            let hasDigit = /\d/.test(passwd);
+            let hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(passwd);
+            let criteriaMet = [hasUpperCase, hasLowerCase, hasDigit, hasSpecialChar].filter(Boolean).length;
+
+            if (passwd.length < 8 || criteriaMet < 2) {
+                $("#checkPasswdResult").text("영문, 숫자, 특수문자 중 2개 조합으로 8자 이상 입력해주세요.").addClass("error").removeClass("success");
+                return false;
+            } else {
+                $("#checkPasswdResult").text("비밀번호가 유효합니다.").addClass("success").removeClass("error");
+                return true;
             }
+        }
 
-            function checkBirth() {
-                let regex = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
-                let birth = $("#member_birth").val();  
-                
-                if (!regex.test(birth)) {
-                    $("#checkBirthResult").text("0000-00-00의 형식으로 입력해주세요.").addClass("error").removeClass("success");
-                    $("#member_birth").focus();
-                } else {
-                    let birthDate = new Date(birth);
-                    let maxDate = new Date('2010-01-01');
-
-                    if (birthDate >= maxDate) {
-                        $("#checkBirthResult").text("2010년 1월 1일 이전의 생년월일을 입력해주세요.").addClass("error").removeClass("success");
-                        $("#member_birth").focus();
-                    } else {
-                        $("#checkBirthResult").text("").removeClass("error success");
-                    }
-                }
+        // 비밀번호 확인 일치 여부 검사 
+        function checkSamePw() {
+            let passwd = $("#member_passwd").val();
+            let passwd2 = $("#member_passwd2").val();
+            if (passwd !== passwd2) {
+                $("#checkPasswdResult2").text("비밀번호가 일치하지 않습니다.").addClass("error").removeClass("success");
+                return false;
+            } else {
+                $("#checkPasswdResult2").text("비밀번호가 일치합니다.").addClass("success").removeClass("error");
+                return true;
             }
+        }
 
-            function checkPhoneNum() {
-                let regex = /^[0-9]{10,11}$/;
-                let phone = $("#member_phone").val();  
-                
-                if (!regex.test(phone)) {
-                    $("#checkPhoneResult").text("숫자만 입력해주세요.").addClass("error").removeClass("success");
-                    $("#member_phone").focus();
-                } else {
-                    $("#checkPhoneResult").text("").removeClass("error success");
-                }
+        // 이름 유효성 검사
+        function checkName() {
+            let regex = /^[가-힣]{2,6}$/;
+            let name = $("#member_name").val();
+            if (!regex.test(name)) {
+                $("#checkNameResult").text("한글로 이름을 입력해주세요.").addClass("error").removeClass("success");
+                return false;
+            } else {
+                $("#checkNameResult").text("").removeClass("error success");
+                return true;
             }
+        }
 
-            $("#btnSearchAddress").click(function() {
-                new daum.Postcode({
-                    oncomplete: function(data) { 
-                        $("#postCode").val(data.zonecode);
-                
-                        let address = data.address;
-                        if (data.buildingName !== '') {
-                            address += " (" + data.buildingName + ")";
-                        }
-                
-                        $("#address1").val(address);
-                        $("#address2").focus();
-                    }
-                }).open();
-            });
+        // 생년월일 유효성 검사 
+        function checkBirth() {
+            let regex = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+            let birth = $("#member_birth").val();  
+            if (!regex.test(birth) || new Date(birth) >= new Date('2010-01-01')) {
+                $("#checkBirthResult").text("2010년 1월 1일 이전의 생년월일을 입력해주세요.").addClass("error").removeClass("success");
+                return false;
+            } else {
+                $("#checkBirthResult").text("").removeClass("error success");
+                return true;
+            }
+        }
 
-            function validateForm() {
-                let isValid = true;
+        // 전화번호 유효성 검사 
+        function checkPhoneNum() {
+            let regex = /^[0-9]{10,11}$/;
+            let phone = $("#member_phone").val();  
+            if (!regex.test(phone)) {
+                $("#checkPhoneResult").text("숫자만 입력해주세요.").addClass("error").removeClass("success");
+                return false;
+            } else {
+                $("#checkPhoneResult").text("").removeClass("error success");
+                return true;
+            }
+        }
 
-                let birth = $("#member_birth").val();
-                let birthDate = new Date(birth);
-                let maxDate = new Date('2010-01-01');
+        // 전체 폼 유효성 검사 
+        function validateForm() {
+            let isValid = true;
+            
+            // 각 필드별 유효성 검사 
+            if (!validatePassword()) isValid = false;
+            if (!checkSamePw()) isValid = false;
+            if (!checkName()) isValid = false;
+            if (!checkBirth()) isValid = false;
+            if (!checkPhoneNum()) isValid = false;
 
-                if (birthDate >= maxDate) {
-                    $("#checkBirthResult").text("2010년 1월 1일 이전의 생년월일을 입력해주세요.").addClass("error").removeClass("success");
-                    isValid = false;
-                }
+            return isValid;
+        }
 
-                if ($("#checkPasswdResult").hasClass("error")) {
-                    isValid = false;
-                }
+        // 폼 제출 시 유효성 검사 
+        $('form[name="joinForm"]').on('submit', function(e) {
+            let isValid = validateForm();
 
-                if ($("#checkNameResult").hasClass("error")) {
-                    isValid = false;
-                }
-
-                if ($("#checkPhoneResult").hasClass("error")) {
-                    isValid = false;
-                }
-
-                return isValid;
+            // 유효하지 않은 필드가 있는 경우 폼 제출을 막고 경고 메시지 표시
+            if (!isValid) {
+                e.preventDefault();
+                alert("입력한 정보를 다시 확인해주세요.");  // 경고 메시지 표시
             }
         });
-    </script>
+    });
+</script>
+    
+
 </body>
 </html>

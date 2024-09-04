@@ -537,19 +537,20 @@ public class MemberController {
 	        return "mypage/product_detail";
 	    }
 	   
-	   
+	   // 문의 내역 조회 
 	   @Autowired
 	   private CsService csService;
 	   @GetMapping("CsHistory")
-	    public String csHistory(Model model, HttpSession session) {
-	        String id = (String) session.getAttribute("sId");
-
-	        if (id != null) {
-	            // 회원 정보를 가져오는 로직 (추가 필요시)
-	            MemberVO member = new MemberVO();
-	            member.setMember_id(id);
-	            model.addAttribute("member", member);
-
+	    public String csHistory(Model model, HttpSession session, MemberVO member) {
+	          
+		   String id = (String) session.getAttribute("sId");
+		   // 세션에 사용자 ID가 존재하는 경우
+		   if (id != null) {
+			   member.setMember_id(id);
+			   // 해당 ID의 회원 정보를 조회
+			   member = service.getMember(member);
+			   model.addAttribute("member", member);    
+	            
 	            // 페이징을 고려한 변수 설정 (예: 현재 페이지, 페이지당 항목 수)
 	            int startRow = 0; // 시작 행 (페이지 계산에 따라 동적으로 설정 필요)
 	            int listLimit = 10; // 한 페이지에 보여줄 항목 수
@@ -565,6 +566,16 @@ public class MemberController {
 	        return "mypage/mycs";
 	    }
 	   
+	   @GetMapping("/cs/csContent")
+	   public String csContent(@RequestParam("cs_idx") int cs_idx, Model model) {
+	       CsVO selectedCs = csService.getCs(cs_idx);
+	       model.addAttribute("selectedCs", selectedCs);
+	       return "cs/csContent"; // cs 폴더 내의 csContent.jsp로 이동
+	   }
+
+
+	   
+	   
 	   // 거래상태 업데이트
 	   @PostMapping("/updateTransactionStatus")
 	   @ResponseBody
@@ -576,8 +587,6 @@ public class MemberController {
 	       response.put("status", status);
 	       return response;
 	    }
-	   
-	   
 	   
 	   
 //	   @GetMapping("Review")

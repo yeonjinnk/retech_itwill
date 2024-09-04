@@ -36,9 +36,6 @@ public class MemberService {
         return mapper.selectMemberSearchId(member);
     }
 
-    public List<Map<String, String>> getorderticket2(int member_num) {
-        return mapper.selectOrderticket2(member_num);
-    }
 
     // 아이디값을 활용해서 멤버 넘 구하기
     public int getMember_num(String id) {
@@ -74,6 +71,7 @@ public class MemberService {
 	public String getMemberId(String receiver_id) {
 		return mapper.selectMemberId(receiver_id);
 	}
+	
 
 }    
     // SMS 인증

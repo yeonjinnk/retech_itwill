@@ -199,8 +199,8 @@
                                     <td><fmt:formatDate value="${cs.cs_date}" pattern="yyyy-MM-dd"/></td>
                                     <td>${cs.cs_check}</td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/inquiryDetail?cs_idx=${cs.cs_idx}" class="view-detail">상세보기</a>
-                                    </td>
+									    <a href="${pageContext.request.contextPath}/cs/csContent?cs_idx=${cs.cs_idx}" class="view-detail">상세보기</a>
+									</td>
                                 </tr>
                             </c:forEach>
                         </tbody>

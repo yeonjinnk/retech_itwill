@@ -30,16 +30,14 @@ public interface MemberMapper {
 
 	   List<MemberVO> selectMemberList(int startRow, int listLimit, String searchKeyword);
 
-	   List<Map<String, String>> selectOrderticket2(int member_num);
-
 	   int selectMember_num(String id);
 	 
 	   List<Map<String, String>> selectPaymentInfo(int member_num);
 
 	   StoreVO selectItem2(StoreVO store);
 
-	 //=====================================================================================
-	 //회원 아이디 조회(채팅용)
-	   String selectMemberId(String receiver_id);	
+	   //=====================================================================================
+	   //회원 아이디 조회(채팅용)
+	   String selectMemberId(String receiver_id);
 
 }
