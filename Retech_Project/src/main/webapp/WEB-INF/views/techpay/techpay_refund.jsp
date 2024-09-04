@@ -14,6 +14,13 @@
 <!-- 외부 CSS 파일(css/default.css) 연결 -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
+
+	// 결제 비밀번호 확인
+	function openCheckPayPwdWindow() {
+	    // "CheckPayPwd" 서블릿 주소로 새 창을 열기
+	    window.open('CheckPayPwd', 'CheckPayPwdWindow', 'width=500,height=400');
+	}
+
     // 충전금액 텍스트박스에 반영하기
     $(document).ready(function() {
         $('#refundButtons').on('click', '.refund-btn', function() {
@@ -137,7 +144,7 @@
 				</div>
           </div>
           <div class="pay_account_list">	
-     		<form action="RefundBankDeposit" method="post">
+     		<form action="RefundBankDeposit" method="post" id="PayProcessForm">
      			테크페이 환급 안내<br>
 				원하는 계좌의 '환급하기' 버튼을 누르시면,<br>
 				테크페이 비밀번호 확인 후, 테크페이에서 해당 계좌로 환급이 진행됩니다.     		
@@ -158,7 +165,7 @@
 	        					<input type="hidden" name="deposit_fintech_use_num" value="${account.fintech_use_num}">
 	        					<input type="hidden" name="deposit_client_name" value="${account.account_holder_name}">
 	        					<input type="hidden" name="tran_amt" value="70000">
-		       					<input type="submit" class="refund_btn" value="환급하기">
+		       					<input type="button" class="refund_btn" value="환급하기" onclick="openCheckPayPwdWindow()">
 		        			</td>
 		        		</tr>
 		        	</c:forEach>	

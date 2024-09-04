@@ -34,6 +34,7 @@
 
 
 <script>
+	
     // 전체 폼 유효성 검사
     function validateForm() {
         let isValid = true;
@@ -107,6 +108,22 @@
                 }
             }
         });
+        
+        // 계좌정보 새 창으로 열기
+        $('#accountDetailForm input[type="button"]').on('click', function(e) {
+            // 기본 폼 제출 막기
+            e.preventDefault();
+
+            // 새 창 열기
+            var newWindow = window.open('', 'AccountDetailWindow', 'width=800,height=600');
+
+            // 새 창을 target으로 설정
+            $('#accountDetailForm').attr('target', 'AccountDetailWindow');
+
+            // 폼 제출
+            $('#accountDetailForm').submit();
+        });       
+        
     });
 </script>
 
@@ -270,7 +287,7 @@
 		        					<input type="hidden" name="fintech_use_num" value="${account.fintech_use_num}">
 		        					<input type="hidden" name=account_holder_name value="${account.account_holder_name}">
 		        					<input type="hidden" name="account_num_masked" value="${account.account_num_masked}">
-		        					<input type="button" value="계좌정보">
+		        					<input type="button" value="계좌정보" >
 		        				</form>
 		        			</td>
 <!-- 		        			<td> -->

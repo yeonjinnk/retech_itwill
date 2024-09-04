@@ -352,8 +352,7 @@ public class TechPayController {
 	}
 
 	@GetMapping("CheckPayPwd")
-	public String checkPayPwd(HttpSession session, Model model) {
-		
+	public String checkPayPwd(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
 		
 		return "techpay/check_pay_pwd";
 	}
@@ -415,7 +414,7 @@ public class TechPayController {
 			session.setAttribute("prevURL", "PayManage");
 			return "result/fail";			
 		}
-		
+		System.out.println("-------------------ChargeBankWithdraw - map : " + map);
 		map.put("token", token);
 		map.put("id", id);
 		System.out.println("출금이체 요청 파라미터 : " + map);
@@ -643,7 +642,7 @@ public class TechPayController {
 		}		
 		
 		// 테크페이 타입 지정
-		int techpay_type = 4;
+		int techpay_type = 3;
 
 		// 테크페이 거래 시간 생성
 		String techpay_tran_dtime = bankValueGenerator.getTranDTime();
@@ -674,7 +673,7 @@ public class TechPayController {
 		techPayService.registPayHistory(map2);			
 		
 		model.addAttribute("msg", "결제 완료!");
-		model.addAttribute("targetURL", "./");
+		model.addAttribute("targetURL", "TechPayMain");
 		
 		return "result/success";
 	}
@@ -690,7 +689,7 @@ public class TechPayController {
 		String tran_amt = "150000"; // 상품 금액 임의 설정		
 		
 		// 테크페이 타입 지정
-		int techpay_type = 3;
+		int techpay_type = 4;
 
 		// 테크페이 거래 시간 생성
 		String techpay_tran_dtime = bankValueGenerator.getTranDTime();

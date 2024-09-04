@@ -119,7 +119,7 @@ public class TechPayService {
 	// 테크페이 내역 DB에 추가	
 	public void registPayHistory(Map<String, Object> map2) {
 		mapper.insertPayHistory(map2);
-		System.out.println("map2(registPayHistory) : " + map2);
+		System.out.println("-------------------map2(registPayHistory) : " + map2);
 	}
 
 	// 2.3.1. 잔액조회 API	

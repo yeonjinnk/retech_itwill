@@ -13,12 +13,17 @@
 <!-- 외부 CSS 파일(css/default.css) 연결 -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
-	function checkPayPwd() {
-		window.open('/paymentPasswordWindow', '결제 비밀번호 입력', 'width=400,height=300');
-	}
 
+   // 결제 비밀번호 확인
+   function openCheckPayPwdWindow() {
+        // "CheckPayPwd" 서블릿 주소로 새 창을 열기
+        window.open('CheckPayPwd', 'CheckPayPwdWindow', 'width=500,height=400');
+    }
+
+	
     // 충전금액 텍스트박스에 반영하기
     $(document).ready(function() {
+    	// 
         $('#chargeButtons').on('click', '.charge-btn', function() {
             // 현재 텍스트 박스에 입력된 값을 숫자로 변환(빈 값일 경우 0으로 처리)
             let currentAmount = parseInt($('#chargeAmount').val()) || 0;
@@ -29,7 +34,8 @@
             // 텍스트 박스의 값을 업데이트
             $('#chargeAmount').val(newAmount);
         });
-     // 충전금액 텍스트박스에 숫자가 아닌 값 넣지 못하도록 함
+        
+     	// 충전금액 텍스트박스에 숫자가 아닌 값 넣지 못하도록 함
         $('#chargeAmount').on('keydown', function(event) {
             // keyCode 가져오기
             let keyCode = event.keyCode;
@@ -42,6 +48,7 @@
                 $('#onlyDigitMessage').hide();
             }
         });
+     
     });
 </script>
 <style type="text/css">
@@ -130,8 +137,8 @@
 				</div>
           </div>
           <div class="pay_account_list">	
-<!-- 			<form action="ChargeBankWithdraw" method="post"> -->
-			<form action="CheckPayPwd" method="post">
+			<form action="ChargeBankWithdraw" method="post" id="PayProcessForm">
+<!-- 			<form action="CheckPayPwd" method="get" id="checkPayPwdForm"> -->
 				테크페이 충전 안내<br>
 				원하는 계좌의 '충전하기' 버튼을 누르시면,<br>
 				테크페이 비밀번호 확인 후, 해당 계좌에서 출금하여 테크페이로 충전됩니다.
@@ -152,7 +159,7 @@
 	        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
 	        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
 	        					<input type="hidden" name="tran_amt" value="50000">
-	        					<input type="submit" class="charge_btn" value="충전하기" onclick="checkPayPwd()">
+	        					<input type="button" class="charge_btn" value="충전하기" onclick="openCheckPayPwdWindow()">
 		        			</td>
 		        		</tr>
 		        	</c:forEach>	

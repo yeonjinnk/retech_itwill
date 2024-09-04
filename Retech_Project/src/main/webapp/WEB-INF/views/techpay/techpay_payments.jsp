@@ -12,6 +12,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- Font Awesome 아이콘 라이브러리 로드 -->
 <!-- 외부 CSS 파일(css/default.css) 연결 -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+
+	// 결제 비밀번호 확인
+	function openCheckPayPwdWindow() {
+	     // "CheckPayPwd" 서블릿 주소로 새 창을 열기
+	     window.open('CheckPayPwd', 'CheckPayPwdWindow', 'width=500,height=400');
+	 }
+
+</script>
+
 <style type="text/css">
 /*---- techpay_payments 영역 전체 ----*/
 .payments_container {
@@ -74,7 +84,7 @@
           </div>
           <div class="payments_amount">
 	        <h2>결제금액</h2>
-	        <h2>${paymentAmount}원</h2>
+	        <h2><fmt:formatNumber value="${paymentAmount}" pattern="#,###" />원</h2>
           </div>
           <div class="pay_account_list">	
  		        <table border="1">
@@ -88,11 +98,11 @@
 		        			</td>
 		        			<td>${account.account_holder_name}</td>
 		        			<td>
-		        				<form action="TechPaymentsProcess" method="post">
+		        				<form action="TechPaymentsProcess" method="post" id="PayProcessForm">
 		        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
 		        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
 		        					<input type="hidden" name="tran_amt" value="110000">
-		        					<input type="submit" value="결제하기">
+		        					<input type="button" value="결제하기" onclick="openCheckPayPwdWindow()">
 		        				</form>
 		        			</td>
 		        		</tr>
