@@ -136,15 +136,31 @@
 				
 					clearInterval(wsCheckInterval);
 // 					console.log("${param.room_id}" +", " + "${param.receiver_id}"+", " + "${param.sender_id}" + ", " + "${param.status}");
-					let data = {
-							room_id : "${param.room_id}",
-							receiver_id : "${param.receiver_id}",
-							sender_id : "${param.sender_id}",
-							status : "${param.status}"
-					};
-					console.log("data : " + data);
-					//연결 완료 후 채팅창 생성
-					createChatRoom(data);
+					let roomId = "${param.room_id}";
+					let receiverId = "${param.receiver_id}";
+					let senderId = "${param.sender_id}";
+					let status2 = "${param.status}";
+					console.log("receiver_id : " + receiverId);
+					
+					if(roomId != "" && receiverId != "" && senderId != ""&& status2 != "") {
+						let data = {
+								room_id : roomId,
+								receiver_id : receiverId,
+								sender_id : senderId,
+								status : status2
+						};
+						console.log("data : " + data);
+						//연결 완료 후 채팅창 생성
+						createChatRoom(data);
+					} else {
+						let sender_id = "${sessionScope.sId}";
+						let pd_idx = "${param.pd_idx}";
+						console.log("pd_idx : " + pd_idx);
+						console.log("상품 상세페이지에서 채팅창 열기!");
+						sendMessage("INIT_COMPLETE", sender_id, receiverId, "", "", pd_idx);
+// 						console.log("상품 페이지 데이터 data :" + data);
+						
+					}
 				}
 			}, 500);
 			
@@ -190,7 +206,7 @@
 				$("#chatRoomArea").append(divRoom);
 				
 				//기존 채팅 내역을 불러오기 위한 요청 전송
-				sendMessage("REQUEST_CHAT_LIST", "", "", room.room_id, "");
+				sendMessage("REQUEST_CHAT_LIST", "", "", room.room_id, "", "");
 				
 				//채팅방 상태(status)가 2일 경우(상대방이 채팅을 종료)
 				//채팅방 표시하되 비활성화 상태로 표시하기 위해
@@ -237,7 +253,7 @@
 			}
 			
 			//채팅 메세지를 서버로 전송할 sendMessage() 함수 호출
-			sendMessage("TALK", "${sId}", receiver_id, room_id, message);
+			sendMessage("TALK", "${sId}", receiver_id, room_id, message, "");
 			
 			//자신의 채팅창에 입력한 메세지 출력을 위해 appendMessageToTargetRoom() 함수 호출
 			appendMessageToTargetRoom("TALK", "${sId}", receiver_id, room_id, message);
@@ -350,7 +366,7 @@
 				
 				// 채팅방 종료를 위해 서버로 종료 신호 전송
 				// => 메세지 타입 : "LEAVE", 송신자 아이디, 수신자 아이디, 룸 아이디 전송
-				sendMessage("LEAVE", "${sId}", receiver_id, room_id, "");
+				sendMessage("LEAVE", "${sId}", receiver_id, room_id, "", "");
 				
 				window.close();
 			}

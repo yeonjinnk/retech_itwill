@@ -347,12 +347,15 @@ function checkProduct(element, i) {
 										</c:when>
 										<%--- 거래상태 예약중이아닐경우 채팅하기로 정상적으로 이동 --%>
 										<c:otherwise>
-											<form action="doChat" method="POST" class="col col-10">
+										<button type="button" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" onclick="openChat()">
+												채팅하기
+											</button>
+											<%--- <form action="doChat" method="POST" class="col col-10">
 												<input type="hidden" value="${product.member_id }" name="seller_id"> <input type="hidden" value="${product.pd_idx }" name="pd_idx">
 												<div class="d-grid gap-2">
 													<input type="submit" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" value="채팅하기">
 												</div>
-											</form>
+											</form>	--%>
 										</c:otherwise>
 									</c:choose>
 								</c:if>
@@ -365,7 +368,17 @@ function checkProduct(element, i) {
 			</div>
 			<%-- 첫번째 row끝 ----%>
 
-
+<script type="text/javascript">
+			function openChat() {
+				console.log("채팅하기 클릭 시 openChat 함수 호출됨!");
+				let receiver_id = "${param.member_id}";
+				let pd_idx = "${param.pd_idx}";
+				
+				window.open('ChatRoom?receiver_id=' + receiver_id + '&pd_idx=' + pd_idx, receiver_id + ', ' + pd_idx, 'width=600px,height=600px');
+			}
+		
+		
+		</script>
 			<%-------------------- 두번째 row 시작 ------------------------------%>
 			<div class="row" style="margin-top: 30px;">
 

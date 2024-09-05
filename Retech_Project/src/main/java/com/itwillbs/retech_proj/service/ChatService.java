@@ -57,8 +57,8 @@ public class ChatService {
 	}
 
 	//DB에서 알람 가져오기
-	public List<HashMap<String, Object>> getAlarmList(String id) {
-		return mapper.selectAlarm(id);
+	public List<HashMap<String, Object>> getAlarmList(Map<String, String> map) {
+		return mapper.selectAlarm(map);
 	}
 
 }

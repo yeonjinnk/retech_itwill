@@ -47,6 +47,12 @@ public class ChatController {
 		return "chat/chatRoom";
 	}
 	
+//	@PostMapping("ChatRoom")
+//	public String chatRoom(@RequestParam String seller_id, @RequestParam int pd_idx) {
+//		System.out.println("챗룸 넘어온 파라미터 확인 : " + seller_id + pd_idx);
+//		return "chat/chatRoom?receiver_id"+seller_id;
+//	}
+	
 	
 	@PostMapping("ReportRegist")
 	public String reportRegist(ReportChatVO reportChat) {
@@ -66,13 +72,16 @@ public class ChatController {
 	}
 	
 	@ResponseBody
-	@PostMapping("alarmCheck")
-	public List<HashMap<String, Object>> alarmCheck(String id) {
+	@GetMapping("AlarmCheck")
+	public List<HashMap<String, Object>> alarmCheck(@RequestParam Map<String, String> map) {
 		System.out.println("DB에서 알람 가져오는 alarmCheck 호출됨!");
-		System.out.println("id 잘 넘어왔나 : " + id);
-		List<HashMap<String, Object>> alarmMap = service.getAlarmList(id);
+		System.out.println("id 잘 넘어왔나 : " + map);
+		List<HashMap<String, Object>> alarmMap = service.getAlarmList(map);
 		System.out.println("알람 리스트 : " + alarmMap);
 		
 		return alarmMap;
 	}
+	
+	
+//	@PostMapping
 }

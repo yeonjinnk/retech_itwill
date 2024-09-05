@@ -216,7 +216,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 						
 						//메세지 설정
 						//ChatMessage(type, sender_id, receiver_id, room_id, message, send_time)
-						ChatMessage errorMessage = new ChatMessage(ChatMessage.TYPE_ERROR, "", sender_id, "", "사용자가 존재하지 않습니다!", "");
+						ChatMessage errorMessage = new ChatMessage(ChatMessage.TYPE_ERROR, "", sender_id, "", "사용자가 존재하지 않습니다!", "", "");
 						
 						//(서버 -> 클라이언트) 메세지 전송
 						sendMessage(session, errorMessage);
@@ -283,25 +283,47 @@ public class WebSocketHandler extends TextWebSocketHandler {
 					//채팅방 목록에 띄울 날짜, 마지막메세지 조회
 					Map<String, String> lastInfo = chatService.getLastInfo(sender_id, receiver_id);
 					System.out.println("마지막 정보 조회 : " + lastInfo);
-					
-					chatRoom.setLast_message(lastInfo.get("message"));
-					chatRoom.setLast_send_time(lastInfo.get("send_time"));
-					
-					//조회된 룸 아이디 저장
-					chatMessage.setRoom_id(chatRoom.getRoom_id());
-					
-					//6. 메세지 설정 및 전송
-					// 6-1. 설정) 채팅 시작 위한 START 타입 설정
-					chatMessage.setType(ChatMessage.TYPE_START);
-					
-					// 6-2. 설정) 채팅방 정보 설정(룸아이디, 방제목, 송신자, 수신자, 상태값)
-					// 조회된 채팅방 정보(chatRoom 객체)를 JSON으로 변환하여 저장
-					chatMessage.setMessage(gson.toJson(chatRoom));
-					
-					// 6-3. 전송) 메세지 전송(sendMessage)
-					sendMessage(session, chatMessage);
-					System.out.println("INIT_COMPLETE : 상대방과 채팅방 있으므로 기존 채팅방 전송!");
-					System.out.println("보내는 메세지 : " + chatMessage);
+					if(lastInfo != null) { //마지막 메세지 있을 때
+						System.out.println("마지막 메세지 있음!");
+						chatRoom.setLast_message(lastInfo.get("message"));
+						chatRoom.setLast_send_time(lastInfo.get("send_time"));
+						
+						//조회된 룸 아이디 저장
+						chatMessage.setRoom_id(chatRoom.getRoom_id());
+						
+						//6. 메세지 설정 및 전송
+						// 6-1. 설정) 채팅 시작 위한 START 타입 설정
+						chatMessage.setType(ChatMessage.TYPE_START);
+						
+						// 6-2. 설정) 채팅방 정보 설정(룸아이디, 방제목, 송신자, 수신자, 상태값)
+						// 조회된 채팅방 정보(chatRoom 객체)를 JSON으로 변환하여 저장
+						chatMessage.setMessage(gson.toJson(chatRoom));
+						
+						// 6-3. 전송) 메세지 전송(sendMessage)
+						sendMessage(session, chatMessage);
+						System.out.println("INIT_COMPLETE : 상대방과 채팅방 있으므로 기존 채팅방 전송!");
+						System.out.println("보내는 메세지 : " + chatMessage);
+						
+					} else {
+						System.out.println("마지막 메세지 없음!");
+						//6. 메세지 설정 및 전송
+						// 6-1. 설정) 채팅 시작 위한 START 타입 설정
+						chatMessage.setType(ChatMessage.TYPE_START);
+						
+						
+						//조회된 룸 아이디 저장
+						chatMessage.setRoom_id(chatRoom.getRoom_id());
+//						// 6-2. 설정) 채팅방 정보 설정(룸아이디, 방제목, 송신자, 수신자, 상태값)
+//						// 조회된 채팅방 정보(chatRoom 객체)를 JSON으로 변환하여 저장
+//						chatRoom = chatRoomList.get(0);
+//						chatMessage.setMessage(gson.toJson(chatRoom));
+						
+						// 6-3. 전송) 메세지 전송(sendMessage)
+						sendMessage(session, chatMessage);
+//						System.out.println("INIT_COMPLETE : 상대방과 기존 채팅방 없으므로 채팅방 생성 후 전송!");
+						System.out.println("보내는 메세지 : " + chatMessage);
+						
+					}
 
 				}
 				
@@ -318,7 +340,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			List<ChatMessage> chatMessageList = chatService.getChatMessageList(chatMessage.getRoom_id());
 			
 			//기존 채팅 내역 존재할 경우에만 클라이언트측으로 전송
-			if(chatMessageList.size() > 0) {
+//			if(chatMessageList.size() > 0) {
 				//채팅 내역을 JSON 형식으로 변환하여 메세지로 전송
 				chatMessage.setMessage(gson.toJson(chatMessageList));
 				sendMessage(session, chatMessage);
@@ -326,7 +348,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 				System.out.println("REQUEST_CHAT_LIST : 기존 채팅 내역 전송함!");
 				System.out.println("보내는 메세지 : " + chatMessage);
 
-			}
+//			}
 		} else if(chatMessage.getType().equals(ChatMessage.TYPE_TALK)) {
 		// -----------------------------------------------------------------------------------
 		//4. 뷰페이지에 입력한 채팅 내역 DB에 저장 및 수신자에게 입력받은 채팅 전송
@@ -337,9 +359,11 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			//알림 타입 설정
 //			chatMessage.setAlarm(ChatMessage.ALARM_RECEIVE);
 			
+			System.out.println("대화내용 저장 위해 addChatMessage 메서드 호출함!");
 			//채팅 메세지 DB 저장 요청
 			chatService.addChatMessage(chatMessage);
 			
+			System.out.println("대화 저장함!");
 			//채팅 메세지 전송할 사용자 확인(user 객체에 receiver_id를 통해 판별
 			if(users.get(receiver_id) != null) { //현재 수신자가 접속해 있을 경우
 				

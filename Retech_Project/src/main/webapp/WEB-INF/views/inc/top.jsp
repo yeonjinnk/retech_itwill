@@ -25,6 +25,100 @@
 			console.log("알림창 열기!");
 			$(".layer_box").css("display", "");
 			isAlarmListOpen = true;
+			
+			// 알림 목록에 DB에 저장된 알림 가져오는 함수
+			let id = "${sessionScope.sId}";
+// 			let id = sessionStorage.getItem('sId');
+			console.log("로그인한 아이디 " + id);
+			
+			$.ajax({
+				data: {
+					'member_id': id
+				},
+				url: "AlarmCheck",
+				type: "GET",
+				success: function(data) {
+					console.log("DB에서 알람 가져오기 성공!");
+					
+// 					let date;
+					let year;
+					let month;
+					let day;
+					let hours;
+					let minutes;
+					let formattedTime;
+// 					console.log("가져온 데이터 확인 : " + data[0].room_id);
+					console.log("가져온 time 데이터 확인 : " + Date(data[0].time));
+					
+					
+					for(let alarmItem of data) {
+// 					console.log("alarmItem.time : " + alarmItem.time);
+					console.log(alarmItem.time.date);
+					console.log(alarmItem.time.time);
+					let date2 = alarmItem.time.date;
+					let time2 = alarmItem.time.time;
+					year = date2.year;
+					month = date2.month;
+					day = date2.day;
+					hours = time2.hour;
+					minutes = time2.minute;
+					//알림 시간 포맷
+// 					let date = new Date(alarmItem.time);
+// 					console.log("date : " + date);
+					
+					 // 연도, 월, 일, 시, 분을 추출
+// 				    year = date.getFullYear() % 100; // 2024
+// 				    month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1 필요
+// 				    day = date.getDate();
+// 				    hours = date.getHours();
+// 				    minutes = date.getMinutes();
+// 					console.log("year : " + year + ", month : " + month + ", day : " + day + ", hours : " + hours + ", minutes : " + minutes);
+					
+				    // 원하는 형식으로 문자열을 생성
+				    formattedTime = year + "년 " + month + "월 " + day + "일 " + hours + "시 " + minutes + "분";
+					console.log("formattedTime : " + formattedTime);
+						// 알림 목록 html 태그 작성함
+						let divAlarm = "<li class='alarmItem'>" // alarmItem 시작
+							divAlarm += 	"<div class='alarmLink'>" // alarmLink 시작
+							divAlarm +=		 "<div class='alarmTitle'>" // alarmTitle 시작
+							divAlarm += 		"<span class='alarmTime'>" // alarmTime 시작
+							divAlarm += 			formattedTime
+							divAlarm += 		"</span>" // alarmTime 끝
+							divAlarm += 		"</div>" // alarmTitle 끝
+							divAlarm +=		 "<div class='alarmContent'>" // alarmContent 시작
+							divAlarm +=		 	alarmItem.sender_id
+							divAlarm +=		 	" : "
+							divAlarm +=		 	alarmItem.message
+							divAlarm += 	"</div>" // alarmContent 끝
+							divAlarm += 	"</div>" // alarmLink 끝
+							divAlarm += "</li>" // alarmItem 끝
+							
+							
+						$("#alarmList").append(divAlarm);
+						$("#alarmPoint").css("display", "");
+						
+
+						//해당 채팅방 목록 div 태그에 더블클릭 이벤트 핸들링
+						$(".alarmLink").on("click", function() {
+							console.log("알림 목록 클릭 해 채팅창 열림!");
+							window.open("ChatRoom?room_id=" + alarmItem.room_id + "&receiver_id=" 
+										+ alarmItem.receiver_id + "&sender_id=" + alarmItem.sender_id 
+//			 							+ "&status=" + msg.status
+										,alarmItem.room_id, "width=600px, height=600px");
+						});
+					}
+				}, //success 끝
+				error: function(request,status,error) {
+					alert("code:"+request.status+"\n"
+							+"message:"+request.responseText+"\n"
+							+"error:"+error);
+	 				console.log("DB 가져오기 실패");
+				}
+			});
+			
+			
+			
+			
 		} else { //알림창 닫기
 			console.log("알림창 닫기!");
 			$(".layer_box").css("display", "none");
@@ -48,16 +142,15 @@
 			//닫으니까 isAlarmListOpen(열림 상태)를 false로 변경
 			isAlarmListOpen = false;
 		}
-			
 	});
 	
 	
 	//알림 메세지
-	let alarmMessage;
-	let ws2;
+// 	let alarmMessage;
+// 	let ws2;
 	
 	//로그인했을 경우만 알림 가능하게 하기 - 세션아이디 유무 판별
-	let receiver = "${sessionScope.sId}";
+	let receiver = sessionStorage.getItem('sId');
 	if(receiver != "") { //로그인 O
 		//웹소켓 주소 설정 - 알림창 동기 설정
 		
@@ -95,30 +188,30 @@
 					<!-- window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
 					<c:choose>
 						<c:when test="${not empty sessionScope.sId}">
-							<a href="javascript:void(window.open('ChatList?receiver_id=' + 'receiver@naver.com', '','width=600px,height=600px'))" class="top_link">
-							채팅(sen)</a>
+							<a href="javascript:void(window.open('ChatList?receiver_id=' + '${sessionScope.sId}', '${sessionScope.sId}','width=600px,height=600px'))" class="top_link">
+							채팅</a>
 						</c:when>
 						<c:when test="${empty sessionScope.sId}">
 							<a href="ChatList" class="top_link">
-							채팅(sen)</a>
+							채팅</a>
 						</c:when>
 					</c:choose>
 					</li>
-					<li class="top_list">
-					<!-- 채팅하기 새 창으로 열기 -->
-					<!-- window.open 자바스크립트니까 javascript, 반환값 없으므로 void -->
-					<!-- window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
-					<c:choose>
-						<c:when test="${not empty sessionScope.sId}">
-							<a href="javascript:void(window.open('ChatList?receiver_id=' + 'sender@naver.com', '','width=600px,height=600px'))" class="top_link">
-							채팅(rec)</a>
-						</c:when>
-						<c:when test="${empty sessionScope.sId}">
-							<a href="ChatList" class="top_link">
-							채팅(rec)</a>
-						</c:when>
-					</c:choose>
-					</li>
+<!-- 					<li class="top_list"> -->
+<!-- 					채팅하기 새 창으로 열기 -->
+<!-- 					window.open 자바스크립트니까 javascript, 반환값 없으므로 void -->
+<!-- 					window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
+<%-- 					<c:choose> --%>
+<%-- 						<c:when test="${not empty sessionScope.sId}"> --%>
+<!-- 							<a href="javascript:void(window.open('ChatList?receiver_id=' + 'sender@naver.com', '','width=600px,height=600px'))" class="top_link"> -->
+<!-- 							채팅(rec)</a> -->
+<%-- 						</c:when> --%>
+<%-- 						<c:when test="${empty sessionScope.sId}"> --%>
+<!-- 							<a href="ChatList" class="top_link"> -->
+<!-- 							채팅(rec)</a> -->
+<%-- 						</c:when> --%>
+<%-- 					</c:choose> --%>
+<!-- 					</li> -->
 					<li class="top_list">
 						<a href="ProductRegistForm" class="top_link">판매하기</a>
 					</li>
@@ -248,7 +341,7 @@
 				//초기화 완료 메세지 전송
 				//(클라이언트 -> 서버)
 				//sendMessage(type, sender_id, receiver_id, room_id, message, pd_idx)
-				sendMessage("INIT_COMPLETE", "", data.receiver_id, "", "");
+				sendMessage("INIT_COMPLETE", "", data.receiver_id, "", "", "");
 				
 			} else if(data.type == "ERROR") { //채팅 관련 오류
 				console.log("ERROR 타입 - 채팅 오류임!");
@@ -259,20 +352,39 @@
 				
 			} else if(data.type == "START") { //채팅방 추가
 				console.log("START 타입 - 채팅방 추가!");
-
+				if(data.pd_idx == "") {
+					console.log("상세페이지에서 채팅 아님!");
+					//채팅방 생성(표시) 및 채팅방 목록 표시
+					//1. 채팅방 목록에 새 채팅방 추가를 위해 appendChatRoomToRoomList() 함수 호출
+					//	(기존 대화내역이 없는 사용자와 채팅 시작 시 채팅방 목록에 새 채팅방 추가 위함)
+					appendChatRoomToRoomList(JSON.parse(data.message));
+				} else {
+					
+					//연결 완료 후 채팅창 생성
+					createChatRoom(data);
+					//기존 채팅 내역을 불러오기 위한 요청 전송
+// 					sendMessage("REQUEST_CHAT_LIST", data.sender_id, data.receiver_id, data.room_id, "", data.pd_idx);
+				}
 				
-				//채팅방 생성(표시) 및 채팅방 목록 표시
-				//1. 채팅방 목록에 새 채팅방 추가를 위해 appendChatRoomToRoomList() 함수 호출
-				//	(기존 대화내역이 없는 사용자와 채팅 시작 시 채팅방 목록에 새 채팅방 추가 위함)
-				appendChatRoomToRoomList(JSON.parse(data.message));
 			} else if(data.type == "REQUEST_CHAT_LIST") { //기존 채팅 메세지 내역 수신
 				console.log("REQUEST_CHAT_LIST 타입 - 기존 메세지 수신!");
-
-				//기존 채팅 내역이 저장된 message 내의 리스트 반복하여
-				//appendMessageToTargetRoom() 메서드 호출하여 메세지 표시
-				for(let message of JSON.parse(data.message)) {
-					appendMessageToTargetRoom(message.type, message.sender_id, message.receiver_id, message.room_id, message.message, message.send_time);
+				console.log("data.message : " + data.message);
+// 				console.log("data.message.size() : " + data.message.size());
+				let objs = data.message;
+				console.log("objs : " + objs);
+// 				console.log("Object.values(objs).length : " + Object.values(objs).length);
+				if(data.message.length > 2) {
+					//기존 채팅 내역이 저장된 message 내의 리스트 반복하여
+					//appendMessageToTargetRoom() 메서드 호출하여 메세지 표시
+					for(let message of JSON.parse(data.message)) {
+						appendMessageToTargetRoom(message.type, message.sender_id, message.receiver_id, message.room_id, message.message, message.send_time);
+					}
+				} else {
+					//연결 완료 후 채팅창 생성
+					createChatRoom(data);
 				}
+				
+				
 			} else if(data.type == "TALK") { //채팅 메세지 수신
 				console.log("TALK 타입 - 채팅 메세지 수신!");
 
@@ -299,10 +411,12 @@
 		
 		//전달받은 메세지를 웹소켓 서버측으로 전송하는 함수
 		//파라미터 : 메세지타입, 송신자아이디, 수신자아이디, 채팅방아이디, 메세지
-		function sendMessage(type, sender_id, receiver_id, room_id, message) {
+		function sendMessage(type, sender_id, receiver_id, room_id, message, pd_idx) {
 			// WebSocket 객체의 send() 메서드 호출하여 서버측으로 메세지 전송
 			// => 전송할 메세지를 toJsonString() 함수를 통해 JSON 형식으로 변환하여 전송
-			ws.send(toJsonString(type, sender_id, receiver_id, room_id, message));
+			console.log("type : " + type +"sender_id : " + sender_id +"receiver_id : " + receiver_id +"room_id : " + room_id +"message : " + message +"pd_idx : " + pd_idx);
+			ws.send(toJsonString(type, sender_id, receiver_id, room_id, message, pd_idx));
+			console.log("보낸 메세지 : " + toJsonString(type, sender_id, receiver_id, room_id, message, pd_idx));
 		}
 // 		이ㅓ
 			
@@ -415,81 +529,11 @@
 		
 		// ======================================================================
 		// 알림 목록에 DB에 저장된 알림 가져오는 함수
-		$(function() {
-			let id = ${sessionScope.sId};
-			console.log("로그인한 아이디 " + id);
+// 		$(function() {
+		
+// 		});
 			
-			$.ajax({
-				data: {
-					'member_id': id
-				},
-				url: "alarmCheck",
-				type: "POST",
-				success: function(data) {
-					console.log("DB에서 알람 가져오기 성공!");
-					console.log("가져온 데이터 확인 : " + data);
-					
-					//알림 시간 포맷
-					let date = new Date(data.send_time);
-					console.log("date : " + date);
-					
-					 // 연도, 월, 일, 시, 분을 추출
-				    let year = date.getFullYear() % 100; // 2024
-				    let month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1 필요
-				    let day = date.getDate();
-				    let hours = date.getHours();
-				    let minutes = date.getMinutes();
-					console.log("year : " + year + ", month : " + month + ", day : " + day + ", hours : " + hours + ", minutes : " + minutes);
-					
-				    // 원하는 형식으로 문자열을 생성
-				    let formattedTime = year + "년 " + month + "월 " + day + "일 " + hours + "시 " + minutes + "분";
-					console.log("formattedTime : " + formattedTime);
-					
-					
-					for(let alarmItem of data) {
-						// 알림 목록 html 태그 작성함
-						let divAlarm = "<li class='alarmItem'>" // alarmItem 시작
-							divAlarm += 	"<div class='alarmLink'>" // alarmLink 시작
-							divAlarm +=		 "<div class='alarmTitle'>" // alarmTitle 시작
-							divAlarm += 		"<span class='alarmTime'>" // alarmTime 시작
-							divAlarm += 			formattedTime
-							divAlarm += 		"</span>" // alarmTime 끝
-							divAlarm += 		"</div>" // alarmTitle 끝
-							divAlarm +=		 "<div class='alarmContent'>" // alarmContent 시작
-							divAlarm +=		 	alarmItem.sender_id
-							divAlarm +=		 	" : "
-							divAlarm +=		 	alarmItem.message
-							divAlarm += 	"</div>" // alarmContent 끝
-							divAlarm += 	"</div>" // alarmLink 끝
-							divAlarm += "</li>" // alarmItem 끝
-							
-							
-						$("#alarmList").prepend(divAlarm);
-						$("#alarmPoint").css("display", "");
-						
-
-						//해당 채팅방 목록 div 태그에 더블클릭 이벤트 핸들링
-						$(".alarmLink").on("click", function() {
-							console.log("알림 목록 클릭 해 채팅창 열림!");
-							window.open("ChatRoom?room_id=" + msg.room_id + "&receiver_id=" 
-										+ msg.receiver_id + "&sender_id=" + msg.sender_id 
-//			 							+ "&status=" + msg.status
-										,msg.room_id, "width=600px, height=600px");
-						});
-					}
-				},
-				error: function(request,status,error) {
-					alert("code:"+request.status+"\n"
-							+"message:"+request.responseText+"\n"
-							+"error:"+error);
-	 				console.log("DB 가져오기 실패");
-				}
-			});
-			
-			
-		}
-			});
-		function appendMsgToAlarm(msg) {
+// 		function appendMsgToAlarm(msg) {}
 		
 		
 		
@@ -499,7 +543,7 @@
 		// ======================================================================
 		// 채팅방 목록 영역에 1개 채팅방 정보를 추가하는 함수
 		function appendChatRoomToRoomList(room) {
-			console.log("appendChatRoomToRoomList 호출됨!")
+			console.log("appendChatRoomToRoomList 호출됨!");
 			
 			//클래스 선택자 중 "chatRoomList" 클래스를 갖는 요소를 찾아
 			//해당 요소의 클래스에 룸아이디가 포함되어 있지 않을 경우
@@ -542,7 +586,7 @@
 							+ "</p>"
 							+ "</div>" //message-body 끝
 							+ "</div>" //message 끝
-							+ "</div>"
+							+ "</div>";
 							
 				$("#chatRoomListArea").append(divRoom);
 							
@@ -558,14 +602,15 @@
 		
 		// ======================================================================
 		// 전달받은 메세지타입과 메세지를 JSON 형식 문자열로 변환하는 toJsonString() 함수
-		function toJsonString(type, sender_id, receiver_id, room_id, message) {
+		function toJsonString(type, sender_id, receiver_id, room_id, message, pd_idx) {
 			// 전달받은 파라미터들을 하나의 객체로 묶어 JSON 타입 문자열로 변환 후 리턴
 			let data = {
 				type : type,
 				sender_id : sender_id,
 				receiver_id : receiver_id,
 				room_id : room_id,
-				message : message
+				message : message,
+				pd_idx : pd_idx
 			};
 			
 			// JSON.stringify() 메서드 호출하여 객체 -> JSON 문자열로 변환

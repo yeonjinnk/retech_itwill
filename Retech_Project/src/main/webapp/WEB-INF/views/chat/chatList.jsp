@@ -48,7 +48,7 @@
 				
 				//서버측으로 초기화 메세지 전송
 				//top.jsp 의 sendMessage() 함수 호출
-				sendMessage("INIT", "", receiver_id, "", "");
+				sendMessage("INIT", "", receiver_id, "", "", "");
 				
 				// 현재 인터벌 작업 종료하기 위해 clearInterval() 함수 활용
 				// => 함수 파라미터로 반복 인터벌 작업 수행하는 함수의 아이디를 전달
