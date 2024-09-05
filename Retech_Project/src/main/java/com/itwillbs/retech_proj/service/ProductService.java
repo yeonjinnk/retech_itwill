@@ -74,8 +74,21 @@ public class ProductService {
 		return product;
 	}
 	
+	//상세페이지(판매자영역) - 판매자 정보 조회---------------------------------------------------
+	// 판매자페이지 - 판매자 정보 조회요청(selectSellerInfo()재사용-파라미터 member_id만 사용)
 	public HashMap<String, String> getSellerInfo(int pd_idx, String member_id) {
 		System.out.println("Serviece+++++++++++++++++++++++" + pd_idx + " ," + member_id);
 		return mapper.selectSellerInfo(pd_idx, member_id);
+	}
+	
+	//상세페이지(판매자영역) - 판매자 판매물품 개수조회
+	public int getSellerProductCount(String member_id) {
+		return mapper.selectSellerProductCount(member_id);
+	}
+	
+	// 판매자의 판매목록 조회요청
+	public List<HashMap<String, String>> getSellerProductList(String member_id) {
+
+		return mapper.selectSellerProductList(member_id);
 	}
 }

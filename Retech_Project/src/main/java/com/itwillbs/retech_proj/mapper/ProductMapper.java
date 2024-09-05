@@ -60,11 +60,20 @@ public interface ProductMapper {
 	
 	// 상품번호에 해당하는 상품의 상세정보조회 요청
 	ProductVO selectProduct(int pd_idx);
+	
 	// 상품 상세정보 조회 -> 조회수증가작업 (update)
 	void updateReadCount(ProductVO product);
+	
 	// 상품 번호 memeber_id에 해당하는 판매자 정보 조회 요청
 	HashMap<String, String> selectSellerInfo(@Param("pd_idx")int pd_idx,
 											 @Param("member_id")String member_id);
+	// 판매자의 판매물품 개수 조회요청
+	int selectSellerProductCount(String member_id);
+	
+	
+	// 판매자의 판매물품 리스트 조회요청
+	List<HashMap<String, String>> selectSellerProductList(String member_id);
+	
 	
 
 }

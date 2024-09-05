@@ -293,6 +293,16 @@ public class ProductController {
 		System.out.println("&&&&&&&&&&&&&&&& 판매자정보 : " + sellerInfo);
 		model.addAttribute("seller",sellerInfo);
 		
+		//판매자의 판매상품 개수 조회
+		int sellerProduct = service.getSellerProductCount(member_id);
+		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&"+ sellerProduct);
+		model.addAttribute("sellerProduct", sellerProduct);
+		
+		//판매자의 판매목록조회
+		List<HashMap<String, String>> sellerProductList = service.getSellerProductList(member_id);
+		model.addAttribute("sellerProductList",sellerProductList);
+		System.out.println("내가 바로 판매자이다아아아아아!!!!!! : " + sellerProductList);
+		
 		return"product/product_detail";
 	}
 	

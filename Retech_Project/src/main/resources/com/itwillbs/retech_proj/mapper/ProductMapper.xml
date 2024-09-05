@@ -36,6 +36,8 @@
 			, #{pd_image5}
 		)
 	</insert>
+	
+	
 	<!-- 리테크 상품 목록 조회작업 -->
 	<select id="selectProductList" resultType="com.itwillbs.retech_proj.vo.ProductVO">
 		SELECT
@@ -55,6 +57,7 @@
 		FROM
 			product
 	</select>
+	
 	
 	<!--선택한 카테고리와 거래상태에 해당하는 상품리스트 가져오기  -->
 	<select id="selectSelectedProductList" resultType="product">
@@ -110,10 +113,6 @@
 	</select>
 
 
-
-	     
-	     
-
 	<!-- 상품목록 정렬변경시 변경된정렬 목록 개수 조회작업 selectChangedSecondhandListCount -->
 	<select id="selectChangedProductListCount" resultType="int">
 			SELECT COUNT(*)
@@ -133,6 +132,7 @@
 	      </if>
 	</select>
 	
+	
 	<!-- 상품 거래 상태 업데이트 -->
 	<update id="updateProductStatus">
 		UPDATE product
@@ -140,11 +140,13 @@
 		WHERE pd_idx = #{pd_idx}
 	</update>
 	
+	
 	<!-- 상품 상세 정보 조회 -->
 	<select id="selectProductById" parameterType="int" resultType="com.itwillbs.retech_proj.vo.ProductVO">
 	    SELECT * FROM product
 	    WHERE pd_idx = #{pd_idx}
 	</select>
+	
 	
 	<!-- 상품 상세페이지 - 상품상세정보 조회작업 -->	
 	<select id="selectProduct" parameterType="int" resultType="com.itwillbs.retech_proj.vo.ProductVO">
@@ -154,6 +156,7 @@
 		WHERE
 			pd_idx = #{pd_idx}
 	</select>
+	
 	
 	<!-- 중고상품 상세페이지 - 판매자 정보 조회  -->
 	<!-- 필요정보 : 판매자 프로필이미지, 닉네임, 주소, 등 -->
@@ -170,6 +173,8 @@
 			p.member_id = #{member_id}
 			AND pd_idx = #{pd_idx}
 	</select>
+	
+	
 	<!-- 글 상세정보 조회 - 조회수 증가 작업 -->
 	<update id="updateReadCount">
 		UPDATE product
@@ -177,6 +182,31 @@
 		WHERE 
 			pd_idx = #{pd_idx}
 	</update>
+	
+	
+	<!-- 판매자의 판매상품 총 개수 조회 -->
+	<select id="selectSellerProductCount" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			product
+		WHERE 
+			member_id = #{member_id}
+	</select>
+	
+	
+	<!-- 판매자의 판매 물품 리스트 조회 -->
+	<select id="selectSellerProductList" resultType="hashmap">
+		SELECT *
+		FROM 
+			member m
+		JOIN
+			product p
+		ON 
+			m.member_id = p.member_id
+		WHERE
+			p.member_id = #{member_id}
+	</select>
 	
 	
 </mapper>
