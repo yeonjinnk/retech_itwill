@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -457,37 +458,6 @@
 
 //====================================================================================================================
 
-//<!-- 주소API -->-------------------------------------------
-   function addrFind() {
-      
-      let width = 500; //팝업의 너비
-      let height = 300; //팝업의 높이
-      
-      
-       new daum.Postcode({
-           oncomplete: function(data) {
-            
-               $("#p_location").val(data.address);
-           },
-       
-          theme: {
-              searchBgColor: "#7dd87d", //검색창 배경색
-              queryTextColor: "white" //검색창 글자색
-          },
-          
-          width: width, 
-          height: height
-          
-       
-       
-       }).open({
-           left: (window.screen.width / 2) - (width / 2),
-           top: (window.screen.height / 2) - (height / 2) - 200
-       });
-      
-   }
-
-//--------------------------------------------------------------------------------------------------------------------------
 //본격적인 데이터 넣기------------------------------------------------------------------------------------------------------
    
 	let regular_han = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣|a-z|A-Z]/;
@@ -852,12 +822,23 @@
 				<tr>
 					<td colspan="2"><hr></td>
 				</tr>
-				<!-- 결제방법 -->
-				<tr>
-					<td class="td1" align="left" style="vertical-align: top;"><span class="pro_info">가격<span style="color: red">*</span></span></td>
-					<td class="td2" align="left"><input type="text" id="p_price" maxlength="11" name="p_price" class="input-tag" placeholder="가격"
-						oninput="numberMaxLength(this);" style="width: 30%;"> &nbsp; <span class="pro_info">원</span> <br> <span class="pro_info"
-						id="price_under"></span></td>
+				<!-- 가격 -->
+				<tr>	
+					<td class="td1" align="left" style="vertical-align: top;">
+						<span class="pro_info">가격
+							<span style="color: red">*</span>
+						</span>
+					</td>
+					<td class="td2" align="left">
+						<input type="text" id="p_price" maxlength="11"
+							name="p_price" class="input-tag" placeholder="가격"
+							value="<fmt:formatNumber pattern="#,###" value="${ product.pd_price }"/>"
+							oninput="numberMaxLength(this);" 
+							style="width: 30%;"> &nbsp; 
+						<span class="pro_info">원
+						</span><br>
+						<span class="pro_info" id="price_under"></span>
+					</td>
 				</tr>
 
 				<tr>

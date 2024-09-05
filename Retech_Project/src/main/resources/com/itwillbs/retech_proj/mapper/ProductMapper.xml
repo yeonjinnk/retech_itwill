@@ -101,15 +101,7 @@
 	          pd_first_date DESC
 	        </otherwise>
 	      </choose>
-			<if test="pd_selectedManufacturer == ''">
-			<!-- 제조사가 선택되지 않은 경우, 적용 -->
-			<if test="pd_category != '' or pd_selectedPdStatus != ''">
-			  LIMIT #{startRow}, #{listLimit}
-			</if>
-			<if test="pd_category == '' and pd_selectedPdStatus == ''">
-			  <!-- 카테고리와 거래 상태가 모두 선택되지 않은 경우, 전체 데이터 조회 -->
-			</if>
-	    </if>
+			LIMIT #{listLimit} OFFSET #{startRow}
 	</select>
 
 
@@ -207,7 +199,33 @@
 		WHERE
 			p.member_id = #{member_id}
 	</select>
-	
+	<!-- 상품수정  -->
+	<update id="updateProduct" >
+		UPDATE product
+		SET 
+			pd_price = #{pd_price}
+			, pd_content = #{pd_content}
+				<if test="!file1.equals('')">
+					, pd_image1 = #{pd_image1}
+				</if>
+				<if test="!file2.equals('')">
+					, pd_image2 = #{pd_image2}
+				</if>
+				<if test="!file3.equals('')">
+					, pd_image3 = #{pd_image3}
+				</if>
+			, pd_category = #{pd_category}
+		WHERE
+			pd_idx = #{pd_idx}
+	</update>
+	<!-- 끌어올리기 작업 시 업데이트 처리 (등록날짜)-->
+	<update id="updateDate">
+		UPDATE product
+		SET
+			pd_first_date = now()
+		WHERE 
+			pd_idx = #{pd_idx}
+	</update>
 	
 </mapper>
 

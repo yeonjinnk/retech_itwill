@@ -1,207 +1,177 @@
 @charset "UTF-8";
 body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* 페이지 배경색 */
+    padding: 0;
 }
 
-/* 헤더와 푸터 */
-header, footer {
-    background-color: #ffffff;
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.6rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* 메인 콘텐츠 영역 */
-article {
-    margin: 20px auto;
-    max-width: 1200px; /* 페이지 중앙 정렬 및 너비 제한 */
-    padding: 20px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px; /* 테두리 둥글게 */
-}
-
-/* 버튼 스타일 */
-.btn-dark {
-    background-color: #343a40;
-    border: none;
-    color: #ffffff;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.btn-dark:hover {
-    background-color: #23272b;
-}
-
-/* 슬라이드 */
-.carousel-inner img {
+#slid .carousel-inner img {
     width: 100%;
     height: auto;
-    border-radius: 8px; /* 슬라이드 이미지 테두리 둥글게 */
+    border-radius: 12px;
 }
 
-/* 버튼 그룹 */
-.icon, .chatButtonArea {
-    margin-top: 10px;
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #007bff;
+    border-radius: 50%;
+    padding: 12px;
 }
 
-/* 상품 정보 */
-.product-info {
-    margin-top: 20px;
+.carousel-indicators li {
+    background-color: #007bff;
 }
 
-.product-info h3 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-}
-
-.product-info p {
-    font-size: 1.2em;
+h3 {
+    font-size: 2rem;
+    margin: 20px 0;
     color: #333;
 }
 
-/* 조회수와 등록일 */
-.readcount, .registDate {
-    color: gray;
+p {
+    font-size: 1.2rem;
+    color: #555;
 }
 
-/* 신고 모달 */
-.modal-title {
-    font-size: 17px;
+.price {
+    font-size: 2rem;
     font-weight: bold;
+    color: #e74c3c;
 }
 
-.modal-body {
-    font-size: 14px;
+.readcount,
+.registDate {
+    font-size: 0.9rem;
+    color: #888;
 }
 
-.modal-footer {
+button {
+    font-size: 1.1rem;
+    margin: 10px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button.btn-dark {
+    background-color: #007bff;
+    color: white;
+}
+
+button.btn-dark:hover {
+    background-color: #0056b3;
+}
+
+button.btn-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+button.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+#chatting {
+    background-color: #e74c3c;
+    color: white;
+}
+
+#chatting:hover {
+    background-color: #c0392b;
+}
+
+#likeProduct img {
+    width: 40px;
+    height: 40px;
+}
+
+#likeProduct img.active {
+    filter: grayscale(0%);
+}
+
+#likeProduct img.inactive {
+    filter: grayscale(100%);
+}
+
+.column {
     display: flex;
-    justify-content: center;
-}
-
-/* 판매자 정보 */
-.seller-info {
-    display: flex;
+    flex-direction: column;
     align-items: center;
     margin-top: 20px;
 }
 
-.seller-info img {
+.column img {
     border-radius: 50%;
-    margin-right: 20px;
+    margin-bottom: 15px;
 }
 
-/* 썸네일 이미지 */
-.sumnail img {
-    border-radius: 5px;
-    margin-right: 10px;
-    cursor: pointer;
-    transition: transform 0.2s;
+.column b {
+    font-size: 1.5rem;
+    color: #333;
 }
 
-.sumnail img:hover {
-    transform: scale(1.05);
+.column a {
+    color: #007bff;
+    text-decoration: none;
 }
 
-/* 거래 방법과 카테고리 */
-.category-payment {
-    margin-top: 20px;
+.column a:hover {
+    text-decoration: underline;
 }
 
-.category-payment b {
-    font-size: 1.2em;
-}
-
-.category-payment button {
-    margin-right: 10px;
-}
-
-.slider-controls {
-    position: absolute;
-    top: 50%;
-    left: 10px; /* 좌측으로 이동 */
-    transform: translateY(-50%);
-}
-
-.slider-controls .prev, .slider-controls .next {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 50%; /* 원형 버튼 */
-}
-
-.slider-controls .prev:hover, .slider-controls .next:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-/* 슬라이드 내부 컨테이너 설정 */
-.carousel-inner {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-/* 슬라이드 항목 설정 */
-.carousel-item {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-/* 슬라이드 이미지 크기 통일 */
-.carousel-item img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 500px; /* 최대 높이 설정, 필요에 따라 조정 */
-    object-fit: cover; /* 이미지의 비율을 유지하면서 영역에 맞추기 */
-}
-
-/* (선택 사항) 이미지 비율을 고정하려면 */
-.carousel-item {
-    aspect-ratio: 16 / 9; /* 원하는 비율로 조정, 예를 들어 16:9 비율 */
-}
-
-/* 레이아웃 스타일 */
-.row {
+.thumbnails {
     display: flex;
-    flex-wrap: wrap;
-    margin: 0 -15px; /* 컬럼 간격 조정 */
-}
-
-.column {
-    flex: 1;
-    padding: 0 15px;
-}
-
-@media (max-width: 768px) {
-    .column {
-        flex: 100%;
-        margin-bottom: 20px; /* 작은 화면에서는 열 간의 공간 추가 */
-    }
-}
-
-/* 버튼 그룹 */
-.icon, .chatButtonArea {
+    justify-content: center;
     margin-top: 10px;
 }
 
-.chatButtonArea {
-    display: flex;
-    flex-direction: column;
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    transition: border-color 0.3s;
 }
 
-/* 유연한 이미지와 컨테이너 */
-img {
-    max-width: 100%;
-    height: auto;
+.thumbnail:hover {
+    border-color: #333;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    .column {
+        flex-direction: column;
+    }
+
+    button {
+        font-size: 1rem;
+        padding: 10px 15px;
+    }
+
+    h3 {
+        font-size: 1.6rem;
+    }
 }
