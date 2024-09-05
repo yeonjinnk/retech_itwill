@@ -35,5 +35,89 @@
 		WHERE 
 			notice_idx = #{notice_idx}
 	</select>
+	
+	<insert id="insertTinyReplyNotice">
+		<selectKey keyProperty="reply_idx" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(reply_idx), 0) -- reply_idx 최대값 조회(null 일 경우 기본값 0 사용)
+			FROM tiny_reply_notice
+		</selectKey>
+		
+		<!-- 새 글 번호와 참조글 번호는 <selectKey> 를 통회 조회한 #{board_num} 값 사용 -->
+		INSERT
+		INTO tiny_reply_notice
+		VALUES (
+			#{reply_idx} + 1    -- 댓글 번호()selectKey 를 통회 조회된 댓글 번호 + 1 값 사용
+			, #{notice_idx}      -- 원본 게시물 번호(전달받은 값 사용)
+			, #{reply_name}     -- 댓글 작성자(전달받은 값 사용)
+			, #{reply_content}  -- 댓글 내용(전달받은 값 사용)
+			, #{reply_idx} + 1  -- reply_re_ref(조회된 댓글 번호 + 1 값 사용)
+			, #{reply_idx} + 1  -- reply_re_parent_reply_num(새 댓글 번호 + 1 값 사용)
+			, 0  				-- reply_re_lev(기본값 0)
+			, 0  				-- reply_re_seq(기본값 0)
+			, now()             -- 작성일시
+		)
+	</insert>
+	
+	<update id="updateTinyReplyNoticeReSeq">
+		UPDATE tiny_reply_notice
+		SET
+			reply_re_seq = reply_re_seq + 1
+		WHERE
+			notice_idx = #{notice_idx}
+			AND reply_re_ref = #{reply_re_ref}
+			AND reply_re_seq > #{reply_re_seq}
+			AND reply_re_parent_reply_idx != #{reply_idx}
+	</update>	
+	
+	<insert id="insertTinyReReplyNotice">
+		<selectKey keyProperty="result" resultType="hashmap" order="BEFORE">
+			SELECT 
+				IFNULL(MAX(reply_idx), 0) AS reply_idx -- reply_idx 최대값 조회(null 일 경우 기본값 0 사용)
+				, (SELECT IFNULL(MAX(reply_re_seq), 0)
+					FROM tiny_reply_notice
+					WHERE
+						reply_idx = #{reply_idx}
+						OR reply_re_parent_reply_idx = #{reply_idx}
+				) AS reply_re_seq
+			FROM tiny_reply_notice
+		</selectKey>
+		INSERT
+		INTO tiny_reply_notice
+		VALUES (
+			#{result.reply_idx} + 1       -- 댓글 번호(추가로 조회된 값 + 1)
+			, #{reply_idx}
+			, #{reply_name}
+			, #{reply_content}
+			, #{reply_re_ref}             -- 참조글번호(전달받은 값 사용)
+			, #{reply_idx}                -- 상위댓글번호(전달받은 부모의 댓글번호 사용)
+			, #{reply_re_lev} + 1         -- 들여쓰기레벨(전달받은 값 + 1)
+			, #{result.reply_re_seq} + 1  -- 순서번호(추가로 조회된 값 + 1)
+			, now()
+		)
+	</insert>
+	
+	<!-- 댓글 삭제를 위한 작성자 조회 - SELECT -->
+	<select id="selectTinyReplyWriter" resultType="string">
+		SELECT reply_name
+		FROM tiny_reply_notice
+		WHERE reply_idx = #{reply_idx}
+	</select>
+	
+	<!-- 댓글 삭제 - DELETE -->
+	<delete id="deleteTinyReplyNotice">
+		DELETE
+		FROM tiny_reply_notice
+		WHERE reply_idx = #{reply_idx}
+	</delete>
+	
+	<select id="selectTinyReplyNoticeLIst" resultType="hashmap">
+		SELECT *		
+		FROM tiny_reply_notice
+		WHERE
+			notice_idx = #{notice_idx}
+		ORDER BY
+			reply_re_ref ASC
+			, reply_re_seq ASC
+	</select>
     
 </mapper>

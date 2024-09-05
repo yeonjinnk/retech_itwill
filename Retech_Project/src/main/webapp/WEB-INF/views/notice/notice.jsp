@@ -39,6 +39,7 @@
 				<td width="100px">글번호</td>
 				<td>제목</td>
 				<td width="150px">등록일</td>
+				<td>조회수</td>
 
 			</tr>
 			<c:set var="pageNum" value="1" />
@@ -51,6 +52,7 @@
 					<td>${notice.notice_idx}</td>
 					<td><a href="NoticeDetail?notice_idx=${notice.notice_idx}">${notice.notice_subject}</a></td>					
 					<td>${notice.notice_date}</td>
+					<td>${notice.notice_readcount}</td>
 				</tr>
 			</c:forEach>
 		</table>

@@ -122,7 +122,7 @@
 		</style>
 		<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 		<script>
-			function confirmDelete(notice_num){
+			function confirmDelete(notice_idx){
 				if(confirm("공지사항을 삭제하시겠습니까?")){
 					location.href="AdminNoticeDelete?notice_idx=" + notice_idx;
 				}
@@ -182,7 +182,7 @@
 							
 							<c:forEach var="notice" items="${noticeList}">
 								<tr align="center">
-									<td>${notice.notice_num}</td>
+									<td>${notice.notice_idx}</td>
 									<td>${notice.notice_subject}</td>
 									<td>${notice.notice_date}</td>
 									<td>
@@ -301,7 +301,7 @@
 					$.ajax({
 						url:"AdminNoticeModify",
 	    				data:{
-	    					"notice_num": $(this).val()
+	    					"notice_idx": $(this).val()
 	    					},
 	    				method:"get",
 	    				success: function (response) {
