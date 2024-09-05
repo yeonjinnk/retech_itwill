@@ -609,6 +609,28 @@ public class MemberController {
 //	   return "mypage/review_popup";
 //	   }
 	   
+	   // 문자인증 해볼게요 
+//	   @Autowired
+//	    private SmsService smsService;
+//
+//	    // 인증번호 발송 요청 처리
+//	    @PostMapping("/sendSMS")
+//	    @ResponseBody
+//	    public String sendSms(@RequestParam("phoneNumber") String phoneNumber) {
+//	        String code = smsService.generateVerificationCode(); // 인증번호 생성
+//	        smsService.sendVerificationCode(phoneNumber, code); // 인증번호 발송
+//	        return code; // 클라이언트에 인증번호를 반환 (테스트 용도)
+//	    }
+//
+//	    // 인증번호 검증 요청 처리
+//	    @PostMapping("/verifyCode")
+//	    @ResponseBody
+//	    public String verifyCode(@RequestParam("phoneNumber") String phoneNumber,
+//	                             @RequestParam("code") String code) {
+//	        // 인증번호 검증 로직 (예: 저장된 인증번호와 비교)
+//	        boolean isValid = smsService.verifyCode(phoneNumber, code);
+//	        return isValid ? "success" : "error";
+//	    }
 	   
 	   
 }
