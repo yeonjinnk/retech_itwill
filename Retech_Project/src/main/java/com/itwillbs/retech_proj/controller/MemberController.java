@@ -166,11 +166,21 @@ public class MemberController {
 			
 		}
 	   
+	   
 	   // 카카오톡 로그인
-	   @GetMapping("/retech_proj/kakao-callback")
-	    public String handleKakaoCallback(@RequestParam String code) {
-	        return "redirect:/"; // 또는 적절한 응답
-	    }
+//	   @GetMapping("/kakao-callback")
+//	   public ModelAndView kakaoCallback(@RequestParam("code") String code) {
+//	       KakaoService kakaoService = new KakaoService();
+//	       String accessToken = kakaoService.getAccessToken(code);
+//	       String userInfo = kakaoService.getUserInfo(accessToken);
+//
+//	       // userInfo를 기반으로 로그인 또는 가입 처리를 수행합니다.
+//	       // 예를 들어, userInfo를 파싱하여 사용자 정보를 추출하고, 해당 사용자로 로그인 처리 또는 새로 가입 처리
+//	       // 처리 후에는 적절한 페이지로 리다이렉트
+//
+//	       return new ModelAndView("redirect:/home"); // 로그인 후 이동할 페이지
+//	   }
+
 
 	  
 	   

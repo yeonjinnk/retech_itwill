@@ -1,8 +1,10 @@
 package com.itwillbs.retech_proj.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,9 +70,10 @@ public class MemberService {
 		return mapper.selectMemberId(receiver_id);
 	}
 	
+	
 
 }    
-    // SMS 인증
+//    // SMS 인증
 //    public void certifiedPhoneNumber(String phoneNumber, String numStr) {
 //        String api_key = "NCSZKCG2GR2BZDI7"; // 여기에 실제 발급받은 API 키를 입력하세요
 //        String api_secret = "V3VJ27QUITAHGQS1HVWP97PIEFRG81JM"; // 여기에 실제 발급받은 API Secret을 입력하세요
