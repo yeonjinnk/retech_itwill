@@ -188,7 +188,7 @@
 					<!-- window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
 					<c:choose>
 						<c:when test="${not empty sessionScope.sId}">
-							<a href="javascript:void(window.open('ChatList?receiver_id=' + '${sessionScope.sId}', '${sessionScope.sId}','width=600px,height=600px'))" class="top_link">
+							<a href="javascript:void(window.open('ChatList', '${sessionScope.sId}','width=600px,height=600px'))" class="top_link">
 							채팅</a>
 						</c:when>
 						<c:when test="${empty sessionScope.sId}">

@@ -31,6 +31,7 @@
 	function startChat() {
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//일단 임시로 둠.. 나중에 상점의 판매자 아이디를 가져와야
+		let user_id = "${param.user_id}";
 		let receiver_id = "${param.receiver_id}";
 		console.log("receiver_id : " + receiver_id);
 		
@@ -48,7 +49,8 @@
 				
 				//서버측으로 초기화 메세지 전송
 				//top.jsp 의 sendMessage() 함수 호출
-				sendMessage("INIT", "", receiver_id, "", "", "");
+				//function sendMessage(type, sender_id, receiver_id, room_id, message, pd_idx) {
+				sendMessage("INIT", "", "", "", "", "");
 				
 				// 현재 인터벌 작업 종료하기 위해 clearInterval() 함수 활용
 				// => 함수 파라미터로 반복 인터벌 작업 수행하는 함수의 아이디를 전달

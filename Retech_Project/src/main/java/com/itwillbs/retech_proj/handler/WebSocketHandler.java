@@ -148,7 +148,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			List<ChatRoom> chatRoomList = chatService.getChatRoomList(sender_id);
 			System.out.println("기존 채팅방 목록 : " + chatRoomList);
 			
-			
+			chatMessage.setReceiver_id("");
 			//조회 결과를 JSON 형식으로 변환하여 메세지로 설정
 			chatMessage.setMessage(gson.toJson(chatRoomList));
 			
@@ -378,6 +378,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
 				System.out.println("보내는 메세지 : " + chatMessage);
 
 
+			} else {
+				System.out.println("수신자가 접속해 있지 않음!");
 			}
 			
 		} else if(chatMessage.getType().equals(ChatMessage.TYPE_LEAVE)) {

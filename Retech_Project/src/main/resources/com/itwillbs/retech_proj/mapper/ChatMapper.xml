@@ -75,11 +75,11 @@
 <!--     c.user_id = #{sender_id} -->
 <!--     AND c.status > 0; -->
 
-select  r.room_id, r.sender_id, r.title, r.status, m.message as last_message, m.send_time as last_send_time
+select  r.room_id, r.sender_id, m.receiver_id, r.title, r.status, m.message as last_message, m.send_time as last_send_time
         from chat_room r join chat_message m
         on r.room_id = m.room_id
         and r.sender_id = m.sender_id
-          where r.user_id = 'sender@naver.com'
+          where r.user_id = #{sender_id}
           and r.status > 0
            order by m.send_time desc
            limit 1
