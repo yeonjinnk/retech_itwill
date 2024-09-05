@@ -22,8 +22,6 @@
 <!-- Bootstrap JS and dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<meta charset="UTF-8">
 <%-- 반응형웹페이지 위한 설정  --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -43,7 +41,6 @@
 
 
 <script type="text/javascript">
-
 //슬라이드인덱스
 let slideIndex = 1;//슬라이드인덱스 기본값 1
 showSlides(slideIndex);
@@ -79,11 +76,9 @@ function showSlides(n) {
 }
 
 
-
 //거래상태 예약중일경우 채팅불가 처리하는 reservedProduct() 함수
 function reservedProduct(){
 	alert("예약중인 상품이므로 채팅하실 수 없습니다");
-	console.log='예약중인 상품이므로 채팅하실 수 없습니다';
 }
 //찜하기 받아오기
 $(function() {
@@ -177,6 +172,7 @@ function checkProduct(element, i) {
 } // 찜하기 버튼 클릭 함수 끝
 </script>
 
+
 <link href="${pageContext.request.contextPath}/resources/css/product/product_detail.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -192,7 +188,7 @@ function checkProduct(element, i) {
 				<div class="column">
 					<%-- 상품이미지영역 - 슬라이드 --%>
 					<div id="slid">
-						<div id="carouselExampleIndicators" class="carousel slide">
+						<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
 							<ol class="carousel-indicators">
 								<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 								<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -207,6 +203,12 @@ function checkProduct(element, i) {
 								</div>
 								<div class="carousel-item">
 									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image3}" class="d-block w-100" alt="Image 3">
+								</div>
+								<div class="carousel-item">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image4}" class="d-block w-100" alt="Image 4">
+								</div>
+								<div class="carousel-item">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image5}" class="d-block w-100" alt="Image 5">
 								</div>
 							</div>
 							<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev"> <span
@@ -225,7 +227,7 @@ function checkProduct(element, i) {
 					<div class="row" style="padding: 20px;">
 						<button class="btn btn-dark">${product.pd_status }</button>
 						<span class="icon"> <%-- 신고 모달로 해보기 --%> <%-- 모달 출력 버튼 --%> <%-- 1.세션아이디 없을경우(미로그인) -> 로그인 모달창띄우고 로그인페이지로 이동 --%> <c:choose>
-								<c:when test="${empty sessionScope.member_id }">
+								<c:when test="${empty sessionScope.sId }">
 									<button style="border: none;" data-toggle="modal" data-target="#needLogin">
 										<img src="https://ccimage.hellomarket.com/img/web/item/detail/ico_report.png" alt="신고하기" class="TopNavigationIcon report" width="35px"
 											height="35px">
@@ -238,7 +240,7 @@ function checkProduct(element, i) {
 											height="35px">
 									</button>
 								</c:otherwise>
-							</c:choose> <%-- 공유하기버튼 --%> <a href="#"><img src="${pageContext.request.contextPath }/resources/img/share_icon.png" width="30px" height="30px"></a>
+							</c:choose> 
 						</span>
 					</div>
 					<!--------------------------------------------------------------------------------------------- -->
@@ -264,7 +266,7 @@ function checkProduct(element, i) {
 					<c:choose>
 						<%-- 1. 세션아이디 존재하고, 세션아이디=판매자아이디 동일할 경우 --%>
 						<%-- 1-1. 수정하기, 삭제하기, 끌어올리기 영역 노출 --%>
-						<c:when test="${not empty sessionScope.member_id && sessionScope.member_id eq product.member_id}">
+						<c:when test="${not empty sessionScope.sId && sessionScope.sId eq product.member_id}">
 							<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px"
 								onclick="location.href='productModifyForm?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">수정하기</button>
 
@@ -277,17 +279,17 @@ function checkProduct(element, i) {
 						<c:otherwise>
 							<div class="chatButtonArea row">
 								<%-- 2-1.세션아이디 없을경우(미로그인) -> 로그인알람창띄우고 로그인페이지로 이동 --%>
-								<c:if test="${empty sessionScope.member_id }">
+								<c:if test="${empty sessionScope.sId }">
 									<%--찜하기기능 --%>
 									<%-- 찜하기 버튼 클릭 시 pd_idx 파라미터로 받아 전달 --%>
-									<input type="hidden" name="member_id" value="${sessionScope.member_id }" id="sessionId">
-									<input type="hidden" name="pd_idx" value="${secondhandProduct.pd_idx}" id="pd_idx${i.count }">
+									<input type="hidden" name="member_id" value="${sessionScope.sId }" id="sessionId">
+									<input type="hidden" name="pd_idx" value="${product.pd_idx}" id="pd_idx${i.count }">
 									<c:choose>
 										<%--회원이나 직원이('비회원'이 아닐 때) 세션 아이디가 있을 때(로그인o) 찜하기 기능--%>
 										<%-- 찜하기 목록에 있으면 찜 표시
 									     찜하기 목록에 없으면 그대로 표시--%>
 										<%--세션 아이디가 없을 때(로그인x) 모달창으로 로그인권유--%>
-										<c:when test="${not empty sessionScope.member_id}">
+										<c:when test="${not empty sessionScope.sId}">
 											<button type="button" id="likeProduct${i.count }" data-target="secondhand_idx${i.count }" value="${i.count }"
 												onclick="checkProduct(this, ${i.count })">
 												<img src="${pageContext.request.contextPath }/resources/images/heartIcon.png" width="40px" height="40px">
@@ -308,9 +310,9 @@ function checkProduct(element, i) {
 									</div>
 								</c:if>
 								<%--2.2 세션아이디 있을경우(판매자아닌 일반회원) -> 채팅하기 누를경우 채팅창으로 이동 --%>
-								<c:if test="${not empty sessionScope.member_id && sessionScope.member_id ne product.member_id }">
-									<%-- 찜하기 버튼 클릭 시 pd_dix 파라미터로 받아 전달 --%>
-									<input type="hidden" name="member_id" value="${sessionScope.member_id }" id="sessionId">
+								<c:if test="${not empty sessionScope.sId && sessionScope.sId ne product.member_id }">
+									<%-- 찜하기 버튼 클릭 시 pd_idx 파라미터로 받아 전달 --%>
+									<input type="hidden" name="member_id" value="${sessionScope.sId }" id="sessionId">
 									<input type="hidden" name="product_idx" value="${product.pd_idx}" id="pd_idx${i.count }">
 									<c:choose>
 										<%--
@@ -320,7 +322,7 @@ function checkProduct(element, i) {
 									- 찜하기 목록에 없으면 그대로 표시
 								세션 아이디가 없을 때(로그인x) 모달창으로 로그인권유,
 								--%>
-										<c:when test="${not empty sessionScope.member_id}">
+										<c:when test="${not empty sessionScope.sId}">
 											<button type="button" id="likeProduct${i.count }" data-target="pd_idx${i.count }" value="${i.count }"
 												onclick="checkProduct(this, ${i.count })">
 												<img src="${pageContext.request.contextPath }/resources/images/heartIcon.png" width="40px" height="40px">
@@ -377,15 +379,6 @@ function checkProduct(element, i) {
 						<button class="btn btn-light" style="align: left;">${product.pd_category }</button>
 						<br>
 					</p>
-					<p>
-						<b>결제방법</b>
-						<%-- 					<c:if test="${not empty product.secondhand_paymentType_ptp }"> --%>
-						<button class="btn btn-light">직거래</button>
-						<%-- 					</c:if> --%>
-						<%-- 					<c:if test="${not empty product.secondhand_paymentType_zpay }"> --%>
-						<button class="btn btn-light">TECH PAY</button>
-						<%-- 					</c:if> --%>
-					</p>
 				</div>
 				<!-- 판매자탭--------------------------------------------------------------------------------- -->
 				<%-- 2행 2열 (판매자정보) --%>
@@ -418,7 +411,8 @@ function checkProduct(element, i) {
 					<%-- 판매자의 판매중 다른상품정보 --%>
 					<br>
 					<div class="row" style="margin-left: 10px; margin-bottom: 10px;">
-						<b>${memeber.member_nickname }</b> 님의 판매중인 상품 ... <a href="productSeller?member_id=${product.member_id}"> 더보기 </a>
+						<b>${seller.member_nickname }</b> 님의 판매중인 상품 ... 
+						<a href="MyPageMain?sId=${product.member_id}"> 더보기 </a>
 					</div>
 					<%--썸네일이미지 --%>
 					<%-- 판매자의 물품 개수만큼 반복표시 --%>
@@ -428,7 +422,7 @@ function checkProduct(element, i) {
 								<%--판매자의 첫번째상품의 첫번째이미지(썸네일이미지)만 보여줌 --> 판매상품여러개일수도 -> 리스트로 받아옴 --%>
 								<%--네개까지만 받아오기 --%>
 								<%--각이미지마다 상품 상세페이지로 이동하는 하이퍼링크 --%>
-								<span class="sumnail"> <a href="product_detail?secondhand_idx=${product.pd_dix }&member_id=${product.member_id}"> <img
+								<span class="sumnail"> <a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}"> <img
 										class="democursor" src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" style="width: 130px; height: 160px;">
 								</a>
 								</span>
@@ -469,29 +463,6 @@ function checkProduct(element, i) {
 						</c:choose>
 					</div>
 				</div>
-			</div>
-		</div>
-
-		<%--신고 모달창 영역 --%>
-		<div class="modal fade" id="layerpop">
-			<div class="modal-dialog">
-				<div class="modal-content">
-
-					<!-- header -->
-					<div class="modal-header">
-
-						<!-- header title -->
-						<h4 class="modal-title">header</h4>
-					</div>
-
-					<!-- body -->
-					<!-- Footer -->
-					<div class="modal-footer">
-						<button type="submit" id="reportSubmit" class="btn btn-default">신고하기</button>
-					</div>
-					</form>
-				</div>
-				<%-- <div class="modal-content"> --%>
 			</div>
 		</div>
 	</article>
