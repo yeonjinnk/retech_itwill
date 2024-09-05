@@ -218,6 +218,8 @@
 		WHERE
 			pd_idx = #{pd_idx}
 	</update>
+	
+	
 	<!-- 끌어올리기 작업 시 업데이트 처리 (등록날짜)-->
 	<update id="updateDate">
 		UPDATE product
@@ -226,6 +228,40 @@
 		WHERE 
 			pd_idx = #{pd_idx}
 	</update>
+	
+	<!-- 글 삭제 작업 -->
+	<delete id="deleteProduct">
+		DELETE
+			FROM product
+			WHERE
+				pd_idx = #{pd_idx}
+	</delete>
+	<!-- 찜한 상품 찾기  -->           
+	<select id="selectLikeProduct" resultType="com.itwillbs.retech_proj.vo.LikeVO">
+		SELECT *
+			FROM like
+			WHERE member_id = #{member_id}
+	</select>
+	<!-- 찜하기 등록 기능 insertLikeMovie -->
+	<insert id="insertLikeProduct">
+		INSERT INTO 
+			likes
+		VALUES(
+			#{like_idx}
+			, #{member_id}
+			, #{pd_idx}
+				)
+	</insert>
+	
+	<!-- 찜하기 취소 기능 deleteLikeProduct -->
+	<delete id="deleteLikeProduct">
+		DELETE
+			FROM likes
+		WHERE
+			member_id = #{member_id}
+			AND pd_idx = #{pd_idx}
+	</delete>
+	
 	
 </mapper>
 

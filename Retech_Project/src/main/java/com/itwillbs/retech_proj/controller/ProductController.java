@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.retech_proj.service.ProductService;
+import com.itwillbs.retech_proj.vo.LikeVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
 
 @Controller
@@ -513,9 +514,106 @@ public class ProductController {
 			}
 			
 		}
+		
+		//상품삭제 처리(DELETE)
+		@GetMapping("productDelete")
+		public String productDelete(
+				@RequestParam int pd_idx, 
+				@RequestParam(defaultValue = "1") int pageNum,
+				ProductVO product,
+				HttpSession session, 
+				Model model) {
+			//미로그인시 "로그인필수"출력 후 이전페이지 돌아감
+			String member_id = (String) session.getAttribute("sId");
+			System.out.println("member_id : +++++++++++++++++++++++++++++++++++"+ member_id);
+			System.out.println("pd_idx : +++++++++++++++++++++++++++++++++++"+ pd_idx);
+
+			if(member_id == null) {
+				model.addAttribute("msg", "로그인이 필요한 작업입니다!");
+				return "fail_back";
+			}
+			
+			// 작성자 확인 작업 ---------------------------------------------
+			 //SecondhandService - isSeller()작성자 판별요청
+			// 파라미터:상품번호(secondhand_idx), 세션아이디 리턴타입:boolean(isProductRegister)
+			// 단, 세션아이디가 "admin@gmail.com" 아닐 경우에만 수행
+			if(!member_id.equals("admin@gmail.com")) {
+				boolean isBoardWriter = service.isBoardWriter(pd_idx, member_id);
+				
+				if(!isBoardWriter) {
+					model.addAttribute("msg", "권한이 없습니다!");
+					return "result/fail";
+				}
+			}
+			
+			// 글삭제작업 ----------------------------------------------------
+			int deleteCount = service.removeProduct(pd_idx);
+			
+			// 삭제 실패 시 "삭제 실패!" 처리 후 이전페이지 이동
+			// 아니면(삭제성공시), product_list 서블릿 요청(파라미터 : 페이지번호)
+			if(deleteCount == 0) {
+				model.addAttribute("msg", "삭제 실패!");
+				return "result/fail";	
+			}
+			
+			return "redirect:/ProductList?pageNum=" + pageNum;
+			
+		}
+//		// 페이지 - 찜보여주기
+		@RequestMapping(value = "likeProductShow", method = {RequestMethod.GET, RequestMethod.POST})
+		@ResponseBody
+		public LikeVO likeProductShow(HttpSession session) {
+			//찜한 상품이 있을 경우 찜하기 표시하기(비회원이 아닐 때)
+			String member_id = (String) session.getAttribute("sId");
+			
+
+			if (member_id != null) {
+//				System.out.println("어디서 문제니 : member_id " + member_id);
+//				System.out.println("어디서 문제니 : member_type " + session.getAttribute("member_type"));
+				LikeVO likeList = service.getLikeProduct(member_id); 
+				System.out.println(likeList);
+//				}
+				return likeList;
+			}
+			return null;
+		}
+		
+//		찜기능
+		@RequestMapping(value = "likeProduct", method = {RequestMethod.GET, RequestMethod.POST})
+		@ResponseBody
+		public Integer likeProduct(
+		        @RequestParam(defaultValue = "0") int like_idx,
+		        @RequestParam(defaultValue = "") String member_id,
+		        @RequestParam(defaultValue = "0") int pd_idx,
+		        boolean isLike, LikeVO likes) {
+
+		    // 넘어온 파라미터 확인
+		    System.out.println("member_id : " + member_id + ", pd_idx : " + pd_idx + ", isLike : " + isLike + ", like_idx : " + like_idx);
+
+		    // likes 객체에 찜 관련 데이터 설정
+		    likes.setLike_idx(like_idx);
+		    likes.setMember_id(member_id);
+		    likes.setPd_idx(pd_idx);
+
+		    if (isLike) {
+		        // 찜 기능 실행 (Insert)
+		        int insertCount = service.checkLikeProduct(likes);
+		        System.out.println("찜 된 상품 갯수 : " + insertCount);
+		        return insertCount;
+		    } else {
+		        // 찜 취소 실행 (Delete)
+		        int deleteCount = service.unCheckLikeProduct(likes);
+		        System.out.println("취소된 상품 갯수 : " + deleteCount);
+		        return deleteCount;
+		    }
+		}
+
+		}
+		
+				
 	
 	
 	
 	
 
-}
+

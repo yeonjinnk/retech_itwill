@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.security.access.method.P;
 
+import com.itwillbs.retech_proj.vo.LikeVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
 
 
@@ -78,6 +79,14 @@ public interface ProductMapper {
 	int updateProduct(ProductVO product);
 	//끌어올리기
 	int updateDate(int pd_idx);
+	//글 삭제 작업
+	int deleteProduct(int pd_idx);
+	//찜 목록 보여주기
+	LikeVO selectLikeProduct(String member_id);
+	//찜등록 기능
+	int insertLikeProduct(LikeVO productLike);
+	//찜하기 취소 기능
+	int deleteLikeProduct(LikeVO productLike);
 	
 	
 

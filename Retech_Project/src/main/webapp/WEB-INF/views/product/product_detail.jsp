@@ -82,94 +82,81 @@ function reservedProduct(){
 }
 //찜하기 받아오기
 $(function() {
-	
-	let sId = $("#sessionId").val();
-		console.log(sId);
-	$.ajax ({
-		type: 'GET',
-		url: 'likeProductShow',
-		data: {'member_id' : sId},
-		dataType: 'JSON',
-		success: function(result) {
-//			console.log(result);
-			
-			for(let i = 1; i <= 4; i++) {
-				let ProductNo = $("" + $("#likeProduct" + i).data("target")).val();	
-//					console.log(movieNo);
-				
-				for(let like of result) {
-					if(like.pd_idx == ProductNo) {	// 일치하면
-//							console.log(i);
-// 						$("#likeMovie" + i).removeClass("btn-outline-danger");
-// 						$("#likeMovie" + i).addClass("btn-danger");
-// 						$("#likeMovie" + i).text("♡찜");
-			    		$(element).find("images").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon.png");
+    let sId = $("#sessionId").val();
+    console.log(sId);
+    $.ajax({
+        type: 'GET',
+        url: 'likeProductShow',
+        data: {'member_id': sId},
+        dataType: 'JSON',
+        success: function(result) {
+            // console.log(result);
+            for (let i = 1; i <= 4; i++) {
+                let ProductNo = $("#" + $("#likeProduct" + i).data("target")).val(); // 수정된 부분
+                // console.log(movieNo);
 
-						$("#clickCk" + i).attr("disabled", true);
-					}
-				}
-			}
-		},
-		error: function() {
-			alert("찜하기받아오기 에러!!");
-// 			console.log("에러");
-		}
-	});
-	
-});// function 끝
+                for (let like of result) {
+                    if (like.pd_idx == ProductNo) { // 일치하면
+                        $("#" + $("#likeProduct" + i).data("target") + " img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+
+                        $("#clickCk" + i).attr("disabled", true);
+                    }
+                }
+            }
+        },
+        error: function() {
+            alert("찜하기받아오기 에러!!");
+            // console.log("에러");
+        }
+    });
+});
 
 //찜하기 기능
 function checkProduct(element, i) {
-	
-	let sId = $("#sessionId").val();
-//		console.log($(element).val());
-	let pd_idx = $("" + $(element).data('target')).val();
-	let targetId = 'clickCk' + i;
-//		console.log(targetId);	// 타겟아이디
-	let isLike = $("#" + targetId).prop("disabled");	// 찜 안했을 땐 false
-		console.log(sId);	// 세션아이디 확인
-		console.log(pd_idx);
-		console.log(isLike);
-	
-	$.ajax({
-		type: 'POST',
-		url: 'likeProduct',
-		data: {'member_id': sId, 
-			   'pd_idx': pd_idx, 
-			   'isLike': isLike },
-		dataType: 'JSON',
-		success : function(result) {
-			alert("성공")
-			console.log("성공!");
-			console.log(isLike);
-			
-			if(isLike) {	// 찜 상태가 false면 => 이미지아이콘 변경하기 
-// 				$(element).removeClass("btn-danger");
-// 				$(element).addClass("btn-outline-danger");
-// 				$(element).text("♡찜하기");
-				$(element).find("images").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon.png");
+    let sId = $("#sessionId").val();
+    let pd_idx = $("#" + $(element).data('target')).val(); // 상품 ID
+    let targetId = 'clickCk' + i;
 
-				// 찜 상태 전환(false로)
-				$("#" + targetId).attr("disabled", false);
-				
-			} else {	// 찜 상태가 true이면
-// 				$(element).removeClass("btn-outline-danger");
-// 				$(element).addClass("btn-danger");
-// 				$(element).text("♡찜");
-			    $(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon.png");
+    // 현재 버튼의 찜 상태 확인 (disabled가 true면 이미 찜된 상태)
+    let isCurrentlyLiked = $("#" + targetId).prop("disabled");
 
-				
-				// 찜 상태 전환(true로)
-				$("#" + targetId).attr("disabled", true);
-			}
-		},
-		error : function(xhr, status, error) {
-		    console.error(error);
-		}
-		
-	});	// ajax끝
-	
-} // 찜하기 버튼 클릭 함수 끝
+    // 현재 상태의 반대값으로 isLike 설정 (true -> false, false -> true)
+    let isLike = !isCurrentlyLiked;
+
+    console.log("sessionId: " + sId);
+    console.log("pd_idx: " + pd_idx);
+    console.log("isLike (determined by current state): " + isLike);
+
+    $.ajax({
+        type: 'POST',
+        url: 'likeProduct',
+        data: {
+            'member_id': sId,
+            'pd_idx': pd_idx,
+            'isLike': isLike
+        },
+        dataType: 'JSON',
+        success: function(result) {
+            console.log("AJAX 성공, isLike: " + isLike);
+
+            if (isLike) { // 찜하기 상태로 전환 (isLike가 true일 때)
+                $(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+                $("#" + targetId).attr("disabled", true); // 찜 상태로 전환
+            } else { // 찜 해제 상태로 전환 (isLike가 false일 때)
+                $(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+                $("#" + targetId).attr("disabled", false); // 찜 해제 상태로 전환
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log("AJAX 실패: " + error);
+        }
+    });
+}
+
+
+
+
+
 </script>
 <style type="text/css">
   .thumbnails {
@@ -188,6 +175,7 @@ function checkProduct(element, i) {
   .thumbnail:hover {
     opacity: 0.7; /* Slightly dim the thumbnail on hover */
   }
+
 </style> 
 </head>
 <body>
@@ -311,9 +299,9 @@ function checkProduct(element, i) {
 									     찜하기 목록에 없으면 그대로 표시--%>
 										<%--세션 아이디가 없을 때(로그인x) 모달창으로 로그인권유--%>
 										<c:when test="${not empty sessionScope.sId}">
-											<button type="button" id="likeProduct${i.count }" data-target="secondhand_idx${i.count }" value="${i.count }"
+											<button type="button" id="likeProduct${i.count }" data-target="pd_idx${i.count }" value="${i.count }"
 												onclick="checkProduct(this, ${i.count })">
-												<img src="${pageContext.request.contextPath }/resources/images/heartIcon.png" width="40px" height="40px">
+												<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" width="40px" height="40px">
 											</button>
 											<input type="hidden" id="clickCk${i.count }">
 										</c:when>
@@ -321,7 +309,7 @@ function checkProduct(element, i) {
 										<c:otherwise>
 											<%-- 찜하기 버튼과 버튼 클릭 시 상태 변경용 히든 타입 태그 --%>
 											<button type="button" id="likeProductNo${i.index }" data-toggle="modal" data-target="#needLogin">
-												<img src="${pageContext.request.contextPath }/resources/images/heartIcon.png" width="40px" height="40px">
+												<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" width="40px" height="40px">
 											</button>
 										</c:otherwise>
 									</c:choose>
@@ -346,7 +334,7 @@ function checkProduct(element, i) {
 										<c:when test="${not empty sessionScope.sId}">
 											<button type="button" id="likeProduct${i.count }" data-target="pd_idx${i.count }" value="${i.count }"
 												onclick="checkProduct(this, ${i.count })">
-												<img src="${pageContext.request.contextPath }/resources/images/heartIcon.png" width="40px" height="40px">
+												<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" width="40px" height="40px">
 											</button>
 											<input type="hidden" id="clickCk${i.count }">
 										</c:when>
@@ -354,7 +342,7 @@ function checkProduct(element, i) {
 										<c:otherwise>
 											<%-- 찜하기 버튼과 버튼 클릭 시 상태 변경용 히든 타입 태그 --%>
 											<button type="button" id="likeProductNo${i.index }" data-toggle="modal" data-target="#needLogin">
-												<img src="${pageContext.request.contextPath }/resources/images/heartIcon.png" width="40px" height="40px">
+												<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" width="40px" height="40px">
 											</button>
 										</c:otherwise>
 									</c:choose>
@@ -475,7 +463,7 @@ function checkProduct(element, i) {
 					<div class="modal-footer justify-content-center">
 						<c:choose>
 							<c:when test="${empty sessionScope.member_id}">
-								<button type="button" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath }/member_login'">로그인</button>
+								<button type="button" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath }/MemberLogin'">로그인</button>
 								<button type="button" class="btn btn-light" data-dismiss="modal" aria-label="Close">아니오</button>
 							</c:when>
 							<c:otherwise>
