@@ -38,6 +38,6 @@ public interface ChatMapper {
 	boolean insertAlarm(Map<String, String> alarmInfo);
 
 	//DB에서 알람 가져오기
-	List<HashMap<String, Object>> selectAlarm(String id);
+	List<HashMap<String, Object>> selectAlarm(Map<String, String> map);
 
 }

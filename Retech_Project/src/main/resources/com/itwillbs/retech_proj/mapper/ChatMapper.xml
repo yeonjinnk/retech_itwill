@@ -12,68 +12,77 @@
        user_id 컬럼값을 receiver_id 로 표기
 	-->
 	<select id="selectChatRoomList" resultType="chatRoom">
-		SELECT
-    c.room_id,
-    c.title,
-    c.user_id AS sender_id,
-    (
-        SELECT user_id
-        FROM chat_room
-        WHERE
-            room_id = c.room_id
-            AND user_id != #{sender_id}
-    ) AS receiver_id,
-    c.status,
-    (
-        SELECT message
-        FROM chat_message
-        WHERE
-            sender_id = #{sender_id}
-            AND receiver_id = (
-                SELECT user_id
-                FROM chat_room
-                WHERE room_id = c.room_id
-                AND user_id != #{sender_id}
-            )
-            AND send_time = (
-                SELECT MAX(send_time)
-                FROM chat_message
-                WHERE sender_id = #{sender_id}
-                AND receiver_id = (
-                    SELECT user_id
-                    FROM chat_room
-                    WHERE room_id = c.room_id
-                    AND user_id != #{sender_id}
-                )
-            )
-    ) AS last_message,
-    (
-        SELECT DATE_FORMAT(send_time, '%Y-%m-%d %H:%i:%s')
-        FROM chat_message
-        WHERE
-            sender_id = #{sender_id}
-            AND receiver_id = (
-                SELECT user_id
-                FROM chat_room
-                WHERE room_id = c.room_id
-                AND user_id != #{sender_id}
-            )
-            AND send_time = (
-                SELECT MAX(send_time)
-                FROM chat_message
-                WHERE sender_id = #{sender_id}
-                AND receiver_id = (
-                    SELECT user_id
-                    FROM chat_room
-                    WHERE room_id = c.room_id
-                    AND user_id != #{sender_id}
-                )
-            )
-    ) AS last_send_time
-FROM chat_room AS c
-WHERE
-    c.user_id = 'sender@naver.com'
-    AND c.status > 0;
+<!-- 		SELECT -->
+<!--     c.room_id, -->
+<!--     c.title, -->
+<!--     c.user_id AS sender_id, -->
+<!--     ( -->
+<!--         SELECT user_id -->
+<!--         FROM chat_room -->
+<!--         WHERE -->
+<!--             room_id = c.room_id -->
+<!--             AND user_id != #{sender_id} -->
+<!--     ) AS receiver_id, -->
+<!--     c.status, -->
+<!--     ( -->
+<!--         SELECT message -->
+<!--         FROM chat_message -->
+<!--         WHERE -->
+<!--             sender_id = #{sender_id} -->
+<!--             AND receiver_id = ( -->
+<!--                 SELECT user_id -->
+<!--                 FROM chat_room -->
+<!--                 WHERE room_id = c.room_id -->
+<!--                 AND user_id != #{sender_id} -->
+<!--             ) -->
+<!--             AND send_time = ( -->
+<!--                 SELECT MAX(send_time) -->
+<!--                 FROM chat_message -->
+<!--                 WHERE sender_id = #{sender_id} -->
+<!--                 AND receiver_id = ( -->
+<!--                     SELECT user_id -->
+<!--                     FROM chat_room -->
+<!--                     WHERE room_id = c.room_id -->
+<!--                     AND user_id != #{sender_id} -->
+<!--                 ) -->
+<!--             ) -->
+<!--     ) AS last_message, -->
+<!--     ( -->
+<!--         SELECT DATE_FORMAT(send_time, '%Y-%m-%d %H:%i:%s') -->
+<!--         FROM chat_message -->
+<!--         WHERE -->
+<!--             sender_id = #{sender_id} -->
+<!--             AND receiver_id = ( -->
+<!--                 SELECT user_id -->
+<!--                 FROM chat_room -->
+<!--                 WHERE room_id = c.room_id -->
+<!--                 AND user_id != #{sender_id} -->
+<!--             ) -->
+<!--             AND send_time = ( -->
+<!--                 SELECT MAX(send_time) -->
+<!--                 FROM chat_message -->
+<!--                 WHERE sender_id = #{sender_id} -->
+<!--                 AND receiver_id = ( -->
+<!--                     SELECT user_id -->
+<!--                     FROM chat_room -->
+<!--                     WHERE room_id = c.room_id -->
+<!--                     AND user_id != #{sender_id} -->
+<!--                 ) -->
+<!--             ) -->
+<!--     ) AS last_send_time -->
+<!-- FROM chat_room AS c -->
+<!-- WHERE -->
+<!--     c.user_id = #{sender_id} -->
+<!--     AND c.status > 0; -->
+
+select  r.room_id, r.sender_id, m.receiver_id, r.title, r.status, m.message as last_message, m.send_time as last_send_time
+        from chat_room r join chat_message m
+        on r.room_id = m.room_id
+        and r.sender_id = m.sender_id
+          where r.user_id = #{sender_id}
+          and r.status > 0
+           order by m.send_time desc
+           limit 1
 
 			
 	</select>
@@ -135,6 +144,7 @@ WHERE
 		 <foreach collection="list" item="chatRoomList" separator=",">
 		 	(
 		 		#{chatRoomList.room_id}
+		 		, #{chatRoomList.sender_id}
 		 		, #{chatRoomList.title}
 		 		, #{chatRoomList.sender_id}	-- 사용자 아이디는 sender_id에 전달된 항목만 사용
 		 		, #{chatRoomList.status}
@@ -190,7 +200,7 @@ WHERE
 	<select id="selectAlarm" resultType="hashmap">
 		SELECT room_id, sender_id, message, time
 		FROM alarm
-		WHERE member_id = #{id}
+		WHERE member_id = #{member_id}
 		ORDER BY time desc
 		LIMIT 8
 	
