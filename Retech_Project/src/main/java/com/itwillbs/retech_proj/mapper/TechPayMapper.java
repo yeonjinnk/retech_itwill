@@ -16,13 +16,13 @@ public interface TechPayMapper {
 	String selectId(Map<String, Object> map);
 
 	// 엑세스 토큰 정보 추가
-	void insertAccessToken(Map<String, Object> map);
+	int insertAccessToken(Map<String, Object> map);
 
 	// 엑세스 토큰 정보 갱신
-	void updateAccessToken(Map<String, Object> map);
+	int updateAccessToken(Map<String, Object> map);
 
 	// 테크페이 초기 정보 저장
-	void insertPayInfo(String id);
+	int insertPayInfo(String id);
 
 	// 테크페이 비밀번호 정보 조회
 	String selectPayPwd(String id);
@@ -31,15 +31,15 @@ public interface TechPayMapper {
 	String selectPayBalance(String id);
 
 	// 테크페이 비밀번호 정보 저장
-	void updatePayPwd(@Param("id") String id, @Param("pay_pwd") String pay_pwd);
+	int updatePayPwd(@Param("id") String id, @Param("pay_pwd") String pay_pwd);
 
 	// 관리자 엑세스토큰 조회
 	BankToken selectAdminAccessToken();
 	
 	// 테크페이 내역 DB에 추가		
-	void insertPayHistory(Map<String, Object> map2);
+	int insertPayHistory(Map<String, Object> map2);
 
 	// 테크페이 잔액 업데이트
-	void updatePayBalance(Map<String, Object> map2);
+	int updatePayBalance(Map<String, Object> map2);
 
 }

@@ -166,11 +166,21 @@ public class MemberController {
 			
 		}
 	   
+	   
 	   // 카카오톡 로그인
-	   @GetMapping("/retech_proj/kakao-callback")
-	    public String handleKakaoCallback(@RequestParam String code) {
-	        return "redirect:/"; // 또는 적절한 응답
-	    }
+//	   @GetMapping("/kakao-callback")
+//	   public ModelAndView kakaoCallback(@RequestParam("code") String code) {
+//	       KakaoService kakaoService = new KakaoService();
+//	       String accessToken = kakaoService.getAccessToken(code);
+//	       String userInfo = kakaoService.getUserInfo(accessToken);
+//
+//	       // userInfo를 기반으로 로그인 또는 가입 처리를 수행합니다.
+//	       // 예를 들어, userInfo를 파싱하여 사용자 정보를 추출하고, 해당 사용자로 로그인 처리 또는 새로 가입 처리
+//	       // 처리 후에는 적절한 페이지로 리다이렉트
+//
+//	       return new ModelAndView("redirect:/home"); // 로그인 후 이동할 페이지
+//	   }
+
 
 	  
 	   
@@ -599,6 +609,28 @@ public class MemberController {
 //	   return "mypage/review_popup";
 //	   }
 	   
+	   // 문자인증 해볼게요 
+//	   @Autowired
+//	    private SmsService smsService;
+//
+//	    // 인증번호 발송 요청 처리
+//	    @PostMapping("/sendSMS")
+//	    @ResponseBody
+//	    public String sendSms(@RequestParam("phoneNumber") String phoneNumber) {
+//	        String code = smsService.generateVerificationCode(); // 인증번호 생성
+//	        smsService.sendVerificationCode(phoneNumber, code); // 인증번호 발송
+//	        return code; // 클라이언트에 인증번호를 반환 (테스트 용도)
+//	    }
+//
+//	    // 인증번호 검증 요청 처리
+//	    @PostMapping("/verifyCode")
+//	    @ResponseBody
+//	    public String verifyCode(@RequestParam("phoneNumber") String phoneNumber,
+//	                             @RequestParam("code") String code) {
+//	        // 인증번호 검증 로직 (예: 저장된 인증번호와 비교)
+//	        boolean isValid = smsService.verifyCode(phoneNumber, code);
+//	        return isValid ? "success" : "error";
+//	    }
 	   
 	   
 }

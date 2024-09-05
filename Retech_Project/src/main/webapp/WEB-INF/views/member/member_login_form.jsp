@@ -34,16 +34,18 @@
             Kakao.Auth.createLoginButton({
                 container: '#kakao-login-button',
                 success: function(authObj) {
-                    // 로그인 성공 시 처리
-                    window.location.href = '${pageContext.request.contextPath}/kakao-callback?code=' + authObj.access_token;
+                    // 카카오 로그인 성공 시, authorization code를 서버로 전달
+                    if (authObj.code) {
+                        window.location.href = '/retech_proj/kakao-callback?code=' + authObj.code;
+                    } else {
+                        console.error('Authorization code is missing.');
+                    }
                 },
                 fail: function(err) {
-                    // 로그인 실패 시 처리
-                    console.error(err);
+                    console.error('Kakao login failed:', err);
                 }
             });
         });
-
     </script>
     
     <style>

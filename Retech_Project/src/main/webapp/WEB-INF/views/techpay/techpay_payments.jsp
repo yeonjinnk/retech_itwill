@@ -36,12 +36,18 @@
 	box-sizing: border-box;
 	display: block;
 }
-.title, .pay_balance, .payments_amount {
+
+.title, .pay_balance {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
+
+.pay_account_list, .account_list_table {
+	margin-top: 20px;
+}
+
 /*---- 충전하기버튼 ----*/
 .btn_top {
 	display: flex;
@@ -60,8 +66,15 @@
 	cursor: pointer;
 	font-size: 14px;
 	width: 100%;
-	margin-top: 20px;
 }
+
+.bank_symbol {
+	margin-top: 5px 0px 5px 0px;
+	width: 40px;
+	height: 30px;
+}
+
+
 </style>
 </head>
 <body>
@@ -87,28 +100,34 @@
 	        <h2><fmt:formatNumber value="${paymentAmount}" pattern="#,###" />원</h2>
           </div>
           <div class="pay_account_list">	
- 		        <table border="1">
+     		<form action="TechPaymentsProcess" method="post" id="PayProcessForm">
+    			테크페이 결제 안내<br>
+				원하는 계좌의 '결제하기' 버튼을 누르시면,<br>
+				테크페이 비밀번호 확인 후, 해당 계좌로 결제가 진행됩니다.     		  		
+ 		        <table border="1" class="account_list_table">
 		        	<c:forEach var="account" items="${accountList.res_list}">
 		        		<tr>
-		        			<td>1</td>
-		        			<td><b>${account.account_alias}</b><br>
-		        				${account.bank_name}<br>
-		        				
+		        			<td>
+			        			<c:if test="${account.bank_code_std eq '002'}">
+			        				<img src="${pageContext.request.servletContext.contextPath}/resources/img/kdb_symbol2.png" class="bank_symbol">
+			        			</c:if>
+		        			</td>
+		        			<td><b>${account.account_alias}</b></td>
+		        			<td>${account.bank_name}<br>
 		        				${account.account_num_masked}<br>
 		        			</td>
 		        			<td>${account.account_holder_name}</td>
 		        			<td>
-		        				<form action="TechPaymentsProcess" method="post" id="PayProcessForm">
-		        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
-		        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
-		        					<input type="hidden" name="tran_amt" value="110000">
-		        					<input type="button" value="결제하기" onclick="openCheckPayPwdWindow()">
-		        				</form>
+	        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
+	        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
+	        					<input type="hidden" name="tran_amt" value="110000">
+	        					<input type="button" class="payment_btn" value="결제하기" onclick="openCheckPayPwdWindow()">		        			
 		        			</td>
-		        		</tr>
+		        		</tr>		        	
 		        	</c:forEach>	
 	        	</table>        		       
-	            <button class="payments_btn">결제하기</button>
+		    </form>
+<!-- 	            <button class="payments_btn">결제하기</button> -->
           </div>
         </div>
 	</section>

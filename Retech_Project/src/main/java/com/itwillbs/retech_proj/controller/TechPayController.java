@@ -39,7 +39,7 @@ public class TechPayController {
 	private static final Logger logger = LoggerFactory.getLogger(TechPayController.class);
 	
 	@GetMapping("TechPayMain")
-	public String techPayMain(HttpSession session, Model model, HttpServletResponse response) {
+	public String techPayMain(HttpSession session, Model model, HttpServletResponse response, Map<String, Object> map) {
 		// 로그인 완료 되어 있는 회원만 테크페이 메인 페이지로 진입 가능함
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
@@ -82,6 +82,8 @@ public class TechPayController {
 		
 		// 조회 결과를 세션 객체에 저장
 		session.setAttribute("pay_balance", pay_balance);
+		
+		map.put("id", id);
 		
 		
 		if(token == null) {
@@ -145,14 +147,22 @@ public class TechPayController {
 		
 		
 		// techPayService - registPayInfo() 메서드 호출하여 테크페이 초기 정보 저장
-		techPayService.registPayInfo(id);
-		System.out.println("테크페이 초기 정보 저장 완료!");
+		int insertCount = techPayService.registPayInfo(id);
 		
-		model.addAttribute("msg", "계좌 인증 완료!");
-		model.addAttribute("isClose", true);		
-		model.addAttribute("targetURL", "TechPayMain");		
-		
-		return "result/success";
+		if(insertCount > 0) {
+			System.out.println("테크페이 초기 정보 저장 완료!");
+			
+			model.addAttribute("msg", "계좌 인증 완료!");
+			model.addAttribute("isClose", true);		
+			model.addAttribute("targetURL", "TechPayMain");		
+			
+			return "result/success";
+			
+		} else {
+			model.addAttribute("msg", "계좌 인증 실패!");
+			
+			return "result/fail";
+		}
 	}
 
 	@GetMapping("AccVerify")
@@ -255,12 +265,20 @@ public class TechPayController {
 		}
 		
 		// TechPayService - registPayPwd() 메서드 호출하여 테크페이 비밀번호 정보 저장
-		techPayService.setPayPwd(id, pay_pwd);
+		int updateCount = techPayService.setPayPwd(id, pay_pwd);
 		
-		model.addAttribute("msg", "비밀번호 설정 완료!");
-		model.addAttribute("targetURL", "TechPayMain");	
+		if(updateCount > 0) {
+			model.addAttribute("msg", "테크페이 비밀번호 설정 완료!");
+			model.addAttribute("targetURL", "TechPayMain");	
+			
+			return "result/success";
+		} else {
+			model.addAttribute("msg", "테크페이 비밀번호 설정 실패!");
+			System.out.println("테크페이 비밀번호 DB 저장 실패");			
+			return "result/fail";
+			
+		}
 		
-		return "result/success";
 	}	
 	
 	@GetMapping("AccountDetail")
@@ -343,12 +361,20 @@ public class TechPayController {
 		map.put("token", adminToken);
 		
 		// TechPayService - registAdminAccessToken() 메서드 호출하여 관리자 토큰 관련 정보 저장
-		techPayService.registAdminAccessToken(map);
+		int count = techPayService.registAdminAccessToken(map);
 		
-		model.addAttribute("msg", "관리자 토큰 발급 성공!");
-		model.addAttribute("targetURL", "TechPayMain");
+		if(count > 0) {
+			model.addAttribute("msg", "관리자 토큰 발급 성공!");
+			model.addAttribute("targetURL", "TechPayMain");
+			
+			return "result/success";
+		} else {
+			model.addAttribute("msg", "관리자 토큰 발급 실패!");
+			System.out.println("관리자 토큰 DB 저장 실패");
+			
+			return "result/fail";
+		}
 		
-		return "result/success";
 	}
 
 	@GetMapping("CheckPayPwd")
@@ -446,6 +472,9 @@ public class TechPayController {
 		
 		String tran_amt = "50000"; // 임의 금액 설정
 		
+		// 테크페이 잔액 최대 한도는 500만원
+//		Object pay_balance = session.getAttribute("pay_balance");
+//		System.out.println("===============ChargeBankWithdraw pay_balance : " + pay_balance);
 		
 		// 테크페이 잔액 업데이트에 필요한 정보 map 객체에 저장		
 		map2.put("id", id);
@@ -461,16 +490,31 @@ public class TechPayController {
 		
 		// 테크페이 잔액 업데이트 - 충전		
 		// TechPayService - registPayBalance() 메서드
-		techPayService.registPayBalance(map2);		
+		int updateCount = techPayService.registPayBalance(map2);	
 		
-		
-		// 테크페이 내역 DB에 추가
-		// TechPayService - registPayHistory() 메서드
-		techPayService.registPayHistory(map2);
-		
-		
-		return "techpay/techpay_charge_result";
+		if(updateCount > 0) {
+			System.out.println("테크페이 잔액 업데이트(충전) 성공");
+			
+			// 테크페이 내역 DB에 추가
+			// TechPayService - registPayHistory() 메서드
+			int insertCount = techPayService.registPayHistory(map2);
+			
+			if(insertCount > 0) {
+				return "techpay/techpay_charge_result";
+			} else {
+				model.addAttribute("msg", "테크페이 충전 실패!");
+				System.out.println("테크페이 잔액 충전 내역 DB 저장 실패");
+				return "result/fail";
+			}		
+			
+		} else {
+			model.addAttribute("msg", "테크페이 충전 실패!");
+			System.out.println("테크페이 잔액 업데이트(충전) 실패");
+			return "result/fail";
+		}		
+	
 	}
+	
 	
 	@GetMapping("PayRefund")	
 	public String payRefund(HttpSession session, Model model) {
@@ -534,51 +578,79 @@ public class TechPayController {
 		map.put("id", (String)session.getAttribute("sId"));
 		System.out.println("입금 이체 요청 파라미터 : " + map);
 		
-		// 2.5.2. 입금 이체 API
-		// TechPayService - requestDeposit() 메서드	
-		Map<String, Object> refundDepositResult = techPayService.requestDeposit(map);
-		System.out.println("------------- 입금이체 결과 : " + refundDepositResult);
-
-		// Model 객체에 입금이체 결과 저장		
-		model.addAttribute("refundDepositResult", refundDepositResult);
-
-		
-		// 테크페이 타입 지정
-		int techpay_type = 2;
-
-		// 테크페이 거래 시간 생성
-		String techpay_tran_dtime = bankValueGenerator.getTranDTime();
-		System.out.println("-------------techpay_tran_dtime : " + techpay_tran_dtime);
-		
-		// 테크페이 idx 생성
-		String techpay_idx = techPayIdxGenerator.generateTechPayIdx(id, techpay_type);
-		System.out.println("---------------------techpay_idx : " + techpay_idx);		
-		
 		String tran_amt = "70000"; // 임의 금액 설정
-
-		// 테크페이 잔액 업데이트에 필요한 정보 map 객체에 저장	
-		map2.put("id", id);		
-		map2.put("techpay_type", techpay_type);	
-		map2.put("tran_amt", tran_amt);	
 		
 		
-		// 테크페이 내역 DB에 추가에 필요한 정보 map 객체에 저장		
-		map2.put("techpay_idx", techpay_idx);
-		map2.put("techpay_tran_dtime", techpay_tran_dtime);
-		map2.put("pay_balance", session.getAttribute("pay_balance"));		
+		String payBalanceStr = (String)session.getAttribute("pay_balance");
+		int pay_balance = Integer.parseInt(payBalanceStr);
+		int result_balance = pay_balance - Integer.parseInt(tran_amt);
+		
+		if(result_balance < 0) {
+			model.addAttribute("msg", "테크페이 잔액이 환급 요청 금액보다 많아야 환급이 가능합니다!");
+			System.out.println("테크페이 잔액 환급 실패 (잔액이 70,000원이하)");
+			return "result/fail";
+		} else {
+			// 2.5.2. 입금 이체 API
+			// TechPayService - requestDeposit() 메서드	
+			Map<String, Object> refundDepositResult = techPayService.requestDeposit(map);
+			System.out.println("------------- 입금이체 결과 : " + refundDepositResult);
+			
+			// Model 객체에 입금이체 결과 저장		
+			model.addAttribute("refundDepositResult", refundDepositResult);
+			
+			
+			// 테크페이 타입 지정
+			int techpay_type = 2;
+			
+			// 테크페이 거래 시간 생성
+			String techpay_tran_dtime = bankValueGenerator.getTranDTime();
+			System.out.println("-------------techpay_tran_dtime : " + techpay_tran_dtime);
+			
+			// 테크페이 idx 생성
+			String techpay_idx = techPayIdxGenerator.generateTechPayIdx(id, techpay_type);
+			System.out.println("---------------------techpay_idx : " + techpay_idx);		
+			
+			
+			// 테크페이 잔액 업데이트에 필요한 정보 map 객체에 저장	
+			map2.put("id", id);		
+			map2.put("techpay_type", techpay_type);	
+			map2.put("tran_amt", tran_amt);	
+			
+			
+			// 테크페이 내역 DB에 추가에 필요한 정보 map 객체에 저장		
+			map2.put("techpay_idx", techpay_idx);
+			map2.put("techpay_tran_dtime", techpay_tran_dtime);
+			map2.put("pay_balance", session.getAttribute("pay_balance"));		
+			
+			
+			// 테크페이 잔액 업데이트 - 환급
+			// TechPayService - registPayBalance() 메서드
+			int updateCount = techPayService.registPayBalance(map2);
+			
+			if(updateCount > 0) {
+				System.out.println("테크페이 잔액 업데이트(환급) 성공");	
+				
+				// 테크페이 내역 DB에 추가
+				// TechPayService - registPayHistory() 메서드
+				int insertCount = techPayService.registPayHistory(map2);		
+				
+				if(insertCount > 0) {
+					return "techpay/techpay_refund_result";
+				} else {
+					model.addAttribute("msg", "테크페이 환급 실패!");
+					System.out.println("테크페이 잔액 환급 내역 DB 저장 실패");
+					return "result/fail";
+				}				
+				
+			} else {
+				model.addAttribute("msg", "테크페이 환급 실패!");
+				System.out.println("테크페이 잔액 업데이트(환급) 실패");
+				return "result/fail";
+			}
+			
+		}
 		
 		
-		// 테크페이 잔액 업데이트 - 환급
-		// TechPayService - registPayBalance() 메서드
-		techPayService.registPayBalance(map2);
-		
-		
-		// 테크페이 내역 DB에 추가
-		// TechPayService - registPayHistory() 메서드
-		techPayService.registPayHistory(map2);		
-		
-		
-		return "techpay/techpay_refund_result";
 	}
 
 
@@ -666,16 +738,33 @@ public class TechPayController {
 		
 		// 테크페이 잔액 업데이트 - 사용
 		// TechPayService - registPayBalance() 메서드
-		techPayService.registPayBalance(map2);
+		int updateCount = techPayService.registPayBalance(map2);
 		
-		// 테크페이 내역 DB에 추가
-		// TechPayService - registPayHistory() 메서드
-		techPayService.registPayHistory(map2);			
+		if(updateCount > 0) {
+			System.out.println("테크페이 잔액 업데이트(결제) 성공");
+			
+			// 테크페이 내역 DB에 추가
+			// TechPayService - registPayHistory() 메서드
+			int insertCount = techPayService.registPayHistory(map2);
+			
+			if(insertCount > 0) {
+				model.addAttribute("msg", "결제 완료!");
+				model.addAttribute("targetURL", "TechPayMain");
+				
+				return "result/success";
+			} else {
+				model.addAttribute("msg", "테크페이 결제 실패!");
+				System.out.println("테크페이 결제 내역 DB 저장 실패");
+				return "result/fail";
+			}		
+			
+		} else {
+			model.addAttribute("msg", "테크페이 충전 실패!");
+			System.out.println("테크페이 잔액 업데이트(결제) 실패");
+			return "result/fail";
+		}			
 		
-		model.addAttribute("msg", "결제 완료!");
-		model.addAttribute("targetURL", "TechPayMain");
 		
-		return "result/success";
 	}
 	
 	@GetMapping("TechProfit")
@@ -711,12 +800,28 @@ public class TechPayController {
 		
 		// 테크페이 잔액 업데이트 - 수익
 		// TechPayService - registPayBalance() 메서드
-		techPayService.registPayBalance(map2);
+		int updateCount = techPayService.registPayBalance(map2);
+
+		if(updateCount > 0) {
+			System.out.println("테크페이 잔액 업데이트(수익) 성공");
+			
+			// 테크페이 내역 DB에 추가
+			// TechPayService - registPayHistory() 메서드
+			int insertCount = techPayService.registPayHistory(map2);
+			
+			if(insertCount > 0) {
+				return "techpay/techpay_profit";
+			} else {
+				model.addAttribute("msg", "테크페이 수익처리 실패!");
+				System.out.println("테크페이 수익 내역 DB 저장 실패");
+				return "result/fail";
+			}		
+			
+		} else {
+			model.addAttribute("msg", "테크페이 수익처리 실패!");
+			System.out.println("테크페이 잔액 업데이트(수익) 실패");
+			return "result/fail";
+		}			
 		
-		// 테크페이 내역 DB에 추가
-		// TechPayService - registPayHistory() 메서드
-		techPayService.registPayHistory(map2);	
-		
-		return "techpay/techpay_profit";
 	}
 }

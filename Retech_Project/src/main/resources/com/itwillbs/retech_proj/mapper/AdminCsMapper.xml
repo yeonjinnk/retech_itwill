@@ -42,17 +42,15 @@
 	<insert id="insertNotice">
 		INSERT INTO notice
 		VALUES (
-			#{notice_idx} + 1
-			, #{notice_sell}
+			null
 			, #{notice_subject}
+			, #{notice_content}
 			, now()
-			, #{notice_idx} + 1  -- board_re_ref(selectKey 를 통회 조회된 게시물 번호 + 1 값 사용)
-			, 0                 -- notice_re_lev
-			, 0                 -- notice_re_seq
-			, 0                 -- notice_readcount
-			, now()
-			, #{board_writer_ip}
-			, now()
+			, #{notice_idx} +1  -- board_re_ref(selectKey 를 통회 조회된 게시물 번호 + 1 값 사용)
+			, 0
+			, 0
+			, #{notice_writer_ip}
+			, 0
 		)
 	</insert>
 	
@@ -68,7 +66,7 @@
 	<update id="updateNotice">
 		UPDATE notice
 		SET 
-			,notice_subject = #{notice_subject}
+			notice_subject = #{notice_subject}
 			,notice_content = #{notice_content}
 		WHERE
 			notice_idx = #{notice_idx}
@@ -109,7 +107,7 @@
 	<insert id="insertFaq">
 		INSERT INTO faq
 		VALUES (
-			#{faq_idx} + 1
+			null
 			, #{faq_category}
 			, #{faq_subject}
 			, #{faq_content}

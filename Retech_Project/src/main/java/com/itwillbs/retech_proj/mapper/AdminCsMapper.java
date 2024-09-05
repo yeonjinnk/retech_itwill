@@ -29,7 +29,7 @@ public interface AdminCsMapper {
 	NoticeVO selectNotice(int notice_idx);
 
 	// 관리자 - 공지사항 수정 진행
-	int updateNotice(@Param("notice_num") int notice_idx, 
+	int updateNotice(@Param("notice_idx") int notice_idx, 
 					@Param("notice_subject")String notice_subject, 
 					@Param("notice_content")String notice_content);
 

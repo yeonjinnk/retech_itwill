@@ -2,6 +2,8 @@ package com.itwillbs.retech_proj.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,8 +93,10 @@ public class AdminCsController {
 	
 	// 공지사항 등록
 	@PostMapping("AdminNoticeRegist")
-	public String adminNoticeRegist(NoticeVO notice, Model model) {
+	public String adminNoticeRegist(NoticeVO notice, Model model, HttpServletRequest request) {
 //		System.out.println(notice);
+		
+		notice.setNotice_writer_ip(request.getRemoteAddr());
 		
 		int insertCount = service.registNotice(notice);
 		

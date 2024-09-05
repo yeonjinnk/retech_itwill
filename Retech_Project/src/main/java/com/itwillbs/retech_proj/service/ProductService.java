@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.retech_proj.mapper.ProductMapper;
+import com.itwillbs.retech_proj.vo.LikeVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
 
 @Service
@@ -90,5 +91,41 @@ public class ProductService {
 	public List<HashMap<String, String>> getSellerProductList(String member_id) {
 
 		return mapper.selectSellerProductList(member_id);
+	}
+	
+	//상품수정 작업
+	public int modifyProduct(ProductVO product) {
+		
+		return mapper.updateProduct(product);
+	}
+	//끌어올리기 작업
+	public int updateRegistdate(int pd_idx) {
+		return mapper.updateDate(pd_idx);
+	}
+	//상품 게시물 삭제 -1. 작성자(판매자) 확인 작업
+	public boolean isBoardWriter(int pd_idx, String member_id) {
+		//글번호에 해당하는 작성자확인 -> 상세정보조회의 selectProduct()재사용
+		//-조회된결과의 작성자id(product.getMember_id()) 와, 전달받은 세션아이디 비교결과 리턴
+		ProductVO product = mapper.selectProduct(pd_idx);
+		return product.getMember_id().equals(member_id);
+	}
+	//상품 게시물 삭제 -2. 글 삭제 작업
+	public int removeProduct(int pd_idx) {
+		return mapper.deleteProduct(pd_idx);
+	}
+	
+	
+	//찜목록 조회 (select)
+	public LikeVO getLikeProduct(String member_id) {
+		return mapper.selectLikeProduct(member_id);
+	}
+	
+	//찜하기 기능 (insert)
+	public int checkLikeProduct(LikeVO productLike) {
+		return mapper.insertLikeProduct(productLike);
+	}
+	//찜하기 취소 기능 (delete)
+	public int unCheckLikeProduct(LikeVO productLike) {
+		return mapper.deleteLikeProduct(productLike);
 	}
 }
