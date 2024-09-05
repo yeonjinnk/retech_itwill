@@ -9,52 +9,31 @@
 <title>Retech_테크페이</title>
 <!-- 자바스크립트 연결 -->
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- Font Awesome 아이콘 라이브러리 로드 -->
 
-<!--     Font Awesome CSS -->
-<!--     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"> -->
-<!-- Bootstrap 5.0.2 버전의 CSS 파일을 외부 CDN에서 로드 -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
-<!--     Bootstrap CSS 연결 -->
-<!--     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet"> -->
-
-    <!-- 외부 CSS 파일(css/default.css) 연결 -->
-    <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
-
-<!-- jQuery 최신 버전 CDN에서 로드 -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<!-- Moment.js 라이브러리 로드 (날짜/시간 조작 라이브러리) -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<!-- DateRangePicker 라이브러리 로드 (날짜 범위 선택기) -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<!-- DateRangePicker의 CSS 파일 로드 -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-
-<%-- 외부 CSS 파일(css/default.css) 연결 --%>
-<%-- <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css"> --%>
-
-<%-- Font Awesome CSS 연결 --%>
-<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" > -->
+<!-- Font Awesome 아이콘 라이브러리 로드 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 
 <!-- ========================= CSS here ========================= -->
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css"> -->
-<%-- <link rel="stylesheet" href="${pageContext.request.servletContext.contextPath}/resources/css/techpay_info/bootstrap.min.css" /> --%>
-<%-- <link rel="stylesheet" href="${pageContext.request.servletContext.contextPath}/resources/css/techpay_info/LineIcons.3.0.css" /> --%>
-<%-- <link rel="stylesheet" href="${pageContext.request.servletContext.contextPath}/resources/css/techpay_info/tiny-slider.css" /> --%>
-<%-- <link rel="stylesheet" href="${pageContext.request.servletContext.contextPath}/resources/css/techpay_info/glightbox.min.css" /> --%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/techpay/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/techpay/LineIcons.3.0.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/techpay/tiny-slider.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/techpay/glightbox.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/techpay/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/techpay/payment.css" />
 
-<!-- Bootstrap JS 연결 -->
-<!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet"> -->
-
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css"> -->
-<!-- <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css"> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 
 <!-- ========================== 달력 ===================================== -->
-<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
-<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> -->
-<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script> -->
-<!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<!-- 자바스크립트 시작 -->
+<script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
+
 
 <script type="text/javascript">
 $(document).ready(function () {
@@ -228,79 +207,79 @@ input[type="radio"]:checked + .tab_label {
 				
 				<!-- 기간 선택 모달 구조 -->
                 <!-- 기간 선택 모달 -->
-<div class="modal fade" id="date_modal" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="dateModalLabel">조회 기간을 선택해주세요</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="btn-group col">
-                    <input type="radio" name="period" class="btn-check" id="btn-date1" value="1" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btn-date1">1개월</label>
-                    <input type="radio" name="period" class="btn-check" id="btn-date2" value="3" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btn-date2">3개월</label>
-                    <input type="radio" name="period" class="btn-check" id="btn-date3" value="6" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btn-date3">6개월</label>
-                    <input type="radio" name="period" class="btn-check" id="btn-date4" value="12" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btn-date4">최대(1년)</label>
-                </div>
-                <div class="date_area col">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="start_date" placeholder="시작일자">
-                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                    </div>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="end_date" placeholder="종료일자">
-                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="searchButton">조회하기</button>
-            </div>
-        </div>
-    </div>
-</div>	
+				<div class="modal fade" id="date_modal" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
+				    <div class="modal-dialog">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				                <h5 class="modal-title" id="dateModalLabel">조회 기간을 선택해주세요</h5>
+				                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				            </div>
+				            <div class="modal-body">
+				                <div class="btn-group col">
+				                    <input type="radio" name="period" class="btn-check" id="btn-date1" value="1" autocomplete="off">
+				                    <label class="btn btn-outline-primary" for="btn-date1">1개월</label>
+				                    <input type="radio" name="period" class="btn-check" id="btn-date2" value="3" autocomplete="off">
+				                    <label class="btn btn-outline-primary" for="btn-date2">3개월</label>
+				                    <input type="radio" name="period" class="btn-check" id="btn-date3" value="6" autocomplete="off">
+				                    <label class="btn btn-outline-primary" for="btn-date3">6개월</label>
+				                    <input type="radio" name="period" class="btn-check" id="btn-date4" value="12" autocomplete="off">
+				                    <label class="btn btn-outline-primary" for="btn-date4">최대(1년)</label>
+				                </div>
+				                <div class="date_area col">
+				                    <div class="input-group mb-3">
+				                        <input type="text" class="form-control" id="start_date" placeholder="시작일자">
+				                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+				                    </div>
+				                    <div class="input-group mb-3">
+				                        <input type="text" class="form-control" id="end_date" placeholder="종료일자">
+				                        <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+				                    </div>
+				                </div>
+				            </div>
+				            <div class="modal-footer">
+				                <button type="button" class="btn btn-primary" id="searchButton">조회하기</button>
+				            </div>
+				        </div>
+				    </div>
+				</div>	
 				
-				  <!-- Review Modal -->
-<!-- 				    <div class="modal review-modal" id="date_modal" tabindex="-1" aria-labelledby="exampleModalLabel" -->
-<!-- 				        aria-hidden="true"> -->
-<!-- 				        <div class="modal-dialog"> -->
-<!-- 				            <div class="modal-content"> -->
-<!-- 				                <div class="modal-header"> -->
-<!-- 				                    <h5 class="modal-title" id="exampleModalLabel">조회 기간을 선택해주세요</h5> -->
-<!-- 				                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-<!-- 				                </div> -->
-<!-- 				                <div class="modal-body"> -->
-<!-- 				                    <div class="row"> -->
-<!-- 				                        <div class="col-sm-12"> -->
-<!-- 				                            <div class="btn-group col"> -->
-<!-- 										        <input type="checkbox" name="period" class="btn-check" id="btn-date1" value="1" autocomplete="off"> -->
-<!-- 											    <label class="btn btn-outline-primary" for="btn-date1">1개월</label> -->
-<!-- 										        <input type="checkbox" name="period" class="btn-check" id="btn-date2" value="3" autocomplete="off"> -->
-<!-- 											    <label class="btn btn-outline-primary" for="btn-date2">3개월</label> -->
-<!-- 										        <input type="checkbox" name="period"class="btn-check" id="btn-date3" value="6" autocomplete="off"> -->
-<!-- 											    <label class="btn btn-outline-primary" for="btn-date3">6개월</label> -->
-<!-- 										        <input type="checkbox" name="period" class="btn-check" id="btn-date4" value="12" autocomplete="off"> -->
-<!-- 											    <label class="btn btn-outline-primary" for="btn-date4">최대(1년)</label> -->
-<!-- 											</div> -->
-<!-- 				                        </div> -->
-<!-- 				                        <div class="date_area col"> -->
-<!-- 				                            <div class="start_date"><input type="date" id="start_date"></div> -->
-<!-- 				                            <div class="pattern"> ~ </div> -->
-<!-- 				                            <div class="end_date"><input type="date" id="end_date"></div> -->
-<!-- 				                        </div> -->
-<!-- 				                    </div> -->
-<!-- 				                </div> -->
-<!-- 				                <div class="modal-footer button"> -->
-<!-- 				                    <button type="button" class="btn" id="passwd-btn" onclick="select_date()">조회하기</button> -->
-<!-- 				                </div> -->
-<!-- 				            </div> -->
-<!-- 				        </div> -->
-<!-- 				    </div> -->
-				    <!-- End Review Modal -->
+			  <!-- Review Modal -->
+			    <div class="modal review-modal" id="date_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+			        aria-hidden="true">
+			        <div class="modal-dialog">
+			            <div class="modal-content">
+			                <div class="modal-header">
+			                    <h5 class="modal-title" id="exampleModalLabel">조회 기간을 선택해주세요</h5>
+			                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			                </div>
+			                <div class="modal-body">
+			                    <div class="row">
+			                        <div class="col-sm-12">
+			                            <div class="btn-group col">
+									        <input type="checkbox" name="period" class="btn-check" id="btn-date1" value="1" autocomplete="off">
+										    <label class="btn btn-outline-primary" for="btn-date1">1개월</label>
+									        <input type="checkbox" name="period" class="btn-check" id="btn-date2" value="3" autocomplete="off">
+										    <label class="btn btn-outline-primary" for="btn-date2">3개월</label>
+									        <input type="checkbox" name="period"class="btn-check" id="btn-date3" value="6" autocomplete="off">
+										    <label class="btn btn-outline-primary" for="btn-date3">6개월</label>
+									        <input type="checkbox" name="period" class="btn-check" id="btn-date4" value="12" autocomplete="off">
+										    <label class="btn btn-outline-primary" for="btn-date4">최대(1년)</label>
+										</div>
+			                        </div>
+			                        <div class="date_area col">
+			                            <div class="start_date"><input type="date" id="start_date"></div>
+			                            <div class="pattern"> ~ </div>
+			                            <div class="end_date"><input type="date" id="end_date"></div>
+			                        </div>
+			                    </div>
+			                </div>
+			                <div class="modal-footer button">
+			                    <button type="button" class="btn" id="passwd-btn" onclick="select_date()">조회하기</button>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			    <!-- End Review Modal -->
 							
 			</div>
         </div>
@@ -310,14 +289,17 @@ input[type="radio"]:checked + .tab_label {
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
 	</footer>
 	
-    <!-- ========================= JS here ========================= -->
-<%--     <script src="${pageContext.request.servletContext.contextPath}/resources/js/techpay_info/bootstrap.min.js"></script> --%>
-<%--     <script src="${pageContext.request.servletContext.contextPath}/resources/js/techpay_info/tiny-slider.js"></script> --%>
-<%--     <script src="${pageContext.request.servletContext.contextPath}/resources/js/techpay_info/glightbox.min.js"></script> --%>
-<!--     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script> -->
-<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script> -->
-    <!-- Bootstrap JS 연결 -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top">
+        <i class="lni lni-chevron-up"></i>
+    </a>
 
+    <!-- ========================= JS here ========================= -->
+    <script src="${pageContext.request.contextPath}/resources/js/techpay/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/techpay/tiny-slider.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/techpay/glightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/techpay/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+	
 </body>
 </html>
