@@ -217,7 +217,7 @@
             }).open();
         });
 
-         // 개별 필드 유효성 검사 
+        // 개별 필드 유효성 검사
         function validateField() {
             let isValid = true;
             let field = $(this).attr('id');
@@ -243,7 +243,7 @@
             return isValid;
         }
 
-        // 비밀번호 유효성 검사 
+        // 비밀번호 유효성 검사
         function validatePassword() {
             let passwd = $("#member_passwd").val();
             let hasUpperCase = /[A-Z]/.test(passwd);
@@ -261,7 +261,7 @@
             }
         }
 
-        // 비밀번호 확인 일치 여부 검사 
+        // 비밀번호 확인 일치 여부 검사
         function checkSamePw() {
             let passwd = $("#member_passwd").val();
             let passwd2 = $("#member_passwd2").val();
@@ -287,7 +287,7 @@
             }
         }
 
-        // 생년월일 유효성 검사 
+        // 생년월일 유효성 검사
         function checkBirth() {
             let regex = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
             let birth = $("#member_birth").val();  
@@ -300,7 +300,7 @@
             }
         }
 
-        // 전화번호 유효성 검사 
+        // 전화번호 유효성 검사
         function checkPhoneNum() {
             let regex = /^[0-9]{10,11}$/;
             let phone = $("#member_phone").val();  
@@ -313,11 +313,11 @@
             }
         }
 
-        // 전체 폼 유효성 검사 
+        // 전체 폼 유효성 검사
         function validateForm() {
             let isValid = true;
             
-            // 각 필드별 유효성 검사 
+            // 각 필드별 유효성 검사
             if (!validatePassword()) isValid = false;
             if (!checkSamePw()) isValid = false;
             if (!checkName()) isValid = false;
@@ -327,17 +327,14 @@
             return isValid;
         }
 
-        $(document).ready(function() {
-            $('#joinForm').on('submit', function(e) {
-                if (!validateForm()) {
-                    e.preventDefault();
-                    alert("입력한 정보를 다시 확인해주세요.");
-                }
-            });
+        $('#joinform').on('submit', function(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                alert("입력한 정보를 다시 확인해주세요.");
+            }
         });
     });
-</script>
-    
+    </script>
 
 </body>
 </html>

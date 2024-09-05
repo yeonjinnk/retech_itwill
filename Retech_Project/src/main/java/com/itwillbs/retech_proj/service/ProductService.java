@@ -91,4 +91,14 @@ public class ProductService {
 
 		return mapper.selectSellerProductList(member_id);
 	}
+	
+	//상품수정 작업
+	public int modifyProduct(ProductVO product) {
+		
+		return mapper.updateProduct(product);
+	}
+	//끌어올리기 작업
+	public int updateRegistdate(int pd_idx) {
+		return mapper.updateDate(pd_idx);
+	}
 }

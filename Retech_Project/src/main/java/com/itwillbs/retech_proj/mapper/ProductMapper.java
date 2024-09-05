@@ -74,6 +74,11 @@ public interface ProductMapper {
 	// 판매자의 판매물품 리스트 조회요청
 	List<HashMap<String, String>> selectSellerProductList(String member_id);
 	
+	//상품수정
+	int updateProduct(ProductVO product);
+	//끌어올리기
+	int updateDate(int pd_idx);
+	
 	
 
 }

@@ -13,7 +13,7 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="${pageContext.request.contextPath}/resources/css/defualt.css" rel="stylesheet" type="text/css">
+<%-- <link href="${pageContext.request.contextPath}/resources/css/defualt.css" rel="stylesheet" type="text/css"> --%>
 <link href="${pageContext.request.contextPath}/resources/css/product/product_list.css" rel="stylesheet" type="text/css">
 
 <!-- jQuery -->
@@ -123,19 +123,19 @@ function checkProduct(element, i) {
 	
 	let sId = $("#sessionId").val();
 //		console.log($(element).val());
-	let secondhand_idx = $("" + $(element).data('target')).val();
+	let pd_idx = $("" + $(element).data('target')).val();
 	let targetId = 'clickCk' + i;
 //		console.log(targetId);	// 타겟아이디
 	let isLike = $("#" + targetId).prop("disabled");	// 찜 안했을 땐 false
 		console.log(sId);	// 세션아이디 확인
-		console.log(secondhand_idx);
+		console.log(pd_idx);
 		console.log(isLike);
 	
 	$.ajax({
 		type: 'POST',
 		url: 'likeProduct',
 		data: {'member_id': sId, 
-			   'secondhand_idx': secondhand_idx, 
+			   'pd_idx': pd_idx, 
 			   'isLike': isLike },
 		dataType: 'JSON',
 		success : function(result) {
@@ -171,9 +171,24 @@ function checkProduct(element, i) {
 	
 } // 찜하기 버튼 클릭 함수 끝
 </script>
+<style type="text/css">
+  .thumbnails {
+    display: flex; /* Display thumbnails in a row */
+    overflow-x: auto; /* Enable horizontal scrolling if there are too many thumbnails */
+    margin-top: 10px; /* Space above the thumbnails */
+  }
 
-
-<link href="${pageContext.request.contextPath}/resources/css/product/product_detail.css" rel="stylesheet" type="text/css">
+  .thumbnail {
+    width: 100px; /* Set the width of the thumbnails */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Space between thumbnails */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  
+  .thumbnail:hover {
+    opacity: 0.7; /* Slightly dim the thumbnail on hover */
+  }
+</style> 
 </head>
 <body>
 	<header>
@@ -193,6 +208,8 @@ function checkProduct(element, i) {
 								<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 								<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 								<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+								<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+								<li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
 							</ol>
 							<div class="carousel-inner">
 								<div class="carousel-item active">
@@ -205,11 +222,12 @@ function checkProduct(element, i) {
 									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image3}" class="d-block w-100" alt="Image 3">
 								</div>
 								<div class="carousel-item">
-									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image4}" class="d-block w-100" alt="Image 4">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image4}" class="d-block w-100" alt="Image 3">
 								</div>
 								<div class="carousel-item">
-									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image5}" class="d-block w-100" alt="Image 5">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image5}" class="d-block w-100" alt="Image 3">
 								</div>
+								<!-- 추가 이미지들 -->
 							</div>
 							<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev"> <span
 								class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span>
@@ -218,30 +236,28 @@ function checkProduct(element, i) {
 							</a>
 						</div>
 					</div>
-				</div>
-				<%-- 1행 1열 -- 왼쪽 column끝 --%>
+
+					<!-- 미리보기 썸네일 추가 -->
+					<div class="thumbnails">
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" class="thumbnail" data-target="#carouselExampleIndicators"
+							data-slide-to="0" alt="Thumbnail 1"> 
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image2}" class="thumbnail" data-target="#carouselExampleIndicators" 
+							data-slide-to="1" alt="Thumbnail 2"> 
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image3}" class="thumbnail" data-target="#carouselExampleIndicators"
+							data-slide-to="3" alt="Thumbnail 3">
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image4}" class="thumbnail" data-target="#carouselExampleIndicators"
+							data-slide-to="4" alt="Thumbnail 4">
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image5}" class="thumbnail" data-target="#carouselExampleIndicators"
+							data-slide-to="5" alt="Thumbnail 5">
+						<!-- 추가 썸네일들 -->
+					</div>
+					<%-- 1행 1열 -- 왼쪽 column끝 --%>
 				<!--------------------------------------------------------------------------------------------- -->
 				<%--1행 2열 -- 오른쪽 column 추가하기 --%>
 				<div class="column">
 					<!-- 거래상태 -->
 					<div class="row" style="padding: 20px;">
 						<button class="btn btn-dark">${product.pd_status }</button>
-						<span class="icon"> <%-- 신고 모달로 해보기 --%> <%-- 모달 출력 버튼 --%> <%-- 1.세션아이디 없을경우(미로그인) -> 로그인 모달창띄우고 로그인페이지로 이동 --%> <c:choose>
-								<c:when test="${empty sessionScope.sId }">
-									<button style="border: none;" data-toggle="modal" data-target="#needLogin">
-										<img src="https://ccimage.hellomarket.com/img/web/item/detail/ico_report.png" alt="신고하기" class="TopNavigationIcon report" width="35px"
-											height="35px">
-									</button>
-								</c:when>
-								<%-- 2. 세션아이디 존재하는 경우(로그인상태) - 신고하기 모달창 --%>
-								<c:otherwise>
-									<button style="border: none;" data-target="#layerpop" data-toggle="modal">
-										<img src="https://ccimage.hellomarket.com/img/web/item/detail/ico_report.png" alt="신고하기" class="TopNavigationIcon report" width="35px"
-											height="35px">
-									</button>
-								</c:otherwise>
-							</c:choose> 
-						</span>
 					</div>
 					<!--------------------------------------------------------------------------------------------- -->
 					<h3>${product.pd_subject}</h3>
@@ -249,8 +265,13 @@ function checkProduct(element, i) {
 						<fmt:formatNumber pattern="#,###" value="${product.pd_price }" />
 						원
 					</p>
+					<hr>
 					<div class="row" style="margin-left: 2px;">
-						<span class="readcount">조회수 ${product.pd_readcount } </span> <span class="registDate">등록일 ${product.pd_first_date }</span>
+						<span class="readcount">조회수 ${product.pd_readcount } </span> 
+					</div>
+					<hr>
+					<div class="row" style="margin-left: 2px;">
+						<span class="registDate">등록일 ${product.pd_first_date }</span>
 					</div>
 					<hr>
 					<p>${product.pd_content }</p>
