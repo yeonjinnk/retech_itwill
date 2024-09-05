@@ -46,8 +46,8 @@ public class TechPayService {
 	}
 	
 	// 테크페이 초기 정보 저장
-	public void registPayInfo(String id) {
-		mapper.insertPayInfo(id);
+	public int registPayInfo(String id) {
+		return mapper.insertPayInfo(id);
 	}
 
 	// 2.2.3. 등록계좌조회 API 
@@ -66,8 +66,8 @@ public class TechPayService {
 	}
 
 	// 테크페이 비밀번호 정보 저장
-	public void setPayPwd(String id, String pay_pwd) {
-		mapper.updatePayPwd(id, pay_pwd);
+	public int setPayPwd(String id, String pay_pwd) {
+		return mapper.updatePayPwd(id, pay_pwd);
 	}
 
 	// 2.2.1. 사용자정보조회 API	
@@ -86,7 +86,7 @@ public class TechPayService {
 	}
 
 	// 관리자 엑세스토큰 저장
-	public void registAdminAccessToken(Map<String, Object> map) {
+	public int registAdminAccessToken(Map<String, Object> map) {
 		String id = mapper.selectId(map);
 		System.out.println("관리자 엑세스 토큰 아이디 정보 : " + id);
 		
@@ -94,11 +94,13 @@ public class TechPayService {
 		// 조회된 아이디가 있을 경우(= 엑세스토큰 정보 있음) 새 엑세스토큰 정보 갱신(UPDATE) - updateAccessToken()
 		if(id == null) {
 			System.out.println("-----------insertAccessToken-----------");
-			mapper.insertAccessToken(map);
+			return mapper.insertAccessToken(map);		
+			
 		} else {
 			System.out.println("-----------updateAccessToken-----------");
-			mapper.updateAccessToken(map);
-		}		
+			return mapper.updateAccessToken(map);		
+			
+		}
 	}
 
 	// 2.5.2. 입금 이체 API
@@ -112,14 +114,14 @@ public class TechPayService {
 	}
 
 	// 테크페이 잔액 업데이트 - 충전, 환급, 사용, 수익
-	public void registPayBalance(Map<String, Object> map2) {
-		mapper.updatePayBalance(map2);
+	public int registPayBalance(Map<String, Object> map2) {
+		return mapper.updatePayBalance(map2);
 	}
 	
 	// 테크페이 내역 DB에 추가	
-	public void registPayHistory(Map<String, Object> map2) {
-		mapper.insertPayHistory(map2);
+	public int registPayHistory(Map<String, Object> map2) {
 		System.out.println("-------------------map2(registPayHistory) : " + map2);
+		return mapper.insertPayHistory(map2);
 	}
 
 	// 2.3.1. 잔액조회 API	

@@ -15,11 +15,6 @@
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 
-	// 결제 비밀번호 확인
-	function openCheckPayPwdWindow() {
-	    // "CheckPayPwd" 서블릿 주소로 새 창을 열기
-	    window.open('CheckPayPwd', 'CheckPayPwdWindow', 'width=500,height=400');
-	}
 
     // 충전금액 텍스트박스에 반영하기
     $(document).ready(function() {
@@ -52,9 +47,30 @@
                 $('#onlyDigitMessage').hide();
             }
         });    
-     
-     
     });
+    
+    
+	// 환급금액, 잔액 판별 후 페이비밀번호 확인 새 창 열기
+	function openCheckPayPwdWindow() {
+		
+		let pay_balance = ${sessionScope.pay_balance};
+		console.log(pay_balance);
+		let currentAmount = parseInt($('#refundAmount').val());
+		console.log("currentAmount : " + currentAmount);
+		
+		// 환급금액이 입력되지 않거나
+		// 잔액보다 큰 금액을 환급할 시에는 환급 불가
+		if(isNaN(currentAmount)) {
+			alert("환급 금액을 입력해주세요!");
+		} else if (pay_balance < currentAmount) {
+			alert("페이잔액이 환급 금액보다 클 때에만 환급이 가능합니다!");
+		} else {
+		    // "CheckPayPwd" 서블릿 주소로 페이 비밀번호 확인 새 창 열기
+		    window.open('CheckPayPwd', 'CheckPayPwdWindow', 'width=500,height=400');
+		}
+	}    
+    
+    
 </script>
 
 <style type="text/css">
