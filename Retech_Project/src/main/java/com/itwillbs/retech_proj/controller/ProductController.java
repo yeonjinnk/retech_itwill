@@ -575,7 +575,7 @@ public class ProductController {
 //				}
 				return likeList;
 			}
-			return null;
+			return null; //진성민
 		}
 		
 //		찜기능
