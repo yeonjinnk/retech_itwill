@@ -239,7 +239,7 @@
 	<!-- 찜한 상품 찾기  -->           
 	<select id="selectLikeProduct" resultType="com.itwillbs.retech_proj.vo.LikeVO">
 		SELECT *
-			FROM like
+			FROM likes
 			WHERE member_id = #{member_id}
 	</select>
 	<!-- 찜하기 등록 기능 insertLikeMovie -->
