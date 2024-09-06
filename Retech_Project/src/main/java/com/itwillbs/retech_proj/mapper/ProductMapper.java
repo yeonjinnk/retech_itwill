@@ -88,6 +88,6 @@ public interface ProductMapper {
 	//찜하기 취소 기능
 	int deleteLikeProduct(LikeVO productLike);
 	
-	
+	//진성민
 
 }

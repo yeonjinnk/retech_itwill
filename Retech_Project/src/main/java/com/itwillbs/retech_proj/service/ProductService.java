@@ -113,7 +113,7 @@ public class ProductService {
 	public int removeProduct(int pd_idx) {
 		return mapper.deleteProduct(pd_idx);
 	}
-	
+	//진성민
 	
 	//찜목록 조회 (select)
 	public List<HashMap<String, String>> getLikeProduct(String member_id) {
