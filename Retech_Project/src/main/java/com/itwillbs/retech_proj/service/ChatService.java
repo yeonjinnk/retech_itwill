@@ -22,8 +22,8 @@ public class ChatService {
 	}
 
 	//기존 채팅방 존재 여부 확인을 위한 1개 채팅방 정보 조회
-	public ChatRoom getChatRoom(String sender_id, String receiver_id) {
-		return mapper.selectChatRoom(sender_id, receiver_id);
+	public ChatRoom getChatRoom(String sender_id, String receiver_id, int pd_idx) {
+		return mapper.selectChatRoom(sender_id, receiver_id, pd_idx);
 	}
 
 	//새 채팅방 생성(추가)

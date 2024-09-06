@@ -44,13 +44,17 @@
 		// setInterval() 함수를 호출하여 0.5초(500 밀리초)마다 웹소켓 연결 상태를 감지하여
 		// 연결이 됐을 경우 서버측으로 채팅방 초기화 메세지 전송
 		let wsCheckInterval = setInterval(() => {
+			
+			console.log("ws : " + ws);
+			console.log("ws.readyState : " + ws.readyState);
+			
 			if(ws != null && ws != undefined && ws.readyState === ws.OPEN) {
 				console.log("1:1 채팅방 입장 및 웹소켓 연결 완료!");
-				
+				console.log("로그인 세션아이디 : " + "${sessionScope.sId}");
 				//서버측으로 초기화 메세지 전송
 				//top.jsp 의 sendMessage() 함수 호출
-				//function sendMessage(type, sender_id, receiver_id, room_id, message, pd_idx) {
-				sendMessage("INIT", "", "", "", "", "");
+				// function sendMessage(type, sender_id, receiver_id, room_id, message, pd_idx)
+				sendMessage("INIT", "", "${sessionScope.sId}", "", "", "-1");
 				
 				// 현재 인터벌 작업 종료하기 위해 clearInterval() 함수 활용
 				// => 함수 파라미터로 반복 인터벌 작업 수행하는 함수의 아이디를 전달

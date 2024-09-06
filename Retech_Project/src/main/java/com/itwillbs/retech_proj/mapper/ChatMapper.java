@@ -17,7 +17,7 @@ public interface ChatMapper {
 	List<ChatRoom> selectChatRoomList(String sender_id);
 
 	//해당 사용자와의 기존 채팅방 조회(파라미터 2개 주의!)
-	ChatRoom selectChatRoom(@Param("sender_id") String sender_id,@Param("receiver_id") String receiver_id);
+	ChatRoom selectChatRoom(@Param("sender_id") String sender_id,@Param("receiver_id") String receiver_id, @Param("pd_idx")int pd_idx);
 
 	//새 채팅방 생성(추가)
 	void insertChatRoom(List<ChatRoom> chatRoomList);

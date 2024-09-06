@@ -335,15 +335,18 @@
 				//전달받은 message 속성값에 채팅방 목록이 저장되어 
 				//해당 목록을 다시 JSON 객체 형태로 파싱
 				//복수개의 채팅방 목록이 배열 형태로 전달되므로 반복을 통해 객체 접근
-				for(let room of JSON.parse(data.message)) {
+				let message = JSON.parse(data.message);
+				for(let room of message) {
 					//appendChatRoomToRoomList() 함수 호출하여 채팅방 목록 표시
 					appendChatRoomToRoomList(room);
 				}
 				
+				console.log(message);
+				
 				//초기화 완료 메세지 전송
 				//(클라이언트 -> 서버)
 				//sendMessage(type, sender_id, receiver_id, room_id, message, pd_idx)
-				sendMessage("INIT_COMPLETE", "", data.receiver_id, "", "", "");
+				sendMessage("INIT_COMPLETE", "", message[0].receiver_id, "", "", "-1");
 				
 			} else if(data.type == "ERROR") { //채팅 관련 오류
 				console.log("ERROR 타입 - 채팅 오류임!");
@@ -375,16 +378,16 @@
 				let objs = data.message;
 				console.log("objs : " + objs);
 // 				console.log("Object.values(objs).length : " + Object.values(objs).length);
-				if(data.message.length > 2) {
+// 				if(data.message.length > 2) {
 					//기존 채팅 내역이 저장된 message 내의 리스트 반복하여
 					//appendMessageToTargetRoom() 메서드 호출하여 메세지 표시
 					for(let message of JSON.parse(data.message)) {
 						appendMessageToTargetRoom(message.type, message.sender_id, message.receiver_id, message.room_id, message.message, message.send_time);
 					}
-				} else {
+// 				} else {
 					//연결 완료 후 채팅창 생성
-					createChatRoom(data);
-				}
+// 					createChatRoom(data);
+// 				}
 				
 				
 			} else if(data.type == "TALK") { //채팅 메세지 수신
@@ -406,6 +409,61 @@
 				disableRoom(data);
 			}
 		}
+		// ======================================================================
+		//채팅방 영역에 1개의 채팅방 생성(표시)하는 함수
+		function createChatRoom(room) {
+			console.log("createChatRoom 함수 호출됨!");
+			
+			console.log(JSON.stringify(room));
+			
+			//수신자가 세션 아이디와 동일할 경우
+			//방 생성에 필요한 receiver_id 값을 송신자 아이디로 변경, 아니면 그대로 사영
+			let receiver_id = room.receiver_id == "${sId}" ? room.sender_id : room.receiver_id;
+			
+			//클래스 선택자 중 "chatRoom" 클래스를 갖는 요소를 찾아
+			//해당 요소의 클래스에 룸아이디가 포함되어 있지 않을 경우
+			//채팅방 영역에 새 채팅방 1개 추가
+			if(!$(".chatRoom").hasClass(room.room_id)) {
+				console.log("채팅방 표시 시작!");
+				
+				//생성할 채팅방 div 태그 문자열을 변수에 저장
+				//생성할 채팅방 hidden 태그에 채팅방의 룸아이디와 수신자아이디를 저장
+				let divRoom = '<div class="chatRoom ' + room.room_id + '">'
+				+ '	<div class="chatTitleArea">&lt;' + receiver_id + '&gt;</div>'
+				+ '	<div class="chatMessageArea"></div>'
+				+ '	<div class="commandArea">'
+				+ '		<input type="hidden" class="room_id" value="' + room.room_id + '">'
+				+ '		<input type="hidden" class="receiver_id" value="' + receiver_id + '">'
+				+ '		<input type="text" class="chatMessage" onkeypress="checkEnter(event)">'
+				+ '		<input type="button" class="btnSend" value="전송" onclick="send(this)">'
+// 				+ '		<span class="fileArea">'
+// 				+ '			<label for="file"><img src="${pageContext.request.servletContext.contextPath}/resources/images/clip.png"></lable>'
+// 				+ '			<input type="file" id="file" onchange="sendFile(this)">'
+// 				+ '		</span><br>'
+// 				+ '		<input type="button" class="btnCloseRoom" value="닫기" onclick="closeRoom(this)">'
+				+ '		<input type="button" class="btnQuitRoom" value="종료" onclick="quitRoom(this)">'
+				+ '	</div>'
+				+ '</div>';
+				
+				//ID 선택자 "chatRoomArea"영역에 채팅방 1개 추가
+				$("#chatRoomArea").append(divRoom);
+				
+				//기존 채팅 내역을 불러오기 위한 요청 전송
+				sendMessage("REQUEST_CHAT_LIST", "", receiver_id, room.room_id, "", room.pd_idx);
+				
+				//채팅방 상태(status)가 2일 경우(상대방이 채팅을 종료)
+				//채팅방 표시하되 비활성화 상태로 표시하기 위해
+				//disableRoom() 함수 호출
+				if(room.status == 2) {
+					disableRoom(room);
+				}
+			}
+		}
+		
+		
+		
+		
+		
 		// ======================================================================
 		function onError() {
 			console.log("onError()");
@@ -597,7 +655,8 @@
 				$(".chatRoomList." + room.room_id).on("dblclick", function() {
 					console.log("채팅방 목록 더블클릭 해 채팅창 열림!");
 					window.open("ChatRoom?room_id=" + room.room_id + "&receiver_id=" 
-								+ room.receiver_id + "&sender_id=" + room.sender_id + "&status=" + room.status,
+								+ room.receiver_id + "&sender_id=" + room.sender_id + "&status=" + room.status
+								+ "&pd_idx=" + room.pd_idx,
 								room.room_id, "width=600px, height=600px");
 				});
 			}
