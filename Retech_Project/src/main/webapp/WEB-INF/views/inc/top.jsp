@@ -55,6 +55,7 @@
 // 					console.log("alarmItem.time : " + alarmItem.time);
 					console.log(alarmItem.time.date);
 					console.log(alarmItem.time.time);
+					console.log(alarmItem.receiver_id);
 					let date2 = alarmItem.time.date;
 					let time2 = alarmItem.time.time;
 					year = date2.year;
@@ -97,10 +98,11 @@
 						$("#alarmList").append(divAlarm);
 						$("#alarmPoint").css("display", "");
 						
-
+						console.log(alarmItem.receiver_id);
 						//해당 채팅방 목록 div 태그에 더블클릭 이벤트 핸들링
 						$(".alarmLink").on("click", function() {
 							console.log("알림 목록 클릭 해 채팅창 열림!");
+							console.log(alarmItem.receiver_id);
 							window.open("ChatRoom?room_id=" + alarmItem.room_id + "&receiver_id=" 
 										+ alarmItem.receiver_id + "&sender_id=" + alarmItem.sender_id 
 //			 							+ "&status=" + msg.status
@@ -476,7 +478,7 @@
 				
 			$("#alarmList").prepend(divAlarm);
 			$("#alarmPoint").css("display", "");
-			
+			console.log("msg.receiver_id : " + msg.receiver_id);
 			//해당 채팅방 목록 div 태그에 더블클릭 이벤트 핸들링
 			$(".alarmLink").on("click", function() {
 				console.log("알림 목록 클릭 해 채팅창 열림!");
@@ -492,7 +494,8 @@
 					'sender_id':msg.sender_id,
 					'message': msg.message,
 					'room_id': msg.room_id,
-					'time': msg.send_time
+					'time': msg.send_time,
+					'receiver_id' : msg.receiver_id
 				},
 				url: "AlarmRemember",
 				type: "POST",
