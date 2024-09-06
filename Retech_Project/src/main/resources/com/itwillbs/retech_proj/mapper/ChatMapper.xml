@@ -75,12 +75,32 @@
 <!--     c.user_id = #{sender_id} -->
 <!--     AND c.status > 0; -->
 
-select  r.room_id, r.pd_idx, r.sender_id, r.receiver_id, r.title, r.status, m.message as last_message, 
-m.send_time as last_send_time from chat_room r join chat_message m on r.room_id = m.room_id 
-          where r.sender_id = #{sender_id}
-          and r.status > 0
-           order by m.send_time desc
-           limit 1
+SELECT
+    r.room_id,
+    r.pd_idx,
+    r.sender_id,
+    r.receiver_id,
+    r.title,
+    r.status,
+    m.message AS last_message,
+    m.send_time AS last_send_time
+FROM
+    chat_room r
+JOIN
+    chat_message m ON r.room_id = m.room_id
+JOIN (
+    SELECT
+        room_id,
+        MAX(send_time) AS max_send_time
+    FROM
+        chat_message
+    GROUP BY
+        room_id
+) latest_message ON m.room_id = latest_message.room_id AND m.send_time = latest_message.max_send_time
+WHERE
+    r.sender_id = #{sender_id}
+    AND r.status > 0;
+
 
 			
 	</select>
