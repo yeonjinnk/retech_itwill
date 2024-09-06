@@ -21,3 +21,4 @@ public class MemberVO {
 	private int member_isAdmin;
 	private Date member_motivation; 
 }
+
