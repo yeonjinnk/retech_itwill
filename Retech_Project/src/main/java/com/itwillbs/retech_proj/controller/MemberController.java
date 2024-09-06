@@ -1,5 +1,7 @@
 package com.itwillbs.retech_proj.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.PrivateKey;
 import java.util.HashMap;
 import java.util.List;
@@ -18,14 +20,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.retech_proj.handler.RsaKeyGenerator;
 import com.itwillbs.retech_proj.service.CsService;
 import com.itwillbs.retech_proj.service.MemberService;
 import com.itwillbs.retech_proj.service.ProductService;
+import com.itwillbs.retech_proj.service.SmsService;
 import com.itwillbs.retech_proj.vo.CsVO;
 import com.itwillbs.retech_proj.vo.MemberVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
+import com.itwillbs.retech_proj.vo.SmsAuthInfo;
 
 
 @Controller
@@ -266,22 +271,50 @@ public class MemberController {
 					}
 					
 				}
-			
-				// 전화번호로 비밀번호 찾기
+				
+				// 비밀번호찾기 인증번호
+				@Autowired
+			    private SmsService smsService;
 				@PostMapping("PwResetPro")
 				public String pwResetPro(MemberVO member, Model model) {
-					MemberVO dbMember = service.isExistPhonenumber(member);
-			
-					if(dbMember == null) { // !member.getMem_tel().equals(mem_tel)
-						model.addAttribute("msg", "없는 전화번호입니다");
-						return "result/fail";
-						
-					} else {
-						model.addAttribute("dbMember", dbMember); // model에 전화번호값 저장
-						return "member/member_pw_reset";
-					}
+					System.out.println("성수안 바보!!!!!!!!!!!!!!!!!!!!");
+					MemberVO ddmember = (MemberVO) model.getAttribute("dbMember");
 					
+					System.out.println("ddmember : " + ddmember);
+					
+				    // 입력된 전화번호로 DB에서 회원 정보를 조회
+				    MemberVO dbMember = service.isExistPhonenumber(member);
+				    
+				    if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
+				        model.addAttribute("msg", "없는 전화번호입니다");
+				        return "result/fail";
+				    } 
+				    
+				    // 전화번호가 존재하면 인증번호 생성 및 발송
+				    String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
+				    String member_id = dbMember.getMember_id(); // DB에서 가져온 회원 ID
+				    
+				    // 인증번호 생성 및 SMS 전송
+				    SmsAuthInfo smsAuthInfo = smsService.sendAuthSMS(member_id, phone_number);
+				    
+				    if (smsAuthInfo != null) {
+				        // 인증 정보를 DB에 저장
+				        smsService.registSmsAuthInfo(smsAuthInfo);
+				        
+				        // 모델에 인증 정보와 전화번호 저장
+				        model.addAttribute("dbMember", dbMember);
+				        model.addAttribute("smsAuthInfo", smsAuthInfo);
+				        
+				        // 인증번호 발송 성공 시 비밀번호 재설정 페이지로 이동
+				        return "member/member_pw_reset";
+				    } else {
+				        // 인증번호 전송 실패 시, 실패 메시지 반환
+				        model.addAttribute("msg", "인증번호 전송에 실패했습니다. 다시 시도해 주세요.");
+				        return "result/fail";
+				    }
 				}
+	
+				
 				// 비밀번호 재설정
 				@PostMapping("PwResetFinal")
 				public String pwResetFinal(@RequestParam Map<String, String> map, MemberVO member,
@@ -388,7 +421,13 @@ public class MemberController {
 	   
 	   // 회원정보 수정
 	   @PostMapping("MemberModify")
-	   public String mypageinfo(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
+	   public String mypageinfo(
+	       @RequestParam Map<String, String> map,
+	       @RequestParam(value = "member_profile", required = false) MultipartFile file,
+	       MemberVO member,
+	       BCryptPasswordEncoder passwordEncoder,
+	       Model model
+	   ) {
 	       if (member == null || member.getMember_id() == null) {
 	           model.addAttribute("msg", "회원 정보를 찾을 수 없습니다.");
 	           return "result/fail";
@@ -410,7 +449,25 @@ public class MemberController {
 	       if (newPassword != null && !newPassword.isEmpty()) {
 	           map.put("member_passwd", passwordEncoder.encode(newPassword));
 	       } else {
-	           map.remove("member_passwd");  // 비밀번호가 없으면 맵에서 제거
+	           map.remove("member_passwd");
+	       }
+
+	       // 파일 처리
+	       if (file != null && !file.isEmpty()) {
+	           try {
+	               // 파일 저장 경로
+	               String fileName = file.getOriginalFilename();
+	               String filePath = "path/to/upload/directory/" + fileName;
+	               File destinationFile = new File(filePath);
+	               file.transferTo(destinationFile);
+
+	               // 파일 경로를 map에 추가
+	               map.put("member_profile", filePath);
+
+	           } catch (IOException e) {
+	               model.addAttribute("msg", "파일 업로드 실패!");
+	               return "result/fail";
+	           }
 	       }
 
 	       int updateCount = service.modifyMember(map);
@@ -423,20 +480,7 @@ public class MemberController {
 	           return "result/fail";
 	       }
 	   }
-	 	   
-	   	   
-	   // 회원 탈퇴 
-	   @GetMapping("MemberWithdraw")
-	   public String withdrawForm(HttpSession session, Model model) {
-	      String id = (String)session.getAttribute("sId");
-	      if (id == null) {
-	         model.addAttribute("msg", "로그인 필수!");
-	         model.addAttribute("targetURL", "MemberLogin");
-	         return "result/fail";
-	      } else {
-	         return "member/member_withdraw_form";
-	      }
-	   }
+
 
 	   @PostMapping("MemberWithdraw")
 	   public String withdrawPro(MemberVO member, HttpSession session, Model model, BCryptPasswordEncoder passwordEncoder) {

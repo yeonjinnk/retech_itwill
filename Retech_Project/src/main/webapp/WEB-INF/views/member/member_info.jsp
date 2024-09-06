@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,15 +14,15 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .logo {
             margin: 20px 0;
         }
-        
+
         .logo img {
             max-width: 120px; 
         }
-        
+
         .tab {
             width: 80%; 
             max-width: 500px; 
@@ -32,7 +31,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         .tab h2 {
             margin: 0;
             padding: 15px;
@@ -42,7 +41,7 @@
             border-radius: 8px 8px 0 0;
             text-align: center;
         }
-        
+
         .join {
             padding: 20px;
             width: 80%; 
@@ -52,18 +51,18 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         .join_detail {
             margin-bottom: 15px;
         }
-        
+
         .join_detail span {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
             color: #333;
         }
-        
+
         .join_detail input[type="text"], 
         .join_detail input[type="password"] {
             width: 100%;
@@ -73,7 +72,7 @@
             font-size: 16px;
             box-sizing: border-box;
         }
-        
+
         .join_detail input[type="button"], 
         .join_detail input[type="submit"], 
         .join_detail input[type="reset"] {
@@ -88,46 +87,46 @@
             font-size: 16px;
             text-align: center;
         }
-        
+
         .join_detail input[type="button"]:hover, 
         .join_detail input[type="submit"]:hover, 
         .join_detail input[type="reset"]:hover {
             background-color: #0056b3;
         }
-        
+
         #checkPasswdResult, #checkPasswdResult2, #checkNameResult, #checkBirthResult, #checkPhoneResult {
             display: block;
             margin-top: 5px;
         }
-        
+
         #checkPasswdResult {
             color: red;
         }
-        
+
         #checkPasswdComplexResult {
             font-weight: bold;
         }
-        
+
         #checkPasswdComplexResult.green {
             color: green;
         }
-        
+
         #checkPasswdComplexResult.orange {
             color: orange;
         }
-        
+
         #checkPasswdComplexResult.red {
             color: red;
         }
-        
+
         .error {
             color: red;
         }
-        
+
         .form-buttons {
             text-align: center; 
         }
-        
+
         .form-buttons input[type="button"], 
         .form-buttons input[type="submit"], 
         .form-buttons input[type="reset"] {
@@ -152,22 +151,22 @@
             margin: 5px 0;
             width: 100%;
         }
-        
+
         .image-upload {
             margin: 20px 0;
         }
-        
+
         .image-upload input[type="file"] {
             display: block;
             margin-bottom: 10px;
         }
-        
+
         .image-upload img {
             display: block;
             max-width: 200px;
             margin-top: 10px;
         }
-        
+
         #img_preview_img {
             display: none;
         }
@@ -322,7 +321,7 @@
                     }
                 });
             });
-            
+
             // 휴대폰 인증번호 대조
             $("#phoneChk2").click(function() {
                 if($("#phone2").val() === code2) { // 위에서 저장한 값과 비교
@@ -368,7 +367,7 @@
             <img src="${pageContext.request.contextPath}/resources/images/main_logo.png" alt="Main Logo">
         </a>
     </div>
-    
+
     <section>
         <div class="tab">
             <h2>회원정보수정</h2>
@@ -422,7 +421,7 @@
             <div class="join_detail">
                 <span>프로필 사진</span>
                 <input type="file" name="member_profile" id="member_profile">
-                <img id="img_preview_img" alt="미리보기">
+                <img id="img_preview_img" alt="미리보기" style="display:none;">
                 <span id="img_status">프로필사진</span>
                 <input type="button" id="del_img" value="사진 삭제" style="display: none;">
             </div>

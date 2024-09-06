@@ -22,3 +22,4 @@ public class MemberVO {
 	private Date member_motivation; 
 }
 
+
