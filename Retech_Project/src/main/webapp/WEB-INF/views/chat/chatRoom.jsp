@@ -10,7 +10,9 @@
 </head>
 <body>
 	<script type="text/javascript">
+		let pd_idx2 = "${param.pd_idx}";
 		$(function() {
+		console.log("pd_idx : " + pd_idx2)
 			/*모달창 기본 숨김*/
 			$("#tradeModal").hide();
 			$("#deliveryModal").hide();
@@ -130,7 +132,8 @@
 			//화살표 함수
 			
 			let wsCheckInterval = setInterval(() => {
-				
+				console.log("ws : " + ws);
+				console.log("ws.readyState : " + ws.readyState);
 				if(ws != null && ws != undefined && ws.readyState == ws.OPEN) { //연결 성공 시
 					console.log("1:1 채팅방 입장 및 웹소켓 연결 완료!");
 				
@@ -162,60 +165,60 @@
 						
 					}
 				}
-			}, 500);
+			}, 2000);
 			
 		}
 		
 		// ======================================================================
 		//채팅방 영역에 1개의 채팅방 생성(표시)하는 함수
-		function createChatRoom(room) {
-			console.log("createChatRoom 함수 호출됨!");
+// 		function createChatRoom(room) {
+// 			console.log("createChatRoom 함수 호출됨!");
 			
-			console.log(JSON.stringify(room));
+// 			console.log(JSON.stringify(room));
 			
-			//수신자가 세션 아이디와 동일할 경우
-			//방 생성에 필요한 receiver_id 값을 송신자 아이디로 변경, 아니면 그대로 사영
-			let receiver_id = room.receiver_id == "${sId}" ? room.sender_id : room.receiver_id;
+// 			//수신자가 세션 아이디와 동일할 경우
+// 			//방 생성에 필요한 receiver_id 값을 송신자 아이디로 변경, 아니면 그대로 사영
+// 			let receiver_id = room.receiver_id == "${sId}" ? room.sender_id : room.receiver_id;
 			
-			//클래스 선택자 중 "chatRoom" 클래스를 갖는 요소를 찾아
-			//해당 요소의 클래스에 룸아이디가 포함되어 있지 않을 경우
-			//채팅방 영역에 새 채팅방 1개 추가
-			if(!$(".chatRoom").hasClass(room.room_id)) {
-				console.log("채팅방 표시 시작!");
+// 			//클래스 선택자 중 "chatRoom" 클래스를 갖는 요소를 찾아
+// 			//해당 요소의 클래스에 룸아이디가 포함되어 있지 않을 경우
+// 			//채팅방 영역에 새 채팅방 1개 추가
+// 			if(!$(".chatRoom").hasClass(room.room_id)) {
+// 				console.log("채팅방 표시 시작!");
 				
-				//생성할 채팅방 div 태그 문자열을 변수에 저장
-				//생성할 채팅방 hidden 태그에 채팅방의 룸아이디와 수신자아이디를 저장
-				let divRoom = '<div class="chatRoom ' + room.room_id + '">'
-				+ '	<div class="chatTitleArea">&lt;' + receiver_id + '&gt;</div>'
-				+ '	<div class="chatMessageArea"></div>'
-				+ '	<div class="commandArea">'
-				+ '		<input type="hidden" class="room_id" value="' + room.room_id + '">'
-				+ '		<input type="hidden" class="receiver_id" value="' + receiver_id + '">'
-				+ '		<input type="text" class="chatMessage" onkeypress="checkEnter(event)">'
-				+ '		<input type="button" class="btnSend" value="전송" onclick="send(this)">'
-// 				+ '		<span class="fileArea">'
-// 				+ '			<label for="file"><img src="${pageContext.request.servletContext.contextPath}/resources/images/clip.png"></lable>'
-// 				+ '			<input type="file" id="file" onchange="sendFile(this)">'
-// 				+ '		</span><br>'
-// 				+ '		<input type="button" class="btnCloseRoom" value="닫기" onclick="closeRoom(this)">'
-				+ '		<input type="button" class="btnQuitRoom" value="종료" onclick="quitRoom(this)">'
-				+ '	</div>'
-				+ '</div>';
+// 				//생성할 채팅방 div 태그 문자열을 변수에 저장
+// 				//생성할 채팅방 hidden 태그에 채팅방의 룸아이디와 수신자아이디를 저장
+// 				let divRoom = '<div class="chatRoom ' + room.room_id + '">'
+// 				+ '	<div class="chatTitleArea">&lt;' + receiver_id + '&gt;</div>'
+// 				+ '	<div class="chatMessageArea"></div>'
+// 				+ '	<div class="commandArea">'
+// 				+ '		<input type="hidden" class="room_id" value="' + room.room_id + '">'
+// 				+ '		<input type="hidden" class="receiver_id" value="' + receiver_id + '">'
+// 				+ '		<input type="text" class="chatMessage" onkeypress="checkEnter(event)">'
+// 				+ '		<input type="button" class="btnSend" value="전송" onclick="send(this)">'
+// // 				+ '		<span class="fileArea">'
+// // 				+ '			<label for="file"><img src="${pageContext.request.servletContext.contextPath}/resources/images/clip.png"></lable>'
+// // 				+ '			<input type="file" id="file" onchange="sendFile(this)">'
+// // 				+ '		</span><br>'
+// // 				+ '		<input type="button" class="btnCloseRoom" value="닫기" onclick="closeRoom(this)">'
+// 				+ '		<input type="button" class="btnQuitRoom" value="종료" onclick="quitRoom(this)">'
+// 				+ '	</div>'
+// 				+ '</div>';
 				
-				//ID 선택자 "chatRoomArea"영역에 채팅방 1개 추가
-				$("#chatRoomArea").append(divRoom);
+// 				//ID 선택자 "chatRoomArea"영역에 채팅방 1개 추가
+// 				$("#chatRoomArea").append(divRoom);
 				
-				//기존 채팅 내역을 불러오기 위한 요청 전송
-				sendMessage("REQUEST_CHAT_LIST", "", receiver_id, room.room_id, "", "");
+// 				//기존 채팅 내역을 불러오기 위한 요청 전송
+// 				sendMessage("REQUEST_CHAT_LIST", "", receiver_id, room.room_id, "", room.pd_idx);
 				
-				//채팅방 상태(status)가 2일 경우(상대방이 채팅을 종료)
-				//채팅방 표시하되 비활성화 상태로 표시하기 위해
-				//disableRoom() 함수 호출
-				if(room.status == 2) {
-					disableRoom(room);
-				}
-			}
-		}
+// 				//채팅방 상태(status)가 2일 경우(상대방이 채팅을 종료)
+// 				//채팅방 표시하되 비활성화 상태로 표시하기 위해
+// 				//disableRoom() 함수 호출
+// 				if(room.status == 2) {
+// 					disableRoom(room);
+// 				}
+// 			}
+// 		}
 	
 		// =========================================================================
 		// 채팅 메세지 입력창 엔터키 입력을 판별하는 함수
@@ -253,7 +256,7 @@
 			}
 			
 			//채팅 메세지를 서버로 전송할 sendMessage() 함수 호출
-			sendMessage("TALK", "${sId}", receiver_id, room_id, message, "");
+			sendMessage("TALK", "${sId}", receiver_id, room_id, message, pd_idx2);
 			
 			//자신의 채팅창에 입력한 메세지 출력을 위해 appendMessageToTargetRoom() 함수 호출
 			appendMessageToTargetRoom("TALK", "${sId}", receiver_id, room_id, message);
@@ -366,7 +369,8 @@
 				
 				// 채팅방 종료를 위해 서버로 종료 신호 전송
 				// => 메세지 타입 : "LEAVE", 송신자 아이디, 수신자 아이디, 룸 아이디 전송
-				sendMessage("LEAVE", "${sId}", receiver_id, room_id, "", "");
+				//sendMessage(type, sender_id, receiver_id, room_id, message, pd_idx)
+				sendMessage("LEAVE", "${sId}", receiver_id, room_id, "", pd_idx2);
 				
 				window.close();
 			}

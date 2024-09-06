@@ -82,6 +82,11 @@ public class ChatController {
 		return alarmMap;
 	}
 	
+	@PostMapping("SelectTrade")
+	public void selectTrade() {
+		
+	}
+	
 	
 //	@PostMapping
 }

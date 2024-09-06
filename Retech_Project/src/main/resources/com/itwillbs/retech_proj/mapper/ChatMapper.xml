@@ -75,11 +75,9 @@
 <!--     c.user_id = #{sender_id} -->
 <!--     AND c.status > 0; -->
 
-select  r.room_id, r.sender_id, m.receiver_id, r.title, r.status, m.message as last_message, m.send_time as last_send_time
-        from chat_room r join chat_message m
-        on r.room_id = m.room_id
-        and r.sender_id = m.sender_id
-          where r.user_id = #{sender_id}
+select  r.room_id, r.pd_idx, r.sender_id, r.receiver_id, r.title, r.status, m.message as last_message, 
+m.send_time as last_send_time from chat_room r join chat_message m on r.room_id = m.room_id 
+          where r.sender_id = #{sender_id}
           and r.status > 0
            order by m.send_time desc
            limit 1
@@ -94,19 +92,13 @@ select  r.room_id, r.sender_id, m.receiver_id, r.title, r.status, m.message as l
 		SELECT
 			c.room_id
 			, c.title
-			, c.user_id AS sender_id
-			, (
-				SELECT user_id
-				FROM chat_room
-				WHERE
-					room_id = c.room_id
-					AND user_id = #{receiver_id}
-			) AS receiver_id
+			, c.sender_id
+			, c.receiver_id
 			, c.status
 		FROM chat_room AS c
 		WHERE
-			user_id = #{sender_id}
-			AND title = CONCAT('상대방 id : ', #{receiver_id})
+			title = CONCAT('상대방 id : ', #{receiver_id})
+			AND c.pd_idx = #{pd_idx}
 			AND c.status = 1; -- 채팅방 상태가 0(자신이 종료함)이 아닌 채팅방만 조회
 	</select>
 	
@@ -144,9 +136,10 @@ select  r.room_id, r.sender_id, m.receiver_id, r.title, r.status, m.message as l
 		 <foreach collection="list" item="chatRoomList" separator=",">
 		 	(
 		 		#{chatRoomList.room_id}
+		 		, #{chatRoomList.pd_idx}
 		 		, #{chatRoomList.sender_id}
+		 		, #{chatRoomList.receiver_id}
 		 		, #{chatRoomList.title}
-		 		, #{chatRoomList.sender_id}	-- 사용자 아이디는 sender_id에 전달된 항목만 사용
 		 		, #{chatRoomList.status}
 		 	)
 		 </foreach>
@@ -165,6 +158,7 @@ select  r.room_id, r.sender_id, m.receiver_id, r.title, r.status, m.message as l
 		INSERT INTO chat_message
 		VALUES (
 			#{room_id}
+			, #{pd_idx}
 			, #{sender_id}
 			, #{receiver_id}
 			, #{message}

@@ -10,16 +10,16 @@
 </head>
 <body>
 	<div class="modalOpen">
-		<form action="">
+		<form action="SelectTrade">
 			거래하기 확인
 			<hr>
 			정말 상대방과 거래하시겠습니까?<br>
 			최종 거래금액을 입력하고 진행하실 거래방법을 눌러주세요.<br>
 			최종 거래금액 : 
-			<input type="number" placeholder="거래금액을 입력해주세요.">원<br>
-			<input type="radio" name="trade" id="direct" value="direct">
+			<input type="number" name="trade_amt" placeholder="거래금액을 입력해주세요.">원<br>
+			<input type="radio" name="trade_type" id="direct" value="direct">
 				<label for="direct">직거래</label>
-			<input type="radio" name="trade" id="delivery" value="delivery">
+			<input type="radio" name="trade_type" id="delivery" value="delivery">
 				<label for="delivery">택배거래</label>
 			<hr>
 			<div class="modalBtn">

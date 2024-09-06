@@ -41,6 +41,9 @@
 			, default
 			, null
 			, null
+			, #{cs_file}
+			, #{cs_file1}
+			, #{cs_file2}
 		)
 	</insert>
 	

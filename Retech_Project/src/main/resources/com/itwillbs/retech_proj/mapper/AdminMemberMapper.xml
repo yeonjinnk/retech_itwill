@@ -10,10 +10,8 @@
 		FROM member
 		<if test="!searchKeyword.equals('')">
 			WHERE 
-				member_num like concat('%',#{searchKeyword},'%')
-				or member_id like concat('%',#{searchKeyword},'%')
-				or member_name like concat('%',#{searchKeyword},'%')
-				or member_join_date like concat('%',#{searchKeyword},'%')
+				member_id like concat('%',#{searchKeyword},'%')
+				or member_nickname like concat('%',#{searchKeyword},'%')
 				or member_status like concat('%',#{searchKeyword},'%')
 		</if>
 	</select>
@@ -25,7 +23,7 @@
 		<if test="!searchKeyword.equals('')">
 			where 
 				member_id like concat('%',#{searchKeyword},'%')
-				or member_name like concat('%',#{searchKeyword},'%')
+				or member_nickname like concat('%',#{searchKeyword},'%')
 				or member_status like concat('%',#{searchKeyword},'%')
 		</if>
 		ORDER BY
@@ -47,6 +45,20 @@
 				</when>
 				<otherwise>
 					member_isAdmin = 0
+				</otherwise>
+			</choose>
+		WHERE member_id = #{member_id}
+</update>
+
+<update id="updateStatusAuth">
+		UPDATE member
+		SET
+			<choose>
+				<when test="member_status.equals('1')">
+					member_status = '블랙'
+				</when>
+				<otherwise>
+					member_status = '1'
 				</otherwise>
 			</choose>
 		WHERE member_id = #{member_id}

@@ -12,7 +12,7 @@
 		<li class="depth01">
 			<a href="">관리자 차트</a>
 			<ul class="depth02">
-				<li><a href=""></a></li>
+				<li><a href="AdminChart"></a></li>
 			</ul>			
 		</li>
 		<li class="depth01">
@@ -68,7 +68,7 @@
 		<li class="depth01">
 			<a href="">신고 관리</a>
 			<ul class="depth02">
-				<li><a href=""></a></li>
+				<li><a href="AdminPolice">신고관리</a></li>
 			</ul>			
 		</li>
 	</ul>		

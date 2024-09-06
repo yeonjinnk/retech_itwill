@@ -58,6 +58,12 @@
 		display: flex;
 		justify-content: space-between;
 	}
+	
+	.replyContent img {
+		width: 10px;
+		height: 10px;
+	}
+	}
 </style>
 <script type="text/javascript">
 	function confirmDelete() {
@@ -185,7 +191,7 @@
 				<td>${notice.notice_readcount}</td>
 			<tr class="contentArea">
 				<td colspan="3">
-					<div class="cont">${selectedNotice.notice_content}</div>
+					<div class="cont">${notice.notice_content}</div>
 				</td>
 			</tr>
 		</table>
@@ -193,7 +199,7 @@
 			<%-- 댓글 작성 폼 영역 --%>
 			<form action="NoticeTinyReplyWrite" method="post">
 				<%-- 입력받지 않은 글번호, 페이지번호 함께 전달 = hidden 활용 --%>
-				<input type="hidden" name="notice_idx" value="${selectedNotice.notice_idx}">
+				<input type="hidden" name="notice_idx" value="${notice.notice_idx}">
 				<input type="hidden" name="pageNum" value="${param.pageNum}">
 				
 				<%-- 세션 아이디가 없을 경우(= 미로그인) 댓글 작성 차단 --%>
@@ -231,7 +237,7 @@
 									</a>
 									<%-- 또한, 세션 아이디가 댓글 작성자와 동일하거나 관리자("admin") 일 경우 --%>
 									<%-- 댓글 삭제 이미지(delete-icon.png) 추가 --%>
-									<c:if test="${sessionScope.sId eq 'admin' or sessionScope.sId eq tinyReplyNotice.reply_name}">
+									<c:if test="${sessionScope.sId eq 'admin@naver.com' or sessionScope.sId eq tinyReplyNotice.reply_name}">
 										<%-- 댓글 삭제 아이콘 클릭 시 자바스크립트 함수 confirmReplyDelete() 호출 --%>
 										<%-- 파라미터 : 댓글번호, 반복 인덱스(status.index) --%>
 										<a href="javascript:confirmReplyDelete(${tinyReplyNotice.reply_idx}, ${status.index})">

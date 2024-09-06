@@ -32,9 +32,10 @@ CREATE TABLE chat_room (
 @AllArgsConstructor
 public class ChatRoom {
 	private String room_id;
-	private String title;
+	private int pd_idx;
 	private String sender_id;
 	private String receiver_id;
+	private String title;
 	private int status;
 	
 	private String last_message;

@@ -15,10 +15,12 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.itwillbs.retech_proj.service.ChatService;
 import com.itwillbs.retech_proj.service.MemberService;
 import com.itwillbs.retech_proj.vo.ChatMessage;
 import com.itwillbs.retech_proj.vo.ChatRoom;
+//import com.itwillbs.retech_proj.vo.EmptyStringToNumberTypeAdapter;
 
 public class WebSocketHandler extends TextWebSocketHandler {
 
@@ -39,6 +41,30 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	//------------------------------------------------------------------------------------------------------
 	//JSON 데이터 파싱 작업을 처리할 Gson 객체 생성
 	private Gson gson = new Gson();
+	
+//	private static Gson getGson(){
+//	    GsonBuilder gsonBuilder = new GsonBuilder();
+//	    gsonBuilder.registerTypeAdapter(Integer.class , new EmptyStringToNumberTypeAdapter())
+//	            .registerTypeAdapter(int.class, new EmptyStringToNumberTypeAdapter())
+//	            .registerTypeAdapter(double.class, new EmptyStringToNumberTypeAdapter())
+//	            .registerTypeAdapter(Double.class, new EmptyStringToNumberTypeAdapter());
+//
+//	    Gson gson = gsonBuilder.create();
+//	    return gson;
+//	}
+//	
+//	
+//	
+//	public static Retrofit initRetrofit() {
+//
+//	    Retrofit retrofit = new Retrofit.Builder()
+//	            .baseUrl(Variable._SERVER_HOST)
+//	            .client(Common.getClient())
+//	            .addConverterFactory(GsonConverterFactory.create(getGson()))
+//	            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//	            .build();
+//	    return retrofit;
+	
 	//------------------------------------------------------------------------------------------------------
 	@Autowired
 	private MemberService memberService;
@@ -216,7 +242,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 						
 						//메세지 설정
 						//ChatMessage(type, sender_id, receiver_id, room_id, message, send_time)
-						ChatMessage errorMessage = new ChatMessage(ChatMessage.TYPE_ERROR, "", sender_id, "", "사용자가 존재하지 않습니다!", "", "");
+						ChatMessage errorMessage = new ChatMessage(ChatMessage.TYPE_ERROR, "", sender_id, "", "사용자가 존재하지 않습니다!", "", 404);
 						
 						//(서버 -> 클라이언트) 메세지 전송
 						sendMessage(session, errorMessage);
@@ -230,9 +256,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
 				
 				//4. 채팅방 조회
 				//상대방 존재할 경우 신규 or 기존 채팅방 표시
-				
+				int pd_idx = chatMessage.getPd_idx();
+				System.out.println("상품번호 : " + pd_idx);
 				//상대방과의 기존 채팅방 존재 여부 확인
-				ChatRoom chatRoom = chatService.getChatRoom(sender_id, receiver_id);
+				ChatRoom chatRoom = chatService.getChatRoom(sender_id, receiver_id, pd_idx);
 				System.out.println("4. 채팅방 조회함!");
 				
 				// 4-B. 기존 채팅방 X -> 5. 채팅방 생성
@@ -251,11 +278,11 @@ public class WebSocketHandler extends TextWebSocketHandler {
 					//List 객체에 추가
 					List<ChatRoom> chatRoomList = new ArrayList<ChatRoom>();
 					
-					//chatRoom(room_id, title, sender_id, receiver_id, status)
+					//chatRoom(room_id, pd_idx, sender_id, receiver_id, title, status, last_message, last_send_time)
 					//송신자 채팅방
-					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), "상대방 id : " + receiver_id, sender_id, receiver_id, 1, "", ""));
+					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), chatMessage.getPd_idx(), sender_id, receiver_id, "상대방 id : " + receiver_id, 1, sender_id, ""));
 					//수신자 채팅방
-					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), "상대방 id : " + sender_id, receiver_id, sender_id, 1, "", ""));
+					chatRoomList.add(new ChatRoom(chatMessage.getRoom_id(), chatMessage.getPd_idx(), receiver_id, sender_id, "상대방 id : " + sender_id, 1, receiver_id, ""));
 					
 					System.out.println("5-1. 생성한 채팅방 리스트 chatRoomList : " + chatRoomList);
 					//송,수신자 채팅방 총 2개 DB에 저장
@@ -368,8 +395,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
 			
 			System.out.println("대화 저장함!");
 			//채팅 메세지 전송할 사용자 확인(user 객체에 receiver_id를 통해 판별
+			
+			System.out.println("수신자가 접속해있는지 판단 null인지 아닌지 : " + users.get(receiver_id));
 			if(users.get(receiver_id) != null) { //현재 수신자가 접속해 있을 경우
-				
+				System.out.println("수신자 접속해잇음!");
 				//수신자에게 메세지 보내야 하기에 수신자의 웹소켓을 가져와야 함.
 				
 				//탐색된 receiver_id에 해당하는 웹소켓 세션 객체의 세션 아이디를 활용하여
@@ -388,7 +417,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		} else if(chatMessage.getType().equals(ChatMessage.TYPE_LEAVE)) {
 		// -----------------------------------------------------------------------------------
 		//5. 채팅방 종료
-			
+			System.out.println("!!!!!!!!!!!!!!!! 채팅방 종료 LEAVE !!!!!!!!!!!!!!!!!!!1");
 			//채팅방 상태값 변경(자신 = 0, 상대방 = 2)
 			chatService.quitChatRoom(chatMessage.getRoom_id(), chatMessage.getSender_id());
 			
