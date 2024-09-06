@@ -19,4 +19,5 @@ public class MemberVO {
 	private String member_address2;  
 	private String member_profile; 
 	private int member_isAdmin;
+	private Date member_motivation; 
 }

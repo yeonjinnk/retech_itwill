@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>찜한상품</title>
+    <title>찜한 상품</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
     <style type="text/css">
+        <style type="text/css">
         html, body {
             height: 100%;
             margin: 0;
@@ -34,8 +34,8 @@
             background-color: #f4f4f4;
             padding: 20px;
             box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-            height: calc(100vh - 150px); 
-            overflow-y: auto; 
+            height: calc(100vh - 150px);
+            overflow-y: auto;
         }
 
         .sidebar a {
@@ -61,7 +61,7 @@
             flex: 1;
             padding: 20px;
             background-color: #f9f9f9;
-            overflow-y: auto; 
+            overflow-y: auto;
         }
 
         .store-info {
@@ -130,7 +130,9 @@
 
         .product-image {
             width: 100px;
+            height: auto;
         }
+    </style>
     </style>
 </head>
 <body>
@@ -142,7 +144,7 @@
         <div class="sidebar">
             <a href="SaleHistory">판매내역</a>
             <a href="PurchaseHistory">구매내역</a>
-            <a href="Wishlist" class="selected">찜한상품</a>
+            <a href="Wishlist" class="selected">찜한 상품</a>
             <a href="CsHistory">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
@@ -156,7 +158,7 @@
             </div>
 
             <ul class="tabs">
-                <li><a href="#" class="selected">찜한상품</a></li>
+                <li><a href="#" class="selected">찜한 상품</a></li>
             </ul>
 
             <div class="content">
@@ -180,13 +182,13 @@
                                                 <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
                                             </c:when>
                                             <c:otherwise>
-                                                No Image
+                                                이미지 없음
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
                                     <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
                                     <td>${product.pd_price}</td>
-                                    <td>${product.pd_first_date}</td>
+                                    <td data-date="${product.pd_first_date}"></td>
                                     <td>${product.pd_status}</td>
                                 </tr>
                             </c:forEach>
@@ -207,5 +209,24 @@
     <footer>
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 날짜 형식 변환 함수
+            function formatDate(dateString) {
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ko-KR', options); // 'ko-KR'은 한국 날짜 형식
+            }
+
+            // 모든 날짜 셀을 찾아서 변환
+            document.querySelectorAll('td[data-date]').forEach(cell => {
+                const dateString = cell.getAttribute('data-date');
+                if (dateString) {
+                    cell.textContent = formatDate(dateString);
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -90,13 +90,11 @@
 		</dependency>
 		
 <!-- 		문자인증 -->
-<!-- 		<dependency> -->
-<!-- 		    <groupId>net.nurigo</groupId> -->
-<!-- 		    <artifactId>javaSDK</artifactId> -->
-<!-- 		    <version>4.2.7</version> -->
-<!-- 		</dependency> -->
-
-
+		<dependency>
+		    <groupId>net.nurigo</groupId>
+		    <artifactId>sdk</artifactId>
+		    <version>4.2.7</version>
+		</dependency>
 						
 		<!-- 6. 암호화에 사용될 BCryptPasswordEncoder 클래스가 포함된 spring-security-web 라이브러리 -->
 		<!-- 주의! JDK 11(class file version 55) 기준 5.x.x 버전까지만 사용 가능함 -->

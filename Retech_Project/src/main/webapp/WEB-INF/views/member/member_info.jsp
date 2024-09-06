@@ -152,6 +152,25 @@
             margin: 5px 0;
             width: 100%;
         }
+        
+        .image-upload {
+            margin: 20px 0;
+        }
+        
+        .image-upload input[type="file"] {
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .image-upload img {
+            display: block;
+            max-width: 200px;
+            margin-top: 10px;
+        }
+        
+        #img_preview_img {
+            display: none;
+        }
     </style>
     <script type="text/javascript">
         let code2 = "";
@@ -314,6 +333,28 @@
                     alert('인증실패');
                 }
             });
+
+            // 프로필 사진 미리보기
+            $("#member_profile").change(function() {
+                let file = this.files[0];
+                if (file) {
+                    let reader = new FileReader();
+                    reader.onload = function(e) {
+                        $("#img_preview_img").attr("src", e.target.result).show();
+                        $("#img_status").text("사진 미리보기");
+                        $("#del_img").show();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 프로필 사진 삭제
+            $("#del_img").click(function() {
+                $("#img_preview_img").hide();
+                $("#img_status").text("프로필사진");
+                $("#del_img").hide();
+                $("#member_profile").val("");
+            });
         });
     </script>
 </head>
@@ -333,7 +374,7 @@
             <h2>회원정보수정</h2>
         </div>
 
-        <form class="join" name="Modify" action="MemberModify" method="post">
+        <form class="join" name="Modify" action="MemberModify" method="post" enctype="multipart/form-data">
             <div class="join_detail">
                 <span>아이디(이메일)</span>
                 <input type="text" name="member_id" value="${member.member_id}" readonly required>
@@ -344,39 +385,47 @@
             </div>
             <div class="join_detail">
                 <span>새 비밀번호</span>
-                <input type="password" name="member_passwd" id="member_passwd" placeholder="영문, 숫자, 특수문자 중 2개 조합 8자 이상" onblur="checkPasswd()">
+                <input type="password" name="member_passwd" id="member_passwd" placeholder="영문, 숫자, 특수문자 중 2개 조합 8자 이상" onblur="checkPasswd()" required>
                 <span id="checkPasswdResult"></span>
                 <span id="checkPasswdComplexResult"></span>
             </div>
             <div class="join_detail">
-                <span>새 비밀번호 확인</span>
-                <input type="password" name="member_pw2" id="member_pw2" placeholder="위에 입력한 비밀번호를 다시 입력해주세요" required onblur="checkSamePw()">
+                <span>비밀번호 확인</span>
+                <input type="password" name="member_pw2" id="member_pw2" placeholder="비밀번호 확인" onblur="checkSamePw()" required>
                 <span id="checkPasswdResult2"></span>
             </div>
             <div class="join_detail">
                 <span>이름</span>
-                <input type="text" name="member_name" id="member_name" value="${member.member_name}" readonly required>
+                <input type="text" name="member_name" id="member_name" value="${member.member_name}" required>
+                <span id="checkNameResult"></span>
             </div>
             <div class="join_detail">
                 <span>생년월일</span>
-                <input type="text" name="member_birth" id="member_birth" value="${member.member_birth}" readonly required>
+                <input type="text" name="member_birth" id="member_birth" value="${member.member_birth}" required>
+                <span id="checkBirthResult"></span>
             </div>
             <div class="join_detail">
-                <label for="postCode" class="title">주소</label>
-                <input type="text" name="member_postcode" id="postCode" placeholder="우편번호" required readonly>
-                <button type="button" id="btnSearchAddress">주소검색</button>
-                <input type="text" name="member_address1" id="address1" placeholder="기본주소" required>
-                <input type="text" name="member_address2" id="address2" placeholder="상세주소">
+                <span>휴대폰 번호</span>
+                <input type="text" name="member_phone" id="phoneNumber" value="${member.member_phone}" required>
+                <input type="button" id="phoneChk" value="인증번호 전송">
+                <input type="text" id="phone2" placeholder="인증번호 입력">
+                <input type="button" id="phoneChk2" value="인증번호 확인">
+                <span id="checkPhoneResult"></span>
             </div>
-            
-            <div class="input_text">
-                <input class="signin_pass" id="phoneNumber" type="text" name="member_phone" title="전화번호 입력" placeholder="전화번호 입력해주세요">
-                <input class="signin_pass" type="button" value="인증번호 받기" id="phoneChk">
-                
-                <input class="signin_pass" id="phone2" type="text" name="phone" title="인증번호 입력" placeholder="인증번호 입력해주세요">
-                <input class="signin_pass" type="button" value="인증확인" id="phoneChk2">
+            <div class="join_detail">
+                <span>주소</span>
+                <input type="text" id="postCode" name="postCode" readonly placeholder="우편번호">
+                <input type="button" id="btnSearchAddress" value="주소 검색">
+                <input type="text" id="address1" name="address1" readonly placeholder="주소">
+                <input type="text" id="address2" name="address2" placeholder="상세주소">
             </div>
-            
+            <div class="join_detail">
+                <span>프로필 사진</span>
+                <input type="file" name="member_profile" id="member_profile">
+                <img id="img_preview_img" alt="미리보기">
+                <span id="img_status">프로필사진</span>
+                <input type="button" id="del_img" value="사진 삭제" style="display: none;">
+            </div>
             <div class="form-buttons">
                 <input type="submit" value="정보수정">
                 <input type="reset" value="초기화">
@@ -385,9 +434,5 @@
             </div>
         </form>
     </section>
-
-    <footer class="footer-section">
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 </body>
 </html>
