@@ -89,19 +89,19 @@
 				<h2 class="category_subject">카테고리</h2>
 				<div class="pd_category_area area">
 					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=PC&c_id2=AP&c_id3=결제완료">
+						<a href="ProductList?c_id=PC&c_id2=AP">
 							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
 						</a>
 						<div class="overlay">애플 PC</div>
 					</div>
 					<div class="pd_category_photo photo">
-						<a href="#">
+						<a href="ProductList?c_id=PC&c_id2=SA">
 							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
 						</a>
 						<div class="overlay">삼성 PC</div>
 					</div>
 					<div class="pd_category_photo photo">
-						<a href="#">
+						<a href="ProductList?c_id=PC&c_id2=LG">
 							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
 						</a>
 						<div class="overlay">LG PC</div>
@@ -109,19 +109,19 @@
 				</div>
 				<div class="pd_category_area area">
 					<div class="pd_category_photo photo">
-						<a href="#">
+						<a href="ProductList?c_id=NB&c_id2=AP">
 							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
 						</a>
 						<div class="overlay">애플 노트북</div>
 					</div>
 					<div class="pd_category_photo photo">
-						<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
+						<a href="ProductList?c_id=NB&c_id2=SA">
 							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
 						</a>
 						<div class="overlay">삼성 노트북</div>
 					</div>
 					<div class="pd_category_photo photo">
-						<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
+						<a href="ProductList?c_id=NB&c_id2=LG">
 							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
 						</a>
 						<div class="overlay">LG 노트북</div>

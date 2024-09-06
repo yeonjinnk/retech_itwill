@@ -191,6 +191,7 @@ select  r.room_id, r.sender_id, m.receiver_id, r.title, r.status, m.message as l
 			#{member_id}
 			, #{room_id}
 			, #{sender_id}
+			, #{receiver_id}
 			, #{message}
 			, #{time}
 			)
@@ -198,7 +199,7 @@ select  r.room_id, r.sender_id, m.receiver_id, r.title, r.status, m.message as l
 	
 	<!-- DB에서 알람 가져오기 -->
 	<select id="selectAlarm" resultType="hashmap">
-		SELECT room_id, sender_id, message, time
+		SELECT room_id, sender_id, message, time, receiver_id
 		FROM alarm
 		WHERE member_id = #{member_id}
 		ORDER BY time desc

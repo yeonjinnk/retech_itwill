@@ -206,7 +206,7 @@
 				$("#chatRoomArea").append(divRoom);
 				
 				//기존 채팅 내역을 불러오기 위한 요청 전송
-				sendMessage("REQUEST_CHAT_LIST", "", "", room.room_id, "", "");
+				sendMessage("REQUEST_CHAT_LIST", "", receiver_id, room.room_id, "", "");
 				
 				//채팅방 상태(status)가 2일 경우(상대방이 채팅을 종료)
 				//채팅방 표시하되 비활성화 상태로 표시하기 위해

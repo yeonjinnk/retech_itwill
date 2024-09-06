@@ -352,7 +352,10 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		} else if(chatMessage.getType().equals(ChatMessage.TYPE_TALK)) {
 		// -----------------------------------------------------------------------------------
 		//4. 뷰페이지에 입력한 채팅 내역 DB에 저장 및 수신자에게 입력받은 채팅 전송
+			System.out.println("TYPE_TALK에 진입함!");
 			
+			System.out.println("리시버 아이디가 대체 뭔디 : " + receiver_id);
+			System.out.println("users.리시버 아이디가 대체 뭔디 : " + users.get(receiver_id));
 			//현재 시스템 날짜 및 시각 정보 저장하기
 			chatMessage.setSend_time(getDateTimeForNow());
 			
