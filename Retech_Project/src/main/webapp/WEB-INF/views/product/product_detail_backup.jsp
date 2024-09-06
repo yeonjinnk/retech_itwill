@@ -116,13 +116,10 @@ $(function() {
 
 //찜하기 기능
 function checkProduct(element) {
-//     let sId = $("#sessionId").val();
-//     let pd_idx = $("#" + $(element).data('target')).val();
-    let member_id = "${sessionScope.sId}";
-    let pd_idx = "${product.pd_idx}";
+    let sId = $("#sessionId").val();
+    let pd_idx = $("#" + $(element).data('target')).val();
 //     let targetId = 'clickCk' + i;
 //     let target = $("#likeProduct" + i).data("target");
-    console.log("member_id 값: " + member_id);  // 이 값을 콘솔에서 확인
     console.log("pd_idx 값: " + pd_idx);  // 이 값을 콘솔에서 확인
 //     console.log("data-target 값: " + target);  // 이 값을 콘솔에서 확인
 //     console.log("기대하는 targetId: " + targetId);
@@ -131,31 +128,29 @@ function checkProduct(element) {
     let isLike = $("#likeProduct").hasClass("like");
     console.log(isLike);
     
-//     if(!isLike) { // 좋아요 없는 상태
-//     	$("#likeProduct").addClass("like"); // 좋아요 표시
-//     	console.log("likeImage : " + $("#likeImage").html());
-// //     	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
-//     	// 좋아요 상태로 변경 및 좋아요 저장
+    if(!isLike) { // 좋아요 없는 상태
+    	$("#likeProduct").addClass("like"); // 좋아요 표시
+    	$("#likeImage").src = "${pageContext.request.contextPath}/resources/images/heartIcon2.png";
+    	// 좋아요 상태로 변경 및 좋아요 저장
     	
-//     	// ${pageContext.request.contextPath}/resources/images/heartIcon3.png
-//     } else { // 좋아요 있는 상태
-//     	console.log("likeImage : " + $("#likeImage").html());
-//     	$("#likeProduct").removeClass("like"); // 좋아요 제거
-// //     	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+    	// ${pageContext.request.contextPath}/resources/images/heartIcon3.png
+    } else { // 좋아요 있는 상태
+    	$("#likeProduct").removeClass("like"); // 좋아요 제거
+    	$("#likeImage").src = "${pageContext.request.contextPath}/resources/images/heartIcon3.png";
     	
-//     	// 좋아요 상태 해제 및 좋아요 해제 상태 저장
+    	// 좋아요 상태 해제 및 좋아요 해제 상태 저장
     	
-//     }
-//     console.log("변경 후 : "  + $("#likeProduct").hasClass("like"));
+    }
+    console.log("변경 후 : "  + $("#likeProduct").hasClass("like"));
 	
     // 현재 상태의 반대값으로 isLike 설정 (true -> false, false -> true)
 //     let isLike = !isCurrentlyLiked;
-// 	console.log("망할놈의 i의 값 : " + i);
+	console.log("망할놈의 i의 값 : " + i);
     $.ajax({
         type: 'POST',
         url: 'likeProduct',
         data: {
-            'member_id': member_id,
+            'member_id': sId,
             'pd_idx': pd_idx,
             'isLike': isLike
         },
@@ -164,12 +159,12 @@ function checkProduct(element) {
             alert("성공");
             console.log("서버 응답: ", result);
 
-            if (isLike) { // 찜 상태일 때 해제 상태로 전환 (isLike가 true일 때)
-            	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
-            	$("#likeProduct").removeClass("like"); // 좋아요 제거
-            } else { // 찜 해제 상태일 때 찜 상태로 전환 (isLike가 false일 때)
-            	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
-            	$("#likeProduct").addClass("like"); // 좋아요 표시
+            if (isLike) { // 찜 상태로 전환 (isLike가 true일 때)
+                $(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+                $("#" + targetId).attr("disabled", true); // 찜 상태로 전환
+            } else { // 찜 해제 상태로 전환 (isLike가 false일 때)
+                $(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+                $("#" + targetId).attr("disabled", false); // 찜 해제 상태로 전환
             }
         },
         error: function(xhr, status, error) {
@@ -298,12 +293,11 @@ function checkProduct(element) {
 
 						<%-- 1. 세션아이디 존재하고, 세션아이디=판매자아이디 동일할 경우 --%>
 						<%-- 1-1. 수정하기, 삭제하기, 끌어올리기 영역 노출 --%>
-<%-- 					<input type="hidden" name="member_id" value="${sessionScope.sId }" id="sessionId"> --%>
-<%-- 					<input type="hidden" name="pd_idx" value="${product.pd_idx}" id="pd_idx"> --%>
-					
 					<c:choose>
 						<%-- 로그인 안 했을 경우 --%>
 						<c:when test="${empty sessionScope.sId}">
+							<input type="hidden" name="member_id" value="${sessionScope.sId }" id="sessionId">
+							<input type="hidden" name="pd_idx" value="${product.pd_idx}" id="pd_idx">
 							
 							<button type="button" id="likeProduct" data-toggle="modal" data-target="#needLogin" class="" onclick="checkProduct(this)">
 							    <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
@@ -333,23 +327,114 @@ function checkProduct(element) {
 									</button>
 									
 									<%-- 채팅하기 버튼 --%>
-									<c:choose>
-										<c:when test="${product.pd_status eq '거래중' }">
-												<input type="button" class="btn btn-lg btn-dark col-10" style="font-size: 1em;" value="채팅하기" onclick="reservedProduct()">
-										</c:when>
-											<%--- 거래상태 예약중이아닐경우 채팅하기로 정상적으로 이동 --%>
-										<c:otherwise>
-											<button type="button" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" onclick="openChat()">
-												채팅하기
-											</button>
-										</c:otherwise>
-									</c:choose>
+									<c:when test="${product.pd_status eq '거래중' }">
+											<input type="button" class="btn btn-lg btn-dark col-10" style="font-size: 1em;" value="채팅하기" onclick="reservedProduct()">
+									</c:when>
+										<%--- 거래상태 예약중이아닐경우 채팅하기로 정상적으로 이동 --%>
+									<c:otherwise>
+										<button type="button" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" onclick="openChat()">
+											채팅하기
+										</button>
+									</c:otherwise>
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 					</c:choose>	
 <%--=========================================================================================================================== --%>
 						
+					<c:choose>
+						<c:when test="${not empty sessionScope.sId && sessionScope.sId eq product.member_id}">
+							<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px"
+								onclick="location.href='productModifyForm?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">수정하기</button>
+
+							<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px" onclick="confirmDelete()">삭제하기</button>
+
+							<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px"
+								onclick="location.href='productUpdateDate?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">끌어올리기</button>
+						</c:when>
+						<%-- 2.판매자 본인 아닐경우 - 채팅하기 가능 --%>
+						<c:otherwise>
+							<div class="chatButtonArea row">
+							
+								<%-- 2-1.세션아이디 없을경우(미로그인) -> 로그인알람창띄우고 로그인페이지로 이동 --%>
+								<c:if test="${empty sessionScope.sId }">
+									<%--찜하기기능 --%>
+									<%-- 찜하기 버튼 클릭 시 pd_idx 파라미터로 받아 전달 --%>
+									<input type="hidden" name="member_id" value="${sessionScope.sId }" id="sessionId">
+									<input type="hidden" name="pd_idx" value="${product.pd_idx}" id="pd_idx">
+									<c:choose>
+										<%--회원이나 직원이('비회원'이 아닐 때) 세션 아이디가 있을 때(로그인o) 찜하기 기능--%>
+										<%-- 찜하기 목록에 있으면 찜 표시 찜하기 목록에 없으면 그대로 표시--%>
+										<%--세션 아이디가 없을 때(로그인x) 모달창으로 로그인권유--%>
+										<c:when test="${not empty sessionScope.sId}">
+											<button type="button" id="likeProduct" data-target="pd_idx" class=""
+											    onclick="checkProduct(this)">
+											    <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
+											</button>
+											<input type="hidden" id="clickCk${i.count }">
+										</c:when>
+										<%-- 세션아이디가 없거나 비회원일 때 -> 클릭 시 모달창 팝업 --%>
+										<c:otherwise>
+											<%-- 찜하기 버튼과 버튼 클릭 시 상태 변경용 히든 타입 태그 --%>
+											<button type="button" id="likeProductNo${i.index }" data-toggle="modal" data-target="#needLogin">
+												<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
+											</button>
+										</c:otherwise>
+									</c:choose>
+									<div class="d-grid gap-2 col-10">
+										<button class="btn btn-lg btn-dark col-12" id="chatting" data-toggle="modal" data-target="#needLogin"
+											style="font-size: 1em; margin: 10px 10px">거래하기</button>
+									</div>
+								</c:if>
+								
+								<%--2.2 세션아이디 있을경우(판매자아닌 일반회원) -> 채팅하기 누를경우 채팅창으로 이동 --%>
+								<c:if test="${not empty sessionScope.sId && sessionScope.sId ne product.member_id }">
+									<%-- 찜하기 버튼 클릭 시 pd_idx 파라미터로 받아 전달 --%>
+									<input type="hidden" name="member_id" value="${sessionScope.sId }" id="sessionId">
+									<input type="hidden" name="p_idx" value="${product.pd_idx}" id="pd_idx${i.count }">
+									<c:choose>
+										<%-- 회원이나 직원이('비회원'이 아닐 때) 세션 아이디가 있을 때(로그인o) 찜하기 기능
+											- 찜하기 목록에 있으면 찜 표시
+											- 찜하기 목록에 없으면 그대로 표시
+											세션 아이디가 없을 때(로그인x) 모달창으로 로그인권유--%>
+										<c:when test="${not empty sessionScope.sId}">
+											<button type="button" id="likeProduct" data-target="pd_idx"
+												onclick="checkProduct(this)">
+												<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
+											</button>
+											<input type="hidden" id="clickCk${i.count }">
+										</c:when>
+										<%-- 세션아이디가 없거나 비회원일 때 -> 클릭 시 모달창 팝업 --%>
+										<c:otherwise>
+											<%-- 찜하기 버튼과 버튼 클릭 시 상태 변경용 히든 타입 태그 --%>
+											<button type="button" id="likeProductNo${i.index }" data-toggle="modal" data-target="#needLogin">
+												<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
+											</button>
+										</c:otherwise>
+									</c:choose>
+									<%-- 거래상태 '예약중'일경우, 채팅하기 버튼 누를경우 
+										'예약중인상품이므로 채팅하기를 하실 수 없습니다' 알람창만 띄우기 --%>
+									<c:choose>
+										<c:when test="${product.pd_status eq '거래중' }">
+											<input type="button" class="btn btn-lg btn-dark col-10" style="font-size: 1em;" value="채팅하기" onclick="reservedProduct()">
+										</c:when>
+										<%--- 거래상태 예약중이아닐경우 채팅하기로 정상적으로 이동 --%>
+										<c:otherwise>
+										<button type="button" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" onclick="openChat()">
+												채팅하기
+											</button>
+											<%--- <form action="doChat" method="POST" class="col col-10">
+												<input type="hidden" value="${product.member_id }" name="seller_id"> <input type="hidden" value="${product.pd_idx }" name="pd_idx">
+												<div class="d-grid gap-2">
+													<input type="submit" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" value="채팅하기">
+												</div>
+											</form>	--%>
+										</c:otherwise>
+									</c:choose>
+								</c:if>
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<%-- 오른쪽 column끝 --%>
 				<hr>
@@ -399,7 +484,7 @@ function checkProduct(element) {
 
 						<%-- 판매자 닉네임 --%>
 						<div class="column">
-							<b><a href="productSeller?member_id=${member.member_id }">${member.member_nickname } </a></b>
+							<b><a href="productSeller?member_id=${seller.member_id }">${seller.member_nickname } </a></b>
 							<%-- 판매자의 판매하는 상품의 개수 --%>
 							<br>판매상품 ${sellerProduct } 개
 						</div>
@@ -408,24 +493,24 @@ function checkProduct(element) {
 					<br>
 					<div class="row" style="margin-left: 10px; margin-bottom: 10px;">
 						<b>${seller.member_nickname }</b> 님의 판매중인 상품 ... 
-						<a href="SaleHistory?sId=${product.member_id}"> 더보기 </a>
+						<a href="productSeller?member_id${product.member_id}"> 더보기 </a>
 					</div>
 					<%--썸네일이미지 --%>
 					<%-- 판매자의 물품 개수만큼 반복표시 --%>
-					<div class="row">
-						<c:forEach var="sellerProductList" items="${sellerProductList }" varStatus="loop">
-							<c:if test="${loop.index lt 4}">
-								<%--판매자의 첫번째상품의 첫번째이미지(썸네일이미지)만 보여줌 --> 판매상품여러개일수도 -> 리스트로 받아옴 --%>
-								<%--네개까지만 받아오기 --%>
-								<%--각이미지마다 상품 상세페이지로 이동하는 하이퍼링크 --%>
-								<span class="sumnail"> 
-									<a href="product_detail?pd_idx=${sellerProductList.pd_idx }&member_id=${sellerProductList.member_id}"> <img
-									class="democursor" src="${pageContext.request.contextPath }/resources/upload/${sellerProductList.pd_image1}" style="width: 130px; height: 160px;">
-								</a>
-								</span>
-							</c:if>
-						</c:forEach>
-					</div>
+				<div class="row">
+				  	<c:forEach var="sellerProductList" items="${sellerProductList}" varStatus="loop">
+				  		<c:if test="${loop.index lt 4}">
+						<%--판매자의 첫번째상품의 첫번째이미지(썸네일이미지)만 보여줌 --> 판매상품여러개일수도 -> 리스트로 받아옴 --%>
+						<%--네개까지만 받아오기 --%>
+						<%--각이미지마다 상품 상세페이지로 이동하는 하이퍼링크 --%>
+						<span class="sumnail">						
+							<a href="product_detail?pd_idx=${sellerProductList.pd_idx }&member_id=${sellerProductList.member_id}">		
+								<img class="democursor" src="${pageContext.request.contextPath }/resources/upload/${sellerProductList.pd_image1}" style="width:130px; height:160px;" >
+							</a>
+						</span>	
+						</c:if>
+				  	</c:forEach>
+				 </div>
 				</div>
 			</div>
 

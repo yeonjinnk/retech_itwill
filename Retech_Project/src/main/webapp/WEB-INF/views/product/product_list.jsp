@@ -196,7 +196,7 @@ $(document).on("click", ".likebtn a", function(e) {
 
     $.ajax({
         type: "POST",
-        url: "Wishlist",
+        url: "productLike",
         data: JSON.stringify(likeInfo),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
