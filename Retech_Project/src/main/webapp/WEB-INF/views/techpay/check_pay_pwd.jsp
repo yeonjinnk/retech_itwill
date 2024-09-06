@@ -30,7 +30,6 @@
             $("#techpay_passwd_db").focus(); 	    	
 	    } else {
             alert("테크페이 비밀번호 확인 완료!"); 
-//             $('#ChargeBankWithdrawForm').submit();
 
             // 부모 창에서 폼을 제출하고 새 창을 닫음
             opener.$('#PayProcessForm').submit();  // 부모 창의 폼을 제출
@@ -38,6 +37,15 @@
 
 	    }
 	    
+	}
+	
+	// 입력란에서 엔터 치면 특정 비밀번호 확인 함수 호출
+	function enterKeyDown(event) {
+//         	console.log("----------enterKeyDown 호출됨-----------")
+        if (event.key === "Enter") {
+//         	console.log("----------enterKeyDown 엔터키 !!!---------")
+        	validateCurrentPassword();
+        }		
 	}
 	
 </script>
@@ -51,7 +59,7 @@
 	<section>
 		<%-- 본문 표시 영역 --%>
 		<h1>테크페이 비밀번호 확인</h1>
-			<input type="password" placeholder="테크페이 비밀번호를 입력해주세요" id="techpay_passwd_db">
+			<input type="password" placeholder="테크페이 비밀번호를 입력해주세요" id="techpay_passwd_db" onkeydown="enterKeyDown(event)">
 			<input type="button" value="확인" onclick="validateCurrentPassword()">
 	</section>
 	<footer>

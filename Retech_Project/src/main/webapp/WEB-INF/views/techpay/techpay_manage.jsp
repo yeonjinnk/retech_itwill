@@ -29,9 +29,7 @@
 //             $("#hiddenTechPasswd2").val(rsa.encrypt($("#techpay_passwd2").val())); // 패스워드 암호화		 
 //  	}); 
 
-
 </script>
-
 
 <script>
 	
@@ -126,18 +124,18 @@
         
     });
 </script>
-
+ㅌ
 <style type="text/css">
 /*---- techpay_manage 영역 전체 ----*/
 .paymanage_container {
 	max-width: 500px;
 	margin: auto;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 	margin-top: 20px;
 	border: 1px solid gray;
 	border-radius: 10px;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
-	padding: 20px 50px;
+	padding: 20px 50px 40px 50px;
 	box-sizing: border-box;
 	display: block;
 }
@@ -149,49 +147,40 @@
     margin-bottom: 10px;
 }
 
-/*---- 충전금액 영역 ----*/
-.charge_amount input[type="text"] {
-	width: 100%;
-	padding: 5px 10px;
-	font-size: 15px;
-	box-sizing: border-box;
+.pay_account_list, .account_list_table {
+	margin-top: 20px;
 }
 
-/*---- 충전하기버튼 ----*/
-.btn_top {
-	display: flex;
-	justify-content: space-between;
-	gap: 10px;
-	margin-bottom: 20px;
-	margin-top: 20px;
-	
-}
-
-.charge_btn { 
-	padding: 10px 20px; 
-	border: none; 
-	border-radius: 2px; 
-	background-color: skyblue; 
-	color: white; 
-	cursor: pointer; 
-	font-size: 14px;  
+.acc_info_btn { 
+	padding: 10px 20px;
+	border: none;
+	border-radius: 2px;
+	background-color: skyblue;
+	color: white;
+	cursor: pointer;
+	font-size: 10px;
 	width: 100%;
-	margin-top: 20px;
 } 
 
+.bank_symbol {
+	margin-top: 5px 0px 5px 0px;
+	width: 40px;
+	height: 30px;
+}
+
 /*---- 유효성 체크 영역 ----*/
-.check {
-    font-size: 13px;
-    margin-top: 5px;
-}
+/* .check { */
+/*     font-size: 13px; */
+/*     margin-top: 5px; */
+/* } */
 
-.check.success {
-    color: #4CAF50;
-}
+/* .check.success { */
+/*     color: #4CAF50; */
+/* } */
 
-.check.error {
-    color: #e74c3c;
-}
+/* .check.error { */
+/*     color: #e74c3c; */
+/* } */
 
 
 
@@ -265,37 +254,34 @@
 			  <div class="title">
 				<h2>${sessionScope.sName} 님의 계좌 목록</h2>
 			  </div>
-	          <div class="account_list_contents">
-		        <table border="1">
-		        	<tr>
-		        		<td>No.</td>
-		        		<td>계좌</td>
-		        		<td>예금주명</td>
-		        		<td>상세정보</td>
-<!-- 		        		<td>삭제하기</td> -->
-		        	</tr>
-		        	<c:forEach var="account" items="${accountList.res_list}">
-		        		<tr>
-		        			<td>1</td>
-		        			<td><b>${account.account_alias}</b><br>
-		        				${account.bank_name}<br>
-		        				${account.account_num_masked}<br>
-		        			</td>
-		        			<td>${account.account_holder_name}</td>
-		        			<td>
-		        				<form action="AccountDetail" method="get" id="accountDetailForm">
-		        					<input type="hidden" name="fintech_use_num" value="${account.fintech_use_num}">
-		        					<input type="hidden" name=account_holder_name value="${account.account_holder_name}">
-		        					<input type="hidden" name="account_num_masked" value="${account.account_num_masked}">
-		        					<input type="button" value="계좌정보" >
-		        				</form>
-		        			</td>
-<!-- 		        			<td> -->
-<!-- 		        				<input type="button" value="삭제" onclick="deleteAccount()">		        				 -->
-<!-- 		        			</td> -->
-		        		</tr>
-		        	</c:forEach>
-		        </table>
+	          <div class="pay_account_list">
+	    		<form action="AccountDetail" method="get" id="accountDetailForm">
+			        <table border="1" class="account_list_table">
+			        	<c:forEach var="account" items="${accountList.res_list}" begin="0" end="1">
+			        		<tr>
+			        			<td>
+				        			<c:if test="${account.bank_code_std eq '002'}">
+				        				<img src="${pageContext.request.servletContext.contextPath}/resources/img/kdb_symbol2.png" class="bank_symbol">
+				        			</c:if>
+			        			</td>
+			        			<td><b>${account.account_alias}</b></td>
+			        			<td>${account.bank_name}<br>
+			        				${account.account_num_masked}<br>
+			        			</td>
+			        			<td>${account.account_holder_name}</td>
+			        			<td>
+			        					<input type="hidden" name="fintech_use_num" value="${account.fintech_use_num}">
+			        					<input type="hidden" name=account_holder_name value="${account.account_holder_name}">
+			        					<input type="hidden" name="account_num_masked" value="${account.account_num_masked}">
+			        					<input type="button" class="acc_info_btn" value="계좌정보" >
+			        			</td>
+	<!-- 		        			<td> -->
+	<!-- 		        				<input type="button" value="삭제" onclick="deleteAccount()">		        				 -->
+	<!-- 		        			</td> -->
+			        		</tr>
+			        	</c:forEach>
+			        </table>
+		        </form>
 	          </div>
 	       </div>
         </div>
