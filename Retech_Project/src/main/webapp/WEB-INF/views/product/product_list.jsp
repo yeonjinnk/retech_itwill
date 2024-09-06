@@ -11,6 +11,31 @@
 <%-- 반응형웹페이지 위한 설정  --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Retech 상품목록</title>
+<script type="text/javascript">
+
+//메인페이지 카테고리 이미지에서 이동 시, 필터링 된 상품목록 불러오기
+$(document).ready(function() {
+    // URLSearchParams 객체를 사용하여 URL 파라미터 값을 가져오기
+    let urlParams = new URLSearchParams(window.location.search);
+    // URL 파라미터에서 값을 가져와서 select 박스의 값으로 설정하기
+    let c_id = urlParams.get('c_id');
+    let c_id2 = urlParams.get('c_id2');
+    let c_id3 = urlParams.get('c_id3');
+    console.log("c_id : " + c_id);
+    console.log("c_id2 : " + c_id2);
+    console.log("c_id3 : " + c_id3);
+    // 해당 값에 따라 select 박스에서 선택된 상태로 변경합니다.
+    if (c_id) $('#c_id').val(c_id);
+    if (c_id2) $('#c_id2').val(c_id2);
+    if (c_id3) $('#c_id3').val(c_id3);
+    //여기서 지정
+	let pageNum = 1; // 임의로 설정
+	
+    let resetPage = true;
+	loadList(selectedCategory, selectedSort, resetPage);
+});
+</script>
+
 
 <script type="text/javascript">
 let isOpen = false; // 정렬 목록에 사용할 함수 기본값 false
