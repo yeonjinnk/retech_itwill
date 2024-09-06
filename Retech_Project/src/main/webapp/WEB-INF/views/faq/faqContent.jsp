@@ -74,12 +74,12 @@
 			</tr>
 			
 			<tr>
-				<td width="100px">${selectedFaq.FAQ_category}</td>
-				<td>${selectedFaq.FAQ_subject}</td>
+				<td width="100px">${selectedFaq.faq_category}</td>
+				<td>${selectedFaq.faq_subject}</td>
 			</tr>
 			<tr class="contentArea">
 				<td colspan="4">
-					<div class="cont">${selectedFaq.FAQ_content}</div>
+					<div class="cont">${selectedFaq.faq_content}</div>
 				</td>
 			</tr>
 		</table>

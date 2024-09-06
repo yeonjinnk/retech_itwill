@@ -52,7 +52,7 @@ textarea {
 	</header>
 	<div align="center">
 		<h2>1:1문의</h2>
-		<form action="CsRegistPro" method="post">
+		<form action="CsRegistPro" method="post" enctype="multipart/form-data">
 			<table border="1">
 			<tr>
 				<th width="100px">문의유형</th> 
@@ -74,6 +74,20 @@ textarea {
 					<th>내용</th>
 					<td >
 						<textarea rows="5" cols="40" name="cs_content"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="write_td_left"><label for="cs_file">파일첨부</label></td>
+					<td class="write_td_right">
+						<%-- 파일 첨부 형식은 input 태그의 type="file" 속성 활용 --%>
+						<%-- 주의! 파일 업로드를 위해 form 태그 속성에 enctype 속성 필수!  --%>
+						<%-- 1) 한번에 하나의 파일(단일 파일) 선택 가능하게 할 경우 --%>
+						<input type="file" name="file1">
+						<input type="file" name="file2">
+						<hr>
+						<%-- 2) 한번에 복수개의 파일(다중 파일) 선택 가능하게 할 경우 --%>
+						<%--    태그 속성으로 multiple 속성 추가 --%>
+						<input type="file" name="file" multiple=>					
 					</td>
 				</tr>
 			</table>

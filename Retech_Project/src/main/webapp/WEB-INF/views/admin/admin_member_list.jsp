@@ -69,6 +69,13 @@
 			<jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
 			<article class="main">
 				<h3>회원 목록</h3>
+				<form action="AdminMemberList">
+							<div class="search">
+								<span>Search</span>
+								<input type="search" name="searchKeyword" value="${param.searchKeyword}" >
+								<input type="submit" value="검색">
+							</div>
+						</form>
 				<div class="content">
 					<table border="1">
 						<tr>

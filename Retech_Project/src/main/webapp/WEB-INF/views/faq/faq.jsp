@@ -40,7 +40,7 @@
 					<td>${faq.faq_idx}</td>
 					<td>${faq.faq_category}</td>
 					<td id="subject">
-						<a href="FaqDetail?FAQ_idx=${faq.faq_idx}">${faq.faq_subject}</a>
+						<a href="FaqDetail?faq_idx=${faq.faq_idx}">${faq.faq_subject}</a>
 					</td>
 					<td>${faq.faq_date}</td>
 				</tr>

@@ -98,7 +98,7 @@ public class NoticeController {
 			System.out.println("tinyReplyNoticeList : " + tinyReplyNoticeList);
 			
 			// Model 객체에 댓글 목록 저장
-			model.addAttribute("tinyReplyBoardList", tinyReplyNoticeList);
+			model.addAttribute("tinyReplyNoticeList", tinyReplyNoticeList);
 			
 			return "notice/noticeContent";
 		}
@@ -161,7 +161,7 @@ public class NoticeController {
 			}
 			
 			// --------------------------------------------------------------------------------------
-			
+			System.out.println("db에 댓글 저장 위한 인자 : " + notice);
 			// ===============================================================================
 			// BoardService - registReplyBoard() 메서드 호출하여 게시물 등록 작업 요청
 			// => 파라미터 : BoardVO 객체   리턴타입 : int(insertCount)

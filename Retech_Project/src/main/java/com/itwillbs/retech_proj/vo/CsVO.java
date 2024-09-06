@@ -2,6 +2,8 @@ package com.itwillbs.retech_proj.vo;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 @Data
 public class CsVO {
@@ -15,4 +17,10 @@ public class CsVO {
 	private Date cs_date;
 	private String cs_check;
 	private String cs_answer;
+	private String cs_file;
+	private String cs_file1;
+	private String cs_file2;
+	private MultipartFile[] file; // multiple 속성을 통한 다중 파일 업로드 시 배열로 지정
+	private MultipartFile file1;
+	private MultipartFile file2;
 }
