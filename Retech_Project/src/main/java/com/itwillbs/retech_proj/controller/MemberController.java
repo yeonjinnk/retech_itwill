@@ -4,6 +4,7 @@ import java.security.PrivateKey;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -466,73 +467,103 @@ public class MemberController {
 	   @GetMapping("SaleHistory")
 	   public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
 	                              @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
-	                              Model model, HttpSession session,MemberVO member) {
-	    String id = (String) session.getAttribute("sId");
-			   // 세션에 사용자 ID가 존재하는 경우
-			  if (id != null) {
-				  member.setMember_id(id);
-				   // 해당 ID의 회원 정보를 조회
-				  member = service.getMember(member);
-				  model.addAttribute("member", member);
-			  }
-	    
-			  List<ProductVO> productList = productService.getProductList(startRow, listLimit);
-			  int totalProductCount = productService.getProductListCount();
+	                              Model model, HttpSession session) {
 
-			  model.addAttribute("productList", productList);
-			  model.addAttribute("totalProductCount", totalProductCount);
+	       String id = (String) session.getAttribute("sId");
+	       // 세션에 사용자 ID가 존재하는 경우
+	       if (id != null) {
+	           // 전체 판매 상품 목록 조회
+	           List<ProductVO> allProductList = productService.getProductList(startRow, listLimit);
+	           int totalProductCount = productService.getProductListCount();
+
+	           // 로그인한 사용자 ID에 맞는 상품만 필터링
+	           List<ProductVO> filteredProductList = allProductList.stream()
+	               .filter(product -> id.equals(product.getMember_id()))
+	               .collect(Collectors.toList());
+
+	           // 필터링된 판매 리스트와 전체 개수 설정
+	           model.addAttribute("productList", filteredProductList);
+	           model.addAttribute("totalProductCount", filteredProductList.size());
+
+	           // 회원 정보 조회 (필요한 경우)
+	           MemberVO member = new MemberVO();
+	           member.setMember_id(id);
+	           member = service.getMember(member);
+	           model.addAttribute("member", member);
+	       }
 
 	       return "mypage/salehistory";
-	    }	   
+	   }
+	   
 	
 	   // 구매내역
 	   @GetMapping("PurchaseHistory")
 	   public String Purchasehistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
-						             @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
-									 Model model, HttpSession session,MemberVO member) {
-		   
-		   String id = (String) session.getAttribute("sId");
-		   // 세션에 사용자 ID가 존재하는 경우
-		   if (id != null) {
-			   member.setMember_id(id);
-			   // 해당 ID의 회원 정보를 조회
-			   member = service.getMember(member);
-			   model.addAttribute("member", member);
-		   }
-		   
-		   List<ProductVO> productList = productService.getProductList(startRow, listLimit);
-	       int totalProductCount = productService.getProductListCount();
+	                                  @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+	                                  Model model, HttpSession session) {
 
-	       model.addAttribute("productList", productList);
-	       model.addAttribute("totalProductCount", totalProductCount);
+	       String id = (String) session.getAttribute("sId");
+	       // 세션에 사용자 ID가 존재하는 경우
+	       if (id != null) {
+	           // 전체 상품 목록 조회
+	           List<ProductVO> allProductList = productService.getProductList(startRow, listLimit);
+	           int totalProductCount = productService.getProductListCount();
 
-		   
-		   return "mypage/purchasehistory";
+	           // 로그인한 사용자 ID에 맞는 상품만 필터링
+	           List<ProductVO> filteredProductList = allProductList.stream()
+	               .filter(product -> id.equals(product.getMember_id()))
+	               .collect(Collectors.toList());
+
+	           // 필터링된 상품 리스트와 전체 개수 설정
+	           model.addAttribute("productList", filteredProductList);
+	           model.addAttribute("totalProductCount", filteredProductList.size());
+
+	           // 회원 정보 조회 (필요한 경우)
+	           MemberVO member = new MemberVO();
+	           member.setMember_id(id);
+	           member = service.getMember(member);
+	           model.addAttribute("member", member);
+	       }
+
+	       return "mypage/purchasehistory";
 	   }
+
 	 
-	   // 찜한상품
+	   // 찜목록
 	   @GetMapping("Wishlist")
 	   public String Wishlist(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
-			   				  @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
-			   				  Model model, HttpSession session,MemberVO member) {
-		   
-		   String id = (String) session.getAttribute("sId");
-		   // 세션에 사용자 ID가 존재하는 경우
-		   if (id != null) {
-			   member.setMember_id(id);
-			   // 해당 ID의 회원 정보를 조회
-			   member = service.getMember(member);
-			   model.addAttribute("member", member);
-			   
-			   List<ProductVO> productList = productService.getProductList(startRow, listLimit);
-		       int totalProductCount = productService.getProductListCount();
+	                          @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+	                          Model model, HttpSession session, MemberVO member) {
+		   System.out.println("WishList 겟메핑 시작!");
+	       String id = (String) session.getAttribute("sId");
+	       System.out.println("세션아이디로 받은 id : " + id);
 
-		       model.addAttribute("productList", productList);
-		       model.addAttribute("totalProductCount", totalProductCount);
-		   }
-		   
-		   return "mypage/wishlist";
+	       if (id != null) {
+	           member.setMember_id(id);
+	           member = service.getMember(member);
+	           model.addAttribute("member", member);
+	           System.out.println("모델에 담은 member : " + member);
+
+	           // 찜한 상품 목록 조회
+	           List<HashMap<String, String>> likeList = productService.getLikeProduct(id);
+
+	           System.out.println("찜한 상품 목록 조회한 거 잘 나오나 : " + likeList);
+	           System.out.println("========================================================");
+	           // 찜한 상품 목록을 productLike로 모델에 추가
+	           model.addAttribute("productLike", likeList);
+	           System.out.println("찜한 상품 뷰페이지로 전달할 모델에 담은 것 : " + likeList);
+	           
+//	           List<ProductVO> productList = productService.getProductList(startRow, listLimit);
+//		       int totalProductCount = productService.getProductListCount();
+
+//		       model.addAttribute("productList", productList);
+	       }
+
+	       return "mypage/wishlist";
 	   }
+
+
+
 	   
 	   // 상품 상세정보
 	   @GetMapping("/productDetail")
@@ -548,7 +579,7 @@ public class MemberController {
 	        }
 
 	        // 상품 상세 페이지로 이동
-	        return "mypage/product_detail";
+	        return "product/product_detail";
 	    }
 	   
 	   // 문의 내역 조회 
@@ -585,9 +616,9 @@ public class MemberController {
 	       CsVO selectedCs = csService.getCs(cs_idx);
 	       model.addAttribute("selectedCs", selectedCs);
 	       return "cs/csContent"; // cs 폴더 내의 csContent.jsp로 이동
-	   }
+	   }	
 
-
+	   
 	   
 	   
 	   // 거래상태 업데이트
@@ -612,7 +643,7 @@ public class MemberController {
 	   // 문자인증 해볼게요 
 //	   @Autowired
 //	    private SmsService smsService;
-//
+
 //	    // 인증번호 발송 요청 처리
 //	    @PostMapping("/sendSMS")
 //	    @ResponseBody
@@ -621,7 +652,7 @@ public class MemberController {
 //	        smsService.sendVerificationCode(phoneNumber, code); // 인증번호 발송
 //	        return code; // 클라이언트에 인증번호를 반환 (테스트 용도)
 //	    }
-//
+
 //	    // 인증번호 검증 요청 처리
 //	    @PostMapping("/verifyCode")
 //	    @ResponseBody
