@@ -39,15 +39,15 @@
     align-items: stretch;     
 }
 
-.container, .main_slide_container {
+.jmcontainer, .main_slide_container {
     flex: 1;    /* Flexbox를 사용 */
     height: 100%;
+	object-fit: cover;
 }
 
 .slide_img {
     width: 100%;
     height: 100%;
-	object-fit: cover;
 	object-position: center; 
 }
 
@@ -67,7 +67,14 @@
     text-align: center; /* 캡션을 중앙 정렬 */
 }
 
+.carousel {
+	position: static;
+}
 
+.item {
+	position: static;
+
+}
 
 .main_section > div:not(.main_slide) {
 	width: 1200px;
@@ -76,56 +83,56 @@
 }
 
 /*---- 메인 이미지 영역 ----*/
-	.category_section {
-		margin-bottom: 40px;
-	}
+.category_section {
+	margin-bottom: 40px;
+}
 
-    .area {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
+.area {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 
-    .photo {
-        width: 32%; /* 각 사진의 크기를 3개씩 한 줄에 배치할 수 있도록 설정 */
-        margin-bottom: 20px; /* 이미지 아래쪽에 여백 추가 */
-    }
+.photo {
+    width: 32%; /* 각 사진의 크기를 3개씩 한 줄에 배치할 수 있도록 설정 */
+    margin-bottom: 20px; /* 이미지 아래쪽에 여백 추가 */
+}
 
-    .photo a img {
-        width: 100%; /* 이미지를 div 크기에 맞게 조정 */
-    }
-    
-     .pd_category_photo {
-        position: relative;
-        overflow: hidden; /* 텍스트나 이미지가 영역을 벗어나지 않도록 설정 */
-    }
+.photo a img {
+    width: 100%; /* 이미지를 div 크기에 맞게 조정 */
+}
 
-    .pd_category_photo img {
-        transition: 0.3s ease; /* 이미지가 부드럽게 변화하도록 설정 */
-        transform: scale(1); /* 기본 크기 설정 */
-    }
+ .pd_category_photo {
+    position: relative;
+    overflow: hidden; /* 텍스트나 이미지가 영역을 벗어나지 않도록 설정 */
+}
 
-    .pd_category_photo:hover img {
-        filter: grayscale(100%); /* 흑백으로 변경 */
-        opacity: 0.2; /* 불투명도 조정 */
-        transform: scale(1.1); /* 마우스를 오버할 때 10% 확대 */
-    }
+.pd_category_photo img {
+    transition: 0.3s ease; /* 이미지가 부드럽게 변화하도록 설정 */
+    transform: scale(1); /* 기본 크기 설정 */
+}
 
-    .pd_category_photo .overlay {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: gray;
-        font-size: 24px;
-        font-weight: bold;
-        opacity: 0;
-        transition: 0.6s ease;
-    }
+.pd_category_photo:hover img {
+    filter: grayscale(100%); /* 흑백으로 변경 */
+    opacity: 0.2; /* 불투명도 조정 */
+    transform: scale(1.1); /* 마우스를 오버할 때 10% 확대 */
+}
 
-    .pd_category_photo:hover .overlay {
-        opacity: 1; /* 마우스를 오버할 때 글자가 나타나도록 설정 */
-    }  
+.pd_category_photo .overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: gray;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0;
+    transition: 0.6s ease;
+}
+
+.pd_category_photo:hover .overlay {
+    opacity: 1; /* 마우스를 오버할 때 글자가 나타나도록 설정 */
+}  
      
 </style>
 
@@ -140,7 +147,7 @@
 		<div class="main_slide">
 			<div class="main_slide_container">
 				
-				<div class="container">
+				<div class="jmcontainer">
 				  <div id="myCarousel" class="carousel slide" data-ride="carousel">
 				    <!-- Indicators -->
 				    <ol class="carousel-indicators">
