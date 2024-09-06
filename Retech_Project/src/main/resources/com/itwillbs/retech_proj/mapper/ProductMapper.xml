@@ -200,6 +200,7 @@
 		WHERE
 			p.member_id = #{member_id}
 	</select>
+	
 	<!-- 상품수정  -->
 	<update id="updateProduct" >
 		UPDATE product

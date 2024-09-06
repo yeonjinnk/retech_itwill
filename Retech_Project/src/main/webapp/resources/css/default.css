@@ -175,19 +175,11 @@ footer {
 
 /*---- header 영역 끝 ----*/
 /*---- body 영역 시작 ----*/
-/*---- 메인 이미지 슬라이드 ----*/
-.main_slide {
-	box-sizing: border-box;
-	height: 470px;
-	width: 100%;
-	background-color: lightgray;  /*-- 임시 --*/
-}
-.main_section > div:not(.main_slide) {
-	width: 1200px;
-	align-items: center;
-/*     display: flex; */
-    margin: auto;
-}
+
+
+
+
+
 /*---- body 영역 끝 ----*/
 /*---- bottom 영역 시작 ----*/
 .bottom_area {

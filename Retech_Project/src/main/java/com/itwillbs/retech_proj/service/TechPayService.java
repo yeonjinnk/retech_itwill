@@ -32,7 +32,7 @@ public class TechPayService {
 
 	// 엑세스토큰 저장
 	public void registAccessToken(Map<String, Object> map) {
-		// TechPayMapper - selectTokenInfo() 메서드 호출하여 아이디에 해당하는 토큰 정보 조회
+		// TechPayMapper - selectId() 메서드 호출하여 아이디에 해당하는 토큰 정보 조회
 		String id = mapper.selectId(map);
 		System.out.println("토큰 아이디 정보 : " + id);
 		
@@ -44,10 +44,16 @@ public class TechPayService {
 			mapper.updateAccessToken(map);
 		}
 	}
+
+	// 테크페이 초기 정보 조회
+	public String selectPayInfoId(String id) {
+		return mapper.selectPayInfoId(id);
+	}	
 	
 	// 테크페이 초기 정보 저장
 	public int registPayInfo(String id) {
 		return mapper.insertPayInfo(id);
+		
 	}
 
 	// 2.2.3. 등록계좌조회 API 
@@ -128,7 +134,5 @@ public class TechPayService {
 	public Map<String, String> getAccountDetail(Map<String, Object> map) {
 		return bankApiClient.requestAccountDetail(map);
 	}
-	
-	
 	
 }

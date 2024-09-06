@@ -79,6 +79,13 @@ CREATE TABLE techpay_user_info (
 		WHERE
 			id = #{id}	
 	</update>
+	
+	<!-- 테크페이 초기 정보 조회 - SELECT -->
+	<select id="selectPayInfoId" resultType="string">
+		SELECT id
+		FROM techpay_pay_info
+		WHERE id = #{id}		
+	</select>	
 
 	<!-- 테크페이 초기 정보 저장 - INSERT -->
 	<insert id="insertPayInfo">
@@ -88,6 +95,7 @@ CREATE TABLE techpay_user_info (
 			, 0 			
 		)
 	</insert>
+
 	
 	<!-- 테크페이 잔액 업데이트 - UPDATE -->
 	<update id="updatePayBalance">

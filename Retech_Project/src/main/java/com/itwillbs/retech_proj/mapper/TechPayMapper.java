@@ -21,9 +21,12 @@ public interface TechPayMapper {
 	// 엑세스 토큰 정보 갱신
 	int updateAccessToken(Map<String, Object> map);
 
+	// 테크페이 초기 정보 여부 조회
+	String selectPayInfoId(String id);
+	
 	// 테크페이 초기 정보 저장
 	int insertPayInfo(String id);
-
+	
 	// 테크페이 비밀번호 정보 조회
 	String selectPayPwd(String id);
 	

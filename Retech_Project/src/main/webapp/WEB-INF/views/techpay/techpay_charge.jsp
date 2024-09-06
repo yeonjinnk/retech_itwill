@@ -48,8 +48,26 @@
                 $('#onlyDigitMessage').hide();
             }
         });
-     
     });
+     	
+	// 충전금액 판별 후 페이비밀번호 확인 새 창 열기
+	function openCheckPayPwdWindow() {
+		
+// 		let pay_balance = ${sessionScope.pay_balance};
+// 		console.log(pay_balance);
+		let currentAmount = parseInt($('#chargeAmount').val());
+		console.log("currentAmount : " + currentAmount);
+		
+		// 환급금액이 입력되지 않거나
+		// 잔액보다 큰 금액을 환급할 시에는 환급 불가
+		if(isNaN(currentAmount)) {
+			alert("충전 금액을 입력해주세요!");
+		} else {
+		    // "CheckPayPwd" 서블릿 주소로 페이 비밀번호 확인 새 창 열기
+		    window.open('CheckPayPwd', 'CheckPayPwdWindow', 'width=500,height=400');
+		}
+	}      	
+     	
 </script>
 <style type="text/css">
 /*---- techpay_charge 영역 전체 ----*/

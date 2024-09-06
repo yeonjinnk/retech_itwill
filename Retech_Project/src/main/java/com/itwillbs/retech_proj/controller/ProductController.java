@@ -299,7 +299,7 @@ public class ProductController {
 		int sellerProduct = service.getSellerProductCount(member_id);
 		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&"+ sellerProduct);
 		model.addAttribute("sellerProduct", sellerProduct);
-		
+		System.out.println("판매자의 판매상품 갯수 조회ㅇ에에에에에에에 : " + sellerProduct);
 		//판매자의 판매목록조회
 		List<HashMap<String, String>> sellerProductList = service.getSellerProductList(member_id);
 		model.addAttribute("sellerProductList",sellerProductList);
@@ -589,13 +589,13 @@ public class ProductController {
 
 		    // 넘어온 파라미터 확인
 		    System.out.println("member_id : " + member_id + ", pd_idx : " + pd_idx + ", isLike : " + isLike + ", like_idx : " + like_idx);
-
+		    
 		    // likes 객체에 찜 관련 데이터 설정
 		    likes.setLike_idx(like_idx);
 		    likes.setMember_id(member_id);
 		    likes.setPd_idx(pd_idx);
 
-		    if (isLike) {
+		    if (!isLike) {
 		        // 찜 기능 실행 (Insert)
 		        int insertCount = service.checkLikeProduct(likes);
 		        System.out.println("찜 된 상품 갯수 : " + insertCount);
