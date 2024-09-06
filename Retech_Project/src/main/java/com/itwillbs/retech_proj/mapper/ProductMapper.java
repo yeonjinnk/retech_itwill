@@ -82,7 +82,7 @@ public interface ProductMapper {
 	//글 삭제 작업
 	int deleteProduct(int pd_idx);
 	//찜 목록 보여주기
-	LikeVO selectLikeProduct(String member_id);
+	List<HashMap<String, String>> selectLikeProduct(String member_id);
 	//찜등록 기능
 	int insertLikeProduct(LikeVO productLike);
 	//찜하기 취소 기능

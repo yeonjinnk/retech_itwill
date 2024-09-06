@@ -149,9 +149,9 @@ function loadList(selectedCategory, selectedSort, resetPage) {
                     + '            <a href="product_detail?pd_idx=' + product.pd_idx + '&member_id=' + product.member_id + '">'
                     + '                <img src="${pageContext.request.contextPath}/resources/upload/' + product.pd_image1 + '" class="card-img-top">'
                     + '            </a>'
-                    + '            <span class="likebtn" data-product-idx="' + product.pd_idx + '">'
+                    + '            <span class="likebtn" data-pd-idx="' + product.pd_idx + '">'
                     + '                <a href="#" style="align:right;">'
-                    + '                    <img src="${pageContext.request.contextPath}/resources/images/heartIcon.png" width="30px" height="30px">'
+                    + '                    <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" width="30px" height="30px">'
                     + '                </a>'
                     + '            </span>'
                     + '            <span class="dealStatus"><button class="btn btn-dark">' + product.pd_status + '</button></span>'
@@ -178,8 +178,49 @@ function loadList(selectedCategory, selectedSort, resetPage) {
             alert("글 목록 요청 실패!");
             isLoading = false;
         }
+    }); //ajax끝부분
+} //loadList() 함수 끝
+//=================================================================================================================================================
+
+//찜하기 
+$(document).on("click", ".likebtn a", function(e) {
+    e.preventDefault(); // 기본 이벤트 동작 막기
+    let member_id = "${member_id}"; // 세션에서 현재 로그인한 사용자의 member_id 가져오기
+    let pd_idx = $(this).closest(".likebtn").data("pd-idx"); // 해당 상품의 pd_idx 얻기
+    let likeStatus = $(this).find("img").data("like-status"); // 현재 클릭한 이미지의 좋아요 상태 얻기
+    let likeInfo = {
+        "member_id": "${member_id}",
+        "secondhand_idx": $(this).closest(".likebtn").data("pd-idx"),
+        "like_status": $(this).find("img").data("like-status") // 현재 찜 상태를 전달 (liked 또는 unliked)
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "Wishlist",
+        data: JSON.stringify(likeInfo),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(response) {
+            let heartIcon = $('.likebtn[data-pd-idx="' + pd_idx + '"]').find("img");
+            // 찜 추가 (response.likeStatus == 'liked')
+            if (response.likeStatus == 'liked') {
+                heartIcon.attr('src', '${pageContext.request.contextPath}/resources/img/heartIcon2.png')
+                    .data('like-status', 'liked');
+            } else {
+                // 찜 취소 (response.likeStatus == 'unliked')
+                heartIcon.attr('src', '${pageContext.request.contextPath}/resources/img/heartIcon3.png')
+                    .data('like-status', 'unliked');
+            }
+        },
+        error: function() {
+            alert("찜 처리 실패");
+        }
     });
-}
+});
+
+
+
+
 </script>
 
 
@@ -255,10 +296,10 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" class="card-img-top">
 								</a>
 							<!-- 찜하기 버튼 -->
-								<span class="likebtn" data-product-idx="${product.pd_idx }">
+								<span class="likebtn" data-pd-idx="${product.pd_idx }">
 									<a href="#" style="align:right;">
 										<!-- 찜하기 버튼 이미지 찾아서 삽입 -->
-										<img src="${pageContext.request.contextPath }/resources/images/heartIcon.png" width="30px" height="30px">'
+										<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" width="30px" height="30px">'
 									</a>
 								</span>
 								<!-- 거래상태 버튼 -->

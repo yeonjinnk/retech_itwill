@@ -562,7 +562,7 @@ public class ProductController {
 //		// 페이지 - 찜보여주기
 		@RequestMapping(value = "likeProductShow", method = {RequestMethod.GET, RequestMethod.POST})
 		@ResponseBody
-		public LikeVO likeProductShow(HttpSession session) {
+		public List<HashMap<String, String>> likeProductShow(HttpSession session) {
 			//찜한 상품이 있을 경우 찜하기 표시하기(비회원이 아닐 때)
 			String member_id = (String) session.getAttribute("sId");
 			
@@ -570,7 +570,7 @@ public class ProductController {
 			if (member_id != null) {
 //				System.out.println("어디서 문제니 : member_id " + member_id);
 //				System.out.println("어디서 문제니 : member_type " + session.getAttribute("member_type"));
-				LikeVO likeList = service.getLikeProduct(member_id); 
+				List<HashMap<String, String>> likeList = service.getLikeProduct(member_id); 
 				System.out.println(likeList);
 //				}
 				return likeList;

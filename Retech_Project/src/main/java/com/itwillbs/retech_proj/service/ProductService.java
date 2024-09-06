@@ -116,7 +116,7 @@ public class ProductService {
 	
 	
 	//찜목록 조회 (select)
-	public LikeVO getLikeProduct(String member_id) {
+	public List<HashMap<String, String>> getLikeProduct(String member_id) {
 		return mapper.selectLikeProduct(member_id);
 	}
 	
