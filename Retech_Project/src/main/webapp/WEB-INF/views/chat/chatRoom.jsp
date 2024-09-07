@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,17 @@
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/chat/chatRoom.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script type="text/javascript">
+// $("#btnTradeSubmit").click(function(e) {
+//     console.log("거래하기 모달 제출 버튼 클릭됨!");
+//     // 모달창 닫기
+//     $("#tradeModal").hide();
+//     // 폼 제출
+//     $(this).closest("form").submit();
+// });
+
+
+</script>
 </head>
 <body>
 	<script type="text/javascript">
@@ -62,12 +74,12 @@
 		<div class="top">
 			<div class="art_firstRow">
 				<div class="product_photo co01">
-					<img id="pdImg">
+					<img src="${productInfo.pd_image1}">
 				</div>
 				<div class="co02">
-					<div class="co02-1">판매중</div><br>
-					<div class="co02-2">노트북</div><br>
-					<div class="co02-2\3">10,000원</div>
+					<div class="co02-1">${productInfo.pd_status}</div><br>
+					<div class="co02-2">${productInfo.pd_subject}</div><br>
+					<div class="co02-2\3">${productInfo.pd_price}원</div>
 				</div>
 			</div>
 			<div class="btnClose">
@@ -76,8 +88,13 @@
 		</div>
 		<div class="art_secondRow">
 			<div class="left">
-				<!-- 판매자 '거래하기' 버튼 -->
-				<button id="btnTrade"><span>거래하기</span></button>
+				<c:choose>
+					<c:when test="${sessionScope.sId eq productInfo.member_id}">
+						<!-- 판매자 '거래하기' 버튼 -->
+						<button id="btnTrade"><span>거래하기</span></button>
+					</c:when>
+				
+				</c:choose>
 				<!-- 구매자 '테크페이(택배)' 버튼 -->
 				<button id="btnDelivery"><span>테크페이(택배)</span></button>
 				<!-- 구매자 '테크페이(직거래)' 버튼 -->
@@ -247,8 +264,9 @@
 			let message = $(inputElement).val();
 			console.log("입력한 message : " + message);
 			let room_id = $(parent).find(".room_id").val();
-			let receiver_id = $(parent).find(".receiver_id").val();
-			
+// 			let receiver_id = $(parent).find(".receiver_id").val();
+			let receiver_id = "${param.receiver_id}";
+			console.log("receiver_id 무엇??"+ receiver_id);
 			//입력메세지 비어있을 경우 입력창 포커스 요청 후 작업 종료
 			if(message == "") {
 				$(inputElement).focus();
