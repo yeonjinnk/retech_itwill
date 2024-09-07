@@ -29,4 +29,5 @@
         WHERE user_id = #{userId}
     </update>
     
+    
 </mapper>
