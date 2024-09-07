@@ -47,4 +47,11 @@ public interface ChatMapper {
 	//거래 정보 저장하기
 	int insertTrade(TradeVO trade);
 
+	//저장한 거래 정보 조회하기
+	TradeVO selectTrade(int pd_idx);
+
+	//택배 주소 입력
+	int insertAddress(String buyer_id);
+
+
 }

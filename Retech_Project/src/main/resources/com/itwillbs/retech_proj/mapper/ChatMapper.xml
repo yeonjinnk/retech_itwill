@@ -248,6 +248,24 @@ WHERE
 		)
 	</insert>
 	
+	<!-- 저장한 거래 정보 조회하기 -->
+	<select id="selectTrade" resultType="trade">
+		SELECT *
+		FROM trade
+		WHERE trade_pd_idx = #{pd_idx}
+	
+	</select>
+	
+	<!--  택배 주소 입력 -->
+	<insert id="insertAddress">
+		INSERT INTO trade(buyer_postcode, buyer_address1, buyer_address2)
+		VALUES (
+			#{buyer_postcode}
+			, #{buyer_address1}
+			, #{buyer_address2}
+		)
+	
+	</insert>
 </mapper>
 
 

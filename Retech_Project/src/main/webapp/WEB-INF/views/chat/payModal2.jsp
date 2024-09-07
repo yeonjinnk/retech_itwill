@@ -13,28 +13,19 @@
 </head>
 <body>
 	<div class="modalOpen">
-		<form action="DeliveryPay">
-			거래하기 확인
+		<form action="">
+			결제 완료
 			<hr>
-			최종 거래금액 : 
-			<input type="number" value="${newTrade.trade_amt}" disabled>원<br>
-			배송지 입력<br>
-			  <label for="postCode" class="title">주소</label>
-	                <input type="text" name="buyer_postcode" id="postCode" placeholder="우편번호" required readonly>
-	                <button type="button" id="btnSearchAddress">주소검색</button><br>
-	                <input type="text" name="buyer_address1" id="address1" placeholder="기본주소" required readonly><br>
-	                <input type="text" name="buyer_address2" id="address2" placeholder="상세주소">
-	                
-	                <input type="hidden" value="${sessionScope.sId}" name="buyer_id">
-	                
-					<input type="hidden" name="room_id" value="${param.room_id}">
-					<input type="hidden" name="receiver_id" value="${param.receiver_id}">
-					<input type="hidden" name="sender_id" value="${param.sender_id}">
-					<input type="hidden" name="pd_idx" value="${param.pd_idx}">
-					<input type="hidden" name="status" value="${param.status}">
+			비밀번호
+			<input type="number" name="passwd" placeholder="입력해주세요"><br>
+			
+			
+			
+			
+			
 			<hr>
 			<div class="modalBtn">
-				<button type="submit" id="btnDeliverySubmit">다음</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="submit" id="btnPay">구매내역 보기</button>&nbsp;&nbsp;&nbsp;&nbsp;
 				<button type="button" id="btnDeliveryClose">닫기</button>
 			</div>
 		</form>

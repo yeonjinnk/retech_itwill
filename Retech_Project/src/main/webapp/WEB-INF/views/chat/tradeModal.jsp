@@ -31,7 +31,7 @@
 				<input type="hidden" name="receiver_id" value="${param.receiver_id}">
 				<input type="hidden" name="sender_id" value="${param.sender_id}">
 				<input type="hidden" name="pd_idx" value="${param.pd_idx}">
-				<input type="hidden" name="pd_idx" value="${param.status}">
+				<input type="hidden" name="status" value="${param.status}">
 				
 			</div>
 		</form>

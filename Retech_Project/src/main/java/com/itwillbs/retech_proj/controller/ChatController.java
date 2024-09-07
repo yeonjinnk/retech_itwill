@@ -46,13 +46,23 @@ public class ChatController {
 	
 	
 	@GetMapping("ChatRoom")
-	public String chatRoom(@RequestParam int pd_idx, Model model) {
+	public String chatRoom(@RequestParam int pd_idx, Model model, HttpSession session) {
 		System.out.println("chatRoom 파라미터 pd_idx 잘 넘어왓나 : " + pd_idx);
+		
+		  // 세션에서 거래 정보 가져오기
+//	    TradeVO newTrade = (TradeVO) session.getAttribute("newTrade");
+//	    System.out.println("세션에서 가져온 정보 newTrade : " + newTrade);
+//	    model.addAttribute("newTrade", newTrade);
 		
 		//상품 정보 얻어오기
 		Map<String, Object> productInfo = service.getProduct(pd_idx);
 		System.out.println("얻어온 상품 정보는 무엇일까 : " + productInfo);
 		
+		
+		//저장한 거래정보 들고 다시가야지..
+				TradeVO newTrade = service.getTrade(pd_idx);
+				System.out.println("들고온 거래정보 조회하기 : " + newTrade);
+				model.addAttribute("newTrade", newTrade);
 		model.addAttribute("productInfo", productInfo);
 		
 		return "chat/chatRoom";
@@ -94,7 +104,7 @@ public class ChatController {
 	}
 	
 	@GetMapping("SelectTrade")
-	public String selectTrade(TradeVO trade, @RequestParam Map<String, Object> map, @RequestParam("pd_idx") int pd_idx, Model model) {
+	public String selectTrade(TradeVO trade, @RequestParam Map<String, Object> map, @RequestParam("pd_idx") int pd_idx, Model model, HttpSession session) {
 		//판매자가 거래하기 후 호출되는 함수
 		System.out.println("=======================================================");
 		System.out.println("!!!!판매자가 거래하기에 정보 입력함!!!!!");
@@ -120,8 +130,33 @@ public class ChatController {
 		System.out.println("거래 정보 잘 저장했나 : " + insertCount);
 		
 		//저장한 거래정보 들고 다시가야지..
-//		TradeVO newTrade = service.getTrade(pd_idx);
-//		model.addAttribute("newTrade", newTrade);
+		TradeVO newTrade = service.getTrade(pd_idx);
+		System.out.println("들고온 거래정보 조회하기 : " + newTrade);
+		model.addAttribute("newTrade", newTrade);
+		
+		 // 세션에 거래 정보 저장
+	    session.setAttribute("newTrade", newTrade);
+		
+		//정보를 다시 들고 가야 하니까 redirect..
+		return "redirect:/ChatRoom?room_id=" + roomId + "&receiver_id=" + receiverId 
+				+ "&sender_id=" + senderId + "&status=" + status + "&pd_idx=" + pd_idx;
+	}
+	
+	@GetMapping("DeliveryPay")
+	public String deliveryPay(@RequestParam String buyer_postcode, @RequestParam String member_address1, @RequestParam String member_address2,
+			@RequestParam String buyer_id, @RequestParam Map<String, Object> map, @RequestParam("pd_idx") int pd_idx) {
+		
+		//택배 주소 입력
+		int insertAddress = service.inputAddress(buyer_id);
+		
+		System.out.println(" 택배 주소 입력 성공했는지 : " + insertAddress);
+		
+		String roomId = (String)map.get("room_id");
+		String receiverId = (String)map.get("receiver_id");
+		String senderId = (String)map.get("sender_id");
+		String status = (String)map.get("status");
+		System.out.println("map 객체에 있는 파라미터를 변수로 저장함!");
+		
 		
 		//정보를 다시 들고 가야 하니까 redirect..
 		return "redirect:/ChatRoom?room_id=" + roomId + "&receiver_id=" + receiverId 

@@ -73,6 +73,18 @@ public class ChatService {
 	}
 
 	//저장한 거래 정보 조회하기
+	public TradeVO getTrade(int pd_idx) {
+		return mapper.selectTrade(pd_idx);
+	}
+
+	//택배 주소 입력
+	public int inputAddress(String buyer_id) {
+		return mapper.insertAddress(buyer_id);
+	}
+
+	//택배 주소 입력
+
+	//저장한 거래 정보 조회하기
 //	public TradeVO getTrade(int pd_idx) {
 //		return mapper.selectTrade(pd_idx);
 //	}

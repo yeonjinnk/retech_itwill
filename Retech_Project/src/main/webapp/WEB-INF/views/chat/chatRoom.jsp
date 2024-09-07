@@ -93,12 +93,15 @@
 						<!-- 판매자 '거래하기' 버튼 -->
 						<button id="btnTrade"><span>거래하기</span></button>
 					</c:when>
-				
+					<c:when test="${newTrade.trade_type eq 1}">
+						<!-- 구매자 '테크페이(택배)' 버튼 -->
+						<button id="btnDelivery"><span>테크페이(택배)</span></button>
+					</c:when>
+					<c:when test="${newTrade.trade_type eq 2}">
+						<!-- 구매자 '테크페이(직거래)' 버튼 -->
+						<button id="btnDirect"><span>테크페이(직거래)</span></button>
+					</c:when>
 				</c:choose>
-				<!-- 구매자 '테크페이(택배)' 버튼 -->
-				<button id="btnDelivery"><span>테크페이(택배)</span></button>
-				<!-- 구매자 '테크페이(직거래)' 버튼 -->
-				<button id="btnDirect"><span>테크페이(직거래)</span></button>
 			</div>
 			<div class="right">
 				<!-- 신고하기 버튼 -->
@@ -133,6 +136,16 @@
 	
 	</div>
 	<script type="text/javascript">
+	
+// 		$.ajax({
+// 			data:{},
+// 			url:,
+// 			type:,
+			
+				
+// 		});
+	
+	
 		$(function() {
 			startChat();
 		});
