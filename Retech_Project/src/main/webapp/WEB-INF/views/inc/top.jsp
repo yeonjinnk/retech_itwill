@@ -275,7 +275,11 @@
 				</ul>
 				<ul class="main_search">
 					<li>
-						<input type="text" placeholder="검색어를 입력하세요" width="120">
+						<form name="search" id="search">
+							<input type="text" name="keyword" id="keyword" />
+							<input type="button" value="검색" />
+						</form>
+<!-- 						<input type="text" placeholder="검색어를 입력하세요" width="120"> -->
 					</li>
 				</ul>
 			</nav>

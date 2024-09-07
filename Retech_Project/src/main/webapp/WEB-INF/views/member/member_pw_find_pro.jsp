@@ -73,6 +73,59 @@
         background-color: #45a049; 
     }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // 인증번호 받기 요청을 비동기적으로 처리
+        $("#smsForm").on("submit", function(event) {
+            event.preventDefault(); // 폼의 기본 제출 동작을 막음
+            
+            var submitButton = event.originalEvent.submitter;
+            if (submitButton && submitButton.id === "next") {
+                // 다음 버튼 클릭 시 인증번호 확인 요청을 비동기적으로 처리
+                var formData = $(this).serialize(); // 폼 데이터를 직렬화
+
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/VerifyCode", // 인증번호 확인 URL
+                    data: formData,
+                    success: function(response) {
+                        var jsonResponse = JSON.parse(response); // 응답을 JSON으로 파싱
+                        if (jsonResponse.result) {
+                            alert("인증 성공!");
+                            window.location.href = jsonResponse.redirectUrl || "${pageContext.request.contextPath}/member/member_pw_reset"; // 리디렉션 URL
+                        } else {
+                            alert("인증 실패. 인증번호를 확인해 주세요.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("서버 요청 실패:", status, error);
+                    }
+                });
+            } else {
+                // 인증번호 받기 버튼 클릭 시
+                var formData = $(this).serialize(); // 폼 데이터를 직렬화
+
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr("action"), // 폼의 action 속성 값을 사용
+                    data: formData,
+                    success: function(response) {
+                        var jsonResponse = JSON.parse(response); // 응답을 JSON으로 파싱
+                        if (jsonResponse.result) {
+                            alert("인증번호가 성공적으로 발송되었습니다.");
+                        } else {
+                            alert("인증번호 발송에 실패했습니다.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("서버 요청 실패:", status, error);
+                    }
+                });
+            }
+        });
+    });
+</script>
 </head>
 <body>
     <header>
@@ -81,8 +134,9 @@
     <main>
         <section>
             <div id="findPw_wrap2">
-                <form action="PwResetPro" method="post">
-                    <input type="hidden" name="member_id" value="${param.mem_id}" id="member_phone" size="10">
+                <!-- 인증번호 요청 폼 -->
+                <form id="smsForm" action="${pageContext.request.contextPath}/SendSms" method="post">
+                    <input type="hidden" name="member_id" value="${param.mem_id}" id="member_id" size="10">
                     <section id="sec01">
                         <table>
                             <tr>
@@ -100,7 +154,7 @@
                                     <td colspan="3"><b>이름</b></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3"><input type="text" size="10" maxlength="5" placeholder="이름을 입력하세요"></td>
+                                    <td colspan="3"><input type="text" name="name" size="10" maxlength="5" placeholder="이름을 입력하세요"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3"><b>휴대전화번호</b></td>
@@ -111,11 +165,11 @@
                                             <option value="+82">+82</option>
                                         </select>
                                     </td>
-                                    <td><input type="text" name="member_phone" id="member_phone" size="10" placeholder="전화번호 입력"></td>
-                                    <td><input type="submit" value="인증번호 받기"></td>
+                                    <td><input type="text" name="phone_number" size="10" placeholder="전화번호 입력"></td>
+                                    <td><input type="submit" value="인증번호 받기" id="sendCode"></td>
                                 </tr>    
                                 <tr>
-                                    <td colspan="3"><input type="text" name="name" placeholder="인증번호 입력" size="10" maxlength="8"></td>
+                                    <td colspan="3"><input type="text" name="auth_code" placeholder="인증번호 입력" size="10" maxlength="8"></td>
                                 </tr>    
                                 <tr>
                                     <td colspan="3" align="center">
@@ -134,6 +188,3 @@
     </footer>
 </body>
 </html>
-
-
-

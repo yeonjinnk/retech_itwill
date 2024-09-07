@@ -1,18 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 
-<%-- 외부 CSS 파일(css/default.css) 연결하기 --%>
+<%-- 화면 크기에 맞춰 페이지의 뷰포트 설정 --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<%-- 화면 크기에 맞춰 페이지의 뷰포트 설정 --%>
 <title>Retech 메인페이지</title>
 
 <%-- 외부 CSS 파일(css/default.css) 연결하기 --%>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+
 <%-- Google Fonts 'Roboto' 폰트 추가 --%>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -23,6 +26,12 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <style>
+/*---- 메인 영역 제목  ----*/
+.category_subject {
+	font-size: 20px;
+	font-weight: bold;
+}
+
 
 
 /*---- 메인 이미지 슬라이드 ----*/
@@ -133,6 +142,16 @@
 .pd_category_photo:hover .overlay {
     opacity: 1; /* 마우스를 오버할 때 글자가 나타나도록 설정 */
 }  
+ 
+ 
+/*---- 메인 이미지 영역 ----*/
+.subject {
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+}
+ 
+ 
      
 </style>
 
@@ -193,11 +212,7 @@
 				      <span class="sr-only">Next</span>
 				    </a>
 				  </div>
-</div>			
-			
-			
-			
-			
+				</div>			
 			</div>
 
 		
@@ -250,48 +265,39 @@
 					</div>
 				</div>
 			</div>
+			
+			
 			<!-- 메인 이미지 영역 2. 인기상품 -->
-			<div class="pd_popular category_section">	
-				<h2 class="category_subject">인기상품</h2>
-				<div class="pd_popular_area area">
-					<!-- 썸네일 이미지 -->
-					<div class="pd_popular_photo photo">
-						<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-					</div>
-					<div class="pd_popular_photo photo">
-						<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-					</div>
-					<div class="pd_popular_photo photo">
-						<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-					</div>
-				</div>
-			</div>		
+			<div class="pd_popular category_section">    
+			    <h2 class="category_subject">Popular Products</h2>
+			    <div class="pd_popular_area area">
+			        <c:forEach var="product" items="${popularProducts}">
+			            <div class="pd_popular_photo photo">
+			                <a href="product_detail?pd_idx=${product.pd_idx}&member_id=${product.member_id}">
+			                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" 
+    							 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}"/>
+			                </a>
+					        <div class="subject">${product.pd_subject}</div>
+			            </div>
+			        </c:forEach>
+			    </div>
+			</div>			
+
+
 			<!-- 메인 이미지 영역 3. 최근 업데이트 상품 -->
-			<div class="pd_recent category_section">	
-				<h2 class="category_subject">최근 업데이트 상품</h2>
-				<div class="pd_recent_area area">
-					<div class="pd_recent_photo photo">
-						<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-					</div>
-					<div class="pd_recent_photo photo">
-						<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-					</div>
-					<div class="pd_recent_photo photo">
-						<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-					</div>
-				</div>
+			<div class="pd_recent category_section">    
+			    <h2 class="category_subject">최근 업데이트 상품</h2>
+			    <div class="pd_recent_area area">
+				    <c:forEach var="product" items="${recentProducts}">
+					    <div class="photo">
+							<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
+					        	<img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" 
+					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}"/>
+					        </a>
+					        <div class="subject">${product.pd_subject}</div>
+					    </div>
+					</c:forEach>
+			    </div>
 			</div>		
 		</div>
 		

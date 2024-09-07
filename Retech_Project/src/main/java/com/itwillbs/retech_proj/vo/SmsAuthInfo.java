@@ -16,4 +16,5 @@ public class SmsAuthInfo {
     private String authCode;
     private String status; // PENDING, VERIFIED, EXPIRED
     private java.sql.Timestamp createdAt;
+    
 }
