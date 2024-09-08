@@ -22,7 +22,6 @@
 
 <!-- FontAwesome 아이콘 CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 <script>
 let pageNum = "1";
 let maxPage = "";
@@ -32,6 +31,8 @@ let end_date = "";
 
 $(function() {
 	
+    console.log("아이디 " +  "${id}");
+    
 	// 목록 표시 함수 호출
 	load_list(pay_history_type, start_date, end_date);	
 
@@ -55,7 +56,7 @@ $(function() {
 	
 	
 	// 전체, 충전, 환급, 사용, 수익 탭 클릭 시 pay_history_type 값 재할당
-	$("[name='tab']").change(function() {
+	$("[name='options']").change(function() {
 		pay_history_type = $(this).val();
 		console.log("---------------------pay_history_type : " + pay_history_type);
 		
@@ -219,27 +220,22 @@ $(function() {
         opens: 'right'  // 달력 위치를 오른쪽에 열리게 설정
     });
     
-    
-    
-    
-	
 });
 
-
+// 테크페이 내역 불러오기(AJAX와 JSON으로 처리)
 function load_list(pay_history_type, start_date, end_date) {
 	
+ 	// 회원 id 저장
+	let id = "${id}";
+	console.log("load_list---------id = "  + id);
 	
-	let pay_id = $("#pay_id").val();
-	console.log("pay_id = "  + pay_id);
-	
-	let type = pay_history_type;
-	console.log("pay_history_type = " + type + ", pay_id = " + pay_id + ", pageNum = " + pageNum);
-	
+	// 테크페이 타입 저장(충전, 환급, 사용, 수익)
+	let  techpay_type = pay_history_type;
+	console.log("load_list---------techpay_type = " + techpay_type + ", id = " + id + ", pageNum = " + pageNum);
 	
 	let start = start_date;
 	let end = end_date;
-	console.log("start_date = " + start + ", end_date = " + end);
-	
+	console.log("load_list---------start_date = " + start + ", end_date = " + end);
 	
 	
 	$(".btn-check").each(function() {
@@ -254,8 +250,8 @@ function load_list(pay_history_type, start_date, end_date) {
 		type: "GET",
 		url: "PayHistoryJson",
 		data: {
-			"pay_id": pay_id,
-			"pay_history_type": type,
+			"id": id,
+			"techpay_type": techpay_type,
 			"pageNum": pageNum,
 			"start_date": start,
 			"end_date": end
@@ -276,7 +272,7 @@ function load_list(pay_history_type, start_date, end_date) {
 
 			// payHistoryList를 순회하며 연도별로 그룹화
 			for (let item of data.payHistoryList) {
-				let year = new Date(item.pay_history_date).getFullYear();
+				let year = new Date(item.techpay_tran_dtime).getFullYear();
   
 				if (!groupedData[year]) {
 					groupedData[year] = [];
@@ -303,8 +299,8 @@ function load_list(pay_history_type, start_date, end_date) {
 				for (let history of paymentArray) {
 					console.log("history:" + history.buy_product_id);
 					// pay_history_date 값을 분리하여 날짜와 시간을 추출
-					let date = history.pay_history_date.slice(5, 10);
-					let time = history.pay_history_date.slice(11, 16);
+					let date = history.techpay_tran_dtime.slice(5, 10);
+					let time = history.techpay_tran_dtime.slice(11, 16);
 					
 					// pay_history_type 값에 따라 다른 결과 출력
 					let pay_history_type = "";
@@ -314,14 +310,14 @@ function load_list(pay_history_type, start_date, end_date) {
 						subject = history.pay_history_message;
 					} else if(history.pay_history_type == "2") {
 						pay_history_type = "환급";
-						subject = history.pay_history_message;
+						subject = history.techpay_idx;
 					} else if(history.pay_history_type == "3") {
 						pay_history_type = "사용";
-						if (!history.buy_product_id || history.buy_product_id === 'null') {
-						    subject = "취소된 거래입니다";
-						} else {
-							subject = '<a href="ProductDetail?product_id=' + history.buy_product_id +'">' + history.buy_product_name + '</a><i class="fa fa-angle-right"></i>';
-						}
+// 						if (!history.buy_product_id || history.buy_product_id === 'null') {
+// 						    subject = "취소된 거래입니다";
+// 						} else {
+// 							subject = '<a href="ProductDetail?product_id=' + history.buy_product_id +'">' + history.buy_product_name + '</a><i class="fa fa-angle-right"></i>';
+// 						}
 					} else if(history.pay_history_type == "4") {
 						pay_history_type = "수익";
 						subject = '<a href="ProductDetail?product_id=' + history.sell_product_id +'">' + history.sell_product_name + '</a><i class="fa fa-angle-right"></i>';
@@ -382,6 +378,26 @@ $(function() {
 	});	
 	
 	
+	// 테크페이 내역 불러오기
+	load_list(pay_history_type, start_date, end_date);
+	
+	$(window).scroll(function() {
+		let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
+		let windowHeight = $(window).height(); // 브라우저 창 높이
+		let documentHeight = $(document).height(); // 문서 높이
+			
+		if(scrollTop + windowHeight + 1 >= documentHeight) {
+			pageNum++; // 페이지번호 1 층가
+			
+			// 페이지 번호를 계속 불러오는 현상 막기
+			if(maxPage != "" && pageNum <= maxPage) {
+				load_list(pay_history_type, start_date, end_date);
+			}
+		}
+		
+	});
+	
+	
 	// 기간선택 모달 창 닫으면서 이벤트 처리
     // '조회하기' 버튼 클릭 시 
     $('#searchButton').on('click', function() {
@@ -400,12 +416,12 @@ $(function() {
         $('#date_modal').modal('hide');
         
         // 임시로 넣어보기
-        $('#payHistoryList').append('<hr>');
+//         $('#payHistoryList').append('<hr>');
 // 		<div align="right"></div>
-        $('#payHistoryList').append('<div align="center">' + startDate + ' ~ ' + endDate + '</div>');
-        $('#payHistoryList').append('<hr>');
-//         $('#payHistoryList').append('<p><strong>선택한 기간: </strong>' + startDate + ' ~ ' + endDate + '</p>');
-//         $('#payHistoryList').append('<p><strong>선택한 기간: </strong>' + startDate + ' ~ ' + endDate + '</p>');
+//         $('#payHistoryList').append('<div align="center">' + startDate + ' ~ ' + endDate + '</div>');
+//         $('#payHistoryList').append('<hr>');
+        $('#payHistoryList').append('<p><strong>선택한 기간: </strong>' + startDate + ' ~ ' + endDate + '</p>');
+        $('#payHistoryList').append('<p><strong>선택한 기간: </strong>' + startDate + ' ~ ' + endDate + '</p>');
     });
 	
 	
@@ -549,19 +565,19 @@ input[type="radio"]:checked + .tab_label {
 			<div class="pay_history">
 				<!-- 페이 이용내역 탭  -->
 				<div class="pay_history_tab">
-				   <input type="radio" id="tab1" name="tab" value="" checked>
+				   <input type="radio" id="tab1" name="options" class="btn-check" value="" checked>
 				   <label for="tab1" class="tab_label">전체</label>
 				 
-				   <input type="radio" id="tab2" name="tab" value="1">
+				   <input type="radio" id="tab2" name="options" class="btn-check" value="1">
 				   <label for="tab2" class="tab_label">충전</label>
 				
-				   <input type="radio" id="tab3" name="tab" value="2">
+				   <input type="radio" id="tab3" name="options" class="btn-check" value="2">
 				   <label for="tab3" class="tab_label">환급</label>
 				
-				   <input type="radio" id="tab4" name="tab" value="3">
+				   <input type="radio" id="tab4" name="options" class="btn-check" value="3">
 				   <label for="tab4" class="tab_label">사용</label>
 
-				   <input type="radio" id="tab5" name="tab" value="4">
+				   <input type="radio" id="tab5" name="options" class="btn-check" value="4">
 				   <label for="tab5" class="tab_label">수익</label>
 				</div>
 				<!-- 기간 선택 모달창  -->

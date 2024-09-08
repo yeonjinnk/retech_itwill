@@ -96,6 +96,36 @@ CREATE TABLE techpay_user_info (
 		)
 	</insert>
 
+	<!-- 테크페이 사용 목록 불러오기 --> 	
+	<select id="selectPayHistory" resultType="map">
+		SELECT *
+		FROM techpay_history
+		WHERE id = #{pay_id}
+		<if test="pay_history_type != null and !pay_history_type.equals('')">
+			AND techpay_type = #{pay_history_type}
+		</if>
+		<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+			AND DATE(techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date}
+		</if>
+		ORDER BY techpay_tran_dtime DESC
+		<if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')">
+			LIMIT #{startRow}, #{listLimit}
+		</if>		
+	</select>
+	
+	<!-- 테크페이 사용 목록 개수 세기(페이징) --> 
+	<select id="selectPayHistoryCount" resultType="int">
+		SELECT COUNT(*)
+		FROM techpay_history
+		WHERE id = #{pay_id}
+		<if test="pay_history_type != null and !pay_history_type.equals('')">
+			AND techpay_type = #{pay_history_type}
+		</if>
+		<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+			AND DATE(techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date}
+		</if>	
+	</select>
+	
 	
 	<!-- 테크페이 잔액 업데이트 - UPDATE -->
 	<update id="updatePayBalance">
