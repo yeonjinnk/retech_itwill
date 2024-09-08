@@ -238,6 +238,7 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 			</div>
 			
 			
+			
 			<!-- 목록표시 영역 -->
 			<div class="row" align="left">
 				<div class="productListArea">
