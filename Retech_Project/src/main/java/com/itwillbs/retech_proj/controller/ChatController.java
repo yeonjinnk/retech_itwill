@@ -143,8 +143,12 @@ public class ChatController {
 	}
 	
 	@GetMapping("DeliveryPay")
-	public String deliveryPay(@RequestParam String buyer_postcode, @RequestParam String member_address1, @RequestParam String member_address2,
+	public String deliveryPay(@RequestParam String buyer_postcode, @RequestParam String buyer_address1, @RequestParam String buyer_address2,
 			@RequestParam String buyer_id, @RequestParam Map<String, Object> map, @RequestParam("pd_idx") int pd_idx) {
+		System.out.println("===================================================================");
+		System.out.println("주소입력 하기 위한 파라미터 잘 넘어왔는지 : buyer_postcode = " + buyer_postcode + ", buyer_address1 =" + buyer_address1
+				+ ", buyer_address2=" + buyer_address2
+				+ ", buyer_id=" + buyer_id + ", map=" + map + ", pd_idx=" + pd_idx);
 		
 		//택배 주소 입력
 		int insertAddress = service.inputAddress(buyer_id);
