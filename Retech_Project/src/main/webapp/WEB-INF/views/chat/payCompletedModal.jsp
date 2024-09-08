@@ -14,10 +14,9 @@
 <body>
 	<div class="modalOpen">
 		<form action="">
-			테크페이 비밀번호 입력
+			결제 완료
 			<hr>
-			비밀번호
-			<input type="number" name="passwd" placeholder="입력해주세요"><br>
+			30,000원(금액 넣어야 함) 결제 완료
 			
 			
 			
@@ -48,8 +47,9 @@
 			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
 			$("#btnDeliverySubmit").click(function(e) {
 				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
-				e.preventDefault();
+// 				e.preventDefault();
 				$("#deliveryModal").hide();
+				$("#payCompletedModal").show();
 			});
 			
 			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/

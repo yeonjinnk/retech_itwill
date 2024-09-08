@@ -57,8 +57,8 @@
 			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
 			$("#btnDeliverySubmit").click(function(e) {
 				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
-				e.preventDefault();
 				$("#deliveryModal").hide();
+				$("#payModal").show();
 			});
 			
 			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/

@@ -30,6 +30,9 @@
 			$("#deliveryModal").hide();
 			$("#directModal").hide();
 			$("#reportModal").hide();
+			$("#payModal").hide();
+			$("#passwdModal").hide();
+			$("#payCompletedModal").hide();
 			
 			/*거래하기 버튼 클릭 시 모달창 띄움*/
 			$("#btnTrade").click(function() {
@@ -124,6 +127,18 @@
 			<!-- 구매자 '테크페이(직거래)' -->
 			<div id="directModal" class="modal">
 				<jsp:include page="/WEB-INF/views/chat/directModal.jsp"></jsp:include>
+			</div>
+			<!-- 테크페이 결제 모달 -->
+			<div id="payModal" class="modal">
+				<jsp:include page="/WEB-INF/views/chat/payModal.jsp"></jsp:include>
+			</div>
+			<!-- 테크페이 비밀번호 입력 모달 -->
+			<div id="passwdModal" class="modal">
+				<jsp:include page="/WEB-INF/views/chat/passwdModal.jsp"></jsp:include>
+			</div>
+			<!-- 테크페이 결제완료 모달 -->
+			<div id="payCompletedModal" class="modal">
+				<jsp:include page="/WEB-INF/views/chat/payCompletedModal.jsp"></jsp:include>
 			</div>
 			<!-- 신고하기 -->
 			<div id="reportModal" class="modal">
