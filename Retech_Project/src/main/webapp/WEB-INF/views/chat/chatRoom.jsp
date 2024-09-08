@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/chat/chatRoom.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript">
 // $("#btnTradeSubmit").click(function(e) {
 //     console.log("거래하기 모달 제출 버튼 클릭됨!");
@@ -28,14 +29,21 @@
 			/*모달창 기본 숨김*/
 			$("#tradeModal").hide();
 			$("#deliveryModal").hide();
+			
+			
 			$("#directModal").hide();
 			$("#reportModal").hide();
 			$("#payModal").hide();
-			$("#passwdModal").hide();
-			$("#payCompletedModal").hide();
+			$("#payModal2").hide();
+			$("#payModal3").hide();
+			
+			
+			$("#payModal-direct").hide();
+			$("#payModal2-direct").hide();
+			$("#payModal3-direct").hide();
 			
 			/*거래하기 버튼 클릭 시 모달창 띄움*/
-			$("#btnTrade").click(function() {
+			$(".btnTrade").click(function() {
 				console.log("거래하기 버튼 클릭됨!");
 				$("#tradeModal").show();
 				console.log("거래하기 모달 띄움!");
@@ -48,13 +56,162 @@
 				console.log("테크페이(택배) 모달 띄움!");
 			});
 			
+			
+			/*========================================================*/
+			/*테크페이(택배) 모달창*/
+			
+			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
+			$("#btnDeliveryNext").click(function(e) {
+				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+				$("#payModal0").hide();
+				$("#payModal").show();
+			});
+			
+			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
+			$("#btnDeliveryClose").click(function(e) {
+				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
+// // 				e.preventDefault();
+				$("#deliveryModal").hide();
+			});
+			
+			/*========================================================*/
+			/*테크페이 결제 모달창*/
+			
+			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
+			$("#btnPayNext").click(function(e) {
+				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+// 				e.preventDefault();
+				$("#payModal").hide();
+				$("#payModal2").show();
+			});
+			
+			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
+			$("#btnPayClose").click(function(e) {
+				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
+				e.preventDefault();
+				$("#payModal").hide();
+			});
+			
+			//주소검색
+			$("#btnSearchAddress").click(function() {
+                new daum.Postcode({
+                    oncomplete: function(data) { 
+                        $("#postCode").val(data.zonecode);
+                
+                        let address = data.address;
+                        if (data.buildingName !== '') {
+                            address += " (" + data.buildingName + ")";
+                        }
+                
+                        $("#address1").val(address);
+                        $("#address2").focus();
+                    }
+                }).open();
+            });
+			
+			/*========================================================*/
+			/*테크페이 비밀번호 입력 모달창*/
+			
+			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
+			$("#btnPay2Next").click(function(e) {
+				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+// 				e.preventDefault();
+				$("#payModal2").hide();
+				$("#payModal3").show();
+			});
+			
+			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
+			$("#btnPay2Close").click(function(e) {
+				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
+				e.preventDefault();
+				$("#payModal2").hide();
+			});
+			
+			/*========================================================*/
+			/*테크페이 결제완료 모달창*/
+			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
+			$("#btnPay3Submit").click(function(e) {
+				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+// 				e.preventDefault();
+				$("#payModal3").hide();
+// 				$("#payCompletedModal").show();
+			});
+			
+			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
+			$("#btnPay3Close").click(function(e) {
+				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
+				e.preventDefault();
+				$("#payModal3").hide();
+			});
+			
+			
+			
+			
+			
+			
+			
 			/*테크페이(직거래) 버튼 클릭 시 모달창 띄움*/
 			$("#btnDirect").click(function() {
 				console.log("테크페이(직거래) 버튼 클릭됨!");
-				$("#directModal").show();
+				$("#payModal-direct").show();
+				console.log("#payModal-direct 하이드인지 쇼인지 : " + $('#payModal-direct').is(':visible'));
 				console.log("테크페이(직거래) 모달 띄움!");
 			});
 			
+			/* --------------------------------------------------- */
+			$("#btnPayNext-direct").click(function(e) {
+				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+// 				e.preventDefault();
+				$("#payModal-direct").hide();
+				$("#payModal2-direct").show();
+			});
+			
+			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
+			$("#btnPayClose-direct").click(function(e) {
+				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
+				e.preventDefault();
+				$("#payModal-direct").hide();
+			});
+			/* --------------------------------------------------- */
+			$("#btnPay2Next-direct").click(function(e) {
+				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+// 				e.preventDefault();
+				$("#payModal2-direct").hide();
+				$("#payModal3-direct").show();
+			});
+			
+			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
+			$("#btnPay2Close-direct").click(function(e) {
+				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
+				e.preventDefault();
+				$("#payModal2-direct").hide();
+			});
+			
+			/* --------------------------------------------------- */
+			$("#btnPay3Submit-direct").click(function(e) {
+				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+// 				e.preventDefault();
+				$("#payModal3-direct").hide();
+			});
+			
+			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
+			$("#btnPay2Close-direct").click(function(e) {
+				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
+				e.preventDefault();
+				$("#payModal3-direct").hide();
+			});
+			
+			
+			
+			
+			
+			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
+// 			$("#btnDeliverySubmit").click(function(e) {
+// 				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+// 				$("#deliveryModal").hide();
+// 				$("#payModal").show();
+				
+// 			});
 			/*신고하기 아이콘 클릭 시 모달창 띄움*/
 			$("#btnReport").click(function() {
 				console.log("신고하기 버튼 클릭됨!");
@@ -92,16 +249,16 @@
 		<div class="art_secondRow">
 			<div class="left">
 				<c:choose>
+					<c:when test="${sessionScope.sId eq productInfo.member_id and newTrade.trade_status > 0}">
+						<button class="btnTrade" disabled><span>거래하기</span></button>
+					</c:when>
 					<c:when test="${sessionScope.sId eq productInfo.member_id}">
-						<!-- 판매자 '거래하기' 버튼 -->
-						<button id="btnTrade"><span>거래하기</span></button>
+						<button class="btnTrade"><span>거래하기</span></button>
 					</c:when>
 					<c:when test="${newTrade.trade_type eq 1}">
-						<!-- 구매자 '테크페이(택배)' 버튼 -->
 						<button id="btnDelivery"><span>테크페이(택배)</span></button>
 					</c:when>
 					<c:when test="${newTrade.trade_type eq 2}">
-						<!-- 구매자 '테크페이(직거래)' 버튼 -->
 						<button id="btnDirect"><span>테크페이(직거래)</span></button>
 					</c:when>
 				</c:choose>
@@ -120,26 +277,127 @@
 			<div id="tradeModal" class="modal">
 				<jsp:include page="/WEB-INF/views/chat/tradeModal.jsp"></jsp:include>
 			</div>
-			<!-- 구매자 '테크페이(택배)' -->
-			<div id="deliveryModal" class="modal">
-				<jsp:include page="/WEB-INF/views/chat/deliveryModal.jsp"></jsp:include>
+			
+			
+			<div class="modalOpen">
+				<!-- 구매자 '테크페이(택배)' -->
+				<div id="deliveryModal">
+					<form action="DeliveryPay">
+						<div id="payModal0" class="modal">
+							거래하기 확인
+							<hr>
+							최종 거래금액 : 
+							<input type="number" value="${newTrade.trade_amt}" disabled>원<br>
+							배송지 입력<br>
+							  <label for="postCode" class="title">주소</label>
+					                <input type="text" name="buyer_postcode" id="postCode" placeholder="우편번호" required readonly>
+					                <button type="button" id="btnSearchAddress">주소검색</button><br>
+					                <input type="text" name="buyer_address1" id="address1" placeholder="기본주소" required readonly><br>
+					                <input type="text" name="buyer_address2" id="address2" placeholder="상세주소">
+					                
+					                <input type="hidden" value="${sessionScope.sId}" name="buyer_id">
+					                
+									<input type="hidden" name="room_id" value="${param.room_id}">
+									<input type="hidden" name="receiver_id" value="${param.receiver_id}">
+									<input type="hidden" name="sender_id" value="${param.sender_id}">
+									<input type="hidden" name="pd_idx" value="${param.pd_idx}">
+									<input type="hidden" name="status" value="${param.status}">
+							<hr>
+							<div class="modalBtn">
+								<button type="button" id="btnDeliveryNext">다음</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" id="btnDeliveryClose">닫기</button>
+							</div>
+						</div>
+						<!-- ======================================================================================= -->
+						<div id="payModal" class="modal">
+							테크페이 결제
+							<hr>
+							최종 거래금액 : 
+							<input type="number" value="${newTrade.trade_amt}" disabled>원<br>
+							<hr>
+							<div class="modalBtn">
+					<!-- 		<button type="submit" id="btnAdd">충전하기</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
+								<button type="button" id="btnPayNext">다음</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" id="btnPayClose">닫기</button>
+							</div>
+						</div>
+						<!-- ======================================================================================= -->
+						<div id="payModal2" class="modal">
+							결제 완료
+							<hr>
+							비밀번호
+							<input type="number" name="passwd" placeholder="입력해주세요"><br>
+								
+							<hr>
+							<div class="modalBtn">
+								<button type="button" id="btnPay2Next">결제하기</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" id="btnPay2Close">닫기</button>
+							</div>
+						</div>
+						<!-- ======================================================================================= -->
+						<div id="payModal3" class="modal">
+							결제 완료
+							<hr>
+							${newTrade.trade_amt}원 결제 완료
+								
+							<hr>
+							<div class="modalBtn">
+								<button type="submit" id="btnPay3Submit">구매내역 보기</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" id="btnPay3Close">닫기</button>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
-			<!-- 구매자 '테크페이(직거래)' -->
-			<div id="directModal" class="modal">
-				<jsp:include page="/WEB-INF/views/chat/directModal.jsp"></jsp:include>
+							
+		<!-- ===================================================================================================== -->
+			<div class="modalOpen">
+				<!-- 구매자 '테크페이(직거래)' -->
+				<div id="directModal">
+					<form action="directPay">
+						<div id="payModal-direct" class="modal">
+							테크페이 결제
+							<hr>
+							최종 거래금액 : 
+							<input type="number" value="${newTrade.trade_amt}" disabled>원<br>
+							<hr>
+							<div class="modalBtn">
+					<!-- 		<button type="submit" id="btnAdd">충전하기</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
+								<button type="button" id="btnPayNext-direct">다음</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" id="btnPayClose-direct">닫기</button>
+							</div>
+						</div>
+						<!-- ======================================================================================= -->
+						<div id="payModal2-direct" class="modal">
+							결제 완료
+							<hr>
+							비밀번호
+							<input type="number" name="passwd" placeholder="입력해주세요"><br>
+								
+							<hr>
+							<div class="modalBtn">
+								<button type="button" id="btnPay2Next-direct">결제하기</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" id="btnPay2Close-direct">닫기</button>
+							</div>
+						</div>
+						<!-- ======================================================================================= -->
+						<div id="payModal3-direct" class="modal">
+							결제 완료
+							<hr>
+							${newTrade.trade_amt}원 결제 완료
+								
+							<hr>
+							<div class="modalBtn">
+								<button type="submit" id="btnPay3Submit-direct">구매내역 보기</button>&nbsp;&nbsp;&nbsp;&nbsp;
+								<button type="button" id="btnPay3Close-direct">닫기</button>
+							</div>
+						</div>
+				</form>
 			</div>
-			<!-- 테크페이 결제 모달 -->
-			<div id="payModal" class="modal">
-				<jsp:include page="/WEB-INF/views/chat/payModal.jsp"></jsp:include>
-			</div>
-			<!-- 테크페이 비밀번호 입력 모달 -->
-			<div id="passwdModal" class="modal">
-				<jsp:include page="/WEB-INF/views/chat/payModal2.jsp"></jsp:include>
-			</div>
-			<!-- 테크페이 결제완료 모달 -->
-			<div id="payCompletedModal" class="modal">
-				<jsp:include page="/WEB-INF/views/chat/payModal3.jsp"></jsp:include>
-			</div>
+		</div>
+				
+				
+			
 			<!-- 신고하기 -->
 			<div id="reportModal" class="modal">
 				<jsp:include page="/WEB-INF/views/chat/reportModal.jsp"></jsp:include>

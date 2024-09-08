@@ -41,16 +41,16 @@
 	</div>
 	<script type="text/javascript">
 			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
-			$("#btnDeliverySubmit").click(function(e) {
-				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
-				$("#deliveryModal").hide();
-				$("#payModal").show();
-			});
+// 			$("#btnDeliverySubmit").click(function(e) {
+// 				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
+// 				$("#deliveryModal").hide();
+				
+// 			});
 			
 			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
 			$("#btnDeliveryClose").click(function(e) {
 				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
-// 				e.preventDefault();
+// // 				e.preventDefault();
 				$("#deliveryModal").hide();
 			});
 			

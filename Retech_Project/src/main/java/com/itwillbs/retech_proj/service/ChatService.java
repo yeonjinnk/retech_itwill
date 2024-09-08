@@ -78,8 +78,8 @@ public class ChatService {
 	}
 
 	//택배 주소 입력
-	public int inputAddress(String buyer_id) {
-		return mapper.insertAddress(buyer_id);
+	public int updateAddress(String buyer_id, String buyer_postcode, String buyer_address1, String buyer_address2) {
+		return mapper.updateAddress(buyer_id, buyer_postcode, buyer_address1, buyer_address2);
 	}
 
 	//택배 주소 입력

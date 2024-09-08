@@ -245,6 +245,9 @@ WHERE
 			, now()
 			, #{trade_status}
 			, #{trade_amt}
+			, null
+			, null
+			, null
 		)
 	</insert>
 	
@@ -257,15 +260,15 @@ WHERE
 	</select>
 	
 	<!--  택배 주소 입력 -->
-	<insert id="insertAddress">
-		INSERT INTO trade(buyer_postcode, buyer_address1, buyer_address2)
-		VALUES (
-			#{buyer_postcode}
-			, #{buyer_address1}
-			, #{buyer_address2}
-		)
+	<update id="updateAddress">
+		UPDATE trade
+		SET buyer_postcode = #{buyer_postcode},
+		    buyer_address1 = #{buyer_address1},
+		    buyer_address2 = #{buyer_address2}
+		WHERE trade_buyer_id = #{buyer_id}
 	
-	</insert>
+	</update>
+	
 </mapper>
 
 

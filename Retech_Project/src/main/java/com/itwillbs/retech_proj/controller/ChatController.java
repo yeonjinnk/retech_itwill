@@ -151,7 +151,7 @@ public class ChatController {
 				+ ", buyer_id=" + buyer_id + ", map=" + map + ", pd_idx=" + pd_idx);
 		
 		//택배 주소 입력
-		int insertAddress = service.inputAddress(buyer_id);
+		int insertAddress = service.updateAddress(buyer_id, buyer_postcode, buyer_address1, buyer_address2);
 		
 		System.out.println(" 택배 주소 입력 성공했는지 : " + insertAddress);
 		

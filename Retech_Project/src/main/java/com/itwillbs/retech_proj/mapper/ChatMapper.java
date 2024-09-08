@@ -51,7 +51,8 @@ public interface ChatMapper {
 	TradeVO selectTrade(int pd_idx);
 
 	//택배 주소 입력
-	int insertAddress(String buyer_id);
+	int updateAddress(@Param("buyer_id") String buyer_id, @Param("buyer_postcode") String buyer_postcode,
+						@Param("buyer_address1") String buyer_address1, @Param("buyer_address2") String buyer_address2);
 
 
 }
