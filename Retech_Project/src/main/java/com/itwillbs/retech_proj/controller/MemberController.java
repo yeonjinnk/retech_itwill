@@ -502,6 +502,7 @@ public class MemberController {
 	      }
 	   }
 	   
+	   
 	   @Autowired
 	   private ProductService productService;
 	   //판매내역
