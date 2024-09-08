@@ -28,7 +28,15 @@
             margin-top: 150px;
             overflow: hidden;
         }
-
+		
+		.store-info img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+		
         .sidebar {
             width: 250px;
             background-color: #f4f4f4;
@@ -150,11 +158,14 @@
         </div>
 
         <div class="content-area">
-            <div class="store-info">
-                <h2>상점 정보</h2>
-                <p>상점명: ${member.member_nickname}</p>
-                <p>지역: ${member.member_address1}</p>
-                <p>신뢰지수: </p>
+             <div class="store-info">
+                <div>
+                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}">               	
+                    <h2>상점 정보</h2>
+                    <p>상점명: ${member.member_nickname}</p>
+                    <p>지역: ${member.member_address1}</p>
+                    <p>신뢰지수: </p>
+                </div>
             </div>
 
             <ul class="tabs">

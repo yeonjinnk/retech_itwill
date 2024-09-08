@@ -72,7 +72,7 @@ public class SmsController {
             SmsAuthInfo smsAuthInfo = new SmsAuthInfo(phone_number, auth_code, null, null);
             SmsAuthInfo storedInfo = service.getSmsAuthInfo(smsAuthInfo);
 
-            if (storedInfo != null && storedInfo.getAuthCode().equals(auth_code)) {
+            if (storedInfo != null && storedInfo.getAuth_code().equals(auth_code)) {
                 // 인증 성공 시 phone_auth_status = 'Y'로 변경
                 int updateCount = service.changePhoneAuth(id);
                 if (updateCount > 0) { // update 성공

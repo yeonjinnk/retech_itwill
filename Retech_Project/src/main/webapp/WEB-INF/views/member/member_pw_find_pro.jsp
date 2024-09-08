@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,26 +75,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        // 인증번호 받기 요청을 비동기적으로 처리
         $("#smsForm").on("submit", function(event) {
             event.preventDefault(); // 폼의 기본 제출 동작을 막음
             
             var submitButton = event.originalEvent.submitter;
-            if (submitButton && submitButton.id === "next") {
-                // 다음 버튼 클릭 시 인증번호 확인 요청을 비동기적으로 처리
-                var formData = $(this).serialize(); // 폼 데이터를 직렬화
+            var formData = $(this).serialize(); // 폼 데이터를 직렬화
 
+            if (submitButton && submitButton.id === "next") {
+                // 인증번호 확인 요청
                 $.ajax({
                     type: "POST",
                     url: "${pageContext.request.contextPath}/VerifyCode", // 인증번호 확인 URL
                     data: formData,
                     success: function(response) {
-                        var jsonResponse = JSON.parse(response); // 응답을 JSON으로 파싱
-                        if (jsonResponse.result) {
-                            alert("인증 성공!");
-                            window.location.href = jsonResponse.redirectUrl || "${pageContext.request.contextPath}/member/member_pw_reset"; // 리디렉션 URL
-                        } else {
-                            alert("인증 실패. 인증번호를 확인해 주세요.");
+                        try {
+                            var jsonResponse = JSON.parse(response); // 응답을 JSON으로 파싱
+                            if (jsonResponse.result) {
+                                alert("인증 성공!");
+                                window.location.href = jsonResponse.redirectUrl || "${pageContext.request.contextPath}/member/member_pw_reset"; // 리디렉션 URL
+                            } else {
+                                alert("인증 실패. 인증번호를 확인해 주세요.");
+                            }
+                        } catch (e) {
+                            console.error("응답 파싱 오류:", e);
                         }
                     },
                     error: function(xhr, status, error) {
@@ -103,19 +105,21 @@
                     }
                 });
             } else {
-                // 인증번호 받기 버튼 클릭 시
-                var formData = $(this).serialize(); // 폼 데이터를 직렬화
-
+                // 인증번호 받기 요청
                 $.ajax({
                     type: "POST",
                     url: $(this).attr("action"), // 폼의 action 속성 값을 사용
                     data: formData,
                     success: function(response) {
-                        var jsonResponse = JSON.parse(response); // 응답을 JSON으로 파싱
-                        if (jsonResponse.result) {
-                            alert("인증번호가 성공적으로 발송되었습니다.");
-                        } else {
-                            alert("인증번호 발송에 실패했습니다.");
+                        try {
+                            var jsonResponse = JSON.parse(response); // 응답을 JSON으로 파싱
+                            if (jsonResponse.result) {
+                                alert("인증번호가 성공적으로 발송되었습니다.");
+                            } else {
+                                alert("인증번호 발송에 실패했습니다.");
+                            }
+                        } catch (e) {
+                            console.error("응답 파싱 오류:", e);
                         }
                     },
                     error: function(xhr, status, error) {
@@ -126,6 +130,7 @@
         });
     });
 </script>
+
 </head>
 <body>
     <header>

@@ -12,9 +12,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SmsAuthInfo {
-	private String phoneNumber;
-    private String authCode;
+    private String phone_number;
+    private String auth_code;
     private String status; // PENDING, VERIFIED, EXPIRED
-    private java.sql.Timestamp createdAt;
-    
+    private java.sql.Timestamp created_at;
 }

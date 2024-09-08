@@ -416,7 +416,6 @@ public class MemberController {
 //	      }
 //	   }
 	   
-	   // 회원정보 수정
 	   @PostMapping("MemberModify")
 	   public String mypageinfo(
 	       @RequestParam Map<String, String> map,
@@ -454,7 +453,7 @@ public class MemberController {
 	           try {
 	               // 파일 저장 경로
 	               String fileName = file.getOriginalFilename();
-	               String filePath = "path/to/upload/directory/" + fileName;
+	               String filePath = "/var/www/html/uploads/" + fileName;
 	               File destinationFile = new File(filePath);
 	               file.transferTo(destinationFile);
 
@@ -470,13 +469,14 @@ public class MemberController {
 	       int updateCount = service.modifyMember(map);
 	       if (updateCount > 0) {
 	           model.addAttribute("msg", "회원정보 수정 성공!");
-	           model.addAttribute("targetURL", "MemberInfo");
+	           model.addAttribute("targetURL", "SaleHistory"); // 이전 페이지 URL 설정
 	           return "result/success";
 	       } else {
 	           model.addAttribute("msg", "회원정보 수정 실패!");
 	           return "result/fail";
 	       }
 	   }
+
 
 
 	   @PostMapping("MemberWithdraw")
