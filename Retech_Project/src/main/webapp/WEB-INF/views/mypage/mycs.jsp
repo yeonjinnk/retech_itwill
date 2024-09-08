@@ -70,10 +70,25 @@
             border-radius: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+        }
+
+        .store-info img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
         }
 
         .store-info h2 {
             margin-top: 0;
+            font-size: 24px;
+        }
+
+        .store-info p {
+            margin: 5px 0;
         }
 
         .tabs {
@@ -167,10 +182,13 @@
 
         <div class="content-area">
             <div class="store-info">
-                <h2>상점 정보</h2>
-                <p>상점명: ${member.member_nickname}</p>
-                <p>지역: ${member.member_address1}</p>
-                <p>신뢰지수: </p>
+                <div>
+                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}">               	
+                    <h2>상점 정보</h2>
+                    <p>상점명: ${member.member_nickname}</p>
+                    <p>지역: ${member.member_address1}</p>
+                    <p>신뢰지수: </p>
+                </div>
             </div>
 
             <ul class="tabs">
@@ -199,8 +217,8 @@
                                     <td><fmt:formatDate value="${cs.cs_date}" pattern="yyyy-MM-dd"/></td>
                                     <td>${cs.cs_check}</td>
                                     <td>
-									    <a href="${pageContext.request.contextPath}/cs/csContent?cs_idx=${cs.cs_idx}" class="view-detail">상세보기</a>
-									</td>
+                                        <a href="${pageContext.request.contextPath}/cs/csContent?cs_idx=${cs.cs_idx}" class="view-detail">상세보기</a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>

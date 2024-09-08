@@ -99,12 +99,15 @@
 						$("#alarmPoint").css("display", "");
 						
 						console.log(alarmItem.receiver_id);
+						
+						let receiver_id = alarmItem.receiver_id == "${sessionScope.sId}" ? alarmItem.sender_id : alarmItem.receiver_id;
 						//해당 채팅방 목록 div 태그에 더블클릭 이벤트 핸들링
 						$(".alarmLink").on("click", function() {
 							console.log("알림 목록 클릭 해 채팅창 열림!");
 							console.log(alarmItem.receiver_id);
 							window.open("ChatRoom?room_id=" + alarmItem.room_id + "&receiver_id=" 
-										+ alarmItem.receiver_id + "&sender_id=" + alarmItem.sender_id 
+										+ receiver_id + "&sender_id=" + "${sessionScope.sId}" 
+										+ "&pd_idx=" + alarmItem.pd_idx
 //			 							+ "&status=" + msg.status
 										,alarmItem.room_id, "width=600px, height=600px");
 						});
@@ -557,7 +560,9 @@
 					'message': msg.message,
 					'room_id': msg.room_id,
 					'time': msg.send_time,
-					'receiver_id' : msg.receiver_id
+					'receiver_id' : msg.receiver_id,
+					'pd_idx' : msg.pd_idx,
+					'status' : msg.status
 				},
 				url: "AlarmRemember",
 				type: "POST",

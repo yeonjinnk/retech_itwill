@@ -31,8 +31,8 @@ public class SmsService {
 
         // SmsAuthInfo 객체 생성 및 리턴
         SmsAuthInfo smsAuthInfo = new SmsAuthInfo();
-        smsAuthInfo.setPhoneNumber(phoneNumber);
-        smsAuthInfo.setAuthCode(authCode);
+        smsAuthInfo.setPhone_number(phoneNumber);
+        smsAuthInfo.setAuth_code(authCode);
         smsAuthInfo.setStatus("PENDING"); // 초기 상태 설정
         return smsAuthInfo;
     }

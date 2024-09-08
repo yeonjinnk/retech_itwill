@@ -4,29 +4,29 @@
     <!-- 문자 인증 정보 조회 -->
     <select id="selectSmsAuthInfo" parameterType="com.itwillbs.retech_proj.vo.SmsAuthInfo" resultType="com.itwillbs.retech_proj.vo.SmsAuthInfo">
         SELECT * FROM sms_auth_info
-        WHERE phone_number = #{phoneNumber}
-        AND auth_code = #{authCode}
+        WHERE phone_number = #{phone_number}
+        AND auth_code = #{auth_code}
     </select>
     
     <!-- 문자 인증 정보 삽입 -->
     <insert id="insertSmsAuthInfo" parameterType="com.itwillbs.retech_proj.vo.SmsAuthInfo">
         INSERT INTO 
-        sms_auth_info (phone_number, auth_code, status, created_at, user_id)
-        VALUES (#{phoneNumber}, #{authCode}, #{status}, #{createdAt}, #{userId})
+        sms_auth_info (phone_number, auth_code, status, created_at)
+        VALUES (#{phone_number}, #{auth_code}, #{status}, #{created_at})
     </insert>
     
     <!-- 문자 인증 정보 업데이트 -->
     <update id="updateSmsAuthInfo" parameterType="com.itwillbs.retech_proj.vo.SmsAuthInfo">
         UPDATE sms_auth_info
-        SET auth_code = #{authCode}, status = #{status}
-        WHERE phone_number = #{phoneNumber}
+        SET auth_code = #{authCode}, auth_code = #{status}
+        WHERE phone_number = #{phone_number}
     </update>
     
-    <!-- 전화 인증 상태 변경 -->
-    <update id="updatePhoneAuth" parameterType="String">
-        UPDATE sms_auth_info
-        SET status = 'VERIFIED'
-        WHERE user_id = #{userId}
-    </update>
-    
+<!--     전화 인증 상태 변경 -->
+<!--     <update id="updatePhoneAuth" parameterType="String"> -->
+<!--         UPDATE sms_auth_info -->
+<!--         SET status = 'VERIFIED' -->
+<!--         WHERE user_id = #{userId} -->
+<!--     </update> -->
+
 </mapper>

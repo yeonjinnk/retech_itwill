@@ -276,43 +276,40 @@ public class MemberController {
 				@Autowired
 			    private SmsService smsService;
 				@PostMapping("PwResetPro")
-				public String pwResetPro(MemberVO member, Model model) {
-					System.out.println("성수안 바보!!!!!!!!!!!!!!!!!!!!");
-					MemberVO ddmember = (MemberVO) model.getAttribute("dbMember");
-					
-					System.out.println("ddmember : " + ddmember);
-					
-				    // 입력된 전화번호로 DB에서 회원 정보를 조회
-				    MemberVO dbMember = service.isExistPhonenumber(member);
-				    
-				    if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
-				        model.addAttribute("msg", "없는 전화번호입니다");
-				        return "result/fail";
-				    } 
-				    
-				    // 전화번호가 존재하면 인증번호 생성 및 발송
-				    String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
-				    String member_id = dbMember.getMember_id(); // DB에서 가져온 회원 ID
-				    
-				    // 인증번호 생성 및 SMS 전송
-				    SmsAuthInfo smsAuthInfo = smsService.sendAuthSMS(member_id, phone_number);
-				    
-				    if (smsAuthInfo != null) {
-				        // 인증 정보를 DB에 저장
-				        smsService.registSmsAuthInfo(smsAuthInfo);
-				        
-				        // 모델에 인증 정보와 전화번호 저장
-				        model.addAttribute("dbMember", dbMember);
-				        model.addAttribute("smsAuthInfo", smsAuthInfo);
-				        
-				        // 인증번호 발송 성공 시 비밀번호 재설정 페이지로 이동
-				        return "member/member_pw_reset";
-				    } else {
-				        // 인증번호 전송 실패 시, 실패 메시지 반환
-				        model.addAttribute("msg", "인증번호 전송에 실패했습니다. 다시 시도해 주세요.");
-				        return "result/fail";
-				    }
-				}
+			    public String pwResetPro(MemberVO member, Model model) {
+			        System.out.println("비밀번호 재설정 요청");
+
+			        // 입력된 전화번호로 DB에서 회원 정보를 조회
+			        MemberVO dbMember = service.isExistPhonenumber(member);
+			        
+			        if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
+			            model.addAttribute("msg", "없는 전화번호입니다");
+			            return "result/fail";
+			        } 
+			        
+			        // 전화번호가 존재하면 인증번호 생성 및 발송
+			        String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
+			        String member_id = dbMember.getMember_id(); // DB에서 가져온 회원 ID
+			        
+			        // 인증번호 생성 및 SMS 전송
+			        SmsAuthInfo smsAuthInfo = smsService.sendAuthSMS(member_id, phone_number);
+			        
+			        if (smsAuthInfo != null) {
+			            // 인증 정보를 DB에 저장
+			            smsService.registSmsAuthInfo(smsAuthInfo);
+			            
+			            // 모델에 인증 정보와 전화번호 저장
+			            model.addAttribute("dbMember", dbMember);
+			            model.addAttribute("smsAuthInfo", smsAuthInfo);
+			            
+			            // 인증번호 발송 성공 시 비밀번호 재설정 페이지로 이동
+			            return "member/member_pw_reset";
+			        } else {
+			            // 인증번호 전송 실패 시, 실패 메시지 반환
+			            model.addAttribute("msg", "인증번호 전송에 실패했습니다. 다시 시도해 주세요.");
+			            return "result/fail";
+			        }
+			    }
 	
 				
 				// 비밀번호 재설정
@@ -419,7 +416,6 @@ public class MemberController {
 //	      }
 //	   }
 	   
-	   // 회원정보 수정
 	   @PostMapping("MemberModify")
 	   public String mypageinfo(
 	       @RequestParam Map<String, String> map,
@@ -457,7 +453,7 @@ public class MemberController {
 	           try {
 	               // 파일 저장 경로
 	               String fileName = file.getOriginalFilename();
-	               String filePath = "path/to/upload/directory/" + fileName;
+	               String filePath = "/var/www/html/uploads/" + fileName;
 	               File destinationFile = new File(filePath);
 	               file.transferTo(destinationFile);
 
@@ -473,13 +469,14 @@ public class MemberController {
 	       int updateCount = service.modifyMember(map);
 	       if (updateCount > 0) {
 	           model.addAttribute("msg", "회원정보 수정 성공!");
-	           model.addAttribute("targetURL", "MemberInfo");
+	           model.addAttribute("targetURL", "SaleHistory"); // 이전 페이지 URL 설정
 	           return "result/success";
 	       } else {
 	           model.addAttribute("msg", "회원정보 수정 실패!");
 	           return "result/fail";
 	       }
 	   }
+
 
 
 	   @PostMapping("MemberWithdraw")

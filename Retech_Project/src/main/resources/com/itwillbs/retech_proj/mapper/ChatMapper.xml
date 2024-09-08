@@ -208,12 +208,14 @@ WHERE
 			, #{receiver_id}
 			, #{message}
 			, #{time}
+			, #{pd_idx}
+			, #{status}
 			)
 	</insert>
 	
 	<!-- DB에서 알람 가져오기 -->
 	<select id="selectAlarm" resultType="hashmap">
-		SELECT room_id, sender_id, message, time, receiver_id
+		SELECT room_id, sender_id, message, time, receiver_id, pd_idx, status
 		FROM alarm
 		WHERE member_id = #{member_id}
 		ORDER BY time desc
@@ -221,6 +223,49 @@ WHERE
 	
 	
 	</select>
+	
+	<select id="selectProduct" resultType="map">
+		SELECT pd_status, pd_subject, pd_price, pd_image1, member_id
+		FROM product
+		WHERE pd_idx = #{pd_idx}
+	
+	
+	
+	</select>
+	
+	<!--  거래 정보 저장하기 -->
+	<insert id="insertTrade">
+		INSERT INTO trade
+		VALUES (
+			null
+			, #{trade_buyer_id}
+			, #{trade_seller_id}
+			, #{trade_pd_idx}
+			, #{trade_type}
+			, now()
+			, #{trade_status}
+			, #{trade_amt}
+		)
+	</insert>
+	
+	<!-- 저장한 거래 정보 조회하기 -->
+	<select id="selectTrade" resultType="trade">
+		SELECT *
+		FROM trade
+		WHERE trade_pd_idx = #{pd_idx}
+	
+	</select>
+	
+	<!--  택배 주소 입력 -->
+	<insert id="insertAddress">
+		INSERT INTO trade(buyer_postcode, buyer_address1, buyer_address2)
+		VALUES (
+			#{buyer_postcode}
+			, #{buyer_address1}
+			, #{buyer_address2}
+		)
+	
+	</insert>
 </mapper>
 
 

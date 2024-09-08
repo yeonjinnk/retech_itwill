@@ -65,7 +65,7 @@
 
         .join_detail input[type="text"], 
         .join_detail input[type="password"] {
-            width: 100%;
+            width: calc(100% - 22px);
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -413,18 +413,20 @@
             </div>
             <div class="join_detail">
                 <span>주소</span>
-                <input type="text" id="postCode" name="postCode" readonly placeholder="우편번호">
+                <input type="text" id="postCode" name="member_postcode" readonly placeholder="우편번호">
                 <input type="button" id="btnSearchAddress" value="주소 검색">
-                <input type="text" id="address1" name="address1" readonly placeholder="주소">
-                <input type="text" id="address2" name="address2" placeholder="상세주소">
+                <input type="text" id="address1" name="member_address1" readonly placeholder="주소">
+                <input type="text" id="address2" name="member_address2" placeholder="상세주소">
             </div>
             <div class="join_detail">
-                <span>프로필 사진</span>
-                <input type="file" name="member_profile" id="member_profile">
-                <img id="img_preview_img" alt="미리보기" style="display:none;">
-                <span id="img_status">프로필사진</span>
-                <input type="button" id="del_img" value="사진 삭제" style="display: none;">
-            </div>
+			    <span>프로필 사진</span>
+			    <input type="file" name="profile" id="member_profile">
+			    <img id="img_preview_img" src="${pageContext.request.contextPath}/resources/images/${member.member_profile}" alt="미리보기" style="display:${member.member_profile != null ? 'block' : 'none'};">
+			    <span id="img_status">${member.member_profile != null ? '사진 미리보기' : '프로필사진'}</span>
+			    <input type="button" id="del_img" value="사진 삭제" style="${member.member_profile != null ? 'display: block;' : 'display: none;'}">
+			</div>
+
+
             <div class="form-buttons">
                 <input type="submit" value="정보수정">
                 <input type="reset" value="초기화">

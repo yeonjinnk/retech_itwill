@@ -2,6 +2,8 @@ package com.itwillbs.retech_proj.vo;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -20,6 +22,7 @@ public class MemberVO {
 	private String member_profile; 
 	private int member_isAdmin;
 	private Date member_motivation; 
+	private MultipartFile profile; 
 }
 
 

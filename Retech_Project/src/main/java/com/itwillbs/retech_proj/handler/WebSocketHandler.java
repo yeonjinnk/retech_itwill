@@ -404,7 +404,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 				//탐색된 receiver_id에 해당하는 웹소켓 세션 객체의 세션 아이디를 활용하여
 				//userSessions 객체의 웹소켓 세션 객체를 가져와서 메세지 전송 요청
 				WebSocketSession receiver_ws = userSessions.get(users.get(receiver_id));
-				
+				System.out.println();
 				sendMessage(receiver_ws, chatMessage);
 				System.out.println("TALK : 입력받은 채팅 DB 저장 & 수신자에게 메세지 전송함!");
 				System.out.println("보내는 메세지 : " + chatMessage);
