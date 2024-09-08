@@ -50,6 +50,12 @@
 // 					console.log("가져온 데이터 확인 : " + data[0].room_id);
 					console.log("가져온 time 데이터 확인 : " + Date(data[0].time));
 					
+					let alarmListCount = $(".alarmItem").length;
+					console.log("클래스가 alarmItem인 요소의 개수 : " + alarmListCount);
+					
+					
+
+					
 					
 					for(let alarmItem of data) {
 // 					console.log("alarmItem.time : " + alarmItem.time);
@@ -97,6 +103,12 @@
 							
 						$("#alarmList").append(divAlarm);
 						$("#alarmPoint").css("display", "");
+						
+						//알림 목록 7개가 넘어가면 오래된 알림 삭제
+						if(alarmListCount > 7) {
+							$(".alarmItem").last().remove();
+							console.log("알림이 7개 넘어가면 오래된 알림 삭제함!");
+						}
 						
 						console.log(alarmItem.receiver_id);
 						
@@ -549,6 +561,7 @@
 				console.log("알림 목록 클릭 해 채팅창 열림!");
 				window.open("ChatRoom?room_id=" + msg.room_id + "&receiver_id=" 
 							+ msg.receiver_id + "&sender_id=" + msg.sender_id 
+							+ "&pd_idx=" + msg.pd_idx
 // 							+ "&status=" + msg.status
 							,msg.room_id, "width=600px, height=600px");
 			});

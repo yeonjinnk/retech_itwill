@@ -1,5 +1,6 @@
 package com.itwillbs.retech_proj.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -44,5 +45,11 @@ public interface TechPayMapper {
 
 	// 테크페이 잔액 업데이트
 	int updatePayBalance(Map<String, Object> map2);
+
+	// 테크페이 사용 목록 불러오기	
+	List<Map<String, Object>> selectPayHistory(Map<String, Object> map);
+
+	// 테크페이 사용 목록 개수 세기(페이징)
+	int selectPayHistoryCount(Map<String, Object> map);
 
 }
