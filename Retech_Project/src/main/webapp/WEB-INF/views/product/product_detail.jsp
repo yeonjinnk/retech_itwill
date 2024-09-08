@@ -78,7 +78,7 @@ function showSlides(n) {
 
 //거래상태 예약중일경우 채팅불가 처리하는 reservedProduct() 함수
 function reservedProduct(){
-	alert("예약중인 상품이므로 채팅하실 수 없습니다");
+	alert("거래중인 상품이므로 채팅하실 수 없습니다");
 }
 //찜하기 받아오기
 $(function() {
@@ -412,15 +412,15 @@ $(document).ready(function() {
 									    <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
 									</button>
 									
-									<%-- 채팅하기 버튼 --%>
+									<%-- 거래하기 버튼 --%>
 									<c:choose>
 										<c:when test="${product.pd_status eq '거래중' }">
-												<input type="button" class="btn btn-lg btn-dark col-10" style="font-size: 1em;" value="채팅하기" onclick="reservedProduct()">
+												<input type="button" class="btn btn-lg btn-dark col-10" style="font-size: 1em;" value="거래하기" onclick="reservedProduct()">
 										</c:when>
-											<%--- 거래상태 예약중이아닐경우 채팅하기로 정상적으로 이동 --%>
+											<%--- 거래상태 거래중이아닐경우 채팅하기로 정상적으로 이동 --%>
 										<c:otherwise>
 											<button type="button" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" onclick="openChat()">
-												채팅하기
+												거래하기
 											</button>
 										</c:otherwise>
 									</c:choose>

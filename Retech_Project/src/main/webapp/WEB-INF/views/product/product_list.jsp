@@ -262,7 +262,7 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 										${product.pd_subject}
 									</a>
 								</div>
-								<p><fmt:formatNumber pattern="#,###" value="${product.pd_price }"/>원</p>
+<%-- 								<p><fmt:formatNumber pattern="#,###" value="${product.pd_price }"/>원</p> --%>
 										
 								<p>${product.pd_first_date }</p>
 							</div>
