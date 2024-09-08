@@ -25,39 +25,26 @@
 			
 			<hr>
 			<div class="modalBtn">
-				<button type="submit" id="btnPay">구매내역 보기</button>&nbsp;&nbsp;&nbsp;&nbsp;
-				<button type="button" id="btnDeliveryClose">닫기</button>
+				<button type="submit" id="btnPay2Submit">구매내역 보기</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="button" id="btnPay2Close">닫기</button>
 			</div>
 		</form>
 	</div>
 	<script type="text/javascript">
-		function readFile(input){
-		  	let reader = new FileReader(); //파일 읽는 기능
-		    
-		    reader.onload = function(e){ //파일 읽었을 때 콜백 함수
-		    	$('#prevImg').attr('src', e.target.result); //파일URL을 미리보기란 이미지 src 속성으로
-		    }
-		    reader.readAsDataURL(input.files[0]);
-		  }
-		  
-		  $("#img1").change(function(){
-		    readFile(this);
-		  });
-	  
 
 			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
-			$("#btnDeliverySubmit").click(function(e) {
+			$("#btnPay2Submit").click(function(e) {
 				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
 // 				e.preventDefault();
-				$("#deliveryModal").hide();
-				$("#passwdModal").hide();
+				$("#payModal2").hide();
+				$("#payModal3").show();
 			});
 			
 			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
-			$("#btnDeliveryClose").click(function(e) {
+			$("#btnPay2Close").click(function(e) {
 				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
 				e.preventDefault();
-				$("#deliveryModal").hide();
+				$("#payModal2").hide();
 			});
 			
 			//주소검색
