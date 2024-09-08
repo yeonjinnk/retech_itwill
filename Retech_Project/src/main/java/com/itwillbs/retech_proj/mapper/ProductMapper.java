@@ -87,7 +87,12 @@ public interface ProductMapper {
 	int insertLikeProduct(LikeVO productLike);
 	//찜하기 취소 기능
 	int deleteLikeProduct(LikeVO productLike);
-	
+
+	//찜 불러오기
+	int selectLikeChecked(@Param("member_id") String member_id, @Param("pd_idx") int pd_idx);
+
+	//판매자 판매내역 불러오기
+	List<ProductVO> selectSellerMyPage(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("member_id") String member_id);
 	//진성민
 
 }

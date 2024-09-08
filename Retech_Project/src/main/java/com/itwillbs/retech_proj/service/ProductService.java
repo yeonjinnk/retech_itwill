@@ -128,4 +128,17 @@ public class ProductService {
 	public int unCheckLikeProduct(LikeVO productLike) {
 		return mapper.deleteLikeProduct(productLike);
 	}
+	//찜 불러오기
+	public int likeChecked(String member_id, int pd_idx) {
+		return mapper.selectLikeChecked(member_id, pd_idx);
+	}
+	
+	//판매자 판매내역 불러오기
+	public List<ProductVO> getSellerMyPage(int startRow, int listLimit, String member_id) {
+		return mapper.selectSellerMyPage(startRow, listLimit, member_id);
+	}
+	
+	
+		
+	
 }

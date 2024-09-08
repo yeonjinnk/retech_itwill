@@ -265,6 +265,29 @@
 			AND pd_idx = #{pd_idx}
 	</delete>
 	
+	<!-- 찜 불러오기 -->
+	<select id="selectLikeChecked" resultType="int">
+		SELECT count(like_idx)
+		FROM likes
+		WHERE 
+			member_id = #{member_id}
+			AND pd_idx = #{pd_idx}
+	</select>
+	
+	<!-- 판매자 판매내역 불러오기 -->
+	<select id="selectSellerMyPage" resultType="product">
+		SELECT *
+		FROM 
+			member m
+		JOIN
+			product p
+		ON 
+			m.member_id = p.member_id
+		WHERE
+			p.member_id = #{member_id}
+	
+	</select>
+	
 	
 </mapper>
 

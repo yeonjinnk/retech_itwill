@@ -17,8 +17,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.itwillbs.retech_proj.service.ProductService;
 import com.itwillbs.retech_proj.vo.LikeVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
@@ -433,7 +432,6 @@ public class ProductController {
 				product.setPd_image2(subDir + "/" + fileName2);
 			}
 			if(pFile3 != null) {
-				fileName3 = uuid.substring(0, 8) + "_" + pFile3.getOriginalFilename();
 				product.setPd_image3(subDir + "/" + fileName3);
 			}
 			if(pFile4 != null) {
@@ -608,7 +606,22 @@ public class ProductController {
 		    }
 		}
 
+		@ResponseBody
+		@GetMapping("checkLikeStatus")
+		public int checkLikeStuats(@RequestParam("member_id") String member_id,
+	            @RequestParam("pd_idx") int pd_idx) {
+			System.out.println("찜 불러오기!!!!!!!!");
+			System.out.println("넘어온 데이터 확인  : " + member_id + ", " + pd_idx);
+			int isLiked = service.likeChecked(member_id, pd_idx);
+			System.out.println("아이디랑 상품번호 넣었을 때 조회된 좋아요 번호 : " + isLiked);
+			
+			// 최대 페이지번호(maxPage) 값도 JSON 데이터로 함께 넘기기
+//			JSONObject jsonObject = new JSONObject();
+
+//			jsonObject.put("isLiked", isLiked);
+			return isLiked;
 		}
+}
 		
 				
 	

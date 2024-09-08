@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Retech 상품목록</title>
 <script type="text/javascript">
-
+let isLike = $("#likeProduct").hasClass("like");
 //메인페이지 카테고리 이미지에서 이동 시, 필터링 된 상품목록 불러오기
 $(document).ready(function() {
     // URLSearchParams 객체를 사용하여 URL 파라미터 값을 가져오기
@@ -149,11 +149,6 @@ function loadList(selectedCategory, selectedSort, resetPage) {
                     + '            <a href="product_detail?pd_idx=' + product.pd_idx + '&member_id=' + product.member_id + '">'
                     + '                <img src="${pageContext.request.contextPath}/resources/upload/' + product.pd_image1 + '" class="card-img-top">'
                     + '            </a>'
-                    + '            <span class="likebtn" data-pd-idx="' + product.pd_idx + '">'
-                    + '                <a href="#" style="align:right;">'
-                    + '                    <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" width="30px" height="30px">'
-                    + '                </a>'
-                    + '            </span>'
                     + '            <span class="dealStatus"><button class="btn btn-dark">' + product.pd_status + '</button></span>'
                     + '        </div>'
                     + '        <div class="card-body">'
@@ -180,47 +175,6 @@ function loadList(selectedCategory, selectedSort, resetPage) {
         }
     }); //ajax끝부분
 } //loadList() 함수 끝
-//=================================================================================================================================================
-
-//찜하기 
-$(document).on("click", ".likebtn a", function(e) {
-    e.preventDefault(); // 기본 이벤트 동작 막기
-    let member_id = "${member_id}"; // 세션에서 현재 로그인한 사용자의 member_id 가져오기
-    let pd_idx = $(this).closest(".likebtn").data("pd-idx"); // 해당 상품의 pd_idx 얻기
-    let likeStatus = $(this).find("img").data("like-status"); // 현재 클릭한 이미지의 좋아요 상태 얻기
-    let likeInfo = {
-        "member_id": "${member_id}",
-        "secondhand_idx": $(this).closest(".likebtn").data("pd-idx"),
-        "like_status": $(this).find("img").data("like-status") // 현재 찜 상태를 전달 (liked 또는 unliked)
-    };
-
-    $.ajax({
-        type: "POST",
-        url: "productLike",
-        data: JSON.stringify(likeInfo),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function(response) {
-            let heartIcon = $('.likebtn[data-pd-idx="' + pd_idx + '"]').find("img");
-            // 찜 추가 (response.likeStatus == 'liked')
-            if (response.likeStatus == 'liked') {
-                heartIcon.attr('src', '${pageContext.request.contextPath}/resources/img/heartIcon2.png')
-                    .data('like-status', 'liked');
-            } else {
-                // 찜 취소 (response.likeStatus == 'unliked')
-                heartIcon.attr('src', '${pageContext.request.contextPath}/resources/img/heartIcon3.png')
-                    .data('like-status', 'unliked');
-            }
-        },
-        error: function() {
-            alert("찜 처리 실패");
-        }
-    });
-});
-
-
-
-
 </script>
 
 
@@ -282,9 +236,6 @@ $(document).on("click", ".likebtn a", function(e) {
 			        <li id="list3">인기순 </li>
 			    </ul>
 			</div>
-
-			
-			
 			<!-- 목록표시 영역 -->
 			<div class="row" align="left">
 				<div class="productListArea">
@@ -295,13 +246,6 @@ $(document).on("click", ".likebtn a", function(e) {
 								<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
 									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" class="card-img-top">
 								</a>
-							<!-- 찜하기 버튼 -->
-								<span class="likebtn" data-pd-idx="${product.pd_idx }">
-									<a href="#" style="align:right;">
-										<!-- 찜하기 버튼 이미지 찾아서 삽입 -->
-										<img src="${pageContext.request.contextPath }/resources/images/heartIcon3.png" width="30px" height="30px">'
-									</a>
-								</span>
 								<!-- 거래상태 버튼 -->
 								<span class="pd_status">
 									<button class="btn btn-dark">${product.pd_status}</button>

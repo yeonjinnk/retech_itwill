@@ -71,8 +71,8 @@ function showSlides(n) {
 		dots[i].className = dots[i].className.replace(" active", "");
 	}
 	
-	slides[slideIndex-1].style.display = "block";
-	dots[slideIndex-1].className += " active";
+// 	slides[slideIndex-1].style.display = "block";
+// 	dots[slideIndex-1].className += " active";
 }
 
 
@@ -82,34 +82,73 @@ function reservedProduct(){
 }
 //찜하기 받아오기
 $(function() {
+	console.log("!!!!!!페이지 로딩됨 !!!!!");
 	
-	let sId = $("#sessionId").val();
-		console.log(sId);
-	$.ajax ({
-		type: 'GET',
-		url: 'likeProductShow',
-		data: {'member_id' : sId},
-		dataType: 'JSON',
-		success: function(result) {
-//			console.log(result);
+// 	let sId = $("#sessionId").val();
+// 		console.log(sId);
+// 	$.ajax ({
+// 		type: 'GET',
+// 		url: 'likeProductShow',
+// 		data: {'member_id' : sId},
+// 		dataType: 'JSON',
+// 		success: function(result) {
+// //			console.log(result);
 			
-			for(let i = 1; i <= 4; i++) {
-				let ProductNo = $("" + $("#likeProduct" + i).data("target")).val();	
+// 			for(let i = 1; i <= 4; i++) {
+// 				let ProductNo = $("" + $("#likeProduct" + i).data("target")).val();	
 				
-				for(let like of result) {
-					if(like.pd_idx == ProductNo) {	// 일치하면
-			    		$(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+// 				for(let like of result) {
+// 					if(like.pd_idx == ProductNo) {	// 일치하면
+// 			    		$(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
 
-						$("#clickCk" + i).attr("disabled", true);
-					}
-				}
-			}
-		},
-		error: function() {
-			alert("찜하기받아오기 에러!!");
-// 			console.log("에러");
-		}
-	});
+// 						$("#clickCk" + i).attr("disabled", true);
+// 					}
+// 				}
+// 			}
+// 		},
+// 		error: function() {
+// 			alert("찜하기받아오기 에러!!");
+// // 			console.log("에러");
+// 		}
+// 	});
+	
+	   let pd_idx = "${product.pd_idx}";
+	    
+	    // 서버에서 찜 상태를 가져오는 AJAX 요청
+	    $.ajax({
+	        type: 'GET',
+	        url: 'checkLikeStatus',
+	        data: {
+	            'member_id': "${sessionScope.sId}",
+	            'pd_idx': "${param.pd_idx}"
+	        },
+	        dataType: 'JSON',
+	        success: function(result) {
+//	             if (result.isLiked) {
+//	                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+//	                 $("#likeProduct").addClass("like");
+//	                 localStorage.setItem(pd_idx, "liked");
+//	             } else {
+//	                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+//	                 $("#likeProduct").removeClass("like");
+//	                 localStorage.removeItem(pd_idx);
+//	             }
+	            if (result) {
+	                $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+	                $("#likeProduct").addClass("like");
+	                localStorage.setItem(pd_idx, "liked");
+	            } else {
+	                $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+	                $("#likeProduct").removeClass("like");
+	                localStorage.removeItem(pd_idx);
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("AJAX 오류: ", error);
+	        }
+	    });
+	
+	
 	
 });// function 끝
 
@@ -167,9 +206,11 @@ function checkProduct(element) {
             if (isLike) { // 찜 상태일 때 해제 상태로 전환 (isLike가 true일 때)
             	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
             	$("#likeProduct").removeClass("like"); // 좋아요 제거
+            	localStorage.setItem(pd_idx, "liked"); // 클라이언트 측 저장
             } else { // 찜 해제 상태일 때 찜 상태로 전환 (isLike가 false일 때)
             	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
             	$("#likeProduct").addClass("like"); // 좋아요 표시
+            	localStorage.removeItem(pd_idx); // 클라이언트 측 저장
             }
         },
         error: function(xhr, status, error) {
@@ -177,6 +218,45 @@ function checkProduct(element) {
         }
     }); // ajax 끝
 }
+//페이지 로드 시 찜 상태 복원
+$(document).ready(function() {
+//     let pd_idx = "${product.pd_idx}";
+    
+//     // 서버에서 찜 상태를 가져오는 AJAX 요청
+//     $.ajax({
+//         type: 'GET',
+//         url: 'checkLikeStatus',
+//         data: {
+//             'member_id': "${sessionScope.sId}",
+//             'pd_idx': pd_idx
+//         },
+//         dataType: 'JSON',
+//         success: function(result) {
+// //             if (result.isLiked) {
+// //                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+// //                 $("#likeProduct").addClass("like");
+// //                 localStorage.setItem(pd_idx, "liked");
+// //             } else {
+// //                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+// //                 $("#likeProduct").removeClass("like");
+// //                 localStorage.removeItem(pd_idx);
+// //             }
+//             if (isLiked) {
+//                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+//                 $("#likeProduct").addClass("like");
+//                 localStorage.setItem(pd_idx, "liked");
+//             } else {
+//                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+//                 $("#likeProduct").removeClass("like");
+//                 localStorage.removeItem(pd_idx);
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error("AJAX 오류: ", error);
+//         }
+//     });
+});
+
 
 
 
@@ -408,7 +488,7 @@ function checkProduct(element) {
 					<br>
 					<div class="row" style="margin-left: 10px; margin-bottom: 10px;">
 						<b>${seller.member_nickname }</b> 님의 판매중인 상품 ... 
-						<a href="SaleHistory?sId=${product.member_id}"> 더보기 </a>
+						<a href="SaleHistory?member_id=${product.member_id}"> 더보기 </a>
 					</div>
 					<%--썸네일이미지 --%>
 					<%-- 판매자의 물품 개수만큼 반복표시 --%>
