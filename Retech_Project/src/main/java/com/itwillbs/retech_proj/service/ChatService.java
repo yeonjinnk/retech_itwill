@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.retech_proj.mapper.ChatMapper;
 import com.itwillbs.retech_proj.vo.ChatMessage;
 import com.itwillbs.retech_proj.vo.ChatRoom;
+import com.itwillbs.retech_proj.vo.TradeVO;
 
 @Service
 public class ChatService {
@@ -60,5 +61,32 @@ public class ChatService {
 	public List<HashMap<String, Object>> getAlarmList(Map<String, String> map) {
 		return mapper.selectAlarm(map);
 	}
+
+	//상품 정보 가져오기
+	public Map<String, Object> getProduct(int pd_idx) {
+		return mapper.selectProduct(pd_idx);
+	}
+
+	//거래 정보 저장하기
+	public int insertTrade(TradeVO trade) {
+		return mapper.insertTrade(trade);
+	}
+
+	//저장한 거래 정보 조회하기
+	public TradeVO getTrade(int pd_idx) {
+		return mapper.selectTrade(pd_idx);
+	}
+
+	//택배 주소 입력
+	public int inputAddress(String buyer_id) {
+		return mapper.insertAddress(buyer_id);
+	}
+
+	//택배 주소 입력
+
+	//저장한 거래 정보 조회하기
+//	public TradeVO getTrade(int pd_idx) {
+//		return mapper.selectTrade(pd_idx);
+//	}
 
 }

@@ -13,5 +13,6 @@
 		<typeAlias type="com.itwillbs.retech_proj.vo.ChatRoom" alias="chatRoom"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.ChatMessage" alias="chatMessage"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.SmsAuthInfo" alias="smsAuthInfo"/>
+		<typeAlias type="com.itwillbs.retech_proj.vo.TradeVO" alias="trade"/>
 	</typeAliases>
 </configuration>
