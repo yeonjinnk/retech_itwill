@@ -236,6 +236,8 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 			        <li id="list3">인기순 </li>
 			    </ul>
 			</div>
+			
+			
 			<!-- 목록표시 영역 -->
 			<div class="row" align="left">
 				<div class="productListArea">
