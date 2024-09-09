@@ -1,4 +1,5 @@
 package com.itwillbs.retech_proj.controller;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ public class AdminChart {
 
     @Autowired
     private AdminMemberService service;
+    
     
 
     // 관리자 홈
@@ -48,6 +50,10 @@ public class AdminChart {
             
             model.addAttribute("productData", gson.toJson(productList));
             System.out.println("new Gson().toJson(productList): " + gson.toJson(productList)); // 확인용
+            
+            
+            
+            
         }
         return "admin/admin_chart";
     }
@@ -60,6 +66,8 @@ public class AdminChart {
             
         return "success";
     }
+
+	
     
     
    
