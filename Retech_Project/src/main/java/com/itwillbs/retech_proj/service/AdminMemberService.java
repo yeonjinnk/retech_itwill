@@ -2,8 +2,11 @@ package com.itwillbs.retech_proj.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
 import com.itwillbs.retech_proj.mapper.AdminMemberMapper;
 import com.itwillbs.retech_proj.vo.MemberVO;
+import com.itwillbs.retech_proj.vo.ProductVO;
 @Service
 public class AdminMemberService {
    @Autowired
@@ -22,6 +25,14 @@ public class AdminMemberService {
    }
 public int changePoliceAuth(String member_status, String member_id) {
 	return mapper.updateStatusAuth(member_status, member_id);
+}
+public List<MemberVO> getMemberList2() {
+	// TODO Auto-generated method stub
+	return mapper.selectMemberList2();
+}
+public List<ProductVO> getProductList() {
+	// TODO Auto-generated method stub
+	return mapper.selectProductList2();
 }
    
 

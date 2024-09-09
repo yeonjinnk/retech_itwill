@@ -164,9 +164,9 @@ public class AdminMemberController {
          return "result/fail";
       }
       
-   }   
+   }
+}   
 
 
 
    
-}
