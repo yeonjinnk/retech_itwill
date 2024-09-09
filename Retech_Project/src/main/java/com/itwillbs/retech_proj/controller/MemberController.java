@@ -744,7 +744,7 @@ public class MemberController {
 	            int listLimit = 10; // 한 페이지에 보여줄 항목 수
 
 	            // 총 문의 수를 가져옴
-	            int totalCsCount = csService.getCsListCount();
+	            int totalCsCount = csService.getCsListCount(id);
 	            model.addAttribute("totalCsCount", totalCsCount);
 
 	            // 문의 리스트 가져오기
