@@ -76,65 +76,79 @@
 								<input type="submit" value="검색">
 							</div>
 						</form>
-				<div class="content">
-					<table border="1">
-						<tr>
-							<th>회원아이디</th>
-							<th>이름</th>
-							<th>회원상태</th>
-							<th>관리자 여부</th>
-							<th>관리자 권한관리</th>
-						</tr>
-						<c:set var="pageNum" value="1" />
-						<c:if test="${not empty param.pageNum}">
-							<c:set var="pageNum" value="${param.pageNum}" />
-						</c:if>
-						<c:forEach var="member" items="${memberList}">
-							<tr align="center">
-								<td>${member.member_id}</td>
-								<td>${member.member_name}</td>
-								<td>
-									<c:choose>
-										<c:when test="${member.member_status eq '1'}">
-											활동
-										</c:when>
-											<c:otherwise>
-											${member.member_status}
-										</c:otherwise>
-									</c:choose>								
-								</td>
-								<td>
-										<c:choose>
-											<c:when test="${member.member_isAdmin eq 0}">
-												N
-											</c:when>
-											<c:otherwise>
-												Y
-											</c:otherwise>
-										</c:choose>
-								</td>
-								<td><c:choose>
-										<c:when test="${member.member_isAdmin eq 0}">
-											<%-- 												<input type="button" value="관리자 권한 부여" onclick="confirmYAdmin('${member.member_id}',${member.member_isAdmin})"> --%>
-											<input type="button" value="관리자 권한 부여"
-												onclick="confirmAdmin('${member.member_id}',${member.member_isAdmin}, 'Y')"
-												<c:if test="${member.member_status eq '탈퇴'}"> disabled</c:if>>
-										</c:when>
-										<c:otherwise>
-											<%-- 												<input type="button" value="관리자 권한 해제" onclick="confirmNAdmin('${member.member_id}',${member.member_isAdmin})"> --%>
-											<input type="button" value="관리자 권한 해제" class="yAdmin"
-												onclick="confirmAdmin('${member.member_id}',${member.member_isAdmin}, 'N')">
-										</c:otherwise>
-									</c:choose></td>
-							</tr>
-						</c:forEach>
-						<c:if test="${empty memberList}">
-							<tr>
-								<td align="center" colspan="7">검색 결과가 없습니다.</td>
-							</tr>
-						</c:if>
-					</table>
-				</div>
+<div class="content">
+    <table border="1">
+        <tr>
+            <th>회원아이디</th>
+            <th>이름</th>
+            <th>회원상태</th>
+            <th>관리자 여부</th>
+            <th>관리자 권한관리</th>
+        </tr>
+        
+        <!-- 메인관리자 먼저 출력 -->
+        <c:forEach var="member" items="${memberList}">
+            <c:if test="${member.member_id eq 'admin@naver.com'}">
+                <tr align="center">
+                    <td>${member.member_id}</td>
+                    <td>${member.member_name}</td>
+                    <td>활동</td>
+                    <td>Y</td>
+                    <td>메인관리자</td>
+                </tr>
+            </c:if>
+        </c:forEach>
+        
+        <!-- 나머지 회원 출력 -->
+        <c:forEach var="member" items="${memberList}">
+            <c:if test="${member.member_id ne 'admin@naver.com'}">
+                <tr align="center">
+                    <td>${member.member_id}</td>
+                    <td>${member.member_name}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${member.member_status eq '1'}">
+                                활동
+                            </c:when>
+                            <c:otherwise>
+                                ${member.member_status}
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${member.member_isAdmin eq 0}">
+                                N
+                            </c:when>
+                            <c:otherwise>
+                                Y
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${member.member_isAdmin eq 0}">
+                                <input type="button" value="관리자 권한 부여" 
+                                    onclick="confirmAdmin('${member.member_id}', ${member.member_isAdmin}, 'Y')"
+                                    <c:if test="${member.member_status eq '탈퇴'}"> disabled</c:if>>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="button" value="관리자 권한 해제" class="yAdmin"
+                                    onclick="confirmAdmin('${member.member_id}', ${member.member_isAdmin}, 'N')">
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+            </c:if>
+        </c:forEach>
+        
+        <c:if test="${empty memberList}">
+            <tr>
+                <td align="center" colspan="7">검색 결과가 없습니다.</td>
+            </tr>
+        </c:if>
+    </table>
+</div>
 				<div id="pageList">
 					<input type="button" value="이전"
 						onclick="location.href='AdminMemberList?pageNum=${pageNum - 1}'"

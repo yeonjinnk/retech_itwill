@@ -42,8 +42,6 @@
 				or member_nickname like concat('%',#{searchKeyword},'%')
 				or member_status like concat('%',#{searchKeyword},'%')
 		</if>
-		ORDER BY
-			member_status DESC
 		LIMIT
 			#{startRow}     
 			, #{listLimit}  

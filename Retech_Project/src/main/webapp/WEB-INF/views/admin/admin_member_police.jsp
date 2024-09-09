@@ -92,7 +92,19 @@
 							<tr align="center">
 								<td>${member.member_id}</td>
 								<td>${member.member_name}</td>
-								<td>${member.member_status}</td>
+								<td>
+								    <c:choose>
+								        <c:when test="${member.member_status eq '1'}">
+								            활동
+								        </c:when>
+								        <c:when test="${member.member_status eq '탈퇴'}">
+								            탈퇴한 회원입니다.
+								        </c:when>
+								        <c:otherwise>
+								            ${member.member_status}
+								        </c:otherwise>
+								    </c:choose>
+								</td>
 								<td><c:choose>
 										<c:when test="${member.member_status eq '1'}">
 											<input type="button" value="회원 블랙 부여"
