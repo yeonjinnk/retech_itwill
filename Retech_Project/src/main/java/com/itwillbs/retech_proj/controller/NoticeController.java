@@ -73,7 +73,7 @@ public class NoticeController {
 				// -------------------------------------------------------------------------------------------
 				List<NoticeVO> noticeList = service.getNoticeList(startRow, listLimit, searchKeyword);
 				PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
-
+				System.out.println("notice ddddd" + noticeList);
 				model.addAttribute("noticeList", noticeList);
 				model.addAttribute("pageInfo", pageInfo);
 				return "notice/notice";

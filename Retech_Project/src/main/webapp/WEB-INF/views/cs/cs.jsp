@@ -27,26 +27,41 @@
 		</div>
 	<section id="listForm">
 		<table>
-			<tr id="tr_top">
-				<th width="200px">제목</th>
-				<th width="400px">문의내용</th>
-				<th width="100px">확인여부</th>
-			</tr>
-			<c:set var="pageNum" value="1" />
+    <tr id="tr_top">
+        <th width="200px">글번호</th>
+        <th width="200px">제목</th>
+        <th width="400px">문의내용</th>
+        <th width="100px">확인여부</th>
+    </tr>
+    <c:set var="pageNum" value="1" />
+    
+    <c:if test="${not empty param.pageNum}">
+        <c:set var="pageNum" value="${param.pageNum}" />
+    </c:if>
+	<c:if test="${not empty csList}">
 	
-			<c:if test="${not empty param.pageNum}">
-				<c:set var="pageNum" value="${param.pageNum}" />
-			</c:if>
-			<c:forEach var="cs" items="${csList}">
-				<tr>
-					<td id="subject">
-						<a href="CsContent?cs_idx=${cs.cs_idx}&pageNum=${pageNum}">${cs.cs_subject}</a>
-					</td>
-					<td>${cs.cs_content}</td>
-					<td>${cs.cs_check}</td>
-				</tr>
-			</c:forEach>
-		</table>
+	
+	    <c:set var="listLimit" value="5" /> <!-- 한 페이지에 표시되는 게시글 수 -->
+	
+	    <!-- 현재 페이지의 글번호 시작값 계산 -->
+	    <c:set var="startNum" value="${(pageNum - 1) * listLimit}" />
+	
+	    <!-- 게시글 목록을 순서대로 표시, varStatus를 이용하여 글번호 추가 -->
+	    <c:forEach var="cs" items="${csList}" varStatus="status">
+	        <tr>
+	            <!-- startNum에 현재 인덱스를 더해 글번호 계산 -->
+	            <td>${startNum + status.index + 1}</td> 
+	            <td id="subject">
+	                <a href="CsContent?cs_idx=${cs.cs_idx}&pageNum=${pageNum}">
+	                    ${cs.cs_subject}
+	                </a>
+	            </td>
+	            <td>${cs.cs_content}</td>
+	            <td>${cs.cs_check}</td>
+	        </tr>
+	    </c:forEach>
+    </c:if>
+</table>
 	</section>
 	<section id="pageList">
 

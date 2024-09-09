@@ -15,7 +15,7 @@
 		ON c.cs_member_id = m.member_id
 		WHERE
 			<choose>
-				<when test="isAdmin eq false">
+				<when test="isAdmin eq 0">
 					c.cs_member_id = #{id}
 				</when>
 				<otherwise>
