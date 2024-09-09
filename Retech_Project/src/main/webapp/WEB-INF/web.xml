@@ -69,6 +69,8 @@
 		<location>/WEB-INF/views/error/error_404.jsp</location>
 	</error-page>
 	
+	
+	
 
 </web-app>
 

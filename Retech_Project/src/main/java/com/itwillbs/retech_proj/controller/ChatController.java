@@ -167,6 +167,29 @@ public class ChatController {
 				+ "&sender_id=" + senderId + "&status=" + status + "&pd_idx=" + pd_idx;
 	}
 	
+	@GetMapping("RegistReport")
+	public String registReport(@RequestParam Map<String, Object> map, @RequestParam String room_id, 
+			@RequestParam String receiver_id, @RequestParam String sender_id, @RequestParam int status,
+			@RequestParam int pd_idx ) {
+		System.out.println("===================================================================");
+		System.out.println("신고 접수 위한 map 객체 잘 넘어왔는지 : " + map);
+		
+		int insertReport = service.registChatReport(map);
+		
+		
+		
+		
+		String roomId = (String)map.get("room_id");
+		String receiverId = (String)map.get("receiver_id");
+		String senderId = (String)map.get("sender_id");
+//		String status = (String)map.get("status");
+		System.out.println("map 객체에 있는 파라미터를 변수로 저장함!");
+//		
+		
+		//정보를 다시 들고 가야 하니까 redirect..
+		return "redirect:/ChatRoom?room_id=" + roomId + "&receiver_id=" + receiverId 
+				+ "&sender_id=" + senderId + "&status=" + status + "&pd_idx=" + pd_idx;
+	}
 	
 //	@PostMapping
 }
