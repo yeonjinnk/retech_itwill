@@ -126,7 +126,7 @@ public class ChatController {
 		System.out.println("거래 저장하기 전 trade : " + trade);
 		
 		//거래 정보 저장
-		int insertCount = service.insertTrade(trade);
+		int insertCount = service.updateTrade(trade);
 		System.out.println("거래 정보 잘 저장했나 : " + insertCount);
 		
 		//저장한 거래정보 들고 다시가야지..

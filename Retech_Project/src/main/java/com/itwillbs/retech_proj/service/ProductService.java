@@ -144,6 +144,16 @@ public class ProductService {
 		return mapper.selectSellerMyPage(startRow, listLimit, member_id);
 	}
 	
+    // 아이디에 해당하는 구매내역 리스트 조회	
+	public List<Map<String, String>> getBuyList(String id) {
+		return mapper.selectBuyList(id);
+	}
+	
+	// 아이디에 해당하는 판매내역 리스트 조회
+	public List<Map<String, String>> getSaleList(String loggedInUserId) {
+		return mapper.selectSaleList(loggedInUserId);
+	}
+	
 	
 
 

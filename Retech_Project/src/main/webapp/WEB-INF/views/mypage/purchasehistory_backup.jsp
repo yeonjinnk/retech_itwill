@@ -263,7 +263,7 @@
             </ul>
 
             <div class="content">
-                <c:if test="${not empty buyList}">
+                <c:if test="${not empty productList}">
                     <table>
                         <thead>
                             <tr>
@@ -275,7 +275,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="product" items="${buyList}">
+                            <c:forEach var="product" items="${productList}">
                                 <c:if test="${product.pd_status == '결제완료' || 
                                              product.pd_status == '거래취소 요청' || 
                                              product.pd_status == '거래취소 확정' || 
@@ -296,25 +296,17 @@
                                         <td>${product.pd_price}</td>
                                         <td>${product.pd_first_date}</td>
                                         <td>
+                                            ${product.pd_status}
                                             <div class="status-buttons">
                                                 <c:choose>
-                                                    <c:when test="${product.trade_status == 1}">
-                                                        예약중
+                                                    <c:when test="${product.pd_status == '결제완료'}">
+                                                        <!-- No buttons -->
                                                     </c:when>
-                                                    <c:when test="${product.trade_status == 2}">
-                                                        결제완료
-                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소요청</button>
-                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래확정</button>
+                                                    <c:when test="${product.pd_status == '거래취소 요청'}">
+                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소승인</button>
                                                     </c:when>
-                                                    <c:when test="${product.trade_status == 3}">
-                                                        거래완료
-                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">리뷰쓰기</button>
-                                                    </c:when>
-                                                    <c:when test="${product.trade_status == 4}">
-                                                        거래취소대기
-                                                    </c:when>
-                                                    <c:when test="${product.pd_status == 5}">
-                                                        거래취소승인
+                                                    <c:when test="${product.pd_status == '거래확정'}">
+                                                        <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
                                                     </c:when>
                                                 </c:choose>
                                             </div>

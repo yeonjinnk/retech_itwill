@@ -45,7 +45,7 @@ public interface ChatMapper {
 	Map<String, Object> selectProduct(int pd_idx);
 
 	//거래 정보 저장하기
-	int insertTrade(TradeVO trade);
+	int updateTrade(TradeVO trade);
 
 	//저장한 거래 정보 조회하기
 	TradeVO selectTrade(int pd_idx);
@@ -56,6 +56,13 @@ public interface ChatMapper {
 
 	//신고 입력하기
 	int insertReport(Map<String, Object> map);
+
+	  //--------------------거래 테이블에 추가 ---------------------------------
+    //상품 등록 시 거래 테이블에도 상품 번호랑 거래상태를 insert함
+	void insertTrade(@Param("pd_idx") int pd_idx, @Param("member_id") String member_id);
+
+	 //등록한 상품 번호 들고오기
+	int selectPdIDX(String member_id);
 
 
 }

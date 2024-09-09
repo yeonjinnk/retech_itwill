@@ -27,14 +27,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.retech_proj.service.ChatService;
 import com.itwillbs.retech_proj.service.ProductService;
 import com.itwillbs.retech_proj.vo.LikeVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
+
+import kotlin.reflect.jvm.internal.impl.types.model.TypeSystemInferenceExtensionContext;
 
 @Controller
 public class ProductController {
 	@Autowired
 	private ProductService service;
+	
+	@Autowired
+	private ChatService chatService;
 
 	// 리테크상품목록페이지
 	// 최신순(날짜순)으로 기본적으로 정렬됨
@@ -246,12 +252,21 @@ public class ProductController {
 	    System.out.println("pd_price : " + product.getPd_price());
 
 	    int insertCount = service.registBoard(product);
-
+	    
+	    //등록한 상품 번호 들고오기
+	    int productIdx = chatService.getPdIDX(member_id);
+	    System.out.println("!!!!!!!!!!!!!!!!!!!! 등록한 상품 번호 들고오기 : " + productIdx);
+	    
+	    //거래 테이블에 입력하기
+	    chatService.insertTrade(productIdx, member_id);
+	    
 	    // 등록 결과를 판별
 	    // 성공 : 업로드 파일 - 실제 디렉토리에 이동시킨 후, productList 서블릿 리다이렉트
 	    // 실패 : "상품 등록 실패" 출력 후 이전 페이지 돌아가기 처리
 	    if (insertCount > 0) {// 성공
 	        // 업로드 파일 실제 디렉토리 이동 작업
+	    	//--------------------거래 테이블에 추가 ---------------------------------
+	    	//상품 등록 시 거래 테이블에도 상품 번호랑 거래상태를 insert함
 	        try {
 	            for (int i = 0; i < fileIndex; i++) {
 	                MultipartFile file = files[i];
