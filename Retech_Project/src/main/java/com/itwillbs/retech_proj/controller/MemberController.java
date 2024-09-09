@@ -651,6 +651,7 @@ public class MemberController {
 	           
 	           // 아이디에 해당하는 구매내역 리스트 조회
 	    	   List<Map<String, String>> buyList = productService.getBuyList(id);
+
 	    	   
 	    	   System.out.println("=====================buyList : " + buyList);
 	    	   
