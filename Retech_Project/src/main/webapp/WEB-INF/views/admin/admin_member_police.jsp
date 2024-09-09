@@ -76,59 +76,62 @@
 							<input type="submit" value="검색">
 					</div>
 				</form>
-				<div class="content">
-					<table border="1">
-						<tr>
-							<th>회원아이디</th>
-							<th>이름</th>
-							<th>회원상태</th>
-							<th>회원 관리</th>
-						</tr>
-						<c:set var="pageNum" value="1" />
-						<c:if test="${not empty param.pageNum}">
-							<c:set var="pageNum" value="${param.pageNum}" />
-						</c:if>
-						<c:forEach var="member" items="${memberList}">
-							<tr align="center">
-								<td>${member.member_id}</td>
-								<td>${member.member_name}</td>
-								<td>
-								    <c:choose>
-								        <c:when test="${member.member_status eq '1'}">
-								            활동
-								        </c:when>
-								        <c:when test="${member.member_status eq '탈퇴'}">
-								            탈퇴한 회원입니다.
-								        </c:when>
-								        <c:otherwise>
-								            ${member.member_status}
-								        </c:otherwise>
-								    </c:choose>
-								</td>
-								<td><c:choose>
-										<c:when test="${member.member_status eq '1'}">
-											<input type="button" value="회원 블랙 부여"
-												onclick="confirmPolice('${member.member_id}', '${member.member_status}', '블랙')"
-												>
-										</c:when>
-										<c:when test="${member.member_status eq '탈퇴'}">
-											탈퇴한 회원입니다.
-										</c:when>
-										<c:otherwise>
-											<input type="button" value="회원 블랙 해제" class="yBlack"
-												onclick="confirmPolice('${member.member_id}', '${member.member_status}', '1')"
-											>
-										</c:otherwise>
-									</c:choose></td>
-							</tr>
-						</c:forEach>
-						<c:if test="${empty memberList}">
-							<tr>
-								<td align="center" colspan="7">검색 결과가 없습니다.</td>
-							</tr>
-						</c:if>
-					</table>
-				</div>
+<div class="content">
+    <table id="memberTable" border="1">
+        <tr>
+            <th>회원아이디</th>
+            <th>이름</th>
+            <th>회원상태</th>
+            <th>회원 관리</th>
+        </tr>
+        <c:set var="pageNum" value="1" />
+        <c:if test="${not empty param.pageNum}">
+            <c:set var="pageNum" value="${param.pageNum}" />
+        </c:if>
+        <c:forEach var="member" items="${memberList}">
+            <tr align="center" class="member-row" data-status="${member.member_status}">
+                <td>${member.member_id}</td>
+                <td>${member.member_name}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${member.member_status eq '1'}">
+                            활동
+                        </c:when>
+                        <c:when test="${member.member_status eq '탈퇴'}">
+                            탈퇴
+                        </c:when>
+                        <c:when test="${member.member_status eq '블랙'}">
+                            블랙
+                        </c:when>
+                        <c:otherwise>
+                            ${member.member_status}
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <td>
+                    <c:choose>
+                        <c:when test="${member.member_status eq '1'}">
+                            <input type="button" value="회원 블랙 부여"
+                                onclick="confirmPolice('${member.member_id}', '${member.member_status}', '블랙')">
+                        </c:when>
+                        <c:when test="${member.member_status eq '탈퇴'}">
+                            탈퇴한 회원입니다.
+                        </c:when>
+                        <c:otherwise>
+                            <input type="button" value="회원 블랙 해제" class="yBlack"
+                                onclick="confirmPolice('${member.member_id}', '${member.member_status}', '1')">
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+            </tr>
+        </c:forEach>
+        <c:if test="${empty memberList}">
+            <tr>
+                <td align="center" colspan="7">검색 결과가 없습니다.</td>
+            </tr>
+        </c:if>
+    </table>
+</div>
 				<div id="pageList">
 					<input type="button" value="이전"
 						onclick="location.href='AdminPolice?pageNum=${pageNum - 1}'"
@@ -151,8 +154,32 @@
 			</article>
 		</section>
 	</div>
+	
+	
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
 	</footer>
 </body>
+<script>
+    window.onload = function() {
+        const rows = Array.from(document.querySelectorAll('.member-row'));
+        const tableBody = document.querySelector('#memberTable');
+
+        // 블랙 회원을 뒤로 정렬
+        rows.sort((a, b) => {
+            const statusA = a.getAttribute('data-status');
+            const statusB = b.getAttribute('data-status');
+            if (statusA === '블랙' && statusB !== '블랙') {
+                return 1;
+            } else if (statusA !== '블랙' && statusB === '블랙') {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        // 정렬된 행 다시 테이블에 추가
+        rows.forEach(row => tableBody.appendChild(row));
+    };
+</script>
 </html>
