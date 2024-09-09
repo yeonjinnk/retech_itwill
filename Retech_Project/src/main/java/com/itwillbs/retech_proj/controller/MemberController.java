@@ -806,4 +806,5 @@ public class MemberController {
 //	        return isValid ? "success" : "error";
 //	    }
 	   
+	   
 }
