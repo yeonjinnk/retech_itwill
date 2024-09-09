@@ -96,8 +96,9 @@
 	        <h3><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h3>
           </div>
           <div class="payments_amount">
+	        <h2>거래번호 : ${param.trade_idx}</h2>
 	        <h2>결제금액</h2>
-	        <h2><fmt:formatNumber value="${paymentAmount}" pattern="#,###" />원</h2>
+	        <h2><fmt:formatNumber value="${tran_amt}" pattern="#,###" />원</h2>
           </div>
           <div class="pay_account_list">	
      		<form action="TechPaymentsProcess" method="post" id="PayProcessForm">
@@ -121,6 +122,7 @@
 	        					<input type="hidden" name="withdraw_fintech_use_num" value="${account.fintech_use_num}">
 	        					<input type="hidden" name="withdraw_client_name" value="${account.account_holder_name}">
 	        					<input type="hidden" name="tran_amt" value="110000">
+	        					<input type="hidden" name="trade_idx" value="${param.trade_idx}">
 	        					<input type="button" class="payment_btn" value="결제하기" onclick="openCheckPayPwdWindow()">		        			
 		        			</td>
 		        		</tr>		        	

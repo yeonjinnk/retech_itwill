@@ -52,4 +52,10 @@ public interface TechPayMapper {
 	// 테크페이 사용 목록 개수 세기(페이징)
 	int selectPayHistoryCount(Map<String, Object> map);
 
+	// 결제결과 불러오기
+	Map<String, String> selectPaymentsResult(@Param("id") String id, @Param("trade_idx") String trade_idx);
+
+	// 해당 상품 거래 상태 '결제완료'로 업데이트	
+	int updateTradeStatus(@Param("id") String id, @Param("trade_idx") String trade_idx);
+
 }

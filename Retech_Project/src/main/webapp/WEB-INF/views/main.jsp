@@ -71,7 +71,6 @@
     align-items: stretch;     
 }
 
-
 .item {
     will-change: transform, opacity;
 }

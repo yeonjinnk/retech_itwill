@@ -749,7 +749,8 @@ public class TechPayController {
 	
 	@GetMapping("TechPayments")
 	public String techPayments(HttpSession session, Model model, Map<String, String> map) {
-		String id = (String)session.getAttribute("sId");		
+		String id = (String)session.getAttribute("sId");	
+		System.out.println("-----------------TechPayments----------id : " + id);
 		
 		// 회원 엑세스토큰 정보 저장된 BankToken객체 session에서 꺼내서 'token'으로 저장
 		BankToken token = (BankToken)session.getAttribute("token");		
@@ -781,12 +782,21 @@ public class TechPayController {
 		model.addAttribute("accountList", accountList);				
 
 		// 상품 금액 임의 설정
-		int productAmount = 110000; // 상품 금액 임의 설정
-		String paymentAmount = Integer.toString(productAmount);
+		String tran_amt = "110000";
+
+		String payBalanceStr = (String)session.getAttribute("pay_balance");
+		int pay_balance = Integer.parseInt(payBalanceStr);
+		int result_balance = pay_balance - Integer.parseInt(tran_amt);	
 		
-		map.put("paymentAmount", paymentAmount);
+		if(result_balance < 0) {
+			model.addAttribute("msg", "테크페이 잔액이 결제 요청 금액보다 많아야 결제 가능합니다!");
+			System.out.println("테크페이 잔액 결제 실패 (잔액이 110,000원이하)");
+			return "result/fail";
+		} else {
+			map.put("tran_amt", tran_amt);
+			return "techpay/techpay_payments";
+		}
 		
-		return "techpay/techpay_payments";
 	}
 	
 	@PostMapping("TechPaymentsProcess")	
@@ -824,6 +834,9 @@ public class TechPayController {
 		System.out.println("---------------------techpay_idx : " + techpay_idx);			
 		
 		String tran_amt = map.get("tran_amt");
+		String trade_idx = map.get("trade_idx");
+		
+		model.addAttribute("trade_idx", trade_idx);
 
 		// 테크페이 잔액 업데이트에 필요한 정보 map 객체에 저장			
 		map2.put("id", id);		
@@ -833,39 +846,73 @@ public class TechPayController {
 		// 테크페이 내역 DB에 추가에 필요한 정보 map 객체에 저장		
 		map2.put("techpay_idx", techpay_idx);
 		map2.put("techpay_tran_dtime", techpay_tran_dtime);
-		map2.put("pay_balance", session.getAttribute("pay_balance"));			
+		map2.put("pay_balance", session.getAttribute("pay_balance"));	
+		map2.put("trade_idx", trade_idx);
+
+		System.out.println("------------------map2 : " + map2);
+		
+		model.addAttribute("map2", map2);
 		
 		// 테크페이 잔액 업데이트 - 사용
 		// TechPayService - registPayBalance() 메서드
 		int updateCount = techPayService.registPayBalance(map2);
 		
+		
+		// 해당 상품 거래 상태 '결제완료'로 업데이트
+		int updateCount2 = techPayService.registTradeStatus(id, trade_idx);
+		
+		
 		if(updateCount > 0) {
 			System.out.println("테크페이 잔액 업데이트(결제) 성공");
 			
-			// 테크페이 내역 DB에 추가
-			// TechPayService - registPayHistory() 메서드
-			int insertCount = techPayService.registPayHistory(map2);
-			
-			if(insertCount > 0) {
-//				model.addAttribute("msg", "결제 완료!");
-//				model.addAttribute("targetURL", "TechPayMain");
-//				
-//				return "result/success";
-				return "techpay/techpay_payments_result";				
-			} else {
+			if(updateCount2 > 0) {
+				System.out.println("거래 상태 '결제완료'로 업데이트 성공");
+				
+				// 테크페이 내역 DB에 추가
+				// TechPayService - registPayHistory() 메서드
+				int insertCount = techPayService.registPayHistory(map2);
+				
+				if(insertCount > 0) {
+					model.addAttribute("msg", "110,000원이 정상적으로 결제되었습니다!");
+					model.addAttribute("targetURL", "TechPaymentResult?trade_idx=" + trade_idx);				
+					return "result/success";				
+				} else {
 				model.addAttribute("msg", "테크페이 결제 실패!");
 				System.out.println("테크페이 결제 내역 DB 저장 실패");
 				return "result/fail";
-			}		
+				}		
+			
+			} else {
+				model.addAttribute("msg", "테크페이 결제 실패!");
+				System.out.println("거래 상태 '결제완료'로 업데이트 실패");
+				return "result/fail";
+			}
 			
 		} else {
-			model.addAttribute("msg", "테크페이 충전 실패!");
+			model.addAttribute("msg", "테크페이 결제 실패!");
 			System.out.println("테크페이 잔액 업데이트(결제) 실패");
 			return "result/fail";
-		}			
-		
+		}
 		
 	}
+	
+	
+	@GetMapping("TechPaymentResult")
+	public String techPaymentResult(@RequestParam String trade_idx, HttpSession session, Map<String, String> map, Model model, Map<String, Object> map2) {
+		String id = (String)session.getAttribute("sId");	
+		
+//		trade_idx = map.get("trade_idx");
+		System.out.println("==============trade_idx : " + trade_idx);
+		
+		// 결제결과 불러오기
+		Map<String, String> paymentResult = techPayService.getPaymentsResult(id, trade_idx);
+		System.out.println("=====================paymentResult : " + paymentResult);
+		model.addAttribute("paymentResult", paymentResult);
+		
+		
+		return "techpay/techpay_payments_result";
+	}
+	
 	
 	@GetMapping("TechProfit")
 	public String techProfit(HttpSession session, Model model, Map<String, Object> map2) {
@@ -897,6 +944,8 @@ public class TechPayController {
 		map2.put("techpay_idx", techpay_idx);
 		map2.put("techpay_tran_dtime", techpay_tran_dtime);
 		map2.put("pay_balance", session.getAttribute("pay_balance"));			
+
+
 		
 		// 테크페이 잔액 업데이트 - 수익
 		// TechPayService - registPayBalance() 메서드

@@ -162,8 +162,39 @@ CREATE TABLE techpay_user_info (
 		    , #{pay_balance}
 		    , #{techpay_type}
 		    , #{id}
+		    , #{trade_idx}
 		);
 	</insert>
+
+
+	<!-- 결제결과 불러오기 -->
+	<select id="selectPaymentsResult" resultType="map">
+		SELECT 
+		    th.*,
+		    t.*,
+		    p.pd_subject,
+		    p.pd_idx
+		FROM 
+		    techpay_history th
+		JOIN 
+		    trade t
+		    ON th.id = t.trade_buyer_id
+		JOIN 
+		    product p
+		    ON th.trade_idx = p.pd_idx
+		WHERE 
+		    th.id = #{id}
+		    AND th.trade_idx = #{trade_idx};
+	</select>
 	
+	<!-- 해당 상품 거래 상태 '결제완료'로 업데이트 -->
+	<update id="updateTradeStatus">
+		UPDATE trade
+			SET trade_status = 2
+		WHERE
+			trade_buyer_id = #{id}
+			AND trade_idx = #{trade_idx};
+	
+	</update>
 
 </mapper>

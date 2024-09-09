@@ -9,15 +9,22 @@
 <link href="${pageContext.request.contextPath}/resources/css/chat/chatRoom.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript">
-// $("#btnTradeSubmit").click(function(e) {
-//     console.log("거래하기 모달 제출 버튼 클릭됨!");
-//     // 모달창 닫기
-//     $("#tradeModal").hide();
-//     // 폼 제출
-//     $(this).closest("form").submit();
-// });
+<script>
+/*=======================바뀐부분시작==============================*/
+ 
+    $(document).ready(function() {
+        $('#btnPayNext').click(function() {
+            // Redirect to the TechPayments servlet
+            window.location.href = 'TechPayments?trade_idx=' + ${newTrade.trade_idx};
+        });
+        
+        $('#btnPayClose').click(function() {
+            // Close the modal
+            $('#payModal').hide();
+        });
+    });
 
+/*========================바뀐부분끝=======================*/
 
 </script>
 </head>
@@ -77,6 +84,11 @@
 			/*========================================================*/
 			/*테크페이 결제 모달창*/
 			
+
+			
+			
+			/*=======================원래부분시작==============================*/
+			
 			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
 			$("#btnPayNext").click(function(e) {
 				console.log("테크페이(택배) 모달 제출 버튼 클릭됨!");
@@ -91,6 +103,8 @@
 				e.preventDefault();
 				$("#payModal").hide();
 			});
+			
+			/*========================원래부분끝=======================*/
 			
 			//주소검색
 			$("#btnSearchAddress").click(function() {
@@ -342,6 +356,7 @@
 					                <input type="text" name="buyer_address2" id="address2" placeholder="상세주소">
 					                
 					                <input type="hidden" value="${sessionScope.sId}" name="buyer_id">
+					                <input type="hidden" value="${newTrade.trade_idx}" name="trade_idx">
 					                
 									<input type="hidden" name="room_id" value="${param.room_id}">
 									<input type="hidden" name="receiver_id" value="${param.receiver_id}">
@@ -362,6 +377,7 @@
 							<input type="number" value="${newTrade.trade_amt}" disabled>원<br>
 							<hr>
 							<div class="modalBtn">
+				                <input type="hidden" value="${newTrade.trade_idx}" name="trade_idx">
 					<!-- 		<button type="submit" id="btnAdd">충전하기</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
 								<button type="button" id="btnPayNext">다음</button>&nbsp;&nbsp;&nbsp;&nbsp;
 								<button type="button" id="btnPayClose">닫기</button>
