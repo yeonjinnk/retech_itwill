@@ -857,29 +857,43 @@ public class TechPayController {
 		// TechPayService - registPayBalance() 메서드
 		int updateCount = techPayService.registPayBalance(map2);
 		
+		
+		// 해당 상품 거래 상태 '결제완료'로 업데이트
+		int updateCount2 = techPayService.registTradeStatus(id, trade_idx);
+		
+		
 		if(updateCount > 0) {
 			System.out.println("테크페이 잔액 업데이트(결제) 성공");
 			
-			// 테크페이 내역 DB에 추가
-			// TechPayService - registPayHistory() 메서드
-			int insertCount = techPayService.registPayHistory(map2);
-			
-			if(insertCount > 0) {
-				model.addAttribute("msg", "110,000원이 정상적으로 결제되었습니다!");
-//				model.addAttribute("isClose", true);
-				model.addAttribute("targetURL", "TechPaymentResult?trade_idx=" + trade_idx);				
-				return "result/success";				
-			} else {
+			if(updateCount2 > 0) {
+				System.out.println("거래 상태 '결제완료'로 업데이트 성공");
+				
+				// 테크페이 내역 DB에 추가
+				// TechPayService - registPayHistory() 메서드
+				int insertCount = techPayService.registPayHistory(map2);
+				
+				if(insertCount > 0) {
+					model.addAttribute("msg", "110,000원이 정상적으로 결제되었습니다!");
+					model.addAttribute("targetURL", "TechPaymentResult?trade_idx=" + trade_idx);				
+					return "result/success";				
+				} else {
 				model.addAttribute("msg", "테크페이 결제 실패!");
 				System.out.println("테크페이 결제 내역 DB 저장 실패");
 				return "result/fail";
-			}		
+				}		
+			
+			} else {
+				model.addAttribute("msg", "테크페이 결제 실패!");
+				System.out.println("거래 상태 '결제완료'로 업데이트 실패");
+				return "result/fail";
+			}
 			
 		} else {
-			model.addAttribute("msg", "테크페이 충전 실패!");
+			model.addAttribute("msg", "테크페이 결제 실패!");
 			System.out.println("테크페이 잔액 업데이트(결제) 실패");
 			return "result/fail";
-		}			
+		}
+		
 	}
 	
 	
@@ -887,15 +901,13 @@ public class TechPayController {
 	public String techPaymentResult(@RequestParam String trade_idx, HttpSession session, Map<String, String> map, Model model, Map<String, Object> map2) {
 		String id = (String)session.getAttribute("sId");	
 		
-		
-		
 //		trade_idx = map.get("trade_idx");
 		System.out.println("==============trade_idx : " + trade_idx);
 		
 		// 결제결과 불러오기
-//		Map<String, String> paymentResult = techPayService.getPaymentsResult(id);
-//		System.out.println("=====================paymentResult : " + paymentResult);
-//		model.addAttribute("paymentResult", paymentResult);
+		Map<String, String> paymentResult = techPayService.getPaymentsResult(id, trade_idx);
+		System.out.println("=====================paymentResult : " + paymentResult);
+		model.addAttribute("paymentResult", paymentResult);
 		
 		
 		return "techpay/techpay_payments_result";

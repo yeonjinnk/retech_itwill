@@ -147,8 +147,13 @@ public class TechPayService {
 	}
 
 	// 결제결과 불러오기
-	public Map<String, String> getPaymentsResult(String id) {
-		return mapper.selectPaymentsResult(id);
+	public Map<String, String> getPaymentsResult(String id, String trade_idx) {
+		return mapper.selectPaymentsResult(id, trade_idx);
+	}
+
+	// 해당 상품 거래 상태 '결제완료'로 업데이트
+	public int registTradeStatus(String id, String trade_idx) {
+		return mapper.updateTradeStatus(id, trade_idx);
 	}
 	
 }
