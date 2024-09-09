@@ -71,17 +71,44 @@ $(document).ready(function() {
     $("#smsForm").on("submit", function(event) {
         var submitButton = event.originalEvent.submitter;
 
-        if (submitButton && submitButton.id === "next") {
-            // "다음" 버튼 클릭 시, 폼을 실제로 제출하여 다음 페이지로 이동
-            $(this).off('submit').submit(); // 폼을 실제로 제출
-        } else if (submitButton && submitButton.id === "sendCode") {
-            // 인증번호 받기 요청 시 성공 메시지 표시
-            alert("인증번호가 성공적으로 발송되었습니다.");
+        // 인증번호 받기 버튼 클릭 시 폼을 제출하여 인증번호 발송
+        if (submitButton && submitButton.id === "sendCode") {
+            // 폼 제출을 막고 AJAX로 인증번호 발송 요청
+            event.preventDefault(); // 기본 제출 동작 방지
+            
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function(response) {
+                    // 인증번호 발송 성공 후 사용자에게 안내
+                    alert("인증번호가 발송되었습니다. 확인 후 입력해 주세요.");
+                },
+                error: function() {
+                    // 인증번호 발송 실패 시 사용자에게 안내
+                    alert("인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
+                }
+            });
         }
 
-        event.preventDefault(); // 기본 제출 동작 방지
+        // 다음 버튼 클릭 시 인증번호 입력 여부 확인
+        if (submitButton && submitButton.id === "next") {
+            var authCode = $("input[name='auth_code']").val().trim();
+
+            // 인증번호가 6자리 숫자인지 확인
+            if (!/^\d{6}$/.test(authCode)) {
+                alert("6자리 숫자의 인증번호를 입력해 주세요.");
+                event.preventDefault(); // 기본 제출 동작 방지
+                return;
+            }
+
+            // 인증번호 입력이 유효한 경우 폼을 제출하여 다음 페이지로 이동
+            $("#smsForm").off('submit').submit();
+        }
     });
 });
+
 </script>
 </head>
 <body>
@@ -92,8 +119,8 @@ $(document).ready(function() {
         <section>
             <div id="findPw_wrap2">
                 <!-- 인증번호 요청 폼 -->
-                <form id="smsForm" action="${pageContext.request.servletContext.contextPath}/PwResetFinal" method="post">
-                    <input type="hidden" name="member_id" value="${param.mem_id}" id="member_id">
+                <form id="smsForm" action="${pageContext.request.servletContext.contextPath}/PwResetPro" method="post">
+                    <input type="hidden" name="member_id" value="${param.member_id}" id="member_id">
                     <section id="sec01">
                         <table>
                             <tr>
@@ -140,4 +167,3 @@ $(document).ready(function() {
     </footer>
 </body>
 </html>
-

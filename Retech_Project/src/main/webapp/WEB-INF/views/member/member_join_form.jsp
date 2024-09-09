@@ -8,6 +8,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
+        /* 스타일 코드 여기에 */
         body {
             font-family: 'Noto Sans', sans-serif;
             background-color: #f4f7f6;
@@ -17,7 +18,7 @@
 
         .content {
             padding: 50px 0;
-            margin-top: 130px; 
+            margin-top: 130px;
         }
 
         .tab {
@@ -128,6 +129,30 @@
         #submit:hover {
             background-color: #45a049;
         }
+
+        .auth_code {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .auth_code input[type="text"] {
+            width: calc(100% - 110px);
+            margin-right: 10px;
+        }
+
+        .auth_code button {
+            padding: 12px;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .auth_code button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -174,7 +199,7 @@
                 <label for="member_name" class="title">이름</label>
                 <input type="text" name="member_name" id="member_name" placeholder="실명을 입력해주세요" required>
                 <span id="checkNameResult" class="check"></span>
-            </div> 
+            </div>
 
             <div class="join_detail">
                 <label for="member_nickname" class="title">상점이름(닉네임)</label>
@@ -190,13 +215,23 @@
 
             <div class="join_detail">
                 <label for="member_phone" class="title">휴대폰번호</label>
-                <input type="text" name="member_phone" id="member_phone" placeholder="- 없이 숫자만 입력해주세요." required>
                 <span id="checkPhoneResult" class="check"></span>
+                <input type="text" name="member_phone" id="member_phone" placeholder="- 없이 숫자만 입력해주세요." required>
+                <button type="button" id="sendAuthCode">인증번호 받기</button>
+                <span id="authCodeResult" class="check"></span>
+            </div>
+
+            <!-- 인증번호 입력란 추가 -->
+            <div class="join_detail">
+                <label for="auth_code" class="title">인증번호</label>
+                <input type="text" name="auth_code" id="auth_code" placeholder="인증번호 입력">
+                <button type="button" id="verifyAuthCode">확인</button>
+                <span id="authCodeVerificationResult" class="check"></span>
             </div>
 
             <div class="join_detail">
                 <label for="member_profile" class="title">프로필 사진</label>
-                <input type="file" name="profile" id="member_profile"> <!-- 변경된 이름에 맞춤 -->
+                <input type="file" name="profile" id="member_profile">
             </div>
 
             <button id="submit" type="submit">가입하기</button>
@@ -209,139 +244,100 @@
 
     <script type="text/javascript">
     $(document).ready(function() {
-        // 각 입력 유효성 검사
-        $("#member_passwd, #member_passwd2, #member_name, #member_birth, #member_phone").on("blur", validateField);
+        // 비밀번호 유효성 검사
+        $("#member_passwd, #member_passwd2").on("blur", validatePassword);
 
-        // 주소 검색 버튼 클릭 시 우편번호 및 주소 입력 필드 자동 채우기
-        $("#btnSearchAddress").click(function() {
+        // 전화번호 유효성 검사
+        $("#member_phone").on("blur", validatePhoneNumber);
+
+        // 주소 검색 버튼 클릭 시
+        $("#btnSearchAddress").on("click", function() {
             new daum.Postcode({
-                oncomplete: function(data) { 
+                oncomplete: function(data) {
                     $("#postCode").val(data.zonecode);
-                    let address = data.address + (data.buildingName ? ` (${data.buildingName})` : '');
-                    $("#address1").val(address);
-                    $("#address2").focus(); // 주소 검색 후 상세주소로 포커스 이동
+                    $("#address1").val(data.roadAddress);
+                    $("#address2").focus();
                 }
             }).open();
         });
 
-        // 개별 필드 유효성 검사
-        function validateField() {
-            let isValid = true;
-            let field = $(this).attr('id');
-
-            switch(field) {
-                case "member_passwd":
-                    isValid = validatePassword();
-                    break;
-                case "member_passwd2":
-                    isValid = checkSamePw();
-                    break;
-                case "member_name":
-                    isValid = checkName();
-                    break;
-                case "member_birth":
-                    isValid = checkBirth();
-                    break;
-                case "member_phone":
-                    isValid = checkPhoneNum();
-                    break;
+        // 인증번호 발송 버튼 클릭 시
+        $("#sendAuthCode").on("click", function() {
+            var phone = $("#member_phone").val();
+            if (validatePhoneNumber()) {
+                $.ajax({
+                    url: "${pageContext.request.contextPath}/SendAuthCode",
+                    type: "POST",
+                    data: { phone: phone },
+                    success: function(response) {
+                        $("#authCodeResult").text("인증번호가 발송되었습니다.").addClass("success");
+                    },
+                    error: function() {
+                        $("#authCodeResult").text("인증번호 발송에 실패했습니다.").addClass("error");
+                    }
+                });
             }
+        });
 
-            return isValid;
-        }
-
-        // 비밀번호 유효성 검사
-        function validatePassword() {
-            let passwd = $("#member_passwd").val();
-            let hasUpperCase = /[A-Z]/.test(passwd);
-            let hasLowerCase = /[a-z]/.test(passwd);
-            let hasDigit = /\d/.test(passwd);
-            let hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(passwd);
-            let criteriaMet = [hasUpperCase, hasLowerCase, hasDigit, hasSpecialChar].filter(Boolean).length;
-
-            if (passwd.length < 8 || criteriaMet < 2) {
-                $("#checkPasswdResult").text("영문, 숫자, 특수문자 중 2개 조합으로 8자 이상 입력해주세요.").addClass("error").removeClass("success");
-                return false;
+        // 인증번호 확인 버튼 클릭 시
+        $("#verifyAuthCode").on("click", function() {
+            var authCode = $("#auth_code").val();
+            if (validateAuthCode(authCode)) {
+                $("#authCodeVerificationResult").text("인증번호가 일치합니다.").removeClass("error").addClass("success");
             } else {
-                $("#checkPasswdResult").text("비밀번호가 유효합니다.").addClass("success").removeClass("error");
-                return true;
-            }
-        }
-
-        // 비밀번호 확인 일치 여부 검사
-        function checkSamePw() {
-            let passwd = $("#member_passwd").val();
-            let passwd2 = $("#member_passwd2").val();
-            if (passwd !== passwd2) {
-                $("#checkPasswdResult2").text("비밀번호가 일치하지 않습니다.").addClass("error").removeClass("success");
-                return false;
-            } else {
-                $("#checkPasswdResult2").text("비밀번호가 일치합니다.").addClass("success").removeClass("error");
-                return true;
-            }
-        }
-
-        // 이름 유효성 검사
-        function checkName() {
-            let regex = /^[가-힣]{2,6}$/;
-            let name = $("#member_name").val();
-            if (!regex.test(name)) {
-                $("#checkNameResult").text("한글로 이름을 입력해주세요.").addClass("error").removeClass("success");
-                return false;
-            } else {
-                $("#checkNameResult").text("").removeClass("error success");
-                return true;
-            }
-        }
-
-        // 생년월일 유효성 검사
-        function checkBirth() {
-            let regex = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
-            let birth = $("#member_birth").val();  
-            if (!regex.test(birth) || new Date(birth) >= new Date('2010-01-01')) {
-                $("#checkBirthResult").text("2010년 1월 1일 이전의 생년월일을 입력해주세요.").addClass("error").removeClass("success");
-                return false;
-            } else {
-                $("#checkBirthResult").text("").removeClass("error success");
-                return true;
-            }
-        }
-
-        // 전화번호 유효성 검사
-        function checkPhoneNum() {
-            let regex = /^[0-9]{10,11}$/;
-            let phone = $("#member_phone").val();  
-            if (!regex.test(phone)) {
-                $("#checkPhoneResult").text("숫자만 입력해주세요.").addClass("error").removeClass("success");
-                return false;
-            } else {
-                $("#checkPhoneResult").text("").removeClass("error success");
-                return true;
-            }
-        }
-
-        // 전체 폼 유효성 검사
-        function validateForm() {
-            let isValid = true;
-            
-            // 각 필드별 유효성 검사
-            if (!validatePassword()) isValid = false;
-            if (!checkSamePw()) isValid = false;
-            if (!checkName()) isValid = false;
-            if (!checkBirth()) isValid = false;
-            if (!checkPhoneNum()) isValid = false;
-
-            return isValid;
-        }
-
-        $('#joinform').on('submit', function(e) {
-            if (!validateForm()) {
-                e.preventDefault();
-                alert("입력한 정보를 다시 확인해주세요.");
+                $("#authCodeVerificationResult").text("인증번호가 일치하지 않습니다.").addClass("error");
             }
         });
     });
-    </script>
 
+    function validatePassword() {
+        var passwd = $("#member_passwd").val();
+        var passwd2 = $("#member_passwd2").val();
+        
+        // 비밀번호 유효성 검사
+        if (passwd.length < 8) {
+            $("#checkPasswdResult").text("비밀번호는 8자 이상이어야 합니다.").addClass("error");
+        } else if (passwd !== passwd2) {
+            $("#checkPasswdResult").text("비밀번호가 일치하지 않습니다.").addClass("error");
+        } else {
+            $("#checkPasswdResult").text("비밀번호가 일치합니다.").removeClass("error").addClass("success");
+        }
+    }
+
+    function validatePhoneNumber() {
+        var phone = $("#member_phone").val();
+        var phonePattern = /^\d{10,11}$/; // 10 또는 11자리 숫자
+        if (phonePattern.test(phone)) {
+            $("#checkPhoneResult").text("전화번호가 유효합니다.").removeClass("error").addClass("success");
+            return true; // 전화번호가 유효한 경우 true 반환
+        } else {
+            $("#checkPhoneResult").text("유효하지 않은 전화번호입니다.").addClass("error");
+            return false; // 전화번호가 유효하지 않은 경우 false 반환
+        }
+    }
+
+    function validateForm() {
+        // 폼 전체 유효성 검사
+        var authCode = $("#auth_code").val();
+        if (!authCode) {
+            $("#authCodeVerificationResult").text("인증번호를 입력해주세요.").addClass("error");
+            return false;
+        }
+        
+        // 비밀번호 유효성 검사
+        validatePassword();
+
+        // 전화번호 유효성 검사
+        var phoneValid = validatePhoneNumber();
+
+        // 모든 필드가 유효한 경우 폼을 제출
+        return $(".error").length === 0 && phoneValid;
+    }
+
+    function validateAuthCode(authCode) {
+        var authCodePattern = /^\d{6}$/; // 6자리 숫자
+        return authCodePattern.test(authCode);
+    }
+    </script>
 </body>
 </html>
