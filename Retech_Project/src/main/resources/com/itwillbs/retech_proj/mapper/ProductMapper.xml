@@ -347,6 +347,12 @@
 		            t.trade_seller_id = #{loggedInUserId}
 	</select>
 	
+	<!-- 상품 상태 업데이트 -->
+	<update id="updateProductStatus2">
+		UPDATE trade
+		SET trade_status = #{trade_status}
+		WHERE trade_idx = #{trade_idx}	
+	</update>
 	
 </mapper>
 

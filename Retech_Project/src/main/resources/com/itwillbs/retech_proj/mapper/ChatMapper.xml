@@ -247,6 +247,14 @@ WHERE
 		WHERE trade_pd_idx = #{trade_pd_idx}
 	</update>
 	
+	
+	<!-- 상품 상태 '예약중'으로 변경 -->
+	<update id="updatePdStatus">
+		UPDATE product
+		SET pd_status = #{pdStatus}
+		WHERE pd_idx = #{pd_idx}
+	</update>
+	
 	<!-- 저장한 거래 정보 조회하기 -->
 	<select id="selectTrade" resultType="trade">
 		SELECT *

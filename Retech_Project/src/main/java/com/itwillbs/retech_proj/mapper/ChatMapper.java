@@ -64,5 +64,8 @@ public interface ChatMapper {
 	 //등록한 상품 번호 들고오기
 	int selectPdIDX(String member_id);
 
+    // 상품 상태 '예약중'으로 변경	
+	int updatePdStatus(@Param("pd_idx") int pd_idx, @Param("pdStatus") String pdStatus);
+
 
 }

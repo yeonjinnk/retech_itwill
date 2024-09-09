@@ -294,7 +294,7 @@
                                        </c:choose>
                                    </td>
                                    <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
-                                   <td>${product.pd_price}</td>
+                                   <td>${product.trade_amt}</td>
                                    <td data-date="${product.pd_first_date}"></td>
                                    <td>
                                        <c:choose>
@@ -323,7 +323,7 @@
                         </tbody>
                     </table>
                 </c:if>
-                <c:if test="${empty productList}">
+                <c:if test="${empty saleList}">
                     <table class="mypage">
                         <tr>
                             <td align="center" colspan="6">검색결과가 없습니다.</td>

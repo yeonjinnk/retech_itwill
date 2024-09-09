@@ -76,24 +76,54 @@ public class MemberController {
 	   }
 
 	   @PostMapping("MemberJoinForm")
-	   public String memberJoinForm(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder) {
-	      System.out.println(member);
-	      
-	      // 전화번호 중복 체크
-	      if (service.isExistPhonenumber(member) != null) {
-	          model.addAttribute("msg", "이미 등록된 전화번호입니다.");
-	          return "result/fail"; // 실패 페이지로 이동
-	      }
-	      
-	      String securePasswd = passwordEncoder.encode(member.getMember_passwd());
-	      member.setMember_passwd(securePasswd);
-	      int insertCount = service.registMember(member);
-	      if (insertCount > 0) {
-	         return "redirect:/MemberJoinSuccess";
-	      } else {
-	         model.addAttribute("msg", "회원가입에 실패하였습니다. 정보를 확인해주세요.");
-	         return "result/fail";
-	      }
+	   public String memberJoinForm(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder,
+	           @RequestParam(value = "profile", required = false) MultipartFile file) {
+
+	       // 전화번호 중복 체크
+	       if (service.isExistPhonenumber(member) != null) {
+	           model.addAttribute("msg", "이미 등록된 전화번호입니다.");
+	           return "result/fail"; // 실패 페이지로 이동
+	       }
+
+	       // 파일 처리
+	       if (file != null && !file.isEmpty()) {
+	           try {
+	               // 파일 저장 경로 설정
+	               String fileName = file.getOriginalFilename();
+	               String uploadDir = "resources/images";  // 저장할 디렉토리 경로
+	               File uploadDirFile = new File(uploadDir);
+	               if (!uploadDirFile.exists()) {
+	                   uploadDirFile.mkdirs();  // 경로가 없으면 디렉토리 생성
+	               }
+
+	               String filePath = uploadDir + "/" + fileName;  // 전체 경로 설정
+	               File destinationFile = new File(filePath);
+	               file.transferTo(destinationFile);  // 파일 저장
+
+	               // MemberVO에 파일 경로 저장
+	               member.setMember_profile(fileName);
+
+	           } catch (IOException e) {
+	               model.addAttribute("msg", "파일 업로드 실패!");
+	               return "result/fail";
+	           }
+	       } else {
+	           // 파일이 없을 경우 기본값 설정
+	           member.setMember_profile(member.getMember_profile());
+	       }
+
+	       // 비밀번호 암호화 처리
+	       String securePasswd = passwordEncoder.encode(member.getMember_passwd());
+	       member.setMember_passwd(securePasswd);
+
+	       // 회원 정보 등록
+	       int insertCount = service.registMember(member);
+	       if (insertCount > 0) {
+	           return "redirect:/MemberJoinSuccess";
+	       } else {
+	           model.addAttribute("msg", "회원가입에 실패하였습니다. 정보를 확인해주세요.");
+	           return "result/fail";
+	       }
 	   }
 
 	   @PostMapping("/SendAuthCode")
@@ -453,7 +483,7 @@ public class MemberController {
 	   @PostMapping("MemberModify")
 	   public String mypageinfo(
 	       @RequestParam Map<String, String> map,
-	       @RequestParam(value = "member_profile", required = false) MultipartFile file,
+	       @RequestParam(value = "profile", required = false) MultipartFile file, // 파일 파라미터 수정
 	       MemberVO member,
 	       BCryptPasswordEncoder passwordEncoder,
 	       Model model
@@ -482,18 +512,19 @@ public class MemberController {
 	           map.remove("member_passwd");
 	       }
 
-	       // 파일 처리
+	       
+//	        파일 처리
 	       if (file != null && !file.isEmpty()) {
 	           try {
 	               // 파일 저장 경로 설정
-	               String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-	               String uploadDir = "/resources/images";  // 절대 경로 설정
+	               String fileName = file.getOriginalFilename();
+	               String uploadDir = "resources/images";  // 경로 수정
 	               File uploadDirFile = new File(uploadDir);
 	               if (!uploadDirFile.exists()) {
 	                   uploadDirFile.mkdirs();
 	               }
 
-	               String filePath = uploadDir + fileName;
+	               String filePath = fileName; // 경로 수정
 	               File destinationFile = new File(filePath);
 	               file.transferTo(destinationFile);
 
@@ -506,7 +537,7 @@ public class MemberController {
 	           }
 	       } else {
 	           // 파일이 없을 경우 기본값 설정
-	           map.put("member_profile", null);
+	           map.put("member_profile", member.getMember_profile());
 	       }
 
 	       int updateCount = service.modifyMember(map);
@@ -765,14 +796,15 @@ public class MemberController {
 	   
 	   
 	   // 거래상태 업데이트
-	   @PostMapping("/updateTransactionStatus")
+	   @PostMapping("/updateTradeStatusAjax")
 	   @ResponseBody
-	   public Map<String, Object> updateTransactionStatus(@RequestParam("id") int productId,
-	                                                       @RequestParam("status") String status) {
+	   public Map<String, Object> updateTransactionStatus2(@RequestParam("trade_idx") int trade_idx,
+	                                                       @RequestParam("trade_status") int trade_status) {
 		   Map<String, Object> response = new HashMap<>();
-	       int success = productService.updateProductStatus(productId, status);
+	       int success = productService.updateProductStatus2(trade_idx, trade_status);
+	       System.out.println("success : " + success);
 	       response.put("success", success);
-	       response.put("status", status);
+//	       response.put("status", trade_status);
 	       return response;
 	    }
 	   
