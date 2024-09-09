@@ -30,7 +30,7 @@
 
 /*---- 메인 영역 제목  ----*/
 .category_subject {
-	font-size: 20px;
+	font-size: 15px;
 	font-weight: bold;
 }
 
@@ -126,14 +126,20 @@
 
 /*---- 메인 이미지 영역 ----*/
 .main_section > div:not(.main_slide) {
-	width: 1200px;
+	width: 900px;
 	align-items: center;
     margin: auto;
 }
 
 /*---- 메인 이미지 영역 ----*/
+/*---- 메인 이미지 영역 1. 카테고리 ----*/
 .category_section {
-	margin-bottom: 40px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.inner_photo {
+/*     border-radius: 25px; 	 */
 }
 
 .area {
@@ -151,20 +157,52 @@
     width: 100%; /* 이미지를 div 크기에 맞게 조정 */
 }
 
- .pd_category_photo {
+.category_name {
+	font-size: 10px;
+	text-align: left;
+ 	font-weight: bold;
+}
+.pd_category_photo {
+    display: flex;
     position: relative;
     overflow: hidden; /* 텍스트나 이미지가 영역을 벗어나지 않도록 설정 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */   
+    background-color: #F5F5F5;
+    border-radius: 10px;  
+    height: 200px; 
+    margin-bottom: 10px; 
+    flex-direction: column; 
+    text-align: center; 
 }
 
-.pd_category_photo img {
+.category_name {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.pd_category_photo a {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+	height: 80%;	
+}
+
+.pd_category_photo img.inner_photo {
     transition: 0.3s ease; /* 이미지가 부드럽게 변화하도록 설정 */
     transform: scale(1); /* 기본 크기 설정 */
 }
 
-.pd_category_photo:hover img {
+.pd_category_photo:hover img.inner_photo {
     filter: grayscale(100%); /* 흑백으로 변경 */
     opacity: 0.2; /* 불투명도 조정 */
     transform: scale(1.1); /* 마우스를 오버할 때 10% 확대 */
+}
+
+.category_logo {
+    width: 100%; 
+    height: auto;
 }
 
 .pd_category_photo .overlay {
@@ -172,16 +210,28 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: gray;
-    font-size: 24px;
-    font-weight: bold;
+/*     color: gray; */
     opacity: 0;
-    transition: 0.6s ease;
+    transition: opacity 0.6s ease;
 }
 
 .pd_category_photo:hover .overlay {
     opacity: 1; /* 마우스를 오버할 때 글자가 나타나도록 설정 */
 }  
+
+.pd_category_photo .category_name {
+    font-size: 14px; /* Adjust as needed */
+    font-weight: bold;
+    margin-top: auto; /* Pushes the text to the bottom */
+    padding: 10px 0; /* Adds some space above the text */
+    text-align: center;
+    width: 100%;
+}
+
+.pd_category_photo .category_logo {
+    width: 50px; /* Adjust the logo size as needed */
+    height: auto;
+}
  
 /*---- 메인 이미지(상품명) ----*/
 .subject {
@@ -226,11 +276,13 @@
 				      </div>
 				      <div class="item">
 					      <div class="image-wrapper">
-						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/blue.png" alt="Los Angeles" id="item_bg1">
-						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/computerNetc.png" alt="Los Angeles" style="width: 100%; height: 100%; position:sticky; z-index: 1;">
+<%-- 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/PaleYellow.png" alt="Los Angeles" id="item_bg1"> --%>
+<%-- 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/SoftGole.png" alt="Los Angeles" id="item_bg1"> --%>
+						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/aquablue.png" alt="Los Angeles" id="item_bg1">
+						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/computerETC2.png" alt="Los Angeles" style="width: 100%; height: 100%; position:sticky; z-index: 1;">
 						</div>
 				        <div class="carousel-caption item_inner" >
-				          <h3>Re-Tech Service Open</h3>
+				          <h3>리테크 Service Open</h3>
 				          <p>PC, NOTEBOOK을 합리적인 가격으로 만나보세요!</p>
 				        </div>
 				      </div>
@@ -265,59 +317,65 @@
 		<div class="main_img_area">
 			<!-- 메인 이미지 영역 1. 카테고리 -->
 			<div class="pd_category category_section">
-				<h2 class="category_subject">카테고리</h2>
-				<div class="pd_category_area area">
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=PC&c_id2=AP">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">애플 PC</div>
-					</div>
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=PC&c_id2=SA">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">삼성 PC</div>
-					</div>
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=PC&c_id2=LG">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">LG PC</div>
-					</div>
-				</div>
-				<div class="pd_category_area area">
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=NB&c_id2=AP">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">애플 노트북</div>
-					</div>
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=NB&c_id2=SA">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">삼성 노트북</div>
-					</div>
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=NB&c_id2=LG">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">LG 노트북</div>
-					</div>
-				</div>
+			    <h3 class="category_subject">PC</h3>
+			    <div class="pd_category_area area">
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=PC&c_id2=AP'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/PCapple.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_apple.png" class="category_logo">
+			            </div>
+			        </div>
+			        
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=PC&c_id2=SA'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/PCsamsung.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_samsung.png" style="width:70%;" class="category_logo">
+			            </div>
+			        </div>
+			
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=PC&c_id2=LG'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/PClg.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_lg.png" style="width:70%;" class="category_logo">
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <h3 class="category_subject">노트북</h3>
+			    <div class="pd_category_area area">
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=NB&c_id2=AP'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/NBapple.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_apple.png" class="category_logo">
+			            </div>
+			        </div>
+			
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=NB&c_id2=SA'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/NBsamsung.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_samsung.png" style="width:70%;" class="category_logo">
+			            </div>
+			        </div>
+			
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=NB&c_id2=LG'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/NBlg.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_lg.png" style="width:70%;" class="category_logo">
+			            </div>
+			        </div>
+			    </div>
 			</div>
 			
 			
 			<!-- 메인 이미지 영역 2. 인기상품 -->
 			<div class="pd_popular category_section">    
-			    <h2 class="category_subject">인기 상품</h2>
+			    <h2 class="category_subject">인기상품</h2>
 			    <div class="pd_popular_area area">
 			        <c:forEach var="product" items="${popularProducts}">
 			            <div class="pd_popular_photo photo">
 			                <a href="product_detail?pd_idx=${product.pd_idx}&member_id=${product.member_id}">
 			                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" 
-    							 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}"/>
+    							 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}" class="inner_photo"/>
 			                </a>
 					        <div class="subject">${product.pd_subject}</div>
 			            </div>
@@ -334,13 +392,30 @@
 					    <div class="photo">
 							<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
 					        	<img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" 
-					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}"/>
+					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}" class="inner_photo"/>
 					        </a>
 					        <div class="subject">${product.pd_subject}</div>
 					    </div>
 					</c:forEach>
 			    </div>
 			</div>		
+
+			<!-- 메인 이미지 영역 4. 찜 많은 상품 -->
+<!-- 			<div class="pd_recent category_section">     -->
+<!-- 			    <h2 class="category_subject">찜 많은 상품</h2> -->
+<!-- 			    <div class="pd_recent_area area"> -->
+<%-- 				    <c:forEach var="product" items="${recentProducts}"> --%>
+<!-- 					    <div class="photo"> -->
+<%-- 							<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}"> --%>
+<%-- 					        	<img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}"  --%>
+<%-- 					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}"/> --%>
+<!-- 					        </a> -->
+<%-- 					        <div class="subject">${product.pd_subject}</div> --%>
+<!-- 					    </div> -->
+<%-- 					</c:forEach> --%>
+<!-- 			    </div> -->
+<!-- 			</div>		 -->
+			</div>
 		</div>
 	</section>
 	<footer>

@@ -249,9 +249,6 @@
 		<div class="art_secondRow">
 			<div class="left">
 				<c:choose>
-					<c:when test="${sessionScope.sId eq productInfo.member_id and newTrade.trade_status > 0}">
-						<button class="btnTrade" disabled><span>거래하기</span></button>
-					</c:when>
 					<c:when test="${sessionScope.sId eq productInfo.member_id}">
 						<button class="btnTrade"><span>거래하기</span></button>
 					</c:when>
