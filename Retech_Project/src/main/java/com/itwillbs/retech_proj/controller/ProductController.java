@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.retech_proj.service.ChatService;
+import com.itwillbs.retech_proj.mapper.RetechMapper;
 import com.itwillbs.retech_proj.service.ProductService;
+import com.itwillbs.retech_proj.service.RetechService;
 import com.itwillbs.retech_proj.vo.LikeVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
-
-import kotlin.reflect.jvm.internal.impl.types.model.TypeSystemInferenceExtensionContext;
 
 @Controller
 public class ProductController {
@@ -41,6 +41,10 @@ public class ProductController {
 	
 	@Autowired
 	private ChatService chatService;
+	
+	@Autowired
+	private RetechService retechservice;
+
 
 	// 리테크상품목록페이지
 	// 최신순(날짜순)으로 기본적으로 정렬됨
@@ -122,6 +126,8 @@ public class ProductController {
 		String type = "거래중";
 		System.out.println("pageNum :                 " + pageNum);
 		
+			List<String> relationKeyWord = retechservice.getRelationKeyWord(searchKeyword);
+			
 			List<HashMap<String, String>> changedProductList = service.getChangedProductList(searchKeyword, pageNum, pd_category, pd_selectedManufacturer,pd_selectedPdStatus, sort, endRow, startRow, listLimit);
 			// 전체 게시물 갯수 계산
 			int listCount = service.getChangedProductListCount(pageNum, pd_category, pd_selectedManufacturer, pd_selectedPdStatus, sort, type);

@@ -87,10 +87,6 @@
             font-size: 24px;
         }
 
-        .store-info p {
-            margin: 5px 0;
-        }
-
         .tabs {
             margin-bottom: 20px;
             list-style-type: none;

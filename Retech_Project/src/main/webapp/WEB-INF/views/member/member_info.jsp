@@ -390,20 +390,20 @@
             </div>
             <div class="join_detail">
                 <span>이름</span>
-                <input type="text" name="member_name" id="member_name" value="${member.member_name}" required>
+                <input type="text" name="member_name" id="member_name" value="${member.member_name}" readonly>
                 <span id="checkNameResult"></span>
             </div>
             <div class="join_detail">
                 <span>생년월일</span>
-                <input type="text" name="member_birth" id="member_birth" value="${member.member_birth}" required>
+                <input type="text" name="member_birth" id="member_birth" value="${member.member_birth}" readonly>
                 <span id="checkBirthResult"></span>
             </div>
             <div class="join_detail">
                 <span>휴대폰 번호</span>
-                <input type="text" name="member_phone" id="phoneNumber" value="${member.member_phone}" required>
-                <input type="button" id="phoneChk" value="인증번호 전송">
-                <input type="text" id="phone2" placeholder="인증번호 입력">
-                <input type="button" id="phoneChk2" value="인증번호 확인">
+                <input type="text" name="member_phone" id="phoneNumber" value="${member.member_phone}" readonly>
+<!--                 <input type="button" id="phoneChk" value="인증번호 전송"> -->
+<!--                 <input type="text" id="phone2" placeholder="인증번호 입력"> -->
+<!--                 <input type="button" id="phoneChk2" value="인증번호 확인"> -->
                 <span id="checkPhoneResult"></span>
             </div>
             <div class="join_detail">

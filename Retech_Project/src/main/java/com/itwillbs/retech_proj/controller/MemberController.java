@@ -26,11 +26,9 @@ import com.itwillbs.retech_proj.handler.RsaKeyGenerator;
 import com.itwillbs.retech_proj.service.CsService;
 import com.itwillbs.retech_proj.service.MemberService;
 import com.itwillbs.retech_proj.service.ProductService;
-import com.itwillbs.retech_proj.service.SmsService;
 import com.itwillbs.retech_proj.vo.CsVO;
 import com.itwillbs.retech_proj.vo.MemberVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
-import com.itwillbs.retech_proj.vo.SmsAuthInfo;
 
 
 @Controller
@@ -98,6 +96,33 @@ public class MemberController {
 	      }
 	   }
 
+	   @PostMapping("/SendAuthCode")
+	   @ResponseBody
+	   public Map<String, String> sendAuthCode(@RequestParam("phone") String phone, HttpSession session) {
+	       Map<String, String> response = new HashMap<>();
+	       
+	       // 인증번호 생성 및 세션 저장
+	       String verificationCode = generateVerificationCode();
+	       session.setAttribute("verificationCode", verificationCode);
+	       session.setAttribute("phoneNumber", phone);
+
+	       // 인증번호 발송
+	       boolean isSent = service.sendVerificationCode(phone, verificationCode);
+
+	       if (isSent) {
+	           response.put("message", "인증번호가 발송되었습니다.");
+	       } else {
+	           response.put("message", "인증번호 발송에 실패했습니다.");
+	       }
+	       
+	       return response;
+	   }
+
+//	   private String generateVerificationCode() {
+//	       return String.valueOf((int) (Math.random() * 900000) + 100000);
+//	   }
+
+	   
 	   @GetMapping("MemberJoinSuccess")
 	   public String memberJoinSuccess() {
 	      return "member/member_join_success";
@@ -171,25 +196,6 @@ public class MemberController {
 		    }
 			
 		}
-	   
-	   
-	   // 카카오톡 로그인
-//	   @GetMapping("/kakao-callback")
-//	   public ModelAndView kakaoCallback(@RequestParam("code") String code) {
-//	       KakaoService kakaoService = new KakaoService();
-//	       String accessToken = kakaoService.getAccessToken(code);
-//	       String userInfo = kakaoService.getUserInfo(accessToken);
-//
-//	       // userInfo를 기반으로 로그인 또는 가입 처리를 수행합니다.
-//	       // 예를 들어, userInfo를 파싱하여 사용자 정보를 추출하고, 해당 사용자로 로그인 처리 또는 새로 가입 처리
-//	       // 처리 후에는 적절한 페이지로 리다이렉트
-//
-//	       return new ModelAndView("redirect:/home"); // 로그인 후 이동할 페이지
-//	   }
-
-
-	  
-	   
 	   
 	   
 	   // 로그아웃 -------------------------------------------------------------------------------------------
@@ -272,11 +278,9 @@ public class MemberController {
 					
 				}
 				
-				// 비밀번호찾기 인증번호
-				@Autowired
-			    private SmsService smsService;
-				@PostMapping("PwResetPro")
-			    public String pwResetPro(MemberVO member, Model model) {
+				// 비밀번호 재설정 요청
+			    @PostMapping("PwResetPro")
+			    public String pwResetPro(MemberVO member, Model model, HttpSession session) {
 			        System.out.println("비밀번호 재설정 요청");
 
 			        // 입력된 전화번호로 DB에서 회원 정보를 조회
@@ -285,64 +289,94 @@ public class MemberController {
 			        if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
 			            model.addAttribute("msg", "없는 전화번호입니다");
 			            return "result/fail";
-			        } 
+			        }
 			        
 			        // 전화번호가 존재하면 인증번호 생성 및 발송
 			        String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
-			        String member_id = dbMember.getMember_id(); // DB에서 가져온 회원 ID
+
+			        // 인증번호 생성
+			        String verificationCode = generateVerificationCode();
+			        session.setAttribute("verificationCode", verificationCode);
+			        session.setAttribute("phoneNumber", phone_number);
+
+			        // 인증번호 발송
+			        boolean isSent = service.sendVerificationCode(phone_number, verificationCode);
+
+			        if (!isSent) {
+			            model.addAttribute("msg", "인증번호 발송에 실패했습니다.");
+			            return "result/fail";
+			        }
+
+			        // 모델에 인증 정보와 전화번호 저장
+			        model.addAttribute("dbMember", dbMember);
 			        
-			        // 인증번호 생성 및 SMS 전송
-			        SmsAuthInfo smsAuthInfo = smsService.sendAuthSMS(member_id, phone_number);
-			        
-			        if (smsAuthInfo != null) {
-			            // 인증 정보를 DB에 저장
-			            smsService.registSmsAuthInfo(smsAuthInfo);
-			            
-			            // 모델에 인증 정보와 전화번호 저장
-			            model.addAttribute("dbMember", dbMember);
-			            model.addAttribute("smsAuthInfo", smsAuthInfo);
-			            
-			            // 인증번호 발송 성공 시 비밀번호 재설정 페이지로 이동
-			            return "member/member_pw_reset";
+			        // 인증번호 발송 성공 시 비밀번호 재설정 페이지로 이동
+			        model.addAttribute("msg", "인증번호가 성공적으로 발송되었습니다.");
+			        return "member/member_pw_reset";
+			    }
+
+			    private String generateVerificationCode() {
+			        return String.valueOf((int) (Math.random() * 900000) + 100000);
+			    }
+			    
+			    //검증관련
+			    @PostMapping("/validateAuthCode")
+			    @ResponseBody
+			    public Map<String, Boolean> validateAuthCode(@RequestParam("auth_code") String authCode, HttpSession session) {
+			        // 세션에서 저장된 인증번호와 비교
+			        String sessionCode = (String) session.getAttribute("verificationCode");
+			        boolean isValid = authCode.equals(sessionCode);
+
+			        Map<String, Boolean> response = new HashMap<>();
+			        response.put("valid", isValid);
+			        return response;
+			    }
+
+			    
+			    
+			    // 비밀번호 재설정
+			    @PostMapping("PwResetFinal")
+			    public String pwResetFinal(@RequestParam Map<String, String> map, MemberVO member,
+			                               BCryptPasswordEncoder passwordEncoder, HttpSession session, Model model) {
+			        // 회원 정보가 null이 아닌지 확인
+			        if (member != null) {
+			            member = service.getMember(member); // 기존 member 정보 조회
 			        } else {
-			            // 인증번호 전송 실패 시, 실패 메시지 반환
-			            model.addAttribute("msg", "인증번호 전송에 실패했습니다. 다시 시도해 주세요.");
+			            model.addAttribute("msg", "회원 정보를 찾을 수 없습니다.");
+			            return "result/fail";
+			        }
+
+			        // 세션에서 저장된 인증번호와 사용자 입력 인증번호 비교
+//			        String sessionVerificationCode = (String) session.getAttribute("verificationCode");
+//			        String authCode = map.get("auth_code");
+//
+//			        if (sessionVerificationCode == null || !sessionVerificationCode.equals(authCode)) {
+//			            model.addAttribute("msg", "인증번호가 일치하지 않습니다.");
+//			            return "result/fail";
+//			        }
+
+			        // 새 비밀번호 입력 여부를 확인하여 새 비밀번호 입력됐을 경우 암호화 수행
+			        String newPasswd = map.get("member_passwd");
+			        if (newPasswd != null && !newPasswd.isEmpty()) {
+			            map.put("member_passwd", passwordEncoder.encode(newPasswd)); // 새 비밀번호 암호화
+			            System.out.println("map : " + map); // passwd 항목 암호화 결과 확인
+			        }
+
+			        // 회원 정보 수정
+			        int updateCount = service.modifyPasswd(map);
+
+			        if (updateCount > 0) {
+			            model.addAttribute("msg", "패스워드 수정 성공!");
+			            model.addAttribute("targetURL", "MemberLogin");
+			            session.removeAttribute("verificationCode"); // 인증번호 세션 제거
+			            session.removeAttribute("phoneNumber"); // 전화번호 세션 제거
+			            return "result/success";
+			        } else {
+			            model.addAttribute("msg", "패스워드 수정 실패!");
 			            return "result/fail";
 			        }
 			    }
-	
-				
-				// 비밀번호 재설정
-				@PostMapping("PwResetFinal")
-				public String pwResetFinal(@RequestParam Map<String, String> map, MemberVO member,
-				                           BCryptPasswordEncoder passwordEncoder, Model model) {
-				    // member 정보가 null이 아닌지 확인하여 NullPointerException 방지  
-				    if (member != null) {
-				        member = service.getMember(member); // 기존 member 정보 조회
-				    } else {
-				        model.addAttribute("msg", "회원 정보를 찾을 수 없습니다.");
-				        return "result/fail";
-				    }
-
-				    // 새 비밀번호 입력 여부를 확인하여 새 비밀번호 입력됐을 경우 암호화 수행 필요
-				    String newPasswd = map.get("member_passwd");
-				    if (newPasswd != null && !newPasswd.isEmpty()) {
-				        map.put("member_passwd", passwordEncoder.encode(newPasswd)); // 새 비밀번호 암호화
-				        System.out.println("map : " + map); // passwd 항목 암호화 결과 확인
-				    }
-
-				    // 회원 정보 수정
-				    int updateCount = service.modifyMember(map);
-
-				    if (updateCount > 0) {
-				        model.addAttribute("msg", "패스워드 수정 성공!");
-				        model.addAttribute("targetURL", "MemberLogin");
-				        return "result/success";
-				    } else {
-				        model.addAttribute("msg", "패스워드 수정 실패!");
-				        return "result/fail";
-				    }
-				}
+			
 	
 				
 	   @GetMapping("MyPageMain")

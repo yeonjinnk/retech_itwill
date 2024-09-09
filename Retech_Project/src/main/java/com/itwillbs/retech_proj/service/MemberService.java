@@ -3,9 +3,12 @@ package com.itwillbs.retech_proj.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.retech_proj.handler.SendSmsClient;
 import com.itwillbs.retech_proj.mapper.MemberMapper;
 import com.itwillbs.retech_proj.vo.MemberVO;
 
@@ -71,7 +74,21 @@ public class MemberService {
 	    // 전화번호와 회원 ID를 기준으로 회원 정보를 조회하는 메서드
 	    return mapper.selectByPhoneAndId(phoneNumber, memberId);
 	}
+	
+	// SMS 인증 번호 발송
+    public boolean sendVerificationCode(String phoneNumber, String verificationCode) {
+        String content = "리테크의 인증번호는 [" + verificationCode + "]입니다. 인증번호를 입력해주세요.";
+        return SendSmsClient.sendSms(phoneNumber, content);
+    }
 
+    // 인증번호 검증
+ // 인증번호 검증
+    public boolean verifyVerificationCode(HttpSession session, String inputCode) {
+        String storedCode = (String) session.getAttribute("verificationCode");
+        System.out.println("Stored Code: " + storedCode);
+        System.out.println("Input Code: " + inputCode);
+        return storedCode != null && storedCode.equals(inputCode);
+    }
 
 
 	

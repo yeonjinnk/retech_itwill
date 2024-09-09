@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import com.itwillbs.retech_proj.vo.MemberVO;
 import com.itwillbs.retech_proj.vo.StoreVO;
@@ -43,4 +44,9 @@ public interface MemberMapper {
 
 	   // 회원 상세 정보 조회
 	   MemberVO selectMemberById(@Param("memberId") String memberId);
+	   
+	   // 인증 코드 조회 쿼리
+	   @Select("SELECT verification_code FROM member_verification WHERE member_id = #{memberId}")
+	   String selectVerificationCodeByMemberId(@Param("memberId") String memberId);
+
 }
