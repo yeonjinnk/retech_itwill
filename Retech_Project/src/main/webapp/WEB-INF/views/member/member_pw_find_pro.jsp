@@ -52,13 +52,6 @@
         border-radius: 4px;
     }
 
-    select {
-        width: 100%; 
-        padding: 6px; 
-        border: 1px solid #ccc; 
-        border-radius: 4px; 
-    }
-
     input[type="submit"] {
         padding: 10px 20px; 
         border: none;
@@ -74,63 +67,22 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $("#smsForm").on("submit", function(event) {
-            event.preventDefault(); // 폼의 기본 제출 동작을 막음
-            
-            var submitButton = event.originalEvent.submitter;
-            var formData = $(this).serialize(); // 폼 데이터를 직렬화
+$(document).ready(function() {
+    $("#smsForm").on("submit", function(event) {
+        var submitButton = event.originalEvent.submitter;
 
-            if (submitButton && submitButton.id === "next") {
-                // 인증번호 확인 요청
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/VerifyCode", // 인증번호 확인 URL
-                    data: formData,
-                    success: function(response) {
-                        try {
-                            var jsonResponse = JSON.parse(response); // 응답을 JSON으로 파싱
-                            if (jsonResponse.result) {
-                                alert("인증 성공!");
-                                window.location.href = jsonResponse.redirectUrl || "${pageContext.request.contextPath}/member/member_pw_reset"; // 리디렉션 URL
-                            } else {
-                                alert("인증 실패. 인증번호를 확인해 주세요.");
-                            }
-                        } catch (e) {
-                            console.error("응답 파싱 오류:", e);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("서버 요청 실패:", status, error);
-                    }
-                });
-            } else {
-                // 인증번호 받기 요청
-                $.ajax({
-                    type: "POST",
-                    url: $(this).attr("action"), // 폼의 action 속성 값을 사용
-                    data: formData,
-                    success: function(response) {
-                        try {
-                            var jsonResponse = JSON.parse(response); // 응답을 JSON으로 파싱
-                            if (jsonResponse.result) {
-                                alert("인증번호가 성공적으로 발송되었습니다.");
-                            } else {
-                                alert("인증번호 발송에 실패했습니다.");
-                            }
-                        } catch (e) {
-                            console.error("응답 파싱 오류:", e);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("서버 요청 실패:", status, error);
-                    }
-                });
-            }
-        });
+        if (submitButton && submitButton.id === "next") {
+            // "다음" 버튼 클릭 시, 폼을 실제로 제출하여 다음 페이지로 이동
+            $(this).off('submit').submit(); // 폼을 실제로 제출
+        } else if (submitButton && submitButton.id === "sendCode") {
+            // 인증번호 받기 요청 시 성공 메시지 표시
+            alert("인증번호가 성공적으로 발송되었습니다.");
+        }
+
+        event.preventDefault(); // 기본 제출 동작 방지
     });
+});
 </script>
-
 </head>
 <body>
     <header>
@@ -140,8 +92,8 @@
         <section>
             <div id="findPw_wrap2">
                 <!-- 인증번호 요청 폼 -->
-                <form id="smsForm" action="${pageContext.request.contextPath}/SendSms" method="post">
-                    <input type="hidden" name="member_id" value="${param.mem_id}" id="member_id" size="10">
+                <form id="smsForm" action="${pageContext.request.servletContext.contextPath}/PwResetFinal" method="post">
+                    <input type="hidden" name="member_id" value="${param.mem_id}" id="member_id">
                     <section id="sec01">
                         <table>
                             <tr>
@@ -159,18 +111,13 @@
                                     <td colspan="3"><b>이름</b></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3"><input type="text" name="name" size="10" maxlength="5" placeholder="이름을 입력하세요"></td>
+                                    <td colspan="3"><input type="text" name="name" placeholder="이름을 입력하세요"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3"><b>휴대전화번호</b></td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <select name="CountryCode">
-                                            <option value="+82">+82</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" name="phone_number" size="10" placeholder="전화번호 입력"></td>
+                                    <td><input type="text" name="member_phone" size="10" placeholder="전화번호 입력"></td>
                                     <td><input type="submit" value="인증번호 받기" id="sendCode"></td>
                                 </tr>    
                                 <tr>

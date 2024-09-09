@@ -218,10 +218,8 @@
                         break;
                 }
 
-                $("#checkPasswdComplexResult").text(complexityMsg);
-                $("#checkPasswdComplexResult").css("color", complexityColor);
-                $("#checkPasswdResult").text(msg);
-                $("#checkPasswdResult").css("color", color);
+                $("#checkPasswdComplexResult").text(complexityMsg).css("color", complexityColor);
+                $("#checkPasswdResult").text(msg).css("color", color);
                 $("#member_passwd").css("background", bgColor);
 
             } else {
@@ -229,8 +227,7 @@
                 color = "red";
                 bgColor = "lightpink";
 
-                $("#checkPasswdResult").text(msg);
-                $("#checkPasswdResult").css("color", color);
+                $("#checkPasswdResult").text(msg).css("color", color);
                 $("#member_passwd").css("background", bgColor);
             }
         }
@@ -241,11 +238,9 @@
             let passwd2 = $("#member_pw2").val();
 
             if(passwd === passwd2) {
-                $("#checkPasswdResult2").text("비밀번호가 일치합니다.");
-                $("#checkPasswdResult2").css("color", "blue");
+                $("#checkPasswdResult2").text("비밀번호가 일치합니다.").css("color", "blue");
             } else {
-                $("#checkPasswdResult2").text("비밀번호가 일치하지 않습니다.");
-                $("#checkPasswdResult2").css("color", "red");
+                $("#checkPasswdResult2").text("비밀번호가 일치하지 않습니다.").css("color", "red");
                 $("#member_pw2").focus();
             }
         }
@@ -419,13 +414,12 @@
                 <input type="text" id="address2" name="member_address2" placeholder="상세주소">
             </div>
             <div class="join_detail">
-			    <span>프로필 사진</span>
-			    <input type="file" name="profile" id="member_profile">
-			    <img id="img_preview_img" src="${pageContext.request.contextPath}/resources/images/${member.member_profile}" alt="미리보기" style="display:${member.member_profile != null ? 'block' : 'none'};">
-			    <span id="img_status">${member.member_profile != null ? '사진 미리보기' : '프로필사진'}</span>
-			    <input type="button" id="del_img" value="사진 삭제" style="${member.member_profile != null ? 'display: block;' : 'display: none;'}">
-			</div>
-
+                <span>프로필 사진</span>
+                <input type="file" name="profile" id="member_profile">
+                <img id="img_preview_img" src="${pageContext.request.contextPath}/resources/images/${member.member_profile}" alt="미리보기" style="display:${member.member_profile != null ? 'block' : 'none'};">
+                <span id="img_status">${member.member_profile != null ? '사진 미리보기' : '프로필사진'}</span>
+                <input type="button" id="del_img" value="사진 삭제" style="${member.member_profile != null ? 'display: block;' : 'display: none;'}">
+            </div>
 
             <div class="form-buttons">
                 <input type="submit" value="정보수정">

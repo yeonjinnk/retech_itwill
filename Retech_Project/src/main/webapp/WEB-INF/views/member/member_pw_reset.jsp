@@ -14,9 +14,8 @@
     let checkPasswdResult = false;
     let checkPasswd2Result = false;
 
-    // 비밀번호 복잡성 검증 함수
     function checkPasswd() {
-        let member_pw = $("#member_passwd").val();  // ID 수정
+        let member_pw = $("#member_passwd").val();
 
         let msg = "";
         let color = "";
@@ -82,10 +81,9 @@
         $("#member_passwd").css("background", bgColor);
     }
 
-    // 비밀번호 확인 함수
     function checkSamePasswd() {
-        let member_pw = $("#member_passwd").val();  // ID 수정
-        let member_pw2 = $("#member_passwd2").val();  // ID 수정
+        let member_pw = $("#member_passwd").val();
+        let member_pw2 = $("#member_passwd2").val();
 
         if (member_pw === member_pw2) {
             $("#checkPasswd2Result").text("비밀번호 일치");
@@ -117,73 +115,72 @@
             }
         });
     });
-
 </script>
 
 <style type="text/css">
     #findPw_wrap3 {
         border: 1px solid #ccc;
         border-radius: 12px;
-        padding: 20px; /* 패딩 조정 */
-        max-width: 500px; /* 최대 너비 설정 */
-        margin: 20px auto; /* 중앙 정렬 */
-        background-color: #ffffff; /* 배경 색상 설정 */
+        padding: 20px;
+        max-width: 500px;
+        margin: 20px auto;
+        background-color: #ffffff;
     }
 
     #next {
-        padding: 10px 20px; /* 패딩 조정 */
+        padding: 10px 20px;
         border: none;
-        border-radius: 8px; /* 둥근 모서리 */
-        background-color: #4CAF50; /* 버튼 색상 변경 */
-        color: white; /* 텍스트 색상 변경 */
+        border-radius: 8px;
+        background-color: #4CAF50;
+        color: white;
     }
 
     #next:hover {
-        background-color: #45a049; /* hover 시 버튼 색상 변경 */
+        background-color: #45a049;
     }
 
     #sec02 {
-        background-color: #f9fafb; /* 배경 색상 밝게 변경 */
-        border-radius: 8px; /* 둥근 모서리 */
-        margin: 10px 0; /* 상하 여백 설정 */
+        background-color: #f9fafb;
+        border-radius: 8px;
+        margin: 10px 0;
         padding: 10px;
     }
 
     table {
-        width: 100%; /* 테이블 너비 100% */
-        border-collapse: collapse; /* 테이블 셀 간의 간격 제거 */
+        width: 100%;
+        border-collapse: collapse;
     }
 
     td, th {
-        padding: 8px; /* 셀 내 여백 조정 */
-        text-align: left; /* 텍스트 정렬 */
+        padding: 8px;
+        text-align: left;
     }
 
     input[type="text"],
     input[type="password"],
     select {
-        width: 100%; /* 입력 필드와 셀렉트 박스 너비 조정 */
-        padding: 6px; /* 패딩 추가 */
-        border: 1px solid #ccc; /* 테두리 색상 설정 */
-        border-radius: 4px; /* 둥근 모서리 */
+        width: 100%;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 
     input[type="submit"] {
-        padding: 10px 20px; /* 패딩 조정 */
+        padding: 10px 20px;
         border: none;
-        border-radius: 8px; /* 둥근 모서리 */
-        background-color: #4CAF50; /* 버튼 색상 변경 */
-        color: white; /* 텍스트 색상 변경 */
-        cursor: pointer; /* 커서 포인터로 변경 */
+        border-radius: 8px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
     }
 
     input[type="submit"]:hover {
-        background-color: #45a049; /* hover 시 버튼 색상 변경 */
+        background-color: #45a049;
     }
 
     #checkPasswdResult,
     #checkPasswd2Result {
-        margin-top: 5px; /* 상단 여백 추가 */
+        margin-top: 5px;
     }
 </style>
 
