@@ -24,11 +24,6 @@ public class AdminMemberService {
    public int changeAdminAuth(String member_isAdmin, String member_id) {
       return mapper.updateAdminAuth(member_isAdmin, member_id);
    }
-<<<<<<< HEAD
-	public int changePoliceAuth(String member_status, String member_id) {
-		return mapper.updateStatusAuth(member_status, member_id);
-	}
-=======
 public int changePoliceAuth(String member_status, String member_id) {
 	return mapper.updateStatusAuth(member_status, member_id);
 }
@@ -40,8 +35,6 @@ public List<ProductVO> getProductList() {
 	// TODO Auto-generated method stub
 	return mapper.selectProductList2();
 }
->>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git
-   
 	@Autowired
     private MemberMapper memberMapper;
 
