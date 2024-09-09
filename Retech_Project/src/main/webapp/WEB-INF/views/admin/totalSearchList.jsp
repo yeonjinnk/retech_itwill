@@ -12,33 +12,21 @@
 <meta content="" name="description">
 <meta content="" name="keywords">
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
-<script>
-    $(function() {
-        let member_id = ${param.member_id};
-        if (member_id) {
-            openModal(member_id);
-        }
-    });
+<script type="text/javascript">
+function delKeyword(element) {
+	var content = $(element).data("content");
+	$.ajax({
+		type:"GET",
+		url:"deleteKeyword",
+		data: {content : content},
+		success:function(res){
+			location.reload();
+		}
+	});
+}
 
-    function openModal(member_id) {
-        $("#modal-" + member_id).modal('show');
-    }
-
-    function delKeyword(element) {
-        var content = $(element).data("content");
-        $.ajax({
-            type: "GET",
-            url: "deleteKeyword",
-            data: { content: content },
-            success: function(res) {
-                location.reload();
-            }
-        });
-    }
 </script>
-<style type="text/css">
 
-</style>
 </head>
 <body>
 
@@ -57,53 +45,57 @@
 
         <!-- ======= Main Content ======= -->
         <main id="main" class="main">
-            <div id="date"></div>
-            <div class="pagetitle">
-                <h1>인기 검색어 관리</h1>
-                <nav>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="AdminHome">Home</a></li>
-                        <li class="breadcrumb-item active">인기 검색어 관리</li>
-                    </ol>
-                </nav>
-            </div>
-            <!-- End Page Title -->
 
-            <section class="section">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <!-- Table with stripped rows -->
-                                <table class="table datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>검색어 순위</th>
-                                            <th>검색어 내용</th>
-                                            <th>검색어 조회수</th>
-                                            <th>비고</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="data" items="${searchList}" varStatus="loop">
-                                            <tr>
-                                                <td>${loop.index + 1}</td>
-                                                <td>${data.search_content}</td>
-                                                <td>${data.search_count}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary" data-content="${data.search_content}" onclick="delKeyword(this)">검색어 삭제</button>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                                <!-- End Table with stripped rows -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+	 	<div id="date"></div>
+		<div class="pagetitle">
+			<h1>인기 검색어 관리</h1>
+			<nav>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
+					<li class="breadcrumb-item active">인기 검색어 관리</li>
+				</ol>
+			</nav>
+		</div><!-- End Page Title -->
+	
+		<section class="section">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card">
+						<div class="card-body">
+							<!-- Table with stripped rows -->
+							<table class="table datatable">
+								<thead>
+									<tr>
+										<th>검색어 순위</th>
+										<th>검색어 내용</th>
+										<th>검색어 조회수</th>
+										<th>비고</th>
+								</thead>
+								<tbody>
+									<c:forEach var="data" items="${searchList}" varStatus="loop">
+										<tr>
+											<td>${loop.index + 1}</td>
+											<td>${data.search_content}</td>
+											<td>${data.search_count}</td>
+											
+											<td>
+											<button type="button" class="btn btn-primary"  data-content="${data.search_content}" onclick="delKeyword(this)">
+												검색어 삭제
+											</button>
+												
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							<!-- End Table with stripped rows -->
+						</div>
+	 				</div>
+				</div>
+			</div>
+		</section>
+	</main><!-- End #main -->
+
         <!-- End #main -->
     </div>
     <!-- End Main Content and Sidebar -->
@@ -113,4 +105,7 @@
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
     </footer>
 
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><span>&#x2191;</
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><span>&#x2191;</span></a>
+</body>
+</html>
+
