@@ -18,4 +18,5 @@ public class TradeVO {
 	private Time trade_date;
 	private int trade_status;
 	private int trade_amt; 
+	
 }
