@@ -6,7 +6,6 @@ import java.security.PrivateKey;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -453,7 +452,7 @@ public class MemberController {
 	   @PostMapping("MemberModify")
 	   public String mypageinfo(
 	       @RequestParam Map<String, String> map,
-	       @RequestParam(value = "member_profile", required = false) MultipartFile file,
+	       @RequestParam(value = "profile", required = false) MultipartFile file, // 파일 파라미터 수정
 	       MemberVO member,
 	       BCryptPasswordEncoder passwordEncoder,
 	       Model model
@@ -487,13 +486,13 @@ public class MemberController {
 	           try {
 	               // 파일 저장 경로 설정
 	               String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-	               String uploadDir = "/resources/images";  // 절대 경로 설정
+	               String uploadDir = "src/main/resources/images";  // 경로 수정
 	               File uploadDirFile = new File(uploadDir);
 	               if (!uploadDirFile.exists()) {
 	                   uploadDirFile.mkdirs();
 	               }
 
-	               String filePath = uploadDir + fileName;
+	               String filePath = uploadDir + "/" + fileName; // 경로 수정
 	               File destinationFile = new File(filePath);
 	               file.transferTo(destinationFile);
 
@@ -506,7 +505,7 @@ public class MemberController {
 	           }
 	       } else {
 	           // 파일이 없을 경우 기본값 설정
-	           map.put("member_profile", null);
+	           map.put("member_profile", member.getMember_profile());
 	       }
 
 	       int updateCount = service.modifyMember(map);
