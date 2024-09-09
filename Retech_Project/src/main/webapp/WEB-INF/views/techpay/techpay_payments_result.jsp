@@ -24,20 +24,23 @@
 		<h1>테크페이 결제 완료</h1>
 		<div align="center">
 			<%-- withdrawResult 객체에 저장된 출금이체 결과 데이터 출력 --%>
-			<h3>${sessionScope.sName} 고객님의 결제 내역 (결제코드 :{paymentResult.trade_idx})</h3>
-			<h3>${sessionScope.sName} 고객님의 결제 결과 (결제코드22 :{trade_idx})</h3>
+			<h3>${sessionScope.sName} 고객님의 결제 내역 (결제코드 : ${paymentResult.techpay_idx})</h3>
 			<table border="1">
 				<tr>
 					<th>결제상품(거래코드)</th>
-					<td>${chargeWithdrawResult.bank_name}(${paymentResult.tran_idx})</td>
+					<td>${paymentResult.pd_subject}(${paymentResult.trade_idx})</td>
 				</tr>
 				<tr>
 					<th>결제일시</th>
-					<td>${paymentResult.api_tran_dtm}</td>
+					<td>${paymentResult.techpay_tran_dtime}</td>
+				</tr>
+				<tr>
+					<th>결제금액</th>
+					<td>￦ <fmt:formatNumber value="${paymentResult.tran_amt}" pattern="#,###" /></td>
 				</tr>
 				<tr> 
 					<th>결제 후 테크페이 잔액</th>
-					<td>￦ <fmt:formatNumber value="${chargeWithdrawResult.wd_limit_remain_amt}" pattern="#,###" /></td>
+					<td>￦ <fmt:formatNumber value="${paymentResult.pay_balance}" pattern="#,###" /></td>
 				</tr>
 				<tr>
 					<td colspan="2">
