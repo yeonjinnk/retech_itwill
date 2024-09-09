@@ -27,7 +27,7 @@ public interface ChatMapper {
 	List<ChatMessage> selectChatMessageList(String room_id);
 
 	//채팅 메세지 저장
-	void insertChatMessage(ChatMessage chatMessage);
+	void insertChatMessage(ChatMessage chatMessage); 
 
 	//채팅방 종료
 	void updateChatRoomStatusForQuitRoom(@Param("room_id") String room_id, @Param("sender_id") String sender_id);
