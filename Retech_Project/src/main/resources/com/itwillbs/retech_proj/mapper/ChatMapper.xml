@@ -99,7 +99,8 @@ JOIN (
 ) latest_message ON m.room_id = latest_message.room_id AND m.send_time = latest_message.max_send_time
 WHERE
     r.sender_id = #{sender_id}
-    AND r.status > 0;
+    AND r.status > 0
+    order by m.send_time desc;
 
 
 			
@@ -119,6 +120,7 @@ WHERE
 		WHERE
 			title = CONCAT('상대방 id : ', #{receiver_id})
 			AND c.pd_idx = #{pd_idx}
+			AND sender_id = #{sender_id}
 			AND c.status = 1; -- 채팅방 상태가 0(자신이 종료함)이 아닌 채팅방만 조회
 	</select>
 	
@@ -194,7 +196,7 @@ WHERE
 	<update id="updateChatRoomStatusForQuitRoom">
 		UPDATE chat_room
 		SET
-			status = CASE WHEN user_id = #{sender_id} THEN 0 ELSE 2 END
+			status = CASE WHEN sender_id = #{sender_id} THEN 0 ELSE 2 END
 		WHERE
 			room_id = #{room_id}
 	</update>
@@ -225,8 +227,8 @@ WHERE
 	</select>
 	
 	<select id="selectProduct" resultType="map">
-		SELECT pd_status, pd_subject, pd_price, pd_image1, member_id
-		FROM product
+		SELECT p.pd_status, p.pd_subject, p.pd_price, p.pd_image1, p.member_id
+		FROM product p
 		WHERE pd_idx = #{pd_idx}
 	
 	
