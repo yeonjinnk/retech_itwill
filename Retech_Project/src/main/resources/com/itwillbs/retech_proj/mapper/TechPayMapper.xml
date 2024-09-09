@@ -162,8 +162,22 @@ CREATE TABLE techpay_user_info (
 		    , #{pay_balance}
 		    , #{techpay_type}
 		    , #{id}
+		    , #{trade_idx}
 		);
 	</insert>
+
+
+	<!-- 결제결과 불러오기 -->
+	<select id="selectPaymentsResult" resultType="map">
+		SELECT *
+		FROM 
+		    techpay_history th
+		JOIN 
+		    trade t
+		ON 
+		    th.id = t.trade_buyer_id
+		WHERE th.id = #{id};
+	</select>
 	
 
 </mapper>

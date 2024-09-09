@@ -145,5 +145,10 @@ public class TechPayService {
 	public int getPayHistoryCount(Map<String, Object> map) {
 		return mapper.selectPayHistoryCount(map);
 	}
+
+	// 결제결과 불러오기
+	public Map<String, String> getPaymentsResult(String id) {
+		return mapper.selectPaymentsResult(id);
+	}
 	
 }
