@@ -24,4 +24,3 @@ public class MemberVO {
     private Date member_motivation; 
     private MultipartFile profile; // 업로드된 파일을 저장하는 필드
 }
-
