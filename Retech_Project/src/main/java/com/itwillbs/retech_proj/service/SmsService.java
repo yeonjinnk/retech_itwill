@@ -21,20 +21,28 @@ public class SmsService {
         String authCode = generateAuthCode();
         System.out.println("생성된 인증 코드: " + authCode);
 
-        String content = "위드미의 인증번호는 [" + authCode + "]입니다. 인증번호를 입력해주세요.";
+        String content = "리테크의 인증번호는 [" + authCode + "]입니다. 인증번호를 입력해주세요.";
 
-        // SMS 발송을 비동기로 처리
-        new Thread(() -> {
-            SendSmsClient.sendSms(phoneNumber, content);
-            System.out.println("쓰레드 작업 완료");
-        }).start();
+        try {
+            // SMS 발송 후 성공 여부 확인
+            boolean isSent = SendSmsClient.sendSms(phoneNumber, content);
+            System.out.println("SMS 발송 성공 여부: " + isSent);
 
-        // SmsAuthInfo 객체 생성 및 리턴
-        SmsAuthInfo smsAuthInfo = new SmsAuthInfo();
-        smsAuthInfo.setPhone_number(phoneNumber);
-        smsAuthInfo.setAuth_code(authCode);
-        smsAuthInfo.setStatus("PENDING"); // 초기 상태 설정
-        return smsAuthInfo;
+            // SMS 발송 실패 시 null 반환
+            if (!isSent) {
+                return null;
+            }
+
+            // SmsAuthInfo 객체 생성 및 리턴
+            SmsAuthInfo smsAuthInfo = new SmsAuthInfo();
+            smsAuthInfo.setPhone_number(phoneNumber);
+            smsAuthInfo.setAuth_code(authCode);
+            smsAuthInfo.setStatus("PENDING"); // 초기 상태 설정
+            return smsAuthInfo;
+        } catch (Exception e) {
+            System.err.println("SMS 발송 중 오류 발생: " + e.getMessage());
+            return null;
+        }
     }
 
     // 문자 인증 정보 등록 요청

@@ -10,7 +10,7 @@
 </head>
 <body>
 	<div class="modalOpen">
-		<form action="">
+		<form action="RegistReport">
 			신고하기
 			<hr>
 			<input type="radio" name="report_chat_reason" value="0" id="report"><label for="report">욕설 및 비방을 해요</label><br>
@@ -32,7 +32,7 @@
 				<img id="prevImg2" class="prevImg">
 			</div>
 			<hr>
-			<textarea rows="5" cols="55" name="report_chat_content">내용을 입력하세요</textarea><br>
+			<textarea rows="5" cols="55" name="report_chat_content" placeholder="내용을 입력하세요"></textarea><br>
 			<hr>
 			<div class="modalBtn">
 				<button type="submit" id="btnReportSubmit">신고하기</button>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -83,7 +83,7 @@
 			/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
 			$("#btnReportSubmit").click(function(e) {
 				console.log("신고 제출하기 버튼 클릭됨!");
-				e.preventDefault();
+// 				e.preventDefault();
 				$("#reportModal").hide();
 			});
 	  

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.retech_proj.vo.MemberVO;
 import com.itwillbs.retech_proj.vo.StoreVO;
@@ -34,10 +35,10 @@ public interface MemberMapper {
 	 
 	   List<Map<String, String>> selectPaymentInfo(int member_num);
 
-	   StoreVO selectItem2(StoreVO store);
-
 	   //=====================================================================================
 	   //회원 아이디 조회(채팅용)
 	   String selectMemberId(String receiver_id);
+
+	   MemberVO selectByPhoneAndId(@Param("phoneNumber") String phoneNumber, @Param("memberId") String memberId);
 
 }

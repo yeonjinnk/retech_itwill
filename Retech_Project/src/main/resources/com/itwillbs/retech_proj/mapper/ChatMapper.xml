@@ -269,6 +269,23 @@ WHERE
 	
 	</update>
 	
+	<!--  신고 입력하기 -->
+	<insert id="insertReport">
+		INSERT INTO report_chat
+		VALUES (
+			null
+			, #{report_chat_reporter_id}
+			, #{receiver_id}
+			, now()
+			, #{report_chat_status}
+			, #{report_chat_reason} 
+			, #{report_chat_content}
+			, #{file1}
+			, #{file2}
+			, #{room_id}
+		
+		)
+	</insert>
 </mapper>
 
 
