@@ -54,5 +54,8 @@ public interface ChatMapper {
 	int updateAddress(@Param("buyer_id") String buyer_id, @Param("buyer_postcode") String buyer_postcode,
 						@Param("buyer_address1") String buyer_address1, @Param("buyer_address2") String buyer_address2);
 
+	//신고 입력하기
+	int insertReport(Map<String, Object> map);
+
 
 }
