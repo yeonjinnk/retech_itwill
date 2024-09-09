@@ -43,5 +43,19 @@
     		)
     </insert>
      -->
+     
+     <!-- 상품 결제 정보 저장하기 -->
+     <insert id="insertStorePay">
+     	INSERT INTO order_store
+     	VALUES (
+     		null
+     		, #{order_store_item}
+     		, #{order_store_member_id}
+     		, now()
+     		, #{order_store_quantity}
+     		, #{order_store_pay}
+     		, #{payment}
+     	)
+     </insert>
     
     </mapper>

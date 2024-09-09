@@ -11,7 +11,7 @@ import com.itwillbs.retech_proj.vo.CsVO;
 @Mapper
 public interface CsMapper {
 
-	int selectCsListCount();
+	int selectCsListCount(String id);
 
 	List<CsVO> selectCsList(@Param("startRow") int startRow, 
 							@Param("listLimit") int listLimit, 

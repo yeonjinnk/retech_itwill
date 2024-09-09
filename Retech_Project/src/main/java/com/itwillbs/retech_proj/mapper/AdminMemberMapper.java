@@ -45,5 +45,10 @@ public interface AdminMemberMapper {
 
 	List<ProductVO> selectProductList2();
 
+	int selectMemberListCount22(String searchKeyword);
+
+	List<MemberVO> selectMemberList22(@Param("startRow") int startRow, @Param("listLimit") int listLimit,
+			@Param("searchKeyword") String searchKeyword);
+
 	
 }

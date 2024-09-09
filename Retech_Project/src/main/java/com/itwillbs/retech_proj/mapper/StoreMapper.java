@@ -24,4 +24,7 @@ public interface StoreMapper {
 	//상품 정보 조회2
 	Map<String, Object> selectStore(int store_idx);
 
+	//상품 결제 정보 저장하기
+	int insertStorePay(Map<String, Object> map);
+
 }

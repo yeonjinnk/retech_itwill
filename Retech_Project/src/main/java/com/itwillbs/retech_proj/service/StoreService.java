@@ -39,6 +39,11 @@ public class StoreService {
 	public Map<String, Object> selectStore(int store_idx) {
 		return mapper.selectStore(store_idx);
 	}
+
+	// 상품 결제 정보 저장하기
+	public int insertStorePay(Map<String, Object> map) {
+		return mapper.insertStorePay(map);
+	}
 	
 
 	

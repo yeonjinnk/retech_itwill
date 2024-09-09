@@ -129,14 +129,14 @@ public class AdminMemberController {
       // 페이지 번호가 1보다 작거나 최대 페이지 번호보다 클 경우
       if(pageNum < 1 || pageNum > maxPage) {
          model.addAttribute("msg", "해당 페이지는 존재하지 않습니다!");
-         model.addAttribute("targetURL", "AdminMemberList?pageNum=1");
+         model.addAttribute("targetURL", "AdminPolice?pageNum=1");
          return "result/fail";
       }
       // -------------------------------------------------------------------------------------------
       // 검색 기능 추가 (0705)
       // 검색어는 기본적으로 "" 널스트링
       // 회원 목록 조회
-      List<MemberVO> memberList = service.getMemberList(startRow, listLimit, searchKeyword);
+      List<MemberVO> memberList = service.getMemberList22(startRow, listLimit, searchKeyword);
 //      System.out.println(memberList);
       PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
       // 회원 목록, 페이징 정보 Model 객체에 저장 -> admin_member_list.jsp 로 전달
@@ -150,7 +150,7 @@ public class AdminMemberController {
    @GetMapping("ChangeMemberAuthorize")
    public String changeMemberAuthorize(@RequestParam(defaultValue = "1") String member_status, String member_id, String isPolice, Model model) {
       // -------------------------------------------------------------------------------------------
- 
+	   System.out.println("member_status 이전꺼!!!" + member_status + isPolice);
 	   
 	   int memberRegCount = service.changePoliceAuth(member_status, member_id);
       System.out.println("member_status" + member_status + isPolice);

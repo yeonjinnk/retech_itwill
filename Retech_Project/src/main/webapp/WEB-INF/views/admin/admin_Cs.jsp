@@ -207,7 +207,7 @@
 					
 					<div id="pageList">
 						<input type="button" value="이전" 
-								onclick="location.href='AdminNotice?pageNum=${pageNum - 1}'">
+								onclick="location.href='AdminCs?pageNum=${pageNum - 1}'">
 						
 						<%-- 계산된 페이지 번호가 저장된 PageInfo 객체(pageInfo)를 통해 페이지 번호 출력 --%>
 						<%-- 시작페이지(startPage = begin) 부터 끝페이지(endPage = end)까지 1씩 증가하면서 표시 --%>
