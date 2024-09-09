@@ -230,9 +230,12 @@
             </div>
 
             <div class="join_detail">
-                <label for="member_profile" class="title">프로필 사진</label>
-                <input type="file" name="profile" id="member_profile">
-            </div>
+			    <span>프로필 사진</span>
+			    <input type="file" name="profile" id="member_profile">
+			    <img id="img_preview_img" src="${pageContext.request.contextPath}/resources/images/${member.member_profile}" alt="미리보기" style="display:${member.member_profile != null ? 'block' : 'none'};">
+			    <span id="img_status">${member.member_profile != null ? '사진 미리보기' : '프로필사진'}</span>
+			    <input type="button" id="del_img" value="사진 삭제" style="${member.member_profile != null ? 'display: block;' : 'display: none;'}">
+			</div>
 
             <button id="submit" type="submit">가입하기</button>
         </form>
@@ -298,9 +301,9 @@
         if (passwd.length < 8) {
             $("#checkPasswdResult").text("비밀번호는 8자 이상이어야 합니다.").addClass("error");
         } else if (passwd !== passwd2) {
-            $("#checkPasswdResult").text("비밀번호가 일치하지 않습니다.").addClass("error");
+            $("#checkPasswdResult2").text("비밀번호가 일치하지 않습니다.").addClass("error");
         } else {
-            $("#checkPasswdResult").text("비밀번호가 일치합니다.").removeClass("error").addClass("success");
+            $("#checkPasswdResult2").text("비밀번호가 일치합니다.").removeClass("error").addClass("success");
         }
     }
 
