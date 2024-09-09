@@ -15,8 +15,8 @@ public class CsService {
 	@Autowired
     private CsMapper mapper;
 
-	public int getCsListCount() {
-		return mapper.selectCsListCount();
+	public int getCsListCount(String id) {
+		return mapper.selectCsListCount(id);
 	}
 
 	public List<CsVO> getCsList(int startRow, int listLimit, Boolean isAdmin, String id) {

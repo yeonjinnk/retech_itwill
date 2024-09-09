@@ -68,14 +68,14 @@
 		<section class="wrapper">
 			<jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
 			<article class="main">
-				<h3>회원 목록</h3>
-				<form action="AdminMemberList">
-							<div class="search">
-								<span>Search</span>
-								<input type="search" name="searchKeyword" value="${param.searchKeyword}" >
-								<input type="submit" value="검색">
-							</div>
-						</form>
+				<h3>회원 블랙</h3>
+				<form action="AdminPolice">
+					<div class="search">
+						<span>Search</span>
+							<input type="search" name="searchKeyword" value="${param.searchKeyword}" >
+							<input type="submit" value="검색">
+					</div>
+				</form>
 				<div class="content">
 					<table border="1">
 						<tr>
@@ -99,10 +99,13 @@
 												onclick="confirmPolice('${member.member_id}', '${member.member_status}', '블랙')"
 												>
 										</c:when>
+										<c:when test="${member.member_status eq '탈퇴'}">
+											탈퇴한 회원입니다.
+										</c:when>
 										<c:otherwise>
 											<input type="button" value="회원 블랙 해제" class="yBlack"
 												onclick="confirmPolice('${member.member_id}', '${member.member_status}', '1')"
-												<c:if test="${member.member_status eq '탈퇴'}"> disabled</c:if>>
+											>
 										</c:otherwise>
 									</c:choose></td>
 							</tr>

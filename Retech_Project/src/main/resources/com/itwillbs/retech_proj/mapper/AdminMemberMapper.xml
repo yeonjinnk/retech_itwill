@@ -32,6 +32,22 @@
 			#{startRow}     
 			, #{listLimit}  
 	</select>
+	<!-- 회원 목록 조회 -->
+	<select id="selectMemberList22" resultType="member">
+		SELECT *
+		FROM member
+		<if test="!searchKeyword.equals('')">
+			where 
+				member_id like concat('%',#{searchKeyword},'%')
+				or member_nickname like concat('%',#{searchKeyword},'%')
+				or member_status like concat('%',#{searchKeyword},'%')
+		</if>
+		ORDER BY
+			member_status DESC
+		LIMIT
+			#{startRow}     
+			, #{listLimit}  
+	</select>
 	
 	<select id="selectMemberList2" resultType="member">
 		SELECT *
@@ -60,19 +76,20 @@
 			</choose>
 		WHERE member_id = #{member_id}
 </update>
+<!-- 회원 블랙 부여 -->
 
 <update id="updateStatusAuth">
-		UPDATE member
-		SET
-			<choose>
-				<when test="member_status.equals('1')">
-					member_status = '블랙'
-				</when>
-				<otherwise>
-					member_status = '1'
-				</otherwise>
-			</choose>
-		WHERE member_id = #{member_id}
+    UPDATE member
+    SET
+        <choose>
+            <when test="member_status.equals('블랙')">
+                member_status = '1'
+            </when>
+            <otherwise>
+                member_status = '블랙'
+            </otherwise>
+        </choose>
+    WHERE member_id = #{member_id}
 </update>
 
 	

@@ -68,7 +68,7 @@
 		<section class="wrapper">
 			<jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
 			<article class="main">
-				<h3>회원 목록</h3>
+				<h3>관리자 권한부여</h3>
 				<form action="AdminMemberList">
 							<div class="search">
 								<span>Search</span>
@@ -93,7 +93,16 @@
 							<tr align="center">
 								<td>${member.member_id}</td>
 								<td>${member.member_name}</td>
-								<td>${member.member_status}</td>
+								<td>
+									<c:choose>
+										<c:when test="${member.member_status eq '1'}">
+											활동
+										</c:when>
+											<c:otherwise>
+											${member.member_status}
+										</c:otherwise>
+									</c:choose>								
+								</td>
 								<td>
 										<c:choose>
 											<c:when test="${member.member_isAdmin eq 0}">
