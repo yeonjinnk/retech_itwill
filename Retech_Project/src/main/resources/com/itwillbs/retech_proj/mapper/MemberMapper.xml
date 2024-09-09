@@ -20,7 +20,7 @@
 			, #{member_address1}
 			, #{member_address2}
 			, #{member_profile}			-- 프로필 사진 
-			, 'N'						-- 관리자 여부 (Y: 관리자, N: 일반 사용자)
+			, '0'						-- 관리자 여부 (1: 관리자, 0: 일반 사용자)
 			, now()
 		)
 	</insert>

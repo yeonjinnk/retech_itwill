@@ -453,7 +453,7 @@ public class MemberController {
 	           try {
 	               // 파일 저장 경로 설정
 	               String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-	               String uploadDir = "/var/www/html/uploads/";  // 절대 경로 설정
+	               String uploadDir = "/resources/images";  // 절대 경로 설정
 	               File uploadDirFile = new File(uploadDir);
 	               if (!uploadDirFile.exists()) {
 	                   uploadDirFile.mkdirs();
@@ -559,7 +559,7 @@ public class MemberController {
 	           // 로그인하지 않은 사용자 처리
 	           return "redirect:/login"; // 로그인 페이지로 리다이렉트 (예시)
 	       }
-
+	       		
 	       // 전체 판매 상품 목록 조회
 	       List<ProductVO> allProductList = productService.getSellerMyPage(startRow, listLimit, loggedInUserId);
 	       int totalProductCount = productService.getProductListCount(searchKeyword);
