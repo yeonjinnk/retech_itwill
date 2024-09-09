@@ -3,6 +3,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.itwillbs.retech_proj.mapper.AdminMemberMapper;
+import com.itwillbs.retech_proj.mapper.MemberMapper;
 import com.itwillbs.retech_proj.vo.MemberVO;
 @Service
 public class AdminMemberService {
@@ -20,10 +21,15 @@ public class AdminMemberService {
    public int changeAdminAuth(String member_isAdmin, String member_id) {
       return mapper.updateAdminAuth(member_isAdmin, member_id);
    }
-public int changePoliceAuth(String member_status, String member_id) {
-	return mapper.updateStatusAuth(member_status, member_id);
-}
+	public int changePoliceAuth(String member_status, String member_id) {
+		return mapper.updateStatusAuth(member_status, member_id);
+	}
    
+	@Autowired
+    private MemberMapper memberMapper;
 
+    public MemberVO getMemberById(String memberId) {
+        return memberMapper.selectMemberById(memberId);
+    }
    
 }

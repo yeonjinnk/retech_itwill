@@ -70,22 +70,27 @@
                         </c:if>
                         <c:forEach var="member" items="${memberList}">
                             <tr align="center">
-                                <td>${member.member_id}</td>
-                                <td>${member.member_name}</td>
-                                <td>${member.member_nickname}</td>
-                                <td>${member.member_phone}</td>
-                                <td>${member.member_birth}</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${member.member_status eq '탈퇴'}">
-                                            <span class="status-x">X</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class="status-o">O</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                            </tr>
+						    <td>
+						        <a href="AdminMemberDetail?memberId=${member.member_id}">
+						            ${member.member_id}
+						        </a>
+						    </td>
+						    <td>${member.member_name}</td>
+						    <td>${member.member_nickname}</td>
+						    <td>${member.member_phone}</td>
+						    <td>${member.member_birth}</td>
+						    <td>
+						        <c:choose>
+						            <c:when test="${member.member_status eq '탈퇴'}">
+						                <span class="status-x">X</span>
+						            </c:when>
+						            <c:otherwise>
+						                <span class="status-o">O</span>
+						            </c:otherwise>
+						        </c:choose>
+						    </td>
+						</tr>
+
                         </c:forEach>
                         <c:if test="${empty memberList}">
                             <tr>
@@ -96,21 +101,21 @@
                 </div>
                 <div id="pageList">
                     <input type="button" value="이전" 
-                        onclick="location.href='AdminMemberList?pageNum=${pageNum - 1}'" 
-                        <c:if test="${pageNum eq 1}"> disabled</c:if> >
+                        onclick="location.href='AdminMemberList2?pageNum=${pageNum - 1}'" 
+                        <c:if test="${pageNum eq 1}"> disabled</c:if> />
                     <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
                         <c:choose>
                             <c:when test="${i eq pageNum}">
                                 <b>${i}</b>
                             </c:when>
                             <c:otherwise>
-                                <a href="AdminMemberList?pageNum=${i}">${i}</a>
+                                <a href="AdminMemberList2?pageNum=${i}">${i}</a>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                     <input type="button" value="다음" 
-                        onclick="location.href='AdminMemberList?pageNum=${pageNum + 1}'"
-                        <c:if test="${pageNum eq pageInfo.endPage}"> disabled</c:if> >
+                        onclick="location.href='AdminMemberList2?pageNum=${pageNum + 1}'" 
+                        <c:if test="${pageNum eq pageInfo.endPage}"> disabled</c:if> />
                 </div>
             </article>
         </section>

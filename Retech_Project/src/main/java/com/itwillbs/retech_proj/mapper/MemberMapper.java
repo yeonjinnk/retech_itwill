@@ -41,4 +41,6 @@ public interface MemberMapper {
 
 	   MemberVO selectByPhoneAndId(@Param("phoneNumber") String phoneNumber, @Param("memberId") String memberId);
 
+	   // 회원 상세 정보 조회
+	   MemberVO selectMemberById(@Param("memberId") String memberId);
 }

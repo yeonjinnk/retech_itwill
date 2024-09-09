@@ -37,6 +37,5 @@ public interface AdminMemberMapper {
 
 	int updateStatusAuth(@Param("member_status") String member_status, @Param("member_id") String member_id);
 
-
 	
 }

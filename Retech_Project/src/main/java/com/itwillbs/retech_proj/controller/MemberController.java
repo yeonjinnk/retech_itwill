@@ -513,19 +513,28 @@ public class MemberController {
 	       // 파일 처리
 	       if (file != null && !file.isEmpty()) {
 	           try {
-	               // 파일 저장 경로
-	               String fileName = file.getOriginalFilename();
-	               String filePath = "/var/www/html/uploads/" + fileName;
+	               // 파일 저장 경로 설정
+	               String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+	               String uploadDir = "/var/www/html/uploads/";  // 절대 경로 설정
+	               File uploadDirFile = new File(uploadDir);
+	               if (!uploadDirFile.exists()) {
+	                   uploadDirFile.mkdirs();
+	               }
+
+	               String filePath = uploadDir + fileName;
 	               File destinationFile = new File(filePath);
 	               file.transferTo(destinationFile);
 
-	               // 파일 경로를 map에 추가
-	               map.put("member_profile", filePath);
+	               // 파일 이름만을 map에 추가
+	               map.put("member_profile", fileName);
 
 	           } catch (IOException e) {
 	               model.addAttribute("msg", "파일 업로드 실패!");
 	               return "result/fail";
 	           }
+	       } else {
+	           // 파일이 없을 경우 기본값 설정
+	           map.put("member_profile", null);
 	       }
 
 	       int updateCount = service.modifyMember(map);
@@ -538,7 +547,6 @@ public class MemberController {
 	           return "result/fail";
 	       }
 	   }
-
 
 
 	   @PostMapping("MemberWithdraw")
