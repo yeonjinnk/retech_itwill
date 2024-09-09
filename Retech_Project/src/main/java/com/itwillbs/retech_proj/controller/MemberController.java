@@ -546,40 +546,44 @@ public class MemberController {
 //	   }
 //	   
 	
-	   //판매내역(수정ver)
 	   @GetMapping("SaleHistory")
 	   public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
-			   @RequestParam(value = "listLimit", defaultValue = "10") int listLimit, 
-			   @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
-			   @RequestParam String member_id,
-			   Model model, HttpSession session) {
-		   
-//		   String id = (String) session.getAttribute("sId");
-		   System.out.println("!!!!!!!!!판매자 아이디 : " + member_id);
-		   // 판매자 ID가 존재하는 경우
-		   if (member_id != null) {
-			   // 전체 판매 상품 목록 조회
-			   List<ProductVO> allProductList = productService.getSellerMyPage(startRow, listLimit, member_id);
-			   int totalProductCount = productService.getProductListCount(searchKeyword);
-			   
-			   // 로그인한 사용자 ID에 맞는 상품만 필터링
-			   List<ProductVO> filteredProductList = allProductList.stream()
-					   .filter(product -> member_id.equals(product.getMember_id()))
-					   .collect(Collectors.toList());
-			   
-			   // 필터링된 판매 리스트와 전체 개수 설정
-			   model.addAttribute("productList", filteredProductList);
-			   model.addAttribute("totalProductCount", filteredProductList.size());
-			   
-			   // 회원 정보 조회 (필요한 경우)
-			   MemberVO member = new MemberVO();
-			   member.setMember_id(member_id);
-			   member = service.getMember(member);
-			   model.addAttribute("member", member);
-		   }
-		   
-		   return "mypage/salehistory";
+	           @RequestParam(value = "listLimit", defaultValue = "10") int listLimit, 
+	           @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
+	           Model model, HttpSession session) {
+
+	       String loggedInUserId = (String) session.getAttribute("sId");
+	       
+	       // 로그인한 사용자의 ID가 null인지 확인
+	       if (loggedInUserId == null) {
+	           // 로그인하지 않은 사용자 처리
+	           return "redirect:/login"; // 로그인 페이지로 리다이렉트 (예시)
+	       }
+
+	       // 전체 판매 상품 목록 조회
+	       List<ProductVO> allProductList = productService.getSellerMyPage(startRow, listLimit, loggedInUserId);
+	       int totalProductCount = productService.getProductListCount(searchKeyword);
+	       
+	       // 로그인한 사용자 ID에 맞는 상품만 필터링
+	       List<ProductVO> filteredProductList = allProductList.stream()
+	               .filter(product -> loggedInUserId.equals(product.getMember_id()))
+	               .collect(Collectors.toList());
+	       
+	       // 필터링된 판매 리스트와 전체 개수 설정
+	       model.addAttribute("productList", filteredProductList);
+	       model.addAttribute("totalProductCount", filteredProductList.size());
+	       
+	       // 회원 정보 조회 (필요한 경우)
+	       MemberVO member = new MemberVO();
+	       member.setMember_id(loggedInUserId);
+	       member = service.getMember(member);
+	       model.addAttribute("member", member);
+	       
+	       return "mypage/salehistory";
 	   }
+
+
+	   
 	   
 	   
 	   // 구매내역
