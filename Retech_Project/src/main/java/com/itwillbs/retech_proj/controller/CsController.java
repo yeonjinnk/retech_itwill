@@ -94,7 +94,7 @@ public class CsController {
 		
 		List<CsVO> csList = service.getCsList(startRow, listLimit, isAdmin, id);
 		PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
-
+		System.out.println("csListddddd" + csList);
 		model.addAttribute("csList", csList);
 		model.addAttribute("pageInfo", pageInfo);
 		
