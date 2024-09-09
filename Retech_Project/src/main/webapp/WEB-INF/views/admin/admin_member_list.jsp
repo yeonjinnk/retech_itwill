@@ -88,6 +88,7 @@
 							value="${param.searchKeyword}"> <input type="submit"
 							value="검색">
 					</div>
+					
 				</form>
 				<div class="content">
 					<table border="1">
