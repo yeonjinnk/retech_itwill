@@ -21,9 +21,6 @@ $(document).ready(function() {
     let c_id = urlParams.get('c_id');
     let c_id2 = urlParams.get('c_id2');
     let c_id3 = urlParams.get('c_id3');
-    console.log("c_id : " + c_id);
-    console.log("c_id2 : " + c_id2);
-    console.log("c_id3 : " + c_id3);
     // 해당 값에 따라 select 박스에서 선택된 상태로 변경합니다.
     if (c_id) $('#c_id').val(c_id);
     if (c_id2) $('#c_id2').val(c_id2);
@@ -32,7 +29,7 @@ $(document).ready(function() {
 	let pageNum = 1; // 임의로 설정
 	
     let resetPage = true;
-	loadList(selectedCategory, selectedSort, resetPage);
+// 	loadList(selectedCategory, selectedSort, resetPage); // 이 함수가 실행되서 productList가 아니라 productListJson까지 다 같이 실행이 되버려서 계속 전체 상품 목록 조회가 됨!!
 });
 </script>
 
@@ -81,11 +78,7 @@ $(function() {
         var selectedManufacturer = $("#c_id2 option:selected").val();  // 두 번째 select 박스에서 선택된 값
         var selectedPdStatus = $("#c_id3 option:selected").val();  // 세 번째 select 박스에서 선택된 값
 
-//         console.log("선택된 카테고리: " + selectedCategory);
-//         console.log("선택된 제조사: " + selectedManufacturer);
-//         console.log("선택된 제품 상태: " + selectedPdStatus);
 
-        $("#selectedCategorySpan").text("선택된 카테고리: " + selectedCategory);
 
         // 목록 로드
         loadList(selectedCategory, selectedSort, true);
@@ -110,22 +103,19 @@ $(function() {
 });
 
 function loadList(selectedCategory, selectedSort, resetPage) {
+	console.log("loadList");
     let url;
-
-    var selectedCategory = $("#c_id option:selected").val(); // 다시 확인
+    var selectedCategory = $("#c_id option:selected").val();
     var selectedManufacturer = $("#c_id2 option:selected").val();
     var selectedPdStatus = $("#c_id3 option:selected").val();
-
-    console.log("선택된 카테고리: " + selectedCategory);
-    console.log("선택된 제조사: " + selectedManufacturer);
-    console.log("선택된 제품 상태: " + selectedPdStatus);
-    console.log("pageNum 상태: " + pageNum);
+//     let searchKeyword = $("#searchKeyword").val(); 
 
     url = "productListJson?pageNum=" + pageNum 
-	        + "&pd_category=" + selectedCategory
-	        + "&pd_selectedManufacturer=" + selectedManufacturer
-	        + "&pd_selectedPdStatus=" + selectedPdStatus
-	        + "&sort=" + encodeURIComponent(selectedSort);
+//     	+ "&searchKeyword=" + searchKeyword
+        + "&pd_category=" + selectedCategory
+        + "&pd_selectedManufacturer=" + selectedManufacturer
+        + "&pd_selectedPdStatus=" + selectedPdStatus
+        + "&sort=" + encodeURIComponent(selectedSort);
 
     $.ajax({
         type: "GET",
@@ -142,6 +132,35 @@ function loadList(selectedCategory, selectedSort, resetPage) {
             for (let product of data.changedProductList) {
                 let price = product.pd_price;
                 let formatted_price = Number(price).toLocaleString('en');
+
+                let productDate = new Date(product.pd_first_date);
+                let dateDisplay = "날짜 정보 없음"; // 기본값 설정
+
+
+                if (!isNaN(productDate.getTime())) {  // 유효한 날짜인지 확인
+                    let currentDate = new Date();
+                    let timeDiff = currentDate - productDate;
+
+                    let dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    let hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
+                    let minutesDiff = Math.floor(timeDiff / (1000 * 60));
+
+                    if (dayDiff === 0) {
+                        if (hoursDiff === 0) {
+//                     console.log("${minutesDiff}분 전: " + minutesDiff);
+                            dateDisplay = minutesDiff + "분 전";
+                        } else {
+                            dateDisplay = hoursDiff + "시간 전";
+                        }
+                    } else {
+                        dateDisplay = dayDiff + "일 전";
+                    }
+                } else {
+                    console.log("Invalid date format: " + product.pd_first_date);
+                }
+
+                console.log("dateDisplay: " + dateDisplay);
+
                 $(".productListArea").append(
                     '<div class="col-lg-3 col-mid-4">'
                     + '    <div class="card border-0">'
@@ -152,16 +171,13 @@ function loadList(selectedCategory, selectedSort, resetPage) {
                     + '            <span class="dealStatus"><button class="btn btn-dark">' + product.pd_status + '</button></span>'
                     + '        </div>'
                     + '        <div class="card-body">'
-                    + '            <div class="category" style="font-size:0.8rem;">'
-                    + '                ' + product.pd_category
-                    + '            </div>'
                     + '            <div class="card-title" style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis;">'
                     + '                <a href="product_detail?pd_idx=' + product.pd_idx + '&member_id=' + product.member_id + '">'
                     + '                    ' + product.pd_subject
                     + '                </a>'
                     + '            </div>'
                     + '            <p>' + formatted_price + '원 </p>'
-                    + '            <p>' + product.product_first_date + '</p>'
+                    + '            <p>' + dateDisplay + '</p>'
                     + '        </div>'
                     + '    </div>'
                     + '</div>'
@@ -174,7 +190,12 @@ function loadList(selectedCategory, selectedSort, resetPage) {
             isLoading = false;
         }
     }); //ajax끝부분
-} //loadList() 함수 끝
+}
+
+
+
+
+
 </script>
 
 
@@ -233,7 +254,7 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 			    <ul class="listSort" style="display: none;">
 			        <li id="list1">최신순 </li>
 			        <li id="list2">가격순 </li>
-			        <li id="list3">인기순 </li>
+			        <li id="list3">조회순 </li>
 			    </ul>
 			</div>
 			
@@ -265,10 +286,8 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 										${product.pd_subject}
 									</a>
 								</div>
-<%-- 								<p><fmt:formatNumber pattern="#,###" value="${product.pd_price }"/>원</p> --%>
-										
-								<p>${product.pd_first_date }</p>
-							</div>
+								<p><fmt:formatNumber pattern="#,###" value="${product.pd_price }"/>원</p>
+								<p>${product.pd_first_date != null ? product.pd_first_date : '날짜 정보 없음'}</p>							</div>
 						</div>
 					</c:forEach>
 				</div>

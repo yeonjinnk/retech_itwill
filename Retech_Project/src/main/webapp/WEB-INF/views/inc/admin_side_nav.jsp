@@ -42,7 +42,7 @@
 		<li class="depth01">
 			<a href="">검색어 관리</a>
 			<ul class="depth02">
-				<li><a href=""></a></li>
+				<li><a href="TotalSearchList"></a></li>
 			</ul>			
 		</li>
 		<li class="depth01">

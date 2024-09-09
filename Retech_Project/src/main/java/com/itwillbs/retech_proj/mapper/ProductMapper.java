@@ -19,32 +19,32 @@ public interface ProductMapper {
 	int insertProduct(ProductVO product);
 	
 	//상품 목록 조회 요청
-	List<ProductVO> selectProductList(int startRow, int listLimit);
+	List<ProductVO> selectProductList(@Param("searchKeyword") String searchKeyword, 
+									  @Param("startRow") int startRow, 
+									  @Param("listLimit") int listLimit);
 	
-	//상품 목록 개수조회 요청(페이징처리)
-	int selectProductListCount();
+	// 상품 목록 개수조회 요청(페이징처리)
+	int selectProductListCount(@Param("searchKeyword") String searchKeyword);
 	
-	//선택한 카테고리와 거래상태에 해당하는 상품리스트 가져오기
-	
-	List<ProductVO> selectSelectedProductList(@Param("pd_category") String pd_category, @Param("pd_status") String pd_status);
+	List<ProductVO> selectSelectedProductList(
+											  @Param("pd_category") String pd_category, 
+											  @Param("pd_status") String pd_status);
 	
 	//정렬변경시 정렬변경된 중고상품 목록 조회 요청 
-	List<HashMap<String, String>> selectChangedProductList(@Param("pageNum") int pageNum,
-														   @Param("pd_category")String pd_category, 
-														   @Param("pd_selectedManufacturer") String pd_selectedManufacturer, 
-														   @Param("pd_selectedPdStatus") String pd_selectedPdStatus, 
-														   @Param("sort") String sort,
-														   @Param("endRow") int endRow,
-														   @Param("startRow") int startRow,
-														   @Param("listLimit") int listLimit);
-	// 정렬변경시 정렬변경된 중고상품 목록개수 조회 요청
-	int selectChangedProductListCount(@Param("pageNum") int pageNum, 
-									  @Param("pd_category") String pd_category, 
-									  @Param("pd_selectedManufacturer") String pd_selectedManufacturer, 
-									  @Param("pd_selectedPdStatus") String pd_selectedPdStatus, 
-									  @Param("sort") String sort, 
-									  @Param("type") String type
-									 );
+	List<HashMap<String, String>> selectChangedProductList( @Param("searchKeyword") String searchKeyword,
+															@Param("pageNum") int pageNum,
+														    @Param("pd_category")String pd_category, 
+														    @Param("pd_selectedManufacturer") String pd_selectedManufacturer, 
+														    @Param("pd_selectedPdStatus") String pd_selectedPdStatus, 
+														    @Param("sort") String sort,
+														    @Param("endRow") int endRow,
+														    @Param("startRow") int startRow,
+														    @Param("listLimit") int listLimit);
+	// 정렬변경시 정렬변경된 중고상품 목록개수 조회 요청  
+	int selectChangedProductListCount(@Param("pageNum") int pageNum, @Param("pd_category") String pd_category, 
+			@Param("pd_selectedManufacturer") String pd_selectedManufacturer,@Param("pd_selectedPdStatus") String pd_selectedPdStatus, 
+			@Param("sort") String sort, @Param("type") String type);
+	
 	//카테고리 리스트 조회 요청
 	List<HashMap<String, String>> selectCategoryList();
 	
@@ -95,4 +95,9 @@ public interface ProductMapper {
 	List<ProductVO> selectSellerMyPage(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("member_id") String member_id);
 	//진성민
 
+
+
+	
+   
+	
 }

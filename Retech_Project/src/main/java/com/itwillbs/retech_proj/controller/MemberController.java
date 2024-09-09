@@ -542,6 +542,7 @@ public class MemberController {
 	   @GetMapping("SaleHistory")
 	   public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
 			   @RequestParam(value = "listLimit", defaultValue = "10") int listLimit, 
+			   @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
 			   @RequestParam String member_id,
 			   Model model, HttpSession session) {
 		   
@@ -551,7 +552,7 @@ public class MemberController {
 		   if (member_id != null) {
 			   // 전체 판매 상품 목록 조회
 			   List<ProductVO> allProductList = productService.getSellerMyPage(startRow, listLimit, member_id);
-			   int totalProductCount = productService.getProductListCount();
+			   int totalProductCount = productService.getProductListCount(searchKeyword);
 			   
 			   // 로그인한 사용자 ID에 맞는 상품만 필터링
 			   List<ProductVO> filteredProductList = allProductList.stream()
@@ -577,14 +578,15 @@ public class MemberController {
 	   @GetMapping("PurchaseHistory")
 	   public String Purchasehistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
 	                                  @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+	                                  @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
 	                                  Model model, HttpSession session) {
 
 	       String id = (String) session.getAttribute("sId");
 	       // 세션에 사용자 ID가 존재하는 경우
 	       if (id != null) {
 	           // 전체 상품 목록 조회
-	           List<ProductVO> allProductList = productService.getProductList(startRow, listLimit);
-	           int totalProductCount = productService.getProductListCount();
+	           List<ProductVO> allProductList = productService.getProductList(searchKeyword, startRow, listLimit);
+	           int totalProductCount = productService.getProductListCount(searchKeyword);
 
 	           // 로그인한 사용자 ID에 맞는 상품만 필터링
 	           List<ProductVO> filteredProductList = allProductList.stream()
