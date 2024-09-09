@@ -24,6 +24,18 @@
         });
     });
 
+    $(document).ready(function() {
+        $('#btnPayNext-direct').click(function() {
+            // Redirect to the TechPayments servlet
+            window.location.href = 'TechPayments?trade_idx=' + ${newTrade.trade_idx};
+        });
+        
+        $('#btnPayClose').click(function() {
+            // Close the modal
+            $('#payModal').hide();
+        });
+    });
+    
 /*========================바뀐부분끝=======================*/
 
 </script>
@@ -313,7 +325,8 @@
 						<button class="btnTrade"><span>거래하기</span></button>
 					</c:when>
 					<c:when test="${sessionScope.sId eq productInfo.member_id}">
-						<button class="btnTrade" disabled><span>거래하기</span></button>
+<!-- 						<button class="btnTrade" disabled><span>거래하기</span></button> -->
+						<button class="btnTrade" ><span>거래하기</span></button>
 					</c:when>
 					<c:when test="${newTrade.trade_type eq 1}">
 						<button id="btnDelivery"><span>테크페이(택배)</span></button>
@@ -424,6 +437,7 @@
 							<input type="number" value="${newTrade.trade_amt}" disabled>원<br>
 							<hr>
 							<div class="modalBtn">
+				                <input type="hidden" value="${newTrade.trade_idx}" name="trade_idx">
 					<!-- 		<button type="submit" id="btnAdd">충전하기</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
 								<button type="button" id="btnPayNext-direct">다음</button>&nbsp;&nbsp;&nbsp;&nbsp;
 								<button type="button" id="btnPayClose-direct">닫기</button>

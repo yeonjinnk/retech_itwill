@@ -320,6 +320,33 @@
 	
 	</select>
 	
+	<!-- 아이디에 해당하는 구매내역 리스트 조회 -->
+	<select id="selectBuyList" resultType="map">
+		SELECT *
+		FROM 
+			product p
+		JOIN
+			trade t
+		ON 	
+			p.pd_idx = t.trade_pd_idx
+		WHERE 
+			t.trade_buyer_id = #{id}
+	</select>
+	
+	
+	<!-- 아이디에 해당하는 판매내역 리스트 조회 -->
+	<select id="selectSaleList" resultType="map">
+		        SELECT *
+		        FROM 
+		            product p
+		        JOIN
+		            trade t
+		        ON 	
+		            p.pd_idx = t.trade_pd_idx
+		        WHERE 
+		            t.trade_seller_id = #{loggedInUserId}
+	</select>
+	
 	
 </mapper>
 

@@ -37,10 +37,7 @@
 			</ul>			
 		</li>
 		<li class="depth01">
-			<a href="">검색어 관리</a>
-			<ul class="depth02">
-				<li><a href="TotalSearchList"></a></li>
-			</ul>			
+			<a href="TotalSearchList">검색어 관리</a>
 		</li>
 		<li class="depth01">
 			<a href="">채팅 관리</a>

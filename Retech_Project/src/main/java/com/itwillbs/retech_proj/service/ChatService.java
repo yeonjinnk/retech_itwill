@@ -68,8 +68,8 @@ public class ChatService {
 	}
 
 	//거래 정보 저장하기
-	public int insertTrade(TradeVO trade) {
-		return mapper.insertTrade(trade);
+	public int updateTrade(TradeVO trade) {
+		return mapper.updateTrade(trade);
 	}
 
 	//저장한 거래 정보 조회하기
@@ -85,6 +85,19 @@ public class ChatService {
 	//신고 입력하기
 	public int registChatReport(Map<String, Object> map) {
 		return mapper.insertReport(map);
+	}
+
+	  //--------------------거래 테이블에 추가 ---------------------------------
+    //상품 등록 시 거래 테이블에도 상품 번호랑 거래상태를 insert함
+	public void insertTrade(int pd_idx, String member_id) {
+		mapper.insertTrade(pd_idx, member_id);
+	}
+
+    //등록한 상품 번호 들고오기
+
+	public int getPdIDX(String member_id) {
+		// TODO Auto-generated method stub
+		return mapper.selectPdIDX(member_id);
 	}
 
 	//택배 주소 입력

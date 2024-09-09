@@ -83,6 +83,35 @@ function reservedProduct(){
 //찜하기 받아오기
 $(function() {
 	console.log("!!!!!!페이지 로딩됨 !!!!!");
+	
+// 	let sId = $("#sessionId").val();
+// 		console.log(sId);
+// 	$.ajax ({
+// 		type: 'GET',
+// 		url: 'likeProductShow',
+// 		data: {'member_id' : sId},
+// 		dataType: 'JSON',
+// 		success: function(result) {
+// //			console.log(result);
+			
+// 			for(let i = 1; i <= 4; i++) {
+// 				let ProductNo = $("" + $("#likeProduct" + i).data("target")).val();	
+				
+// 				for(let like of result) {
+// 					if(like.pd_idx == ProductNo) {	// 일치하면
+// 			    		$(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+
+// 						$("#clickCk" + i).attr("disabled", true);
+// 					}
+// 				}
+// 			}
+// 		},
+// 		error: function() {
+// 			alert("찜하기받아오기 에러!!");
+// // 			console.log("에러");
+// 		}
+// 	});
+	
 	   let pd_idx = "${product.pd_idx}";
 	    
 	    // 서버에서 찜 상태를 가져오는 AJAX 요청
@@ -95,6 +124,15 @@ $(function() {
 	        },
 	        dataType: 'JSON',
 	        success: function(result) {
+//	             if (result.isLiked) {
+//	                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+//	                 $("#likeProduct").addClass("like");
+//	                 localStorage.setItem(pd_idx, "liked");
+//	             } else {
+//	                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+//	                 $("#likeProduct").removeClass("like");
+//	                 localStorage.removeItem(pd_idx);
+//	             }
 	            if (result) {
 	                $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
 	                $("#likeProduct").addClass("like");
@@ -117,12 +155,41 @@ $(function() {
 
 //찜하기 기능
 function checkProduct(element) {
+//     let sId = $("#sessionId").val();
+//     let pd_idx = $("#" + $(element).data('target')).val();
     let member_id = "${sessionScope.sId}";
     let pd_idx = "${product.pd_idx}";
+//     let targetId = 'clickCk' + i;
+//     let target = $("#likeProduct" + i).data("target");
     console.log("member_id 값: " + member_id);  // 이 값을 콘솔에서 확인
     console.log("pd_idx 값: " + pd_idx);  // 이 값을 콘솔에서 확인
+//     console.log("data-target 값: " + target);  // 이 값을 콘솔에서 확인
+//     console.log("기대하는 targetId: " + targetId);
+//     console.log("목표 요소: " + $("#" + target));  // 해당 요소가 존재하는지 확인
+    // 현재 버튼의 찜 상태 확인
     let isLike = $("#likeProduct").hasClass("like");
     console.log(isLike);
+    
+//     if(!isLike) { // 좋아요 없는 상태
+//     	$("#likeProduct").addClass("like"); // 좋아요 표시
+//     	console.log("likeImage : " + $("#likeImage").html());
+// //     	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+//     	// 좋아요 상태로 변경 및 좋아요 저장
+    	
+//     	// ${pageContext.request.contextPath}/resources/images/heartIcon3.png
+//     } else { // 좋아요 있는 상태
+//     	console.log("likeImage : " + $("#likeImage").html());
+//     	$("#likeProduct").removeClass("like"); // 좋아요 제거
+// //     	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+    	
+//     	// 좋아요 상태 해제 및 좋아요 해제 상태 저장
+    	
+//     }
+//     console.log("변경 후 : "  + $("#likeProduct").hasClass("like"));
+	
+    // 현재 상태의 반대값으로 isLike 설정 (true -> false, false -> true)
+//     let isLike = !isCurrentlyLiked;
+// 	console.log("망할놈의 i의 값 : " + i);
     $.ajax({
         type: 'POST',
         url: 'likeProduct',
@@ -151,7 +218,43 @@ function checkProduct(element) {
         }
     }); // ajax 끝
 }
+//페이지 로드 시 찜 상태 복원
 $(document).ready(function() {
+//     let pd_idx = "${product.pd_idx}";
+    
+//     // 서버에서 찜 상태를 가져오는 AJAX 요청
+//     $.ajax({
+//         type: 'GET',
+//         url: 'checkLikeStatus',
+//         data: {
+//             'member_id': "${sessionScope.sId}",
+//             'pd_idx': pd_idx
+//         },
+//         dataType: 'JSON',
+//         success: function(result) {
+// //             if (result.isLiked) {
+// //                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+// //                 $("#likeProduct").addClass("like");
+// //                 localStorage.setItem(pd_idx, "liked");
+// //             } else {
+// //                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+// //                 $("#likeProduct").removeClass("like");
+// //                 localStorage.removeItem(pd_idx);
+// //             }
+//             if (isLiked) {
+//                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
+//                 $("#likeProduct").addClass("like");
+//                 localStorage.setItem(pd_idx, "liked");
+//             } else {
+//                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
+//                 $("#likeProduct").removeClass("like");
+//                 localStorage.removeItem(pd_idx);
+//             }
+//         },
+//         error: function(xhr, status, error) {
+//             console.error("AJAX 오류: ", error);
+//         }
+//     });
 });
 
 
@@ -180,244 +283,268 @@ $(document).ready(function() {
 </style> 
 </head>
 <body>
-<header>
-    <jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
-</header>
-<article id="mainArticle">
-    <div class="container">
-        <hr>
-        <!-- 큰이미지 -->
-        <div class="row" style="margin-top: 20px;">
-            <div class="column">
-                <!-- 상품이미지영역 - 슬라이드 -->
-                <div id="slid">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
-                        <ol class="carousel-indicators">
-                            <c:if test="${not empty product.pd_image1}">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            </c:if>
-                            <c:if test="${not empty product.pd_image2}">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                            </c:if>
-                            <c:if test="${not empty product.pd_image3}">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                            </c:if>
-                            <c:if test="${not empty product.pd_image4}">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-                            </c:if>
-                            <c:if test="${not empty product.pd_image5}">
-                                <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-                            </c:if>
-                        </ol>
-                        <div class="carousel-inner">
-                            <c:if test="${not empty product.pd_image1}">
-                                <div class="carousel-item active">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image1}" class="d-block w-100" alt="Image 1">
-                                </div>
-                            </c:if>
-                            <c:if test="${not empty product.pd_image2}">
-                                <div class="carousel-item">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image2}" class="d-block w-100" alt="Image 2">
-                                </div>
-                            </c:if>
-                            <c:if test="${not empty product.pd_image3}">
-                                <div class="carousel-item">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image3}" class="d-block w-100" alt="Image 3">
-                                </div>
-                            </c:if>
-                            <c:if test="${not empty product.pd_image4}">
-                                <div class="carousel-item">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image4}" class="d-block w-100" alt="Image 4">
-                                </div>
-                            </c:if>
-                            <c:if test="${not empty product.pd_image5}">
-                                <div class="carousel-item">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image5}" class="d-block w-100" alt="Image 5">
-                                </div>
-                            </c:if>
-                        </div>
-                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
+	<header>
+		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+	</header>
+	<%--신고작업을 위해 히든타입으로 데이터 넘기기 --%>
+	<article id="mainArticle">
+		<div class="container">
+			<hr>
+			<%-- 큰이미지 --%>
+			<div class="row" style="margin-top: 20px;">
+				<div class="column">
+					<%-- 상품이미지영역 - 슬라이드 --%>
+					<div id="slid">
+						<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+							<ol class="carousel-indicators">
+								<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+								<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+								<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+								<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+								<li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+							</ol>
+							<div class="carousel-inner">
+								<div class="carousel-item active">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" class="d-block w-100" alt="Image 1">
+								</div>
+								<div class="carousel-item">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image2}" class="d-block w-100" alt="Image 2">
+								</div>
+								<div class="carousel-item">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image3}" class="d-block w-100" alt="Image 3">
+								</div>
+								<div class="carousel-item">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image4}" class="d-block w-100" alt="Image 3">
+								</div>
+								<div class="carousel-item">
+									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image5}" class="d-block w-100" alt="Image 3">
+								</div>
+								<!-- 추가 이미지들 -->
+							</div>
+							<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev"> <span
+								class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span>
+							</a> <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next"> <span
+								class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span>
+							</a>
+						</div>
+					</div>
 
-                <!-- 미리보기 썸네일 추가 -->
-                <div class="thumbnails">
-                    <c:if test="${not empty product.pd_image1}">
-                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image1}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="0" alt="Thumbnail 1">
-                    </c:if>
-                    <c:if test="${not empty product.pd_image2}">
-                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image2}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="1" alt="Thumbnail 2">
-                    </c:if>
-                    <c:if test="${not empty product.pd_image3}">
-                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image3}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="2" alt="Thumbnail 3">
-                    </c:if>
-                    <c:if test="${not empty product.pd_image4}">
-                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image4}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="3" alt="Thumbnail 4">
-                    </c:if>
-                    <c:if test="${not empty product.pd_image5}">
-                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image5}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="4" alt="Thumbnail 5">
-                    </c:if>
-                </div>
-            </div>
-            <!-- 1행 2열 -- 오른쪽 column 추가하기 -->
-            <div class="column">
-                <c:choose>
-                    <c:when test="${empty sessionScope.sId}">
-                        <button type="button" id="likeProduct" data-toggle="modal" data-target="#needLogin" class="" onclick="checkProduct(this)">
-                            <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
-                        </button>
-                        <div class="d-grid gap-2 col-10">
-                            <button class="btn btn-lg btn-dark col-12" id="chatting" data-toggle="modal" data-target="#needLogin" style="font-size: 1em; margin: 10px 10px">거래하기</button>
-                        </div>
-                    </c:when>
-                    <c:when test="${not empty sessionScope.sId}">
-                        <c:choose>
-                            <c:when test="${sessionScope.sId eq product.member_id}">
-                                <button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px" onclick="location.href='productModifyForm?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">수정하기</button>
-                                <button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px" onclick="confirmDelete()">삭제하기</button>
-                                <button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px" onclick="location.href='productUpdateDate?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">끌어올리기</button>
-                            </c:when>
-                            <c:otherwise>
-                                <button type="button" id="likeProduct" data-target="pd_idx" class="" onclick="checkProduct(this)">
-                                    <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
-                                </button>
-                                <c:choose>
-                                    <c:when test="${product.pd_status eq '거래중' }">
-                                        <input type="button" class="btn btn-lg btn-dark col-10" style="font-size: 1em;" value="거래하기" onclick="reservedProduct()">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <button type="button" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" onclick="openChat()">거래하기</button>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:when>
-                </c:choose>
-                <br>
-                <hr>
-                <!-- 거래상태 -->
-                <div class="row" style="padding: 20px;">
-                    <button class="btn btn-dark">${product.pd_status }</button>
-                </div>
-                <h3>${product.pd_subject}</h3>
-                <p>
-                    <fmt:formatNumber pattern="#,###" value="${product.pd_price }" />
-                    원
-                </p>
-                <hr>
-                <div class="row" style="margin-left: 2px;">
-                    <span class="readcount">조회수 ${product.pd_readcount} </span>
-                </div>
-                <hr>
-                <div class="row" style="margin-left: 2px;">
-                    <span class="registDate">등록일 ${product.pd_first_date.split(' ')[0]}</span>
-                </div>
-                <hr>
-                <p>상품 상세 정보</p>
-                <br>
-                <p>${product.pd_content }</p>
-            </div>
-        </div>
+					<!-- 미리보기 썸네일 추가 -->
+					<div class="thumbnails">
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" class="thumbnail" data-target="#carouselExampleIndicators"
+							data-slide-to="0" alt="Thumbnail 1"> 
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image2}" class="thumbnail" data-target="#carouselExampleIndicators" 
+							data-slide-to="1" alt="Thumbnail 2"> 
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image3}" class="thumbnail" data-target="#carouselExampleIndicators"
+							data-slide-to="3" alt="Thumbnail 3">
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image4}" class="thumbnail" data-target="#carouselExampleIndicators"
+							data-slide-to="4" alt="Thumbnail 4">
+						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image5}" class="thumbnail" data-target="#carouselExampleIndicators"
+							data-slide-to="5" alt="Thumbnail 5">
+						<!-- 추가 썸네일들 -->
+					</div>
+					<%-- 1행 1열 -- 왼쪽 column끝 --%>
+				<!--------------------------------------------------------------------------------------------- -->
+				<%--1행 2열 -- 오른쪽 column 추가하기 --%>
+				<div class="column">
+					<!-- 거래상태 -->
+					<div class="row" style="padding: 20px;">
+						<button class="btn btn-dark">${product.pd_status }</button>
+					</div>
+					<!--------------------------------------------------------------------------------------------- -->
+					<h3>${product.pd_subject}</h3>
+					<p>
+						<fmt:formatNumber pattern="#,###" value="${product.pd_price }" />
+						원
+					</p>
+					<hr>
+					<div class="row" style="margin-left: 2px;">
+						<span class="readcount">조회수 ${product.pd_readcount } </span> 
+					</div>
+					<hr>
+					<div class="row" style="margin-left: 2px;">
+						<span class="registDate">등록일 ${product.pd_first_date }</span>
+					</div>
+					<hr>
+					<p>${product.pd_content }</p>
+					<br>
+					<hr>
+					<%-- sessionId 일치하는경우 (판매자본인일경우) - 수정하기 / 삭제하기 버튼 활성화 
+						-> 페이지이동시 상품번호,페이지번호 파라미터로 전달
+						sessionId 일치하지 않는경우 or 없는경우 : 채팅하기 버튼 보여줌
+						=> 없는경우 채팅버튼 누를경우 : 로그인알람창 -> 로그인페이지 이동 --%>
+						
+<%--=========================================================================================================================== --%>
 
-        <!-- 두번째 row 시작 -->
-        <div class="row" style="margin-top: 30px;">
-            <!-- 2행 1열 (카테고리 결제방법 거래방법) -->
-            <div class="column">
-                <hr>
-                <p>
-                    <b>카테고리</b>
-                    <button class="btn btn-light" style="align: left;">${product.pd_category }</button>
-                    <br>
-                </p>
-            </div>
-            <!-- 판매자탭 -->
-            <div class="column">
-                <hr>
-                <!-- 판매자 프로필, 닉네임, 판매상품수 -->
-                <div class="row">
-                    <!-- 판매자 프로필 -->
-                    <div class="column">
-                        <c:choose>
-                            <c:when test="${not empty seller.member_image }">
-                                <img src="${pageContext.request.contextPath }/resources/upload/${seller.member_image}" width="120px" height="120px" style="margin: 20px; border-radius: 50%;">
-                            </c:when>
-                            <c:otherwise>
-                                <img src="${pageContext.request.contextPath }/resources/mypage_img/blank_profile.4347742.png" width="120px" height="120px" style="margin: 20px; border-radius: 50%;">
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                    <!-- 판매자 닉네임 -->
-                    <div class="column">
-                        <b><a href="productSeller?member_id=${member.member_id }">${member.member_nickname } </a></b>
-                        <br>판매상품 ${sellerProduct } 개
-                    </div>
-                </div>
-                <!-- 판매자의 판매중 다른상품정보 -->
-                <br>
-                <div class="row" style="margin-left: 10px; margin-bottom: 10px;">
-                    <b>${seller.member_nickname }</b> 님의 판매중인 상품 ... 
-                    <a href="SaleHistory?member_id=${product.member_id}"> 더보기 </a>
-                </div>
-                <!-- 썸네일이미지 -->
-                <!-- 판매자의 물품 개수만큼 반복표시 -->
-                <div class="row">
-                    <c:forEach var="sellerProductList" items="${sellerProductList }" varStatus="loop">
-                        <c:if test="${loop.index lt 4}">
-                            <!-- 판매자의 첫번째상품의 첫번째이미지(썸네일이미지)만 보여줌 -->
-                            <span class="sumnail">
-                                <a href="product_detail?pd_idx=${sellerProductList.pd_idx }&member_id=${sellerProductList.member_id}">
-                                    <img class="democursor" src="${pageContext.request.contextPath }/resources/upload/${sellerProductList.pd_image1}" style="width: 130px; height: 160px;">
-                                </a>
-                            </span>
-                        </c:if>
-                    </c:forEach>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- container 끝 -->
+						<%-- 1. 세션아이디 존재하고, 세션아이디=판매자아이디 동일할 경우 --%>
+						<%-- 1-1. 수정하기, 삭제하기, 끌어올리기 영역 노출 --%>
+<%-- 					<input type="hidden" name="member_id" value="${sessionScope.sId }" id="sessionId"> --%>
+<%-- 					<input type="hidden" name="pd_idx" value="${product.pd_idx}" id="pd_idx"> --%>
+					
+					<c:choose>
+						<%-- 로그인 안 했을 경우 --%>
+						<c:when test="${empty sessionScope.sId}">
+							
+							<button type="button" id="likeProduct" data-toggle="modal" data-target="#needLogin" class="" onclick="checkProduct(this)">
+							    <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
+							</button>
+							
+							<div class="d-grid gap-2 col-10">
+								<button class="btn btn-lg btn-dark col-12" id="chatting" data-toggle="modal" data-target="#needLogin"
+									style="font-size: 1em; margin: 10px 10px">거래하기</button>
+							</div>
+						</c:when>
+						<c:when test="${not empty sessionScope.sId}">
+							<%-- 로그인 했을 경우 --%>
+							<c:choose>
+								<c:when test="${sessionScope.sId eq product.member_id}"> <%-- 접속자가 현재 상품의 판매자일 경우 --%>
+									<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px"
+										onclick="location.href='productModifyForm?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">수정하기</button>
+		
+									<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px" onclick="confirmDelete()">삭제하기</button>
+		
+									<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px"
+										onclick="location.href='productUpdateDate?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">끌어올리기</button>
+								</c:when>
+								<c:otherwise> <%-- 접속자가 현재 상품의 판매자가 아닐 경우--%>
+									<%-- 찜하기 버튼 --%>
+									<button type="button" id="likeProduct" data-target="pd_idx" class="" onclick="checkProduct(this)">
+									    <img src="${pageContext.request.contextPath}/resources/images/heartIcon3.png" id="likeImage" width="40px" height="40px">
+									</button>
+									
+									<%-- 거래하기 버튼 --%>
+									<c:choose>
+										<c:when test="${product.pd_status eq '거래중' }">
+												<input type="button" class="btn btn-lg btn-dark col-10" style="font-size: 1em;" value="거래하기" onclick="reservedProduct()">
+										</c:when>
+											<%--- 거래상태 거래중이아닐경우 채팅하기로 정상적으로 이동 --%>
+										<c:otherwise>
+											<button type="button" class="btn btn-lg btn-dark col-12" style="font-size: 1em;" onclick="openChat()">
+												거래하기
+											</button>
+										</c:otherwise>
+									</c:choose>
+								</c:otherwise>
+							</c:choose>
+						</c:when>
+					</c:choose>	
+<%--=========================================================================================================================== --%>
+						
+				</div>
+				<%-- 오른쪽 column끝 --%>
+				<hr>
+			</div>
+			<%-- 첫번째 row끝 ----%>
 
-    <!-- 모달 -->
-    <!-- 찜하기 안내 모달 영역 -->
-    <div class="modal fade" id="needLogin" tabindex="-1" role="dialog" aria-labelledby="needSessionId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="needSessionId">로그인 안내</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center" id="modalMsg">
-                    <!-- 메세지가 표시되는 부분 -->
-                    회원 로그인이 필요한 작업입니다. 로그인 하시겠습니까?
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <c:choose>
-                        <c:when test="${empty sessionScope.member_id}">
-                            <button type="button" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath }/MemberLogin'">로그인</button>
-                            <button type="button" class="btn btn-light" data-dismiss="modal" aria-label="Close">아니오</button>
-                        </c:when>
-                        <c:otherwise>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">확인</button>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </div>
-        </div>
-    </div>
-</article>
-<footer>
-    <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-</footer>
+<script type="text/javascript">
+	function openChat() {
+		console.log("채팅하기 클릭 시 openChat 함수 호출됨!");
+		let receiver_id = "${param.member_id}";
+		let pd_idx = "${param.pd_idx}";
+		
+		window.open('ChatRoom?receiver_id=' + receiver_id + '&pd_idx=' + pd_idx, receiver_id + ', ' + pd_idx, 'width=600px,height=600px');
+	}
+</script>
+			<%-------------------- 두번째 row 시작 ------------------------------%>
+			<div class="row" style="margin-top: 30px;">
+				<%-- 2행 1열 (카테고리 결제방법 거래방법) --%>
+				<div class="column">
+					<hr>
+					<p>
+						<b>카테고리</b>
+						<button class="btn btn-light" style="align: left;">${product.pd_category }</button>
+						<br>
+					</p>
+				</div>
+				<!-- 판매자탭--------------------------------------------------------------------------------- -->
+				<%-- 2행 2열 (판매자정보) --%>
+				<div class="column">
+					<hr>
+					<%-- 판매자 프로필, 닉네임, 판매상품수 --%>
+					<div class="row">
 
+						<%-- 판매자 프로필 --%>
+						<div class="column">
+							<c:choose>
+								<c:when test="${not empty seller.member_image }">
+									<img src="${pageContext.request.contextPath }/resources/upload/${seller.member_image}" width="120px" height="120px"
+										style="margin: 20px; border-radius: 50%;">
+								</c:when>
+								<c:otherwise>
+									<img src="${pageContext.request.contextPath }/resources/mypage_img/blank_profile.4347742.png" width="120px" height="120px"
+										style="margin: 20px; border-radius: 50%;">
+								</c:otherwise>
+							</c:choose>
+						</div>
 
+						<%-- 판매자 닉네임 --%>
+						<div class="column">
+							<b><a href="productSeller?member_id=${member.member_id }">${member.member_nickname } </a></b>
+							<%-- 판매자의 판매하는 상품의 개수 --%>
+							<br>판매상품 ${sellerProduct } 개
+						</div>
+					</div>
+					<%-- 판매자의 판매중 다른상품정보 --%>
+					<br>
+					<div class="row" style="margin-left: 10px; margin-bottom: 10px;">
+						<b>${seller.member_nickname }</b> 님의 판매중인 상품 ... 
+						<a href="SaleHistory?member_id=${product.member_id}"> 더보기 </a>
+					</div>
+					<%--썸네일이미지 --%>
+					<%-- 판매자의 물품 개수만큼 반복표시 --%>
+					<div class="row">
+						<c:forEach var="sellerProductList" items="${sellerProductList }" varStatus="loop">
+							<c:if test="${loop.index lt 4}">
+								<%--판매자의 첫번째상품의 첫번째이미지(썸네일이미지)만 보여줌 --> 판매상품여러개일수도 -> 리스트로 받아옴 --%>
+								<%--네개까지만 받아오기 --%>
+								<%--각이미지마다 상품 상세페이지로 이동하는 하이퍼링크 --%>
+								<span class="sumnail"> 
+									<a href="product_detail?pd_idx=${sellerProductList.pd_idx }&member_id=${sellerProductList.member_id}"> <img
+									class="democursor" src="${pageContext.request.contextPath }/resources/upload/${sellerProductList.pd_image1}" style="width: 130px; height: 160px;">
+								</a>
+								</span>
+							</c:if>
+						</c:forEach>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<%--container 끝 --%>
+
+		<!-- 모달 --------------------------------------------------------------------------------- -->
+
+		<%-- 찜하기 안내 모달 영역 --%>
+		<div class="modal fade" id="needLogin" tabindex="-1" role="dialog" aria-labelledby="needSessionId" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="needSessionId">로그인 안내</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body text-center" id="modalMsg">
+						<%-- 메세지가 표시되는 부분 --%>
+						회원 로그인이 필요한 작업입니다. 로그인 하시겠습니까?
+					</div>
+					<div class="modal-footer justify-content-center">
+						<c:choose>
+							<c:when test="${empty sessionScope.member_id}">
+								<button type="button" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath }/MemberLogin'">로그인</button>
+								<button type="button" class="btn btn-light" data-dismiss="modal" aria-label="Close">아니오</button>
+							</c:when>
+							<c:otherwise>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">확인</button>
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</div>
+			</div>
+		</div>
+	</article>
+	<footer>
+		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
+	</footer>
 </body>
 </html>

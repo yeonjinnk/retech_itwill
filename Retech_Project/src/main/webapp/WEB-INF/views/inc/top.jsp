@@ -1,7 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link href="${pageContext.request.contextPath}/resources/css/inc/top.css" rel="stylesheet">
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
+
 <script type="text/javascript">
 	function confirmLogout() {
 		let isLogout = confirm("로그아웃 하시겠습니까?");
@@ -237,18 +243,9 @@ $(function(){
 	//엔터키 누를 경우 텍스트 가지고 주소 이동
 	$("#searchKeyword").keyup(function(event) {
 	    if (event.keyCode === 13) {
-	        searchKeyword($("#searchKeyword").val()); // 현재 입력된 값 전달
-	    } else if ($("#searchKeyword").val().length < 1) {
-	        if (recentClick) {
-	            $("#Recent").show();
-	        } else if (popularClick) {
-	            $("#Popular").show();
-	        }
-	        $("#Relation").hide();
-	    } else {
-	        searchAjax();
+	      searchKeyword();
 	    }
-	});
+  	});
 
 	
 	$(".recentWordColor").css("color", "#d3d3d3");  // 연한 회색
@@ -283,11 +280,10 @@ function searchAjax(){
 				'<table id="RelationTableBoarder">'
 	    		+'<tr id= "Relationdata">'
 	    		+	'<td colspan="2">'
-	    		+       '<img src="${pageContext.request.contextPath}/resources/images/MainPhoto/상점검색.png" width="18" height="14" alt="추천 상점 아이콘"> 판매자 페이지 검색 &gt;'
 	    		+ 			'<a href="FindMyPage?q=' + $("#searchKeyword").val() + '">'
 	    		+     			$("#searchKeyword").val()
 	    		+ 			'</a>'
-	    		+ 		"  닉네임으로 검색" 
+	    		+ 		"  상품명 또는 닉네임으로 검색" 
 	    		+	'</td>'
 	    		+'</tr>'
 	    		+'<tr>'
@@ -314,6 +310,43 @@ function searchAjax(){
 	});
 }
 
+// function searchKeyword(pkeyword) {
+// 	$("#Relation").removeClass("hidden");
+// 	$("#Relation").show();
+// 	let keyword = "";
+// 	if(pkeyword == null){
+// 		keyword = $("#searchKeyword").val();
+		
+// 	}else{
+// 		keyword = pkeyword;
+// 	}
+	
+// 	keyword = keyword.trim();
+	
+// 	if(keyword != "" && keyword != null){
+// 		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
+// 		// 로컬스토리지에 저장할 키의 이름
+// 		const localStorageKey = 'keywords';
+// 		// 기존의 키워드 배열 가져오기
+// 		let keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+// 		// 새로운 키워드 추가하기
+// 		if (!keywords.includes(keyword)) {
+// 		  keywords.push(keyword);
+// 		}
+// 		// 최대 갯수를 초과하는 경우 가장 오래된 데이터부터 제거
+// 		if (keywords.length > 10) {
+// 		  keywords = keywords.slice(keywords.length - 10);
+// 		}
+// 		// 로컬스토리지에 업데이트된 키워드 배열 저장
+// 		localStorage.setItem(localStorageKey, JSON.stringify(keywords));
+// 		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
+	
+// 		var searchKeywordUrl = "ProductList?keyword=" + encodeURIComponent(keyword);
+// 		window.location.href = searchKeywordUrl;
+// 	}
+	
+// 	SaveWord(keyword);
+// }
 function searchKeyword(pkeyword) {
     $("#Relation").removeClass("hidden");
     $("#Relation").show();
@@ -335,6 +368,7 @@ function searchKeyword(pkeyword) {
         var searchKeywordUrl = "ProductList?searchKeyword=" + encodeURIComponent(keyword);
         window.location.href = searchKeywordUrl;
     }
+	SaveWord(keyword);
 }
 
 //클릭하면 검색어 텍스트값을 가져오기
@@ -346,6 +380,7 @@ function sendKeyword(element) {
 	SaveWord(keyword);
 	console.log("keyword : " + keyword)
 }
+
 	
 function showHandler(){
 	if($("#searchKeyword").val() == null || $("#searchKeyword").val() == ''){
@@ -562,6 +597,7 @@ function localStarageDeleteOne(keyword) {
 }
 
 </script>
+
 <!-- 탑 최상단 영역 -->
 <div class="header_top">
 	<div class="top_inner">
@@ -655,7 +691,7 @@ function localStarageDeleteOne(keyword) {
 								<!-- navbar search start -->
 								<div class="navbar-search search-style-5">
 									<div class="search-input">
-										<input type="text" id="searchKeyword" placeholder="상품명 입력, 닉네임 입력" value="${param.keyword}" maxlength="100">
+										<input type="text" id="searchKeyword" placeholder="상품명 입력, 닉네임 입력" value="${param.searchKeyword}" maxlength="100">
 									</div>
 									<div class="search-btn">
 										<button onclick="searchKeyword()">
@@ -683,6 +719,7 @@ function localStarageDeleteOne(keyword) {
 						</div> <!-- 						<input type="text" placeholder="검색어를 입력하세요" width="120"> -->
 					</li>
 				</ul>
+
 			</nav>
 		</div>
 	</div>
@@ -1111,4 +1148,4 @@ function localStarageDeleteOne(keyword) {
 
 </c:if>
 
-
+</html>

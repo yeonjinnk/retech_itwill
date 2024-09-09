@@ -236,22 +236,16 @@ WHERE
 	</select>
 	
 	<!--  거래 정보 저장하기 -->
-	<insert id="insertTrade">
-		INSERT INTO trade
-		VALUES (
-			null
-			, #{trade_buyer_id}
-			, #{trade_seller_id}
-			, #{trade_pd_idx}
-			, #{trade_type}
-			, now()
-			, #{trade_status}
-			, #{trade_amt}
-			, null
-			, null
-			, null
-		)
-	</insert>
+	<update id="updateTrade">
+		UPDATE trade
+		SET trade_buyer_id = #{trade_buyer_id}
+			, trade_seller_id = #{trade_seller_id}
+			, trade_type = #{trade_type}
+			, trade_date = now()
+			, trade_status = #{trade_status}
+			, trade_amt = #{trade_amt}
+		WHERE trade_pd_idx = #{trade_pd_idx}
+	</update>
 	
 	<!-- 저장한 거래 정보 조회하기 -->
 	<select id="selectTrade" resultType="trade">
@@ -288,6 +282,29 @@ WHERE
 		
 		)
 	</insert>
+	
+	
+   <!-- 상품 등록 시 거래 테이블에도 상품 번호랑 거래상태를 insert함 -->
+   <insert id="insertTrade">
+   	INSERT INTO trade(trade_idx, trade_pd_idx, trade_status, trade_seller_id)
+   	VALUES (
+   		null
+   		, #{pd_idx}
+   		, 0
+   		, #{member_id}
+   	)
+   
+   </insert>
+   
+   <!--등록한 상품 번호 들고오기  -->
+   <select id="selectPdIDX" resultType="int">
+   	SELECT pd_idx
+   	FROM	product
+   	WHERE member_id = #{member_id}
+   	ORDER BY pd_first_date desc
+   	limit 1
+   </select>
+    
 </mapper>
 
 

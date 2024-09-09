@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.retech_proj.mapper.ProductMapper;
+import com.itwillbs.retech_proj.mapper.RetechMapper;
 import com.itwillbs.retech_proj.vo.LikeVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
 
@@ -16,6 +17,9 @@ public class ProductService {
 	
 	@Autowired
 	 private ProductMapper mapper;
+	@Autowired
+	 private RetechMapper retechmapper;
+	
 	 // 상품 목록 페이지
 	public List<ProductVO> getProductList(String searchKeyword, int startRow, int listLimit) {
 		// TODO Auto-generated method stub
@@ -142,6 +146,16 @@ public class ProductService {
 	//판매자 판매내역 불러오기
 	public List<ProductVO> getSellerMyPage(int startRow, int listLimit, String member_id) {
 		return mapper.selectSellerMyPage(startRow, listLimit, member_id);
+	}
+	
+    // 아이디에 해당하는 구매내역 리스트 조회	
+	public List<Map<String, String>> getBuyList(String id) {
+		return mapper.selectBuyList(id);
+	}
+	
+	// 아이디에 해당하는 판매내역 리스트 조회
+	public List<Map<String, String>> getSaleList(String loggedInUserId) {
+		return mapper.selectSaleList(loggedInUserId);
 	}
 	
 	

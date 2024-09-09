@@ -909,7 +909,6 @@ public class TechPayController {
 		System.out.println("=====================paymentResult : " + paymentResult);
 		model.addAttribute("paymentResult", paymentResult);
 		
-		
 		return "techpay/techpay_payments_result";
 	}
 	

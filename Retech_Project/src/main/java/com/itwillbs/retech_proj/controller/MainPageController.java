@@ -53,18 +53,18 @@ public class MainPageController {
 		return "redirect:/SellerInfo?member_id="+member_id;
 	}
 	
-	@GetMapping("TotalSearchList")
-	public String nowSearchList(HttpSession session, Model model) {
-		String sId = (String)session.getAttribute("sId");
-		if(sId == null || !sId.equals("admin")) {
-			return "error/404";
-		}
-		List<Map<String,String>> searchList = service.getSearchList();
-		
-		model.addAttribute("searchList",searchList);
-		log.info("실시간 인기검색어 TOP20 : " + searchList);
-		return "admin/totalSearchList";
-	}
+//	@GetMapping("TotalSearchList")
+//	public String nowSearchList(HttpSession session, Model model) {
+//		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			return "error/404";
+//		}
+//		List<Map<String,String>> searchList = service.getSearchList();
+//		
+//		model.addAttribute("searchList",searchList);
+//		log.info("실시간 인기검색어 TOP20 : " + searchList);
+//		return "admin/totalSearchList";
+//	}
 	
 	@ResponseBody
 	@GetMapping("SaveSearchKeyword")

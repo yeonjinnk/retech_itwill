@@ -390,20 +390,20 @@
             </div>
             <div class="join_detail">
                 <span>이름</span>
-                <input type="text" name="member_name" id="member_name" value="${member.member_name}" required>
+                <input type="text" name="member_name" id="member_name" value="${member.member_name}" readonly>
                 <span id="checkNameResult"></span>
             </div>
             <div class="join_detail">
                 <span>생년월일</span>
-                <input type="text" name="member_birth" id="member_birth" value="${member.member_birth}" required>
+                <input type="text" name="member_birth" id="member_birth" value="${member.member_birth}" readonly>
                 <span id="checkBirthResult"></span>
             </div>
             <div class="join_detail">
                 <span>휴대폰 번호</span>
-                <input type="text" name="member_phone" id="phoneNumber" value="${member.member_phone}" required>
-                <input type="button" id="phoneChk" value="인증번호 전송">
-                <input type="text" id="phone2" placeholder="인증번호 입력">
-                <input type="button" id="phoneChk2" value="인증번호 확인">
+                <input type="text" name="member_phone" id="phoneNumber" value="${member.member_phone}" readonly>
+<!--                 <input type="button" id="phoneChk" value="인증번호 전송"> -->
+<!--                 <input type="text" id="phone2" placeholder="인증번호 입력"> -->
+<!--                 <input type="button" id="phoneChk2" value="인증번호 확인"> -->
                 <span id="checkPhoneResult"></span>
             </div>
             <div class="join_detail">
@@ -414,12 +414,12 @@
                 <input type="text" id="address2" name="member_address2" placeholder="상세주소">
             </div>
             <div class="join_detail">
-                <span>프로필 사진</span>
-                <input type="file" name="profile" id="member_profile">
-                <img id="img_preview_img" src="${pageContext.request.contextPath}/resources/images/${member.member_profile}" alt="미리보기" style="display:${member.member_profile != null ? 'block' : 'none'};">
-                <span id="img_status">${member.member_profile != null ? '사진 미리보기' : '프로필사진'}</span>
-                <input type="button" id="del_img" value="사진 삭제" style="${member.member_profile != null ? 'display: block;' : 'display: none;'}">
-            </div>
+			    <span>프로필 사진</span>
+			    <input type="file" name="profile" id="member_profile">
+			    <img id="img_preview_img" src="${pageContext.request.contextPath}/resources/images/${member.member_profile}" alt="미리보기" style="display:${member.member_profile != null ? 'block' : 'none'};">
+			    <span id="img_status">${member.member_profile != null ? '사진 미리보기' : '프로필사진'}</span>
+			    <input type="button" id="del_img" value="사진 삭제" style="${member.member_profile != null ? 'display: block;' : 'display: none;'}">
+			</div>
 
             <div class="form-buttons">
                 <input type="submit" value="정보수정">

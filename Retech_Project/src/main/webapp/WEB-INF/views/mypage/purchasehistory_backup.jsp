@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>판매내역</title>
+    <title>구매내역</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
     <style type="text/css">
         html, body {
@@ -28,7 +28,7 @@
             margin-top: 150px;
             overflow: hidden;
         }
-		
+        
 		.store-info img {
             border-radius: 50%;
             width: 100px;
@@ -36,7 +36,7 @@
             object-fit: cover;
             margin-right: 20px;
         }
-		
+        
         .sidebar {
             width: 250px;
             background-color: #f4f4f4;
@@ -140,12 +140,12 @@
             width: 100px;
         }
 
-        .action-buttons {
+        .status-buttons {
             display: flex;
             gap: 10px;
         }
 
-        .action-buttons button {
+        .status-buttons button {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
@@ -155,42 +155,32 @@
         }
 
         .cancel-request {
-            background-color: #f44336; /* 취소 요청 버튼 색상 */
+            background-color: #f44336; 
         }
 
         .confirm-request {
-            background-color: #4caf50; /* 거래 확정 버튼 색상 */
+            background-color: #4caf50; 
+        }
+
+        .review-request {
+            background-color: #2196F3; 
         }
 
         .cancel-request:hover {
-            background-color: #d32f2f; /* 취소 요청 버튼 호버 색상 */
+            background-color: #d32f2f;
         }
 
         .confirm-request:hover {
-            background-color: #388e3c; /* 거래 확정 버튼 호버 색상 */
+            background-color: #388e3c;
+        }
+
+        .review-request:hover {
+            background-color: #1976D2;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            // 날짜 형식 변환 함수
-            function formatDate(dateString) {
-                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-                const date = new Date(dateString);
-                return date.toLocaleDateString('ko-KR', options); // 'ko-KR'은 한국 날짜 형식
-            }
-
-            // 모든 날짜 셀을 찾아서 변환
-            $('td[data-date]').each(function() {
-                const dateString = $(this).data('date');
-                if (dateString) {
-                    $(this).text(formatDate(dateString));
-                }
-                
-                
-            });
-
-            // 거래 취소 요청 버튼 클릭 시
             $('.cancel-request').on('click', function() {
                 var productId = $(this).data('id');
                 if (confirm('거래를 취소하시겠습니까?')) {
@@ -199,7 +189,7 @@
                         type: 'POST',
                         data: {
                             id: productId,
-                            status: '거래취소'
+                            status: '거래취소 확정'
                         },
                         success: function(response) {
                             if(response.success) {
@@ -213,7 +203,6 @@
                 }
             });
 
-            // 거래 확정 버튼 클릭 시
             $('.confirm-request').on('click', function() {
                 var productId = $(this).data('id');
                 if (confirm('거래 확정하시겠습니까?')) {
@@ -235,6 +224,11 @@
                     });
                 }
             });
+
+            $('.review-request').on('click', function() {
+                var productId = $(this).data('id');
+                window.location.href = '${pageContext.request.contextPath}/writeReview?id=' + productId;
+            });
         });
     </script>
 </head>
@@ -245,8 +239,8 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <a href="SaleHistory" class="selected">판매내역</a>
-            <a href="PurchaseHistory">구매내역</a>
+            <a href="SaleHistory">판매내역</a>
+            <a href="PurchaseHistory" class="selected">구매내역</a>
             <a href="Wishlist">찜한상품</a>
             <a href="CsHistory">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
@@ -264,12 +258,12 @@
             </div>
 
             <ul class="tabs">
-                <li><a href="#" class="selected">판매내역</a></li>
+                <li><a href="#" class="selected">구매내역</a></li>
                 <li><a href="#">리뷰</a></li>
             </ul>
 
             <div class="content">
-                <c:if test="${not empty saleList}">
+                <c:if test="${not empty productList}">
                     <table>
                         <thead>
                             <tr>
@@ -281,44 +275,44 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="product" items="${saleList}">
-                               <tr>
-                                   <td>
-                                       <c:choose>
-                                           <c:when test="${not empty product.pd_image1}">
-                                               <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
-                                           </c:when>
-                                           <c:otherwise>
-                                               No Image
-                                           </c:otherwise>
-                                       </c:choose>
-                                   </td>
-                                   <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
-                                   <td>${product.pd_price}</td>
-                                   <td data-date="${product.pd_first_date}"></td>
-                                   <td>
-                                       <c:choose>
-                                           <c:when test="${product.trade_status == '0'}">
-                                           	판매대기
-                                           </c:when>
-                                           <c:when test="${product.trade_status == '1'}">
-                                           	결제대기
-                                           </c:when>
-                                           <c:when test="${product.trade_status == '2'}">
-                                           	결제완료
-                                           </c:when>
-                                           <c:when test="${product.trade_status == '3'}">
-                                           	거래확정
-                                           </c:when>
-                                           <c:when test="${product.trade_status == '4'}">
-                                               <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소승인</button>
-                                           </c:when>
-                                           <c:when test="${product.trade_status == '5'}">
-                                           	거래취소승인완료
-                                           </c:when>
-                                       </c:choose>
-                                   </td>
-                                        </tr>
+                            <c:forEach var="product" items="${productList}">
+                                <c:if test="${product.pd_status == '결제완료' || 
+                                             product.pd_status == '거래취소 요청' || 
+                                             product.pd_status == '거래취소 확정' || 
+                                             product.pd_status == '거래확정'}">
+                                    <tr>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${not empty product.pd_image1}">
+                                                    <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    No Image
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
+<%--                                         <td>${product.pd_content}</td> --%>
+                                        <td>${product.pd_price}</td>
+                                        <td>${product.pd_first_date}</td>
+                                        <td>
+                                            ${product.pd_status}
+                                            <div class="status-buttons">
+                                                <c:choose>
+                                                    <c:when test="${product.pd_status == '결제완료'}">
+                                                        <!-- No buttons -->
+                                                    </c:when>
+                                                    <c:when test="${product.pd_status == '거래취소 요청'}">
+                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소승인</button>
+                                                    </c:when>
+                                                    <c:when test="${product.pd_status == '거래확정'}">
+                                                        <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
+                                                    </c:when>
+                                                </c:choose>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:if>
                             </c:forEach>
                         </tbody>
                     </table>
@@ -339,3 +333,4 @@
     </footer>
 </body>
 </html>
+ 

@@ -95,6 +95,13 @@ public interface ProductMapper {
 	List<ProductVO> selectSellerMyPage(@Param("startRow") int startRow, @Param("listLimit") int listLimit, @Param("member_id") String member_id);
 	//진성민
 
+    // 아이디에 해당하는 구매내역 리스트 조회		
+	List<Map<String, String>> selectBuyList(String id);
+
+	
+	// 아이디에 해당하는 판매내역 리스트 조회		
+	List<Map<String, String>> selectSaleList(String loggedInUserId);
+
 
 
 	
