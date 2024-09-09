@@ -17,7 +17,5 @@ public class TradeVO {
 	private String trade_type;
 	private Time trade_date;
 	private int trade_status;
-	private int trade_amt; 
-	
-	
+	private int trade_amt; // 잠시
 }
