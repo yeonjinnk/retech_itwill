@@ -3,10 +3,13 @@ package com.itwillbs.retech_proj.handler;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.CloseStatus;
@@ -23,7 +26,7 @@ import com.itwillbs.retech_proj.vo.ChatRoom;
 //import com.itwillbs.retech_proj.vo.EmptyStringToNumberTypeAdapter;
 
 public class WebSocketHandler extends TextWebSocketHandler {
-
+	@Autowired ChatService service;
 	//=====================================================================================================
 	
 	//접속한 클라이언트(사용자)들에 대한 정보를 저장하기 위한 Map 객체 생성
@@ -93,6 +96,9 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		return session.getId();
 	}
 	
+	private String getMemberId(HttpSession session) {
+		return (String)session.getAttribute("sId");
+	}
 	// 현재 시스템의 날짜 및 시각 정보를 yyyy-MM-dd HH:mm:ss 형태로 변환하여 리턴하는 메서드
 	private String getDateTimeForNow() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -412,6 +418,29 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
 			} else {
 				System.out.println("수신자가 접속해 있지 않음!");
+				 Map<String, String> alarmInfo = new HashMap<String, String>();
+//				 HttpSession session2 = request.getSession(false); // false는 세션이 없으면 새로 만들지 않음
+//				 if (session2 != null) {
+//				     String member_id = (String) session2.getAttribute("sId");
+//				     alarmInfo.put("member_id", member_id);
+//				 } else {
+//				     System.out.println("세션이 존재하지 않습니다.");
+//				 }
+//
+//				 
+//				 String member_id = (String)session2.getAttribute("sId");
+				 alarmInfo.put("member_id", chatMessage.getReceiver_id());
+				 alarmInfo.put("sender_id", chatMessage.getSender_id());
+				 alarmInfo.put("message", chatMessage.getMessage());
+				 alarmInfo.put("room_id", chatMessage.getRoom_id());
+				 alarmInfo.put("time", chatMessage.getSend_time());
+				 alarmInfo.put("receiver_id", chatMessage.getReceiver_id());
+				 String pd_idx = chatMessage.getPd_idx() + "";
+				 alarmInfo.put("pd_idx", pd_idx);
+				 alarmInfo.put("status", "1");
+				boolean isInsert = service.insertAlarm(alarmInfo);
+				
+				System.out.println("알람 DB에 잘 들어갔나 : " + isInsert);
 			}
 			
 		} else if(chatMessage.getType().equals(ChatMessage.TYPE_LEAVE)) {

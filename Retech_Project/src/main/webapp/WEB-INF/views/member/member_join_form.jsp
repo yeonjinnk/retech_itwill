@@ -84,7 +84,8 @@
         }
 
         .join_detail input[type="text"],
-        .join_detail input[type="password"] {
+        .join_detail input[type="password"],
+        .join_detail input[type="file"] {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -94,7 +95,8 @@
         }
 
         .join_detail input[type="text"]:focus,
-        .join_detail input[type="password"]:focus {
+        .join_detail input[type="password"]:focus,
+        .join_detail input[type="file"]:focus {
             border-color: #4CAF50;
         }
 
@@ -142,7 +144,7 @@
             </ul>
         </div>
 
-        <form class="join" name="joinForm" id="joinform" action="${pageContext.request.contextPath}/MemberJoinForm" method="post" onsubmit="return validateForm()">
+        <form class="join" name="joinForm" id="joinform" action="${pageContext.request.contextPath}/MemberJoinForm" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
             <div class="join_detail">
                 <label for="postCode" class="title">주소</label>
                 <input type="text" name="member_postcode" id="postCode" placeholder="우편번호" required readonly>
@@ -190,6 +192,11 @@
                 <label for="member_phone" class="title">휴대폰번호</label>
                 <input type="text" name="member_phone" id="member_phone" placeholder="- 없이 숫자만 입력해주세요." required>
                 <span id="checkPhoneResult" class="check"></span>
+            </div>
+
+            <div class="join_detail">
+                <label for="member_profile" class="title">프로필 사진</label>
+                <input type="file" name="profile" id="member_profile"> <!-- 변경된 이름에 맞춤 -->
             </div>
 
             <button id="submit" type="submit">가입하기</button>

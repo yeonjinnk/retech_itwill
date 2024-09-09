@@ -7,10 +7,12 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.retech_proj.vo.MemberVO;
+import com.itwillbs.retech_proj.vo.ProductVO;
 
 
 @Mapper
 public interface AdminMemberMapper {
+
 
 	// 관리자 - 회원 목록 개수 세기 (검색 기능 추가)
 	int selectMemberListCount(String searchKeyword);
@@ -36,6 +38,12 @@ public interface AdminMemberMapper {
 	int updateAdminAuth(@Param("member_isAdmin") String member_isAdmin, @Param("member_id") String member_id);
 
 	int updateStatusAuth(@Param("member_status") String member_status, @Param("member_id") String member_id);
+	
+	// 회원 조회
+	List<MemberVO> selectMemberList2();
+
+
+	List<ProductVO> selectProductList2();
 
 
 	

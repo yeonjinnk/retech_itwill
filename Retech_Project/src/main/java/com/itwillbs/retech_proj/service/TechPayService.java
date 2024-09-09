@@ -1,5 +1,6 @@
 package com.itwillbs.retech_proj.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +134,16 @@ public class TechPayService {
 	// 2.3.1. 잔액조회 API	
 	public Map<String, String> getAccountDetail(Map<String, Object> map) {
 		return bankApiClient.requestAccountDetail(map);
+	}
+
+	// 테크페이 사용 목록 불러오기
+	public List<Map<String, Object>> getPayHistory(Map<String, Object> map) {
+		return mapper.selectPayHistory(map);
+	}
+
+	// 테크페이 사용 목록 개수 세기(페이징)
+	public int getPayHistoryCount(Map<String, Object> map) {
+		return mapper.selectPayHistoryCount(map);
 	}
 	
 }

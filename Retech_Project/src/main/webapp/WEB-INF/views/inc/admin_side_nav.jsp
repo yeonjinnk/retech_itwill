@@ -10,10 +10,7 @@
 			</ul>			
 		</li>
 		<li class="depth01">
-			<a href="">관리자 차트</a>
-			<ul class="depth02">
-				<li><a href="AdminChart"></a></li>
-			</ul>			
+			<a href="AdminChart">관리자 차트</a>
 		</li>
 		<li class="depth01">
 			<a href="">상품 관리</a>

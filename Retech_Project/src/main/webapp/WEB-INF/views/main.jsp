@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta charset="UTF-8">
 
@@ -25,14 +25,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+
 <style>
+
 /*---- 메인 영역 제목  ----*/
 .category_subject {
-	font-size: 20px;
+	font-size: 15px;
 	font-weight: bold;
 }
-
-
 
 /*---- 메인 이미지 슬라이드 ----*/
 
@@ -40,60 +40,106 @@
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
-    background-color: lightgray;
     overflow: hidden;
     position: relative;
-    height: 470px; /* 메인 슬라이드의 높이 조정 */
+    height: 450px; /* 메인 슬라이드의 높이 조정 */
     display: flex;     
     align-items: stretch;     
 }
 
-.jmcontainer, .main_slide_container {
+.main_slide_container {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 450px; /* 메인 슬라이드의 높이 조정 */
+    display: flex;     
+    align-items: stretch;     
+}
+
+.container {
     flex: 1;    /* Flexbox를 사용 */
     height: 100%;
 	object-fit: cover;
+ 	padding: 0px;
 }
 
-.slide_img {
-    width: 100%;
-    height: 100%;
-	object-position: center; 
+.carousel-inner, .carousel {
+    display: flex;
+    position: relative;
+    align-items: stretch;     
 }
 
 
-
-/* 캡션 스타일 조정 */
-.carousel-caption {
-    position: absolute;
-    bottom: 20px; /* 화면 하단에서 일정 거리 유지 */
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 배경 추가 */
-    color: white;
-    padding: 10px;
-    font-size: 16px; /* 글자 크기 조정 */
-    width: 100%; /* 캡션이 이미지의 전체 너비를 차지하도록 */
-    text-align: center; /* 캡션을 중앙 정렬 */
-}
-
-.carousel {
-	position: static;
+.item {
+    will-change: transform, opacity;
 }
 
 .item {
-	position: static;
-
+    flex: 1; 
+    object-fit: cover;
+}
+ 
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+} 
+ 
+#item_bg1, #item_bg2, #item_bg3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+} 
+ 
+.carousel {
+ 	position: static; 
 }
 
+.carousel-inner {
+    height: 450px; /* 항상 고정된 높이 유지 */
+}
+
+/* 페이드효과 */
+.carousel-fade .carousel-inner .item {
+  opacity: 0.8;
+  transition-property: opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+
+.carousel-fade .carousel-inner .item.active {
+  opacity: 1;
+}
+
+.item img {
+    width: auto; /* 이미지의 고정된 너비 사용 */
+    height: auto; 
+    max-height: 450px; /* 슬라이드의 높이에 맞게 고정된 높이 */
+    object-fit: contain;  
+    object-position: center; 
+}
+
+/*---- 메인 이미지 영역 ----*/
 .main_section > div:not(.main_slide) {
-	width: 1200px;
+	width: 900px;
 	align-items: center;
     margin: auto;
 }
 
 /*---- 메인 이미지 영역 ----*/
+/*---- 메인 이미지 영역 1. 카테고리 ----*/
 .category_section {
-	margin-bottom: 40px;
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+.inner_photo {
+/*     border-radius: 25px; 	 */
 }
 
 .area {
@@ -111,20 +157,52 @@
     width: 100%; /* 이미지를 div 크기에 맞게 조정 */
 }
 
- .pd_category_photo {
+.category_name {
+	font-size: 10px;
+	text-align: left;
+ 	font-weight: bold;
+}
+.pd_category_photo {
+    display: flex;
     position: relative;
     overflow: hidden; /* 텍스트나 이미지가 영역을 벗어나지 않도록 설정 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */   
+    background-color: #F5F5F5;
+    border-radius: 10px;  
+    height: 200px; 
+    margin-bottom: 10px; 
+    flex-direction: column; 
+    text-align: center; 
 }
 
-.pd_category_photo img {
+.category_name {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.pd_category_photo a {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+	height: 80%;	
+}
+
+.pd_category_photo img.inner_photo {
     transition: 0.3s ease; /* 이미지가 부드럽게 변화하도록 설정 */
     transform: scale(1); /* 기본 크기 설정 */
 }
 
-.pd_category_photo:hover img {
+.pd_category_photo:hover img.inner_photo {
     filter: grayscale(100%); /* 흑백으로 변경 */
     opacity: 0.2; /* 불투명도 조정 */
     transform: scale(1.1); /* 마우스를 오버할 때 10% 확대 */
+}
+
+.category_logo {
+    width: 100%; 
+    height: auto;
 }
 
 .pd_category_photo .overlay {
@@ -132,27 +210,36 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: gray;
-    font-size: 24px;
-    font-weight: bold;
+/*     color: gray; */
     opacity: 0;
-    transition: 0.6s ease;
+    transition: opacity 0.6s ease;
 }
 
 .pd_category_photo:hover .overlay {
     opacity: 1; /* 마우스를 오버할 때 글자가 나타나도록 설정 */
 }  
+
+.pd_category_photo .category_name {
+    font-size: 14px; /* Adjust as needed */
+    font-weight: bold;
+    margin-top: auto; /* Pushes the text to the bottom */
+    padding: 10px 0; /* Adds some space above the text */
+    text-align: center;
+    width: 100%;
+}
+
+.pd_category_photo .category_logo {
+    width: 50px; /* Adjust the logo size as needed */
+    height: auto;
+}
  
- 
-/*---- 메인 이미지 영역 ----*/
+/*---- 메인 이미지(상품명) ----*/
 .subject {
 	font-size: 15px;
 	font-weight: bold;
 	text-align: center;
 }
- 
- 
-     
+
 </style>
 
 </head>
@@ -160,49 +247,58 @@
 	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
-	
 	<section class="main_section">
+	
+	
 		<!-- 메인 슬라이드 영역 -->
 		<div class="main_slide">
-			<div class="main_slide_container">
-				
-				<div class="jmcontainer">
-				  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-				    <!-- Indicators -->
+			<div class="main_slide_container" >
+				<div class="container">
+				  <div id="myCarousel" class="carousel slide carousel-fade"  data-ride="carousel">
+				   <!-- 슬라이드 효과(캐러셀) -->
 				    <ol class="carousel-indicators">
 				      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 				      <li data-target="#myCarousel" data-slide-to="1"></li>
 				      <li data-target="#myCarousel" data-slide-to="2"></li>
 				    </ol>
 				
-				    <!-- Wrapper for slides -->
+				   <!-- 슬라이드 적용부분 -->
 				    <div class="carousel-inner">
 				      <div class="item active">
-				        <img src="${pageContext.request.contextPath}/resources/img/main_slide/la.jpg" alt="Los Angeles" style="width:100%;">
-			              <div class="carousel-caption">
-					        <h3>Los Angeles</h3>
-					        <p>LA is always so much fun!</p>
-					      </div>
+					      <div class="image-wrapper">
+					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/darknavy.png" alt="Chicago" id="item_bg2">
+					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/tabletNetc2.png" alt="Chicago" style="width:100%; height:100%; position:sticky; z-index: 1;">
+						</div>
+				        <div class="carousel-caption item_inner" >
+				          <h3>Tablet Coming Soon</h3>
+				          <p>10월, 테블릿PC 카테고리 오픈 예정!</p>
+				        </div>
 				      </div>
-				
 				      <div class="item">
-				        <img src="${pageContext.request.contextPath}/resources/img/main_slide/chicago.jpg" alt="Chicago" style="width:100%;">
-			              <div class="carousel-caption">
-					        <h3>Chicago</h3>
-					        <p>Thank you, Chicago!</p>
-					      </div>
+					      <div class="image-wrapper">
+<%-- 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/PaleYellow.png" alt="Los Angeles" id="item_bg1"> --%>
+<%-- 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/SoftGole.png" alt="Los Angeles" id="item_bg1"> --%>
+						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/aquablue.png" alt="Los Angeles" id="item_bg1">
+						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/computerETC2.png" alt="Los Angeles" style="width: 100%; height: 100%; position:sticky; z-index: 1;">
+						</div>
+				        <div class="carousel-caption item_inner" >
+				          <h3>리테크 Service Open</h3>
+				          <p>PC, NOTEBOOK을 합리적인 가격으로 만나보세요!</p>
+				        </div>
 				      </div>
-				    
 				      <div class="item">
-				        <img src="${pageContext.request.contextPath}/resources/img/main_slide/ny.jpg" alt="New york" style="width:100%;">
-					      <div class="carousel-caption">
-					        <h3>New York</h3>
-					        <p>We love the Big Apple!</p>
-					      </div>				        
+					      <div class="image-wrapper">
+					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/orange.png" alt="New York" id="item_bg3">
+					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/ny.jpg" alt="New York" style="width:100%; height:100%; position:sticky; z-index: 1;">
+						</div>
+				        <div class="carousel-caption item_inner" >
+				          <h3>New York</h3>
+				          <p>We love the Big Apple!</p>
+				        </div>
 				      </div>
 				    </div>
 				
-				    <!-- Left and right controls -->
+				    <!-- 슬라이드 방향 버튼 -->
 				    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
 				      <span class="glyphicon glyphicon-chevron-left"></span>
 				      <span class="sr-only">Previous</span>
@@ -212,10 +308,8 @@
 				      <span class="sr-only">Next</span>
 				    </a>
 				  </div>
-				</div>			
+				</div>
 			</div>
-
-		
 		</div>
 		
 				
@@ -223,59 +317,65 @@
 		<div class="main_img_area">
 			<!-- 메인 이미지 영역 1. 카테고리 -->
 			<div class="pd_category category_section">
-				<h2 class="category_subject">카테고리</h2>
-				<div class="pd_category_area area">
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=PC&c_id2=AP">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">애플 PC</div>
-					</div>
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=PC&c_id2=SA">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">삼성 PC</div>
-					</div>
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=PC&c_id2=LG">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">LG PC</div>
-					</div>
-				</div>
-				<div class="pd_category_area area">
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=NB&c_id2=AP">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">애플 노트북</div>
-					</div>
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=NB&c_id2=SA">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">삼성 노트북</div>
-					</div>
-					<div class="pd_category_photo photo">
-						<a href="ProductList?c_id=NB&c_id2=LG">
-							<img src="${pageContext.request.contextPath }/resources/images/스크린샷 2024-07-17 212527.png" class="card-img-top">
-						</a>
-						<div class="overlay">LG 노트북</div>
-					</div>
-				</div>
+			    <h3 class="category_subject">PC</h3>
+			    <div class="pd_category_area area">
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=PC&c_id2=AP'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/PCapple.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_apple.png" class="category_logo">
+			            </div>
+			        </div>
+			        
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=PC&c_id2=SA'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/PCsamsung.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_samsung.png" style="width:70%;" class="category_logo">
+			            </div>
+			        </div>
+			
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=PC&c_id2=LG'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/PClg.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_lg.png" style="width:70%;" class="category_logo">
+			            </div>
+			        </div>
+			    </div>
+			    
+			    <h3 class="category_subject">노트북</h3>
+			    <div class="pd_category_area area">
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=NB&c_id2=AP'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/NBapple.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_apple.png" class="category_logo">
+			            </div>
+			        </div>
+			
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=NB&c_id2=SA'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/NBsamsung.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_samsung.png" style="width:70%;" class="category_logo">
+			            </div>
+			        </div>
+			
+			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=NB&c_id2=LG'" style="cursor:pointer;">
+			            <img src="${pageContext.request.contextPath }/resources/img/main_category/NBlg.png" style="width:50%;" class="inner_photo category_photo">
+			            <div class="overlay">
+			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_lg.png" style="width:70%;" class="category_logo">
+			            </div>
+			        </div>
+			    </div>
 			</div>
 			
 			
 			<!-- 메인 이미지 영역 2. 인기상품 -->
 			<div class="pd_popular category_section">    
-			    <h2 class="category_subject">Popular Products</h2>
+			    <h2 class="category_subject">인기상품</h2>
 			    <div class="pd_popular_area area">
 			        <c:forEach var="product" items="${popularProducts}">
 			            <div class="pd_popular_photo photo">
 			                <a href="product_detail?pd_idx=${product.pd_idx}&member_id=${product.member_id}">
 			                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" 
-    							 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}"/>
+    							 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}" class="inner_photo"/>
 			                </a>
 					        <div class="subject">${product.pd_subject}</div>
 			            </div>
@@ -292,18 +392,31 @@
 					    <div class="photo">
 							<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
 					        	<img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" 
-					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}"/>
+					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}" class="inner_photo"/>
 					        </a>
 					        <div class="subject">${product.pd_subject}</div>
 					    </div>
 					</c:forEach>
 			    </div>
 			</div>		
+
+			<!-- 메인 이미지 영역 4. 찜 많은 상품 -->
+<!-- 			<div class="pd_recent category_section">     -->
+<!-- 			    <h2 class="category_subject">찜 많은 상품</h2> -->
+<!-- 			    <div class="pd_recent_area area"> -->
+<%-- 				    <c:forEach var="product" items="${recentProducts}"> --%>
+<!-- 					    <div class="photo"> -->
+<%-- 							<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}"> --%>
+<%-- 					        	<img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}"  --%>
+<%-- 					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}"/> --%>
+<!-- 					        </a> -->
+<%-- 					        <div class="subject">${product.pd_subject}</div> --%>
+<!-- 					    </div> -->
+<%-- 					</c:forEach> --%>
+<!-- 			    </div> -->
+<!-- 			</div>		 -->
+			</div>
 		</div>
-		
-		
-		
-		
 	</section>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	

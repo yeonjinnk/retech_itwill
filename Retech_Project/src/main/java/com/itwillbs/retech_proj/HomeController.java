@@ -47,14 +47,6 @@ public class HomeController {
 	    // model에 저장
 	    model.addAttribute("popularProducts", popularProducts);
 	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
 	    return "main"; 
 	}
 	

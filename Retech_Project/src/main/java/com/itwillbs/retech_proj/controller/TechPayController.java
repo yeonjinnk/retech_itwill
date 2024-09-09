@@ -1,12 +1,14 @@
 package com.itwillbs.retech_proj.controller;
 
-import java.security.PrivateKey;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.retech_proj.handler.BankValueGenerator;
-import com.itwillbs.retech_proj.handler.RsaKeyGenerator;
 import com.itwillbs.retech_proj.handler.TechPayIdxGenerator;
 import com.itwillbs.retech_proj.service.TechPayService;
 import com.itwillbs.retech_proj.vo.BankToken;
@@ -95,6 +97,56 @@ public class TechPayController {
 		
 	}
 
+	// 테크페이 사용 목록 불러오기
+	@ResponseBody
+	@GetMapping("PayHistoryJson")
+	public String historyJson(Model model, @RequestParam Map<String, Object> map) {
+
+		Map<String, Object> prammap = map; 
+		
+		System.out.println("prammap : " + prammap);
+		// --------------------------------------------------
+		// 페이징
+		// 한 페이지에서 표시할 글 목록 갯수 지정
+		int listLimit = 10;
+		
+		int pageNum = Integer.parseInt(map.get("pageNum").toString());
+		
+		System.out.println("pageNum = " + pageNum);
+		// 조회 시작 행번호
+		int startRow = (pageNum - 1) * listLimit;
+		
+		map.put("listLimit", listLimit);
+		map.put("startRow", startRow);
+		
+		logger.info("map객체는 >>>>" + map);
+
+		// 테크페이 사용 목록 불러오기
+		List<Map<String, Object>> payHistoryList = techPayService.getPayHistory(map);
+		logger.info(payHistoryList.toString());
+		
+		
+		// 테크페이 사용 목록 개수 세기(페이징)
+		int listCount = techPayService.getPayHistoryCount(map);
+//		
+		int maxPage = listCount / listLimit + ((listCount % listLimit) > 0 ? 1 : 0);
+		
+		// 게시물 목록 조회 결과 Map 객체에 추가
+		Map<String, Object> historyMap = new HashMap<String, Object>();
+		historyMap.put("payHistoryList", payHistoryList);
+		System.out.println(map);
+		
+		// 마지막 페이지 번호 Map 객체에 추가
+		historyMap.put("maxPage", maxPage);
+		historyMap.put("listCount", listCount);
+//		
+		JSONObject jsonObject = new JSONObject(historyMap);
+		System.out.println("jsonObject = " + jsonObject);
+		
+		return jsonObject.toString();
+	}
+	
+	
 	@GetMapping("AccVerify")
 	public String accVerify(HttpSession session, Model model) {
 		// 로그인 완료 되어 있는 회원만 테크페이 계좌연결 페이지로 진입 가능함

@@ -70,6 +70,14 @@ public class MemberService {
 		return mapper.selectMemberId(receiver_id);
 	}
 	
+	public MemberVO getMemberByPhoneAndId(String phoneNumber, String memberId) {
+	    // 전화번호와 회원 ID를 기준으로 회원 정보를 조회하는 메서드
+	    return mapper.selectByPhoneAndId(phoneNumber, memberId);
+	}
+
+
+
+	
 }
 //    // SMS 인증
 //    public void certifiedPhoneNumber(String phoneNumber, String numStr) {
