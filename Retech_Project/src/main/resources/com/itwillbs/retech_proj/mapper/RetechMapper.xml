@@ -7,7 +7,7 @@
   	<select id="selectRelationKeyWord" resultType="String">
 	  	SELECT search_content
 		FROM search
-		WHERE search_content LIKE "${searchKeyWord}%"
+		WHERE search_content LIKE "${searchKeyword}%"
 		LIMIT 9;
   	</select>
   	
@@ -31,13 +31,13 @@
 	<select id="selectWord" resultType="int">
 		SELECT search_count
 		FROM search
-		WHERE search_content = #{keyword}
+		WHERE search_content = #{searchKeyword}
 		UNION ALL
 		SELECT 0 AS search_count
 		WHERE NOT EXISTS (
 		    SELECT search_count
 		    FROM search
-		    WHERE search_content = #{keyword}
+		    WHERE search_content = #{searchKeyword}
 		)
 	</select>
 	
@@ -45,7 +45,7 @@
 	<update id="updateSearchCount">
 		UPDATE search
 		SET search_count = search_count + 1
-		WHERE search_content = #{keyword}
+		WHERE search_content = #{searchKeyword}
 	</update>
 	
 	<!-- 검색내용 디비 저장 -->
@@ -54,13 +54,13 @@
 		INTO search
 		VALUES(
 			null
-			,#{keyword}
+			,#{searchKeyword}
 			,now()
 			,1
 			,0
 		)
 	</insert>
-	
+	<!--  검색 횟수 증가 -->
 	<update id="updateContent">
 		UPDATE search
 		SET delete_status = 1

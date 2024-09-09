@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.retech_proj.mapper.ProductMapper;
+import com.itwillbs.retech_proj.mapper.RetechMapper;
 import com.itwillbs.retech_proj.vo.LikeVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
 
@@ -16,6 +17,9 @@ public class ProductService {
 	
 	@Autowired
 	 private ProductMapper mapper;
+	@Autowired
+	 private RetechMapper retechmapper;
+	
 	 // 상품 목록 페이지
 	public List<ProductVO> getProductList(String searchKeyword, int startRow, int listLimit) {
 		// TODO Auto-generated method stub

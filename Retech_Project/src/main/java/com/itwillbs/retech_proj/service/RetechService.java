@@ -34,14 +34,14 @@ public class RetechService {
 
 
 	// 검색내용 디비에 저장
-	public int saveKeyword(String keyword) {
+	public int saveKeyword(String searchKeyword) {
 	// 검색한 내용의 존재여부 판별
-	int search_count = RetechMapper.selectWord(keyword);
+	int search_count = RetechMapper.selectWord(searchKeyword);
 	
 	if(search_count>0) {
-		int updateCount = RetechMapper.updateSearchCount(keyword);
+		int updateCount = RetechMapper.updateSearchCount(searchKeyword);
 	}else{
-		int insertCount = RetechMapper.insertKeyword(keyword);
+		int insertCount = RetechMapper.insertKeyword(searchKeyword);
 	}
 	
 	return 0;
