@@ -47,18 +47,19 @@ public class StoreController {
 	}
 	
 	//상품 목록 출력 ajax..
+	@ResponseBody
 	@GetMapping("StoreProductList")
-	public String productList() {
+	public List<Map<String, Object>> productList(@RequestParam Map<String, String> map) {
 		
-		List<Map<String, Object>> productList = service.selectProductList();
+		List<Map<String, Object>> productList = service.selectProductList(map);
 		
-		return "";
+		return productList;
 	}
 	
 	@GetMapping("StoreDetail")
-	public String storeDetail(StoreVO store, Model model) {
+	public String storeDetail(@RequestParam int store_idx, StoreVO store, Model model) {
 		//상품 정보 조회
-		Map<String, Object> Product = service.selectProduct(store);
+		Map<String, Object> Product = service.selectProduct(store_idx);
 		System.out.println("Product : " + Product);
 		
 		model.addAttribute("Product", Product);
