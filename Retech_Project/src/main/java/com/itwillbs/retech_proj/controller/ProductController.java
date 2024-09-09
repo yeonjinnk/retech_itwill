@@ -98,7 +98,7 @@ public class ProductController {
 //		
 //		return "product/product_list";
 //	}
-
+//
 	// 상품 목록 출력 ajax
 	@ResponseBody
 	@GetMapping("productListJson")
