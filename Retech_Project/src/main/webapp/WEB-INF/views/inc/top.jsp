@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <link href="${pageContext.request.contextPath}/resources/css/inc/top.css" rel="stylesheet">
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
@@ -172,88 +171,457 @@
 		//웹소켓 주소 설정 - 알림창 동기 설정
 		
 	}
+	
+//================================================================================================
+	
+	// 인기검색어, 최근검색어 클릭 위치를 저장할 변수
+let recentClick = true;
+let popularClick = true;
+
+$(function(){
+	// ######################테스트 데이터 설정######################
+		var clickCount = 0;
+		$('.nav-inner').click(function() {
+			clickCount++;
+		    if (clickCount === 3) {
+		    	var keywords = ["테스트1", "테스트2", "테스트3", "테스트4", "테스트5", "테스트6", "테스트7", "테스트8", "테스트9", "테스트10"];
+		    	localStorage.setItem("keywords", JSON.stringify(keywords));
+		    	updateTable();
+		    	clickCount = 0;
+		   	}
+		});	
+
+//==============================================================================================
+	// 로컬 스토리지 값이 변경될 때 실행할 함수
+	updateTable();
+	// 로컬 스토리지 값이 변경될 때 updateTable 함수 실행
+	window.addEventListener('storage', function(event) {
+		if (event.key === 'keywords') {
+			updateTable();
+		}
+	});
+//==============================================================================================
+	
+	/* 
+	@@@ 검색창과 관련된 설정 항목 @@@
+	1. 검색창은 Id가 searchBox 인 영역을 클릭 했을 경우 나타난다.
+	2. 이 검색창은 
+		1) 마우스 스크롤
+		2) searchBox 밖의 영역 클릭
+		3) "닫기" 글자 클릭 
+		했을 경우 사라진다.
+	3. 이 검색창은
+	   1) 아무것도 입력하지 않고 엔터키 클릭
+	   2) 돋보기 클릭 시
+	   검색기능이 동작하지 않는다
+	*/
+	hideHandler();
+	$(window).on("scroll", hideHandler);
+	
+	// 특정 영역 외의 클릭 이벤트를 감지하는 코드입니다
+	$(document).on('click', function(event) {
+	    // 클릭된 요소가 특정 영역 내에 속하는지 확인합니다
+	    if (!$(event.target).closest('#searchBox').length || $(event.target).is('#closeSearchBox')) {
+	        // 클릭된 요소가 특정 영역 외부에 있을 경우 경고창을 띄웁니다
+	        if(!$(event.target).is('.localStarageDeleteOne') && !$(event.target).is('#localStorageClean') ){
+		    	hideHandler();
+		    }
+	    }
+	});
+	function hideHandler() {
+		$("#Recent").hide(); //최근 검색어
+		$("#Popular").hide(); //인기 검색어
+		$("#Relation").hide(); //연관 검색어
+	}
+	
+	//엔터키 누를 경우 텍스트 가지고 주소 이동
+	$("#searchKeyword").keyup(function(event) {
+	    if (event.keyCode === 13) {
+	        searchKeyword($("#searchKeyword").val()); // 현재 입력된 값 전달
+	    } else if ($("#searchKeyword").val().length < 1) {
+	        if (recentClick) {
+	            $("#Recent").show();
+	        } else if (popularClick) {
+	            $("#Popular").show();
+	        }
+	        $("#Relation").hide();
+	    } else {
+	        searchAjax();
+	    }
+	});
+
+	
+	$(".recentWordColor").css("color", "#d3d3d3");  // 연한 회색
+	$(".popularWordColor").css("color", "black");   // 검은색
+	
+	//키보드를 누를때마다 작동
+	$("#searchKeyword").keyup(function(){
+		if($("#searchKeyword").val().length < 1){
+			if(recentClick == true){
+				$("#Recent").show();
+			}else if(popularClick == true){
+				$("#Popular").show();
+			}
+			$("#Relation").hide();
+		}else{
+			searchAjax();	
+		}
+	});
+	
+});// document.ready function END
+	
+function searchAjax(){
+	$.ajax({
+		type:"GET",
+		url:"RelationSearchKeyWord",
+		data: {searchKeyWord : $("#searchKeyword").val()},
+		success:function(res){
+			$("#Popular").hide();
+			$("#Recent").hide();
+			$("#Relation").show();
+			let relationBox = 
+				'<table id="RelationTableBoarder">'
+	    		+'<tr id= "Relationdata">'
+	    		+	'<td colspan="2">'
+	    		+       '<img src="${pageContext.request.contextPath}/resources/images/MainPhoto/상점검색.png" width="18" height="14" alt="추천 상점 아이콘"> 판매자 페이지 검색 &gt;'
+	    		+ 			'<a href="FindMyPage?q=' + $("#searchKeyword").val() + '">'
+	    		+     			$("#searchKeyword").val()
+	    		+ 			'</a>'
+	    		+ 		"  닉네임으로 검색" 
+	    		+	'</td>'
+	    		+'</tr>'
+	    		+'<tr>'
+				+	'<td>'
+				+	'	<a></a>'
+				+	'</td>'
+				+	'<td>'
+				+	'	<a id="closeSearchBox">'
+				+	'		닫기'
+				+	'	</a>'
+				+	'</td>'
+				+'</tr>' 
+	    		+'</table>'
+			$("#Relation").html(relationBox)
+			let relationKeyWord = ""
+			for(let data of res){
+				relationKeyWord += "<tr><td colspan='2' class='relationText'><a onclick='sendKeyword(this)'>" + data + "</a></td></tr>";
+			}
+	    		
+			$("#Relationdata").after(relationKeyWord)
+		},
+		error:function(){
+		}
+	});
+}
+
+function searchKeyword(pkeyword) {
+    $("#Relation").removeClass("hidden");
+    $("#Relation").show();
+    let keyword = pkeyword || $("#searchKeyword").val(); // pkeyword가 null 또는 undefined일 경우, searchKeyword 값을 사용
+    keyword = keyword.trim(); // trim으로 공백 제거
+
+    if (keyword !== "") {
+        // 로컬스토리지에 저장하는 코드
+        const localStorageKey = 'keywords';
+        let keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+        if (!keywords.includes(keyword)) {
+            keywords.push(keyword);
+        }
+        if (keywords.length > 10) {
+            keywords = keywords.slice(keywords.length - 10);
+        }
+        localStorage.setItem(localStorageKey, JSON.stringify(keywords));
+
+        var searchKeywordUrl = "ProductList?searchKeyword=" + encodeURIComponent(keyword);
+        window.location.href = searchKeywordUrl;
+    }
+}
+
+//클릭하면 검색어 텍스트값을 가져오기
+function sendKeyword(element) {
+	var keyword = $(element).text(); // 클릭된 요소의 텍스트 값을 가져옵니다.
+	var searchKeywordUrl = "ProductList?searchKeyword=" + encodeURIComponent(keyword);
+	window.location.href = searchKeywordUrl;
+	searchKeyword(keyword);
+	SaveWord(keyword);
+	console.log("keyword : " + keyword)
+}
+	
+function showHandler(){
+	if($("#searchKeyword").val() == null || $("#searchKeyword").val() == ''){
+		$("#Recent").show();
+	}else{
+		searchAjax();
+	}
+}
+//최근 검색어
+function RecentSearchs(){
+	$("#Recent").show();
+	$("#Popular").hide();
+	$(".recentWordColor").css("color","#39d274");
+	$(".popularWordColor").css("color","black");
+	recentClick = true;
+	popularClick = false;
+	
+}
+//연관검색어 검색어 저장
+function SaveWord(keyword){
+	$.ajax({
+		type:"GET",
+		url:"SaveSearchKeyword",
+		data: {keyword : keyword},
+		success:function(res){
+		}
+	});
+}
 
 
+//인기 검색어 목록을 서버에서 가져와 페이지에 표시하는 기능
+//사용자는 "인기검색어"와 "최근검색어" 탭 간에 전환할 수 있으며, 
+//인기 검색어 목록에서 특정 검색어를 선택 가능
+//선택된 검색어는 sendKeyword(this) 함수를 통해 처리
+function PopularSearches(){
+	$("#Popular").show();
+	
+	popularClick = true;
+	recentClick = false;
+	
+	$.ajax({
+		type:"GET",
+		url:"popularSearchKeywordList",
+		success:function(res){
+			let stringList = res.myArrayList;
+			let withoutQuotesList = stringList.map((str) => str.replace(/'/g, ''));
+			console.log(withoutQuotesList); // ['문자열1', '문자열2', '문자열3']
+			console.log(withoutQuotesList[0]);
+			
+			
+			let tableHTML = '<table id="PopularTableBoarder">';
+			tableHTML +=
+				'<tr class="PopularCenter">'
+				+ '  <td class="RecentborderBottom">'
+			    + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
+			    + '  </td>'
+			    + '  <td class="SelPopularborderBottom">'
+			    + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
+			    + '  </td>'
+			    + '</tr>';
+			    
+			for(let i=0; i<10; i++){
+				let rank1 = i + 1;
+				let rank2 = i + 11;
+				tableHTML +=
+					'<tr>'
+					+'	<td>'
+					+'		<a class="popularWordColorTd marginLeftRank">'
+					+   		rank1
+					+'		</a>'
+					+'		<a onclick="sendKeyword(this)">'+withoutQuotesList[i]+'</a>'
+					+'	</td>'
+					+'	<td>'
+					+'		<a class="popularWordColorTd marginLeftRank">'
+					+   		rank2
+					+'		</a>'
+					+'		<a onclick="sendKeyword(this)">'+withoutQuotesList[i+10]+'</a>'
+					+'	</td>'
+					+'</td>'
+			};
+			    
+			tableHTML += 
+				'<tr>'
+				+	'<td>'
+				+	'	<a id="closeSearchBox">'
+				+	'	</a>'
+				+	'</td>'
+				+	'<td>'
+				+	'	<a id="closeSearchBox">'
+				+	'		닫기'
+				+	'	</a>'
+				+	'</td>'
+				+'</tr>' 
+				+'</table>'
+			
+			$("#Popular").html(tableHTML);	    
+			$("#Recent").hide();
+			$(".popularWordColor").css("color","#39d274");
+			$(".recentWordColor").css("color","black");
+		}
+	
+	
+	
+		
+	});
+	
+}
+//'keywords' 항목을 로컬 스토리지에서 삭제하고, 
+//'최근검색어' 및 '인기검색어'와 관련된 테이블을 업데이트
+//'최근검색어 삭제' 링크를 함수 다시 호출, 삭제 후에 업데이트된 메시지가 표시
+function localStorageClean(){
+	window.localStorage.removeItem('keywords');
+	// 테이블 생성
+	let tableHTML = '<table>';
+	tableHTML += 
+		'<tr>'
+		+'	<td class="SelRecentborderBottom">'
+		+'		<a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
+		+'	</td>'
+		+'	<td class="PopularborderBottom">'
+		+'		<a onclick="PopularSearches()" class="popularWordColor" style="color:black;">인기검색어</a>'
+		+'	</td>'
+		+'</tr>';
+		
+	tableHTML +=
+		'<tr>'
+		+'<td colspan="2">'
+		+'최근 검색어가 없습니다.'
+		+'</td>'
+		+'</tr>'
+		
+	tableHTML += 
+		'<tr>'
+		+	'<td>'
+		+	'	<a onclick="localStorageClean()" id="localStorageClean">최근검색어 삭제</a>'
+		+	'</td>'
+		+	'<td>'
+		+	'	<a id="closeSearchBox">'
+		+	'		닫기'
+		+	'	</a>'
+		+	'</td>'
+		+'</tr>' 
+		
+		
+	tableHTML += '</table>';
+	// HTML 영역에 테이블 추가
+	$("#Recent").html(tableHTML);
+}
+//로컬 스토리지에서 최근 검색어 목록을 가져와 이를 테이블 형식으로 웹 페이지에 표시
+//사용자는 검색어 목록에서 특정 키워드를 선택하거나 삭제할 수 있으며, 전체 검색어 목록을 삭제 가능
+function updateTable() {
+	const localStorageKey = 'keywords';
+	const keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+	// 테이블 생성
+	let tableHTML = '<table>';
+	tableHTML +=
+		'<tr>'
+		+ '  <td class="SelRecentborderBottom">'
+	    + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
+	    + '  </td>'
+	    + '  <td class="PopularborderBottom">'
+	    + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
+	    + '  </td>'
+	    + '</tr>';
+	// 키워드 배열을 순회하며 테이블 행 추가
+	if(keywords.length == 0){
+		tableHTML +=
+			"<tr>"
+			+"	<td colspan='2'>"
+			+"		최근 검색어가 없습니다."
+			+"	</td>"
+			+"</tr>"
+	}else{
+		for (let index = keywords.length - 1; index >= 0; index--) {
+			const keyword = keywords[index];
+		    tableHTML +=
+		    	"<tr class=" + keyword + ">"
+		    	+ "  <td class='keywordWidth'>"
+		    	+ "    <a onclick='sendKeyword(this)'>"+keyword+"</a>"
+		    	+ "  </td>"
+		    	+ "  <td class='localStarageDeleteOneTd'>"
+		    	+ "    <a class='localStarageDeleteOne' onclick='localStarageDeleteOne(\"" + keyword + "\")'>x</a>"
+		    	+ "  </td>"
+		    	+ "</tr>";
+		}
+	}
+
+	  tableHTML +=
+		  '<tr>'
+		  + '<td>'
+		  + '  <a onclick="localStorageClean()" id="localStorageClean">최근검색어 삭제</a>'
+		  + '</td>'
+		  + '<td>'
+		  + '  <a id="closeSearchBox">'
+		  + '    닫기'
+		  + '  </a>'
+		  + '</td>'
+		  + '</tr>' 
+
+	  tableHTML += '</table>';
+	  // HTML 영역에 테이블 추가
+	  $("#Recent").html(tableHTML);
+}
+//특정 키워드를 로컬 스토리지에서 제거하고, 업데이트된 검색어 목록을 페이지에 반영
+//최근 검색어 목록에서 개별 검색어를 삭제할 수 있으며, 삭제 후 즉시 변경 사항이 화면에 표시
+function localStarageDeleteOne(keyword) {
+	// 로컬 스토리지에서 keywords 배열 가져오기
+	const storedKeywords = JSON.parse(localStorage.getItem("keywords")) || [];
+	// 일치하는 키워드 찾아서 삭제
+	const updatedKeywords = storedKeywords.filter((storedKeyword) => storedKeyword !== keyword);
+	// 수정된 keywords 배열 다시 로컬 스토리지에 저장
+	localStorage.setItem("keywords", JSON.stringify(updatedKeywords));
+	updateTable();
+}
 
 </script>
 <!-- 탑 최상단 영역 -->
 <div class="header_top">
 	<div class="top_inner">
-		<div class="top_left_blank">
-		</div>
+		<div class="top_left_blank"></div>
 		<div class="top_menu">
 			<nav class="top_menu_container">
 				<ul class="top_area">
-					<li class="top_list">
-						<a href="TechPayMain" class="top_link" id="top_link1">테크페이</a>
-					</li>
-					<li class="top_list alarmLi">
-						<a class="top_link" id="top_link1" onclick="alarmListOpen()">알림
-							<!-- 채팅 수신 시 알림 포인터 -->
-							<span id="alarmPoint" style="display: none;">● </span>
-						</a>
+					<li class="top_list"><a href="TechPayMain" class="top_link" id="top_link1">테크페이</a></li>
+					<li class="top_list alarmLi"><a class="top_link" id="top_link1" onclick="alarmListOpen()">알림 <!-- 채팅 수신 시 알림 포인터 --> <span
+							id="alarmPoint" style="display: none;">● </span>
+					</a>
 						<div class="layer_box" id="alram1" style="display: none;">
 							<div class="box_content">
 								<%@ include file="/WEB-INF/views/alarm/alarm_list.jsp"%>
-<%-- 								<jsp:include page="/WEB-INF/views/alarm/alarm_list.jsp"></jsp:include> --%>
+								<%-- 								<jsp:include page="/WEB-INF/views/alarm/alarm_list.jsp"></jsp:include> --%>
 							</div>
-						</div>
-					</li>
+						</div></li>
 					<li class="top_list">
-					<!-- 채팅하기 새 창으로 열기 -->
-					<!-- window.open 자바스크립트니까 javascript, 반환값 없으므로 void -->
-					<!-- window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
-					<c:choose>
-						<c:when test="${not empty sessionScope.sId}">
-							<a href="javascript:void(window.open('ChatList', '${sessionScope.sId}','width=600px,height=600px'))" class="top_link">
-							채팅</a>
-						</c:when>
-						<c:when test="${empty sessionScope.sId}">
-							<a href="ChatList" class="top_link">
-							채팅</a>
-						</c:when>
-					</c:choose>
-					</li>
-<!-- 					<li class="top_list"> -->
-<!-- 					채팅하기 새 창으로 열기 -->
-<!-- 					window.open 자바스크립트니까 javascript, 반환값 없으므로 void -->
-<!-- 					window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
-<%-- 					<c:choose> --%>
-<%-- 						<c:when test="${not empty sessionScope.sId}"> --%>
-<!-- 							<a href="javascript:void(window.open('ChatList?receiver_id=' + 'sender@naver.com', '','width=600px,height=600px'))" class="top_link"> -->
-<!-- 							채팅(rec)</a> -->
-<%-- 						</c:when> --%>
-<%-- 						<c:when test="${empty sessionScope.sId}"> --%>
-<!-- 							<a href="ChatList" class="top_link"> -->
-<!-- 							채팅(rec)</a> -->
-<%-- 						</c:when> --%>
-<%-- 					</c:choose> --%>
-<!-- 					</li> -->
-					<li class="top_list">
-						<a href="ProductRegistForm" class="top_link">판매하기</a>
-					</li>
+						<!-- 채팅하기 새 창으로 열기 --> <!-- window.open 자바스크립트니까 javascript, 반환값 없으므로 void --> <!-- window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
 						<c:choose>
-							<c:when test="${empty sessionScope.sId}"> <%-- 로그인 상태가 아닐 경우 --%>
-								<li class="top_list">
-								 	<a href="MemberLogin" class="login top_link">로그인</a>
-								</li>
+							<c:when test="${not empty sessionScope.sId}">
+								<a href="javascript:void(window.open('ChatList', '${sessionScope.sId}','width=600px,height=600px'))" class="top_link"> 채팅</a>
 							</c:when>
-							<c:otherwise> <%-- 로그인 상태일 경우 --%>
-								<li class="top_list">
-									<a href="SaleHistory" class="top_link">${sessionScope.sName}님</a>
-								</li>
-								<li class="top_list">
-									<a href="javascript:confirmLogout()" class="top_link">로그아웃</a>
-								</li>
-								
-								<!-- 관리자 계정일 경우 관리자 페이지 링크 표시 -->
-								<c:if test="${sessionScope.sIsAdmin eq 1}">
-									<li class="top_list">
-										<a href="AdminHome" class="top_link">관리자페이지</a>
-									</li>
-								</c:if>
-							</c:otherwise>
+							<c:when test="${empty sessionScope.sId}">
+								<a href="ChatList" class="top_link"> 채팅</a>
+							</c:when>
 						</c:choose>
+					</li>
+					<!-- 					<li class="top_list"> -->
+					<!-- 					채팅하기 새 창으로 열기 -->
+					<!-- 					window.open 자바스크립트니까 javascript, 반환값 없으므로 void -->
+					<!-- 					window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
+					<%-- 					<c:choose> --%>
+					<%-- 						<c:when test="${not empty sessionScope.sId}"> --%>
+					<!-- 							<a href="javascript:void(window.open('ChatList?receiver_id=' + 'sender@naver.com', '','width=600px,height=600px'))" class="top_link"> -->
+					<!-- 							채팅(rec)</a> -->
+					<%-- 						</c:when> --%>
+					<%-- 						<c:when test="${empty sessionScope.sId}"> --%>
+					<!-- 							<a href="ChatList" class="top_link"> -->
+					<!-- 							채팅(rec)</a> -->
+					<%-- 						</c:when> --%>
+					<%-- 					</c:choose> --%>
+					<!-- 					</li> -->
+					<li class="top_list"><a href="ProductRegistForm" class="top_link">판매하기</a></li>
+					<c:choose>
+						<c:when test="${empty sessionScope.sId}">
+							<%-- 로그인 상태가 아닐 경우 --%>
+							<li class="top_list"><a href="MemberLogin" class="login top_link">로그인</a></li>
+						</c:when>
+						<c:otherwise>
+							<%-- 로그인 상태일 경우 --%>
+							<li class="top_list"><a href="SaleHistory" class="top_link">${sessionScope.sName}님</a></li>
+							<li class="top_list"><a href="javascript:confirmLogout()" class="top_link">로그아웃</a></li>
+
+							<!-- 관리자 계정일 경우 관리자 페이지 링크 표시 -->
+							<c:if test="${sessionScope.sIsAdmin eq 1}">
+								<li class="top_list"><a href="AdminHome" class="top_link">관리자페이지</a></li>
+							</c:if>
+						</c:otherwise>
+					</c:choose>
 				</ul>
 			</nav>
 		</div>
@@ -268,30 +636,51 @@
 		<div class="main_menu">
 			<nav class="menu_container">
 				<ul class="menu_area">
-					<li class="menu_list">
-						<a href="ProductList" class="menu_link" id="menu_link1">상품</a>
-					</li>
-					<li class="menu_list">
-						<a href="Store" class="menu_link">스토어</a>
-							<ul class="sub_menu">
-								<li><a href="#">키스킨</a></li>
-								<li><a href="#">마우스패드</a></li>
-								<li><a href="StoreDetail">받침대</a></li>
-								<li><a href="#">파우치</a></li>
-							</ul>
-					</li>
-					<li class="menu_list">
-						<a href="Notice" class="menu_link">고객센터</a>
-					</li>
-					
+					<li class="menu_list"><a href="ProductList" class="menu_link" id="menu_link1">상품</a></li>
+					<li class="menu_list"><a href="Store" class="menu_link">스토어</a>
+						<ul class="sub_menu">
+							<li><a href="#">키스킨</a></li>
+							<li><a href="#">마우스패드</a></li>
+							<li><a href="StoreDetail">받침대</a></li>
+							<li><a href="#">파우치</a></li>
+						</ul></li>
+					<li class="menu_list"><a href="Notice" class="menu_link">고객센터</a></li>
+
 				</ul>
 				<ul class="main_search">
 					<li>
-						<form name="search" id="search">
-							<input type="text" name="keyword" id="keyword" />
-							<input type="button" value="검색" />
-						</form>
-<!-- 						<input type="text" placeholder="검색어를 입력하세요" width="120"> -->
+						<div class="col-lg-5 col-md-7 d-xs-none" id="searchBox" onclick="showHandler()">
+							<!-- Start Main Menu Search -->
+							<div class="main-menu-search">
+								<!-- navbar search start -->
+								<div class="navbar-search search-style-5">
+									<div class="search-input">
+										<input type="text" id="searchKeyword" placeholder="상품명 입력, 닉네임 입력" value="${param.keyword}" maxlength="100">
+									</div>
+									<div class="search-btn">
+										<button onclick="searchKeyword()">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+											  <path
+													d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+											</svg>
+										</button>
+									</div>
+								</div>
+								<!-- navbar search Ends -->
+							</div>
+							<!-- End Main Menu Search -->
+							<div class="searchBoxBlock">
+								<div id="Recent">
+									<!-- 최근검색어 테이블이 표시될 영역 -->
+								</div>
+								<div id="Relation">
+									<!-- 연관검색어 테이블이 표시될 영역 -->
+								</div>
+								<div id="Popular">
+									<!-- 인기검색어 테이블이 표시될 영역 -->
+								</div>
+							</div>
+						</div> <!-- 						<input type="text" placeholder="검색어를 입력하세요" width="120"> -->
 					</li>
 				</ul>
 			</nav>

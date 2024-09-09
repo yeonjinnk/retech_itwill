@@ -82,6 +82,11 @@ public class ChatService {
 		return mapper.updateAddress(buyer_id, buyer_postcode, buyer_address1, buyer_address2);
 	}
 
+	//신고 입력하기
+	public int registChatReport(Map<String, Object> map) {
+		return mapper.insertReport(map);
+	}
+
 	//택배 주소 입력
 
 	//저장한 거래 정보 조회하기

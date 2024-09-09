@@ -33,6 +33,17 @@
 			, #{listLimit}  
 	</select>
 	
+	<select id="selectMemberList2" resultType="member">
+		SELECT *
+		FROM member
+	</select>
+	
+	
+	<select id="selectProductList2" resultType="product">
+		SELECT *
+		FROM product
+	</select>
+	
 	<!-- 관리자 권한 부여 / 해제 
 		 파라미터로 받은 String member_isAdmin 으로 바꿔주기 -->
 	

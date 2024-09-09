@@ -167,6 +167,7 @@
 			/*테크페이(직거래) 버튼 클릭 시 모달창 띄움*/
 			$("#btnDirect").click(function() {
 				console.log("테크페이(직거래) 버튼 클릭됨!");
+				$("#directModal").show();
 				$("#payModal-direct").show();
 				console.log("#payModal-direct 하이드인지 쇼인지 : " + $('#payModal-direct').is(':visible'));
 				console.log("테크페이(직거래) 모달 띄움!");
@@ -209,7 +210,7 @@
 			});
 			
 			/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
-			$("#btnPay2Close-direct").click(function(e) {
+			$("#btnPay3Close-direct").click(function(e) {
 				console.log("테크페이(택배) 모달 닫기 버튼 클릭됨!");
 				e.preventDefault();
 				$("#payModal3-direct").hide();
@@ -232,6 +233,51 @@
 				$("#reportModal").show();
 				console.log("신고하기 모달 띄움!");
 			});
+			
+			
+			
+			/*등록한 이미지 미리보기1*/
+			function readFile(input){
+			  	let reader = new FileReader(); //파일 읽는 기능
+			    
+			    reader.onload = function(e){ //파일 읽었을 때 콜백 함수
+			    	$('#prevImg').attr('src', e.target.result); //파일URL을 미리보기란 이미지 src 속성으로
+			    }
+			    reader.readAsDataURL(input.files[0]);
+			  }
+			  
+			  $("#img1").change(function(){
+			    readFile(this);
+			  });
+		  
+			/*등록한 이미지 미리보기2*/
+			function readFile2(input){
+			  	let reader = new FileReader(); //파일 읽는 기능
+			    
+			    reader.onload = function(e){ //파일 읽었을 때 콜백 함수
+			    	$('#prevImg2').attr('src', e.target.result); //파일URL을 미리보기란 이미지 src 속성으로
+			    }
+			    reader.readAsDataURL(input.files[0]);
+			  }
+			  
+			  $("#img2").change(function(){
+			    readFile2(this);
+			  });
+		  
+
+				/*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
+				$("#btnReportSubmit").click(function(e) {
+					console.log("신고 제출하기 버튼 클릭됨!");
+//	 				e.preventDefault();
+					$("#reportModal").hide();
+				});
+		  
+				/*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
+				$("#btnReportClose").click(function(e) {
+					console.log("신고하기 모달 닫기 버튼 클릭됨!");
+					e.preventDefault();
+					$("#reportModal").hide();
+				});
 			
 		});
 	</script>
@@ -263,8 +309,11 @@
 		<div class="art_secondRow">
 			<div class="left">
 				<c:choose>
-					<c:when test="${sessionScope.sId eq productInfo.member_id}">
+					<c:when test="${sessionScope.sId eq productInfo.member_id and newTrade == null}">
 						<button class="btnTrade"><span>거래하기</span></button>
+					</c:when>
+					<c:when test="${sessionScope.sId eq productInfo.member_id}">
+						<button class="btnTrade" disabled><span>거래하기</span></button>
 					</c:when>
 					<c:when test="${newTrade.trade_type eq 1}">
 						<button id="btnDelivery"><span>테크페이(택배)</span></button>
@@ -413,10 +462,53 @@
 			
 			<!-- 신고하기 -->
 			<div id="reportModal" class="modal">
-				<jsp:include page="/WEB-INF/views/chat/reportModal.jsp"></jsp:include>
+				<form action="RegistReport">
+					신고하기
+					<hr>
+					<input type="radio" name="report_chat_reason" value="0" id="report"><label for="report">욕설 및 비방을 해요</label><br>
+					<input type="radio" name="report_chat_reason" value="1" id="report2"><label for="report2">사기인 것 같아요</label><br>
+					<input type="radio" name="report_chat_reason" value="2" id="report3"><label for="report3">거래 금지 품목을 팔아요</label><br>
+					<input type="radio" name="report_chat_reason" value="3" id="report4"><label for="report4">상품 상태가 안 좋아요</label><br>
+					<input type="radio" name="report_chat_reason" value="4" id="report5"><label for="report5">기타 부적절한 행위가 있어요</label><br>
+					<hr>
+					이미지는 최대 2장 등록 가능합니다.<br>
+					<%-- 파일 첨부 형식은 input 태그의 type="file" 속성 활용 --%>
+					<%-- 주의! 파일 업로드를 위해 form 태그 속성에 enctype 속성 필수!  --%>
+					<div class="">
+						<input type="file" name="file1" id="img1" class="img" onchange="prevImg(this)" accept="image/*"> 
+					<!-- 	accept 속성을 image/*로 지정할 경우 이미지파일만 업로드 가능 -->
+						<input type="file" name="file2" id="img2" class="img" onchange="prevImg2(this)">
+					</div>
+					<div class="">
+						<img id="prevImg" class="prevImg">
+						<img id="prevImg2" class="prevImg">
+					</div>
+					<hr>
+					<textarea rows="5" cols="55" name="report_chat_content">내용을 입력하세요</textarea><br>
+					<hr>
+					<div class="modalBtn">
+						<button type="submit" id="btnReportSubmit">신고하기</button>&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" id="btnReportClose">닫기</button>
+					</div>
+					
+					<input type="hidden" name="report_chat_reporter_id" value="${sessionScope.sId}">
+					<input type="hidden" name="report_chat_reportee_id" value="">
+					<input type="hidden" name="report_chat_chatroom_idx" value="">
+		<!-- 			<input type="hidden" name="report_chat_datetime" value=""> -->
+					<input type="hidden" name="report_chat_status" value="0">
+		<!-- 			<input type="hidden" name="report_chat_reason" value=""> -->
+		<!-- 			<input type="hidden" name="report_chat_content" value=""> -->
+					<input type="hidden" name="report_chat_img1" value="">
+					<input type="hidden" name="report_chat_img2" value="">
+					<input type="hidden" name="room_id" value="${param.room_id}">
+					<input type="hidden" name="receiver_id" value="${param.receiver_id}">
+					<input type="hidden" name="sender_id" value="${param.sender_id}">
+					<input type="hidden" name="pd_idx" value="${param.pd_idx}">
+					<input type="hidden" name="status" value="${param.status}">
+				</form>
 			</div>
 		</div>
-		</div>
+	</div>
 	<!-- 채팅창 -->
 	<div id="chatRoomArea">
 	

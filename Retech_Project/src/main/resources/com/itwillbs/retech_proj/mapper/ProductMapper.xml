@@ -24,8 +24,8 @@
 			, #{pd_subject}
 			, #{pd_content}
 			, now()								-- 작성일 (pd_first_date)
-			, null								-- 등록일 (pd_update_date)
-			, 0									-- 조회수 (pd_readcount)
+			, null								-- update date (pd_update_date)
+			, 1									-- 조회수 (pd_readcount)
 			, pd_idx + 1						-- re_ref
 			, '판매중'							-- 상품상태(pd_status)
 			, #{member_id}						-- 상품 작성자
@@ -41,22 +41,19 @@
 	
 	<!-- 리테크 상품 목록 조회작업 -->
 	<select id="selectProductList" resultType="com.itwillbs.retech_proj.vo.ProductVO">
-		SELECT
-			*
-		FROM
-			product
-		ORDER BY
-			pd_first_date DESC
+		SELECT * 
+        FROM product 
+        WHERE pd_subject LIKE CONCAT('%', #{searchKeyword}, '%') 
+        LIMIT #{startRow}, #{listLimit}
 	</select>
 		<!-- 중고상품 목록 조회작업 -->
 	<!-- 해당카테고리 조회 작업으로 뷰 생성 SECONDHAND_CATEGORY -->
 	
 	<!-- 리테크 상품 목록 개수 조회작업(페이징) -->
 	<select id="selectProductListCount" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			product
+		SELECT COUNT(*) 
+        FROM product 
+        WHERE pd_subject LIKE CONCAT('%', #{searchKeyword}, '%')
 	</select>
 	
 	
@@ -71,11 +68,16 @@
 	
 	
 	<!-- 상품 목록 정렬 변경 시 변경된 정렬로 목록 조회 작업 selectChangedProductList -->
-	<select id="selectChangedProductList" resultType="hashmap">
+	<select id="selectChangedProductList" parameterType="map" resultType="hashmap">
 	    SELECT *
 	    FROM product
 	    WHERE 1 = 1
-	      <!-- PC, 노트북 종류 필터링 -->
+	      <!-- 검색어 필터링 -->
+	      <if test="searchKeyword != ''">
+	        AND (pd_subject LIKE CONCAT('%', #{searchKeyword}, '%')
+	          OR member_id LIKE CONCAT('%', #{searchKeyword}, '%'))
+	      </if>
+	      <!-- 카테고리 필터링 -->
 	      <if test="pd_category != ''">
 	        AND pd_category LIKE CONCAT('%', #{pd_category}, '%')
 	      </if>
@@ -102,8 +104,9 @@
 	          pd_first_date DESC
 	        </otherwise>
 	      </choose>
-			LIMIT #{listLimit} OFFSET #{startRow}
+	    LIMIT #{listLimit} OFFSET #{startRow}
 	</select>
+
 
 
 	<!-- 상품목록 정렬변경시 변경된정렬 목록 개수 조회작업 selectChangedSecondhandListCount -->
@@ -143,12 +146,41 @@
 	
 	<!-- 상품 상세페이지 - 상품상세정보 조회작업 -->	
 	<select id="selectProduct" parameterType="int" resultType="com.itwillbs.retech_proj.vo.ProductVO">
-		SELECT *
-		FROM
-			product
-		WHERE
-			pd_idx = #{pd_idx}
+    SELECT 
+	        pd_idx,
+	        member_id,
+	        pd_subject,
+	        pd_content,
+	        pd_price,
+	        pd_status,
+	        pd_first_date,
+	        pd_update_date,
+	        pd_readcount,
+	        pd_re_ref,
+	        pd_image1,
+	        pd_image2,
+	        pd_image3,
+	        pd_image4,
+	        pd_image5,
+	        CASE 
+	            WHEN pd_category = 'PRODUCTPC' THEN 'PC'
+	            WHEN pd_category = 'PRODUCTPCSA' THEN 'PC 삼성'
+	            WHEN pd_category = 'PRODUCTPCLG' THEN 'PC LG'
+	            WHEN pd_category = 'PRODUCTPCAP' THEN 'PC 애플'
+	            WHEN pd_category = 'PRODUCTPCET' THEN 'PC 기타'
+	            WHEN pd_category = 'PRODUCTNB' THEN '노트북'
+	            WHEN pd_category = 'PRODUCTNBSA' THEN '노트북 삼성'
+	            WHEN pd_category = 'PRODUCTNBLG' THEN '노트북 LG'
+	            WHEN pd_category = 'PRODUCTNBAP' THEN '노트북 애플'
+	            WHEN pd_category = 'PRODUCTNBET' THEN '노트북 기타'
+	            ELSE '기타'
+	        END AS pd_category
+	    FROM 
+	        product
+	    WHERE 
+	        pd_idx = #{pd_idx}
 	</select>
+
 	
 	
 	<!-- 중고상품 상세페이지 - 판매자 정보 조회  -->

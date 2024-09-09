@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,64 +78,25 @@ public class MemberController {
 	   }
 
 	   @PostMapping("MemberJoinForm")
-	   public String memberJoinForm(
-	       @ModelAttribute MemberVO member, 
-	       @RequestParam(value = "profile", required = false) MultipartFile file, 
-	       Model model, 
-	       BCryptPasswordEncoder passwordEncoder
-	   ) {
-	       // 전화번호 중복 체크
-	       if (service.isExistPhonenumber(member) != null) {
-	           model.addAttribute("msg", "이미 등록된 전화번호입니다.");
-	           return "result/fail";
-	       }
-
-	       // 비밀번호 암호화
-	       String securePasswd = passwordEncoder.encode(member.getMember_passwd());
-	       member.setMember_passwd(securePasswd);
-
-	       // 파일 처리
-	       if (file != null && !file.isEmpty()) {
-	           try {
-	               // 파일 저장 경로 설정
-	               String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-	               String uploadDir = "uploads/";  // 애플리케이션의 상대 경로
-	               File uploadDirFile = new File(uploadDir);
-	               if (!uploadDirFile.exists()) {
-	                   uploadDirFile.mkdirs();
-	               }
-
-	               String filePath = uploadDir + fileName;
-	               File destinationFile = new File(filePath);
-	               file.transferTo(destinationFile);
-
-	               // 파일 경로를 member_profile에 추가
-	               member.setMember_profile(fileName);  // 상대 경로 저장
-
-	           } catch (IOException e) {
-	               model.addAttribute("msg", "파일 업로드 실패!");
-	               return "result/fail";
-	           }
-	       } else {
-	           // 파일이 없을 경우 기본값 설정
-	           member.setMember_profile(null);
-	       }
-
-	       // 회원 등록
-	       int insertCount = service.registMember(member);
-	       if (insertCount > 0) {
-	           return "redirect:/MemberJoinSuccess";
-	       } else {
-	           model.addAttribute("msg", "회원가입에 실패하였습니다. 정보를 확인해주세요.");
-	           return "result/fail";
-	       }
+	   public String memberJoinForm(MemberVO member, Model model, BCryptPasswordEncoder passwordEncoder) {
+	      System.out.println(member);
+	      
+	      // 전화번호 중복 체크
+	      if (service.isExistPhonenumber(member) != null) {
+	          model.addAttribute("msg", "이미 등록된 전화번호입니다.");
+	          return "result/fail"; // 실패 페이지로 이동
+	      }
+	      
+	      String securePasswd = passwordEncoder.encode(member.getMember_passwd());
+	      member.setMember_passwd(securePasswd);
+	      int insertCount = service.registMember(member);
+	      if (insertCount > 0) {
+	         return "redirect:/MemberJoinSuccess";
+	      } else {
+	         model.addAttribute("msg", "회원가입에 실패하였습니다. 정보를 확인해주세요.");
+	         return "result/fail";
+	      }
 	   }
-
-
-
-
-
-
 
 	   @GetMapping("MemberJoinSuccess")
 	   public String memberJoinSuccess() {
@@ -312,100 +272,78 @@ public class MemberController {
 					
 				}
 				
-				
 				// 비밀번호찾기 인증번호
 				@Autowired
 			    private SmsService smsService;
-				
-				@GetMapping("PwResetPro")
-			    public String showPasswordResetPage() {
-			        return "member/member_pw_reset"; // 비밀번호 재설정 페이지
-			    }
-				
 				@PostMapping("PwResetPro")
-				public String pwResetPro(@RequestParam String phone_number, @RequestParam String member_id, Model model) {
-				    System.out.println("비밀번호 재설정 요청");
+			    public String pwResetPro(MemberVO member, Model model) {
+			        System.out.println("비밀번호 재설정 요청");
 
-				    // 전화번호와 회원 ID로 DB에서 회원 정보를 조회
-				    MemberVO dbMember = service.getMemberByPhoneAndId(phone_number, member_id);
-
-				    if (dbMember != null) {
-				        // 인증번호 생성 및 SMS 전송
-				        String phoneNumber = dbMember.getMember_phone(); // DB에서 가져온 전화번호
-				        String memberId = dbMember.getMember_id(); // DB에서 가져온 회원 ID
-
-				        try {
-				            SmsAuthInfo smsAuthInfo = smsService.sendAuthSMS(memberId, phoneNumber);
-
-				            // 인증번호 발송 여부에 관계없이 다음 단계로 진행
-				            if (smsAuthInfo != null) {
-				                smsService.registSmsAuthInfo(smsAuthInfo);
-				            }
-				        } catch (Exception e) {
-				            e.printStackTrace();
-				        }
-				    }
-
-				    // 비밀번호 재설정 최종 페이지로 리디렉션
-				    return "redirect:/member/PwResetFinal";
-				}
-
-				@GetMapping("PwResetFinal")
-				public String showPwResetFinalPage() {
-				    return "member/member_pw_reset"; // 비밀번호 재설정 페이지로 이동
-				}
-
+			        // 입력된 전화번호로 DB에서 회원 정보를 조회
+			        MemberVO dbMember = service.isExistPhonenumber(member);
+			        
+			        if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
+			            model.addAttribute("msg", "없는 전화번호입니다");
+			            return "result/fail";
+			        } 
+			        
+			        // 전화번호가 존재하면 인증번호 생성 및 발송
+			        String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
+			        String member_id = dbMember.getMember_id(); // DB에서 가져온 회원 ID
+			        
+			        // 인증번호 생성 및 SMS 전송
+			        SmsAuthInfo smsAuthInfo = smsService.sendAuthSMS(member_id, phone_number);
+			        
+			        if (smsAuthInfo != null) {
+			            // 인증 정보를 DB에 저장
+			            smsService.registSmsAuthInfo(smsAuthInfo);
+			            
+			            // 모델에 인증 정보와 전화번호 저장
+			            model.addAttribute("dbMember", dbMember);
+			            model.addAttribute("smsAuthInfo", smsAuthInfo);
+			            
+			            // 인증번호 발송 성공 시 비밀번호 재설정 페이지로 이동
+			            return "member/member_pw_reset";
+			        } else {
+			            // 인증번호 전송 실패 시, 실패 메시지 반환
+			            model.addAttribute("msg", "인증번호 전송에 실패했습니다. 다시 시도해 주세요.");
+			            return "result/fail";
+			        }
+			    }
+	
+				
+				// 비밀번호 재설정
 				@PostMapping("PwResetFinal")
-				public String pwResetFinal(@RequestParam("member_id") String memberId,
-				                           @RequestParam("member_phone") String inputPhoneNumber,
-				                           @RequestParam("member_passwd") String newPasswd,
-				                           Model model) {
-				    // 필수 정보가 누락된 경우 처리
-				    if (memberId == null || inputPhoneNumber == null || newPasswd == null) {
-				        model.addAttribute("msg", "필수 정보가 누락되었습니다.");
-				        return "result/fail";
-				    }
-
-				    // 회원 정보 조회
-				    MemberVO member = new MemberVO();
-				    member.setMember_id(memberId);
-				    member = service.getMember(member);
-
-				    if (member == null) {
+				public String pwResetFinal(@RequestParam Map<String, String> map, MemberVO member,
+				                           BCryptPasswordEncoder passwordEncoder, Model model) {
+				    // member 정보가 null이 아닌지 확인하여 NullPointerException 방지  
+				    if (member != null) {
+				        member = service.getMember(member); // 기존 member 정보 조회
+				    } else {
 				        model.addAttribute("msg", "회원 정보를 찾을 수 없습니다.");
 				        return "result/fail";
 				    }
 
-				    // DB에서 회원의 전화번호를 가져옴
-				    String dbPhoneNumber = member.getMember_phone();
-
-				    // 입력한 전화번호가 DB에 저장된 번호와 일치하는지 확인
-				    if (!inputPhoneNumber.equals(dbPhoneNumber)) {
-				        model.addAttribute("msg", "전화번호가 일치하지 않습니다.");
-				        return "result/fail";
+				    // 새 비밀번호 입력 여부를 확인하여 새 비밀번호 입력됐을 경우 암호화 수행 필요
+				    String newPasswd = map.get("member_passwd");
+				    if (newPasswd != null && !newPasswd.isEmpty()) {
+				        map.put("member_passwd", passwordEncoder.encode(newPasswd)); // 새 비밀번호 암호화
+				        System.out.println("map : " + map); // passwd 항목 암호화 결과 확인
 				    }
 
+				    // 회원 정보 수정
+				    int updateCount = service.modifyMember(map);
 
-				    // 비밀번호 수정
-				    Map<String, String> updateMap = new HashMap<>();
-				    updateMap.put("member_id", memberId);
-				    updateMap.put("member_passwd", newPasswd);
-
-				    int updateCount = service.modifyPasswd(updateMap);
-
-				    // 비밀번호 수정 결과에 따른 처리
 				    if (updateCount > 0) {
-				        // 성공 시 성공 페이지로 리다이렉트
-				        return "redirect:/member/pw-reset-success";
+				        model.addAttribute("msg", "패스워드 수정 성공!");
+				        model.addAttribute("targetURL", "MemberLogin");
+				        return "result/success";
 				    } else {
 				        model.addAttribute("msg", "패스워드 수정 실패!");
 				        return "result/fail";
 				    }
 				}
-
-			
-
-
+	
 				
 	   @GetMapping("MyPageMain")
 	   public String mypageinfo2(@RequestParam Map<String, String> map, HttpSession session, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
@@ -513,19 +451,28 @@ public class MemberController {
 	       // 파일 처리
 	       if (file != null && !file.isEmpty()) {
 	           try {
-	               // 파일 저장 경로
-	               String fileName = file.getOriginalFilename();
-	               String filePath = "/var/www/html/uploads/" + fileName;
+	               // 파일 저장 경로 설정
+	               String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+	               String uploadDir = "/var/www/html/uploads/";  // 절대 경로 설정
+	               File uploadDirFile = new File(uploadDir);
+	               if (!uploadDirFile.exists()) {
+	                   uploadDirFile.mkdirs();
+	               }
+
+	               String filePath = uploadDir + fileName;
 	               File destinationFile = new File(filePath);
 	               file.transferTo(destinationFile);
 
-	               // 파일 경로를 map에 추가
-	               map.put("member_profile", filePath);
+	               // 파일 이름만을 map에 추가
+	               map.put("member_profile", fileName);
 
 	           } catch (IOException e) {
 	               model.addAttribute("msg", "파일 업로드 실패!");
 	               return "result/fail";
 	           }
+	       } else {
+	           // 파일이 없을 경우 기본값 설정
+	           map.put("member_profile", null);
 	       }
 
 	       int updateCount = service.modifyMember(map);
@@ -538,7 +485,6 @@ public class MemberController {
 	           return "result/fail";
 	       }
 	   }
-
 
 
 	   @PostMapping("MemberWithdraw")
@@ -603,54 +549,52 @@ public class MemberController {
 	   //판매내역(수정ver)
 	   @GetMapping("SaleHistory")
 	   public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
-	                             @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
-	                             Model model, HttpSession session) {
-
-	       // 세션에서 사용자 ID를 가져옴
-	       String member_id = (String) session.getAttribute("sId");
-
-	       System.out.println("!!!!!!!!!판매자 아이디 : " + member_id);
-
-	       if (member_id != null) {
-	           // 전체 판매 상품 목록 조회
-	           List<ProductVO> allProductList = productService.getSellerMyPage(startRow, listLimit, member_id);
-	           int totalProductCount = productService.getProductListCount();
-
-	           // 로그인한 사용자 ID에 맞는 상품만 필터링
-	           List<ProductVO> filteredProductList = allProductList.stream()
-	                   .filter(product -> member_id.equals(product.getMember_id()))
-	                   .collect(Collectors.toList());
-
-	           // 필터링된 판매 리스트와 전체 개수 설정
-	           model.addAttribute("productList", filteredProductList);
-	           model.addAttribute("totalProductCount", filteredProductList.size());
-
-	           // 회원 정보 조회 (필요한 경우)
-	           MemberVO member = new MemberVO();
-	           member.setMember_id(member_id);
-	           member = service.getMember(member);
-	           model.addAttribute("member", member);
-	       } else {
-	           return "redirect:/login"; // 로그인 페이지로 리디렉션
-	       }
-
-	       return "mypage/salehistory";
+			   @RequestParam(value = "listLimit", defaultValue = "10") int listLimit, 
+			   @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
+			   @RequestParam String member_id,
+			   Model model, HttpSession session) {
+		   
+//		   String id = (String) session.getAttribute("sId");
+		   System.out.println("!!!!!!!!!판매자 아이디 : " + member_id);
+		   // 판매자 ID가 존재하는 경우
+		   if (member_id != null) {
+			   // 전체 판매 상품 목록 조회
+			   List<ProductVO> allProductList = productService.getSellerMyPage(startRow, listLimit, member_id);
+			   int totalProductCount = productService.getProductListCount(searchKeyword);
+			   
+			   // 로그인한 사용자 ID에 맞는 상품만 필터링
+			   List<ProductVO> filteredProductList = allProductList.stream()
+					   .filter(product -> member_id.equals(product.getMember_id()))
+					   .collect(Collectors.toList());
+			   
+			   // 필터링된 판매 리스트와 전체 개수 설정
+			   model.addAttribute("productList", filteredProductList);
+			   model.addAttribute("totalProductCount", filteredProductList.size());
+			   
+			   // 회원 정보 조회 (필요한 경우)
+			   MemberVO member = new MemberVO();
+			   member.setMember_id(member_id);
+			   member = service.getMember(member);
+			   model.addAttribute("member", member);
+		   }
+		   
+		   return "mypage/salehistory";
 	   }
-
 	   
 	   
 	   // 구매내역
 	   @GetMapping("PurchaseHistory")
 	   public String Purchasehistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
 	                                  @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+	                                  @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
 	                                  Model model, HttpSession session) {
 
 	       String id = (String) session.getAttribute("sId");
 	       // 세션에 사용자 ID가 존재하는 경우
 	       if (id != null) {
 	           // 전체 상품 목록 조회
-	           List<ProductVO> allProductList = productService.getProductList(startRow, listLimit);
-	           int totalProductCount = productService.getProductListCount();
+	           List<ProductVO> allProductList = productService.getProductList(searchKeyword, startRow, listLimit);
+	           int totalProductCount = productService.getProductListCount(searchKeyword);
 
 	           // 로그인한 사용자 ID에 맞는 상품만 필터링
 	           List<ProductVO> filteredProductList = allProductList.stream()

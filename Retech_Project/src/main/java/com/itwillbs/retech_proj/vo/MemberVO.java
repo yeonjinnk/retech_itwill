@@ -21,6 +21,6 @@ public class MemberVO {
     private String member_address2;  
     private String member_profile; // 파일 경로를 저장하는 필드
     private int member_isAdmin;
-    private Date member_motivation; 
+    private Date member_subscription;  
     private MultipartFile profile; // 업로드된 파일을 저장하는 필드
 }
