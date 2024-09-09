@@ -293,7 +293,7 @@
                                            </c:otherwise>
                                        </c:choose>
                                    </td>
-                                   <td>${product.pd_content}</td>
+                                   <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
                                    <td>${product.pd_price}</td>
                                    <td data-date="${product.pd_first_date}"></td>
                                    <td>
