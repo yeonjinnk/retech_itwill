@@ -413,7 +413,6 @@
                 <input type="text" id="address1" name="member_address1" readonly placeholder="주소">
                 <input type="text" id="address2" name="member_address2" placeholder="상세주소">
             </div>
-            
             <div class="join_detail">
 			    <span>프로필 사진</span>
 			    <input type="file" name="profile" id="member_profile">
