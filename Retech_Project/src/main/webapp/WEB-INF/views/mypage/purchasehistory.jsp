@@ -29,7 +29,7 @@
             overflow: hidden;
         }
         
-        .store-info img {
+		.store-info img {
             border-radius: 50%;
             width: 100px;
             height: 100px;
@@ -239,25 +239,17 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <!-- 회원 ID가 있을 때만 '판매내역', '구매내역', '찜한상품' 링크에 member_id 파라미터 추가 -->
-            <a href="SaleHistory${param.member_id != null ? '?member_id=' + param.member_id : ''}">판매내역</a>
-            <a href="PurchaseHistory${param.member_id != null ? '?member_id=' + param.member_id : ''}" class="selected">구매내역</a>
-            <a href="Wishlist${param.member_id != null ? '?member_id=' + param.member_id : ''}">찜한상품</a>
-            <c:choose>
-                <c:when test="${empty param.member_id}">
-                    <a href="CsHistory">문의내역</a>
-                    <a href="MemberInfo">회원정보수정</a>
-                </c:when>
-                <c:otherwise>
-                    <!-- member_id가 있을 경우 '회원정보수정' 링크는 표시하지 않음 -->
-                </c:otherwise>
-            </c:choose>
+            <a href="SaleHistory">판매내역</a>
+            <a href="PurchaseHistory" class="selected">구매내역</a>
+            <a href="Wishlist">찜한상품</a>
+            <a href="CsHistory">문의내역</a>
+            <a href="MemberInfo">회원정보수정</a>
         </div>
 
         <div class="content-area">
-            <div class="store-info">
+             <div class="store-info">
                 <div>
-                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}" alt="Profile Image">
+                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}">               	
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>
@@ -284,45 +276,51 @@
                         </thead>
                         <tbody>
                             <c:forEach var="product" items="${buyList}">
-                                <tr>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${not empty product.pd_image1}">
-                                                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                No Image
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                    <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
-                                    <td>${product.trade_amt}</td>
-                                    <td>${product.pd_first_date}</td>
-                                    <td>
-                                        <div class="status-buttons">
+<%--                                 <c:if test="${product.pd_status == '결제완료' ||  --%>
+<%--                                              product.pd_status == '거래취소 요청' ||  --%>
+<%--                                              product.pd_status == '거래취소 확정' ||  --%>
+<%--                                              product.pd_status == '거래확정'}"> --%>
+                                    <tr>
+                                        <td>
                                             <c:choose>
-                                                <c:when test="${product.trade_status == 1}">
-                                                    예약중
+                                                <c:when test="${not empty product.pd_image1}">
+                                                    <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
                                                 </c:when>
-                                                <c:when test="${product.trade_status == 2}">
-                                                    결제완료
-                                                    <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소요청</button>
-                                                    <button class="status-button confirm-request" data-id="${product.pd_idx}">거래확정</button>
-                                                </c:when>
-                                                <c:when test="${product.trade_status == 3}">
-                                                    거래완료
-                                                    <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
-                                                </c:when>
-                                                <c:when test="${product.trade_status == 4}">
-                                                    거래취소대기
-                                                </c:when>
-                                                <c:when test="${product.trade_status == 5}">
-                                                    거래취소승인
-                                                </c:when>
+                                                <c:otherwise>
+                                                    No Image
+                                                </c:otherwise>
                                             </c:choose>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
+<%--                                         <td>${product.pd_content}</td> --%>
+                                        <td>${product.trade_amt}</td>
+                                        <td>${product.pd_first_date}</td>
+                                        <td>
+                                            <div class="status-buttons">
+                                                <c:choose>
+                                                    <c:when test="${product.trade_status == 1}">
+                                                        예약중
+                                                    </c:when>
+                                                    <c:when test="${product.trade_status == 2}">
+                                                        결제완료
+                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소요청</button>
+                                                        <button class="status-button confirm-request" data-id="${product.pd_idx}">거래확정</button>
+                                                    </c:when>
+                                                    <c:when test="${product.trade_status == 3}">
+                                                        거래완료
+                                                        <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
+                                                    </c:when>
+                                                    <c:when test="${product.trade_status == 4}">
+                                                        거래취소대기
+                                                    </c:when>
+                                                    <c:when test="${product.trade_status == 5}">
+                                                        거래취소승인
+                                                    </c:when>
+                                                </c:choose>
+                                            </div>
+                                        </td>
+                                    </tr>
+<%--                                 </c:if> --%>
                             </c:forEach>
                         </tbody>
                     </table>
@@ -343,3 +341,4 @@
     </footer>
 </body>
 </html>
+ 

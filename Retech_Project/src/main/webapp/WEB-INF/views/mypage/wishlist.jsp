@@ -149,27 +149,12 @@
     </header>
 
     <div class="main-content">
-       <div class="sidebar">
-<!--             <a href="SaleHistory" class="selected">판매내역</a> -->
-            <a href="SaleHistory?member_id=${product.member_id}"> 판매내역 </a>
-            <a href="PurchaseHistory?member_id=${product.member_id}">구매내역</a>
-            <a href="Wishlist?member_id=${product.member_id}" class="selected">찜한상품</a>
-            <c:choose>
-                <c:when test="${empty param.paramName}">
-                    <a href="CsHistory">문의내역</a>
-                </c:when>
-                <c:otherwise>
-                    <!-- 파라미터가 있을 경우 이곳에 아무 내용도 넣지 않음 -->
-                </c:otherwise>
-            </c:choose>
-            <c:choose>
-                <c:when test="${empty param.paramName}">
-                    <a href="MemberInfo">회원정보수정</a>
-                </c:when>
-                <c:otherwise>
-                    <!-- 파라미터가 있을 경우 이곳에 아무 내용도 넣지 않음 -->
-                </c:otherwise>
-            </c:choose>
+        <div class="sidebar">
+            <a href="SaleHistory">판매내역</a>
+            <a href="PurchaseHistory">구매내역</a>
+            <a href="Wishlist" class="selected">찜한 상품</a>
+            <a href="CsHistory">문의내역</a>
+            <a href="MemberInfo">회원정보수정</a>
         </div>
 
         <div class="content-area">
