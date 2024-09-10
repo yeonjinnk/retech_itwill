@@ -42,9 +42,10 @@
 	<!-- 리테크 상품 목록 조회작업 -->
 	<select id="selectProductList" resultType="com.itwillbs.retech_proj.vo.ProductVO">
 		SELECT * 
-        FROM product 
-        WHERE pd_subject LIKE CONCAT('%', #{searchKeyword}, '%') 
-        LIMIT #{startRow}, #{listLimit}
+	    FROM product 
+	    WHERE pd_subject LIKE CONCAT('%', #{searchKeyword}, '%') 
+	    ORDER BY pd_first_date DESC  <!-- 최신순으로 정렬 -->
+	    LIMIT #{startRow}, #{listLimit}
 	</select>
 		<!-- 중고상품 목록 조회작업 -->
 	<!-- 해당카테고리 조회 작업으로 뷰 생성 SECONDHAND_CATEGORY -->

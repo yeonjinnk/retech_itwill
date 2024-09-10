@@ -596,6 +596,9 @@ function localStarageDeleteOne(keyword) {
 	updateTable();
 }
 
+
+
+
 </script>
 
 <!-- 탑 최상단 영역 -->
