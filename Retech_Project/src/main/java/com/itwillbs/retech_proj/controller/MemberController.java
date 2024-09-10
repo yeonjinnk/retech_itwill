@@ -133,6 +133,7 @@ public class MemberController {
 	       
 	       // 인증번호 생성 및 세션 저장
 	       String verificationCode = generateVerificationCode();
+	       System.out.println();
 	       session.setAttribute("verificationCode", verificationCode);
 	       session.setAttribute("phoneNumber", phone);
 
