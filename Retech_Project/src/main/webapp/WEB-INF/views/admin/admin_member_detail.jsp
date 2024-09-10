@@ -48,10 +48,6 @@
                 <div class="content">
                     <table border="1">
                         <tr>
-                            <th>회원아이디</th>
-                            <td>${member.member_id}</td>
-                        </tr>
-                        <tr>
                             <th>이름</th>
                             <td>${member.member_name}</td>
                         </tr>
@@ -66,6 +62,22 @@
                         <tr>
                             <th>생년월일</th>
                             <td>${member.member_birth}</td>
+                        </tr>
+                        <tr>
+                            <th>우편번호</th>
+                            <td>${member.member_postcode}</td>
+                        </tr>
+                        <tr>
+                            <th>상세주소1</th>
+                            <td>${member.member_address1}</td>
+                        </tr>
+                        <tr>
+                            <th>상세주소2</th>
+                            <td>${member.member_address2}</td>
+                        </tr>
+                        <tr>
+                            <th>가입일자</th>
+                            <td>${member.member_subscription}</td>
                         </tr>
                         <tr>
                             <th>회원 상태</th>

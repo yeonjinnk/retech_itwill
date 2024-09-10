@@ -180,6 +180,15 @@
                 return date.toLocaleDateString('ko-KR', options); // 'ko-KR'은 한국 날짜 형식
             }
 
+            var urlParams = new URLSearchParams(window.location.search);
+
+            // member_id 파라미터가 있는지 확인
+            if (urlParams.has('member_id')) {
+                // '문의내역' 및 '회원정보수정' 링크를 숨김
+                $('.sidebar a[href="CsHistory"]').hide();
+                $('.sidebar a[href="MemberInfo"]').hide();
+            }
+            
             // 모든 날짜 셀을 찾아서 변환
             $('td[data-date]').each(function() {
                 const dateString = $(this).data('date');
@@ -245,17 +254,32 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <a href="SaleHistory" class="selected">판매내역</a>
-            <a href="PurchaseHistory">구매내역</a>
-            <a href="Wishlist">찜한상품</a>
-            <a href="CsHistory">문의내역</a>
-            <a href="MemberInfo">회원정보수정</a>
+<!--             <a href="SaleHistory" class="selected">판매내역</a> -->
+            <a href="SaleHistory?member_id=${product.member_id}" class="selected"> 판매내역 </a>
+            <a href="PurchaseHistory?member_id=${product.member_id}">구매내역</a>
+            <a href="Wishlist?member_id=${product.member_id}">찜한상품</a>
+            <c:choose>
+                <c:when test="${empty param.paramName}">
+                    <a href="CsHistory">문의내역</a>
+                </c:when>
+                <c:otherwise>
+                    <!-- 파라미터가 있을 경우 이곳에 아무 내용도 넣지 않음 -->
+                </c:otherwise>
+            </c:choose>
+            <c:choose>
+                <c:when test="${empty param.paramName}">
+                    <a href="MemberInfo">회원정보수정</a>
+                </c:when>
+                <c:otherwise>
+                    <!-- 파라미터가 있을 경우 이곳에 아무 내용도 넣지 않음 -->
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <div class="content-area">
-             <div class="store-info">
+            <div class="store-info">
                 <div>
-                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}">               	
+                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}">               
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>

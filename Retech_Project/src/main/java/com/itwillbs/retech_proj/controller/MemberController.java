@@ -578,39 +578,6 @@ public class MemberController {
 	   @Autowired
 	   private ProductService productService;
 	   //판매내역
-//	   @GetMapping("SaleHistory")
-//	   public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
-//	                              @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
-//	                              Model model, HttpSession session) {
-//
-//	       String id = (String) session.getAttribute("sId");
-//	       System.out.println("!!!!!!!!!로그인한 아이디 : " + id);
-//	       // 세션에 사용자 ID가 존재하는 경우
-//	       if (id != null) {
-//	           // 전체 판매 상품 목록 조회
-//	           List<ProductVO> allProductList = productService.getProductList(startRow, listLimit);
-//	           int totalProductCount = productService.getProductListCount();
-//
-//	           // 로그인한 사용자 ID에 맞는 상품만 필터링
-//	           List<ProductVO> filteredProductList = allProductList.stream()
-//	               .filter(product -> id.equals(product.getMember_id()))
-//	               .collect(Collectors.toList());
-//
-//	           // 필터링된 판매 리스트와 전체 개수 설정
-//	           model.addAttribute("productList", filteredProductList);
-//	           model.addAttribute("totalProductCount", filteredProductList.size());
-//
-//	           // 회원 정보 조회 (필요한 경우)
-//	           MemberVO member = new MemberVO();
-//	           member.setMember_id(id);
-//	           member = service.getMember(member);
-//	           model.addAttribute("member", member);
-//	       }
-//
-//	       return "mypage/salehistory";
-//	   }
-//	   
-	
 	   @GetMapping("SaleHistory")
 	   public String SaleHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
 	           @RequestParam(value = "listLimit", defaultValue = "10") int listLimit, 
@@ -634,30 +601,16 @@ public class MemberController {
     	   
     	   model.addAttribute("saleList", saleList);
 	       
-	       
-	       
-	       // 전체 판매 상품 목록 조회
-//	       List<ProductVO> allProductList = productService.getSellerMyPage(startRow, listLimit, loggedInUserId);
-//	       int totalProductCount = productService.getProductListCount(searchKeyword);
-	       
-	       // 로그인한 사용자 ID에 맞는 상품만 필터링
-//	       List<ProductVO> filteredProductList = allProductList.stream()
-//	               .filter(product -> loggedInUserId.equals(product.getMember_id()))
-//	               .collect(Collectors.toList());
-	       
-	       // 필터링된 판매 리스트와 전체 개수 설정
-//	       model.addAttribute("productList", filteredProductList);
-//	       model.addAttribute("totalProductCount", filteredProductList.size());
-	       
 	       // 회원 정보 조회 (필요한 경우)
 	       MemberVO member = new MemberVO();
 	       member.setMember_id(loggedInUserId);
 	       member = service.getMember(member);
 	       model.addAttribute("member", member);
 	       
+	       model.addAttribute("pageName", "SaleHistory");
+	       
 	       return "mypage/salehistory";
 	   }
-
 
 	   
 	   
@@ -672,14 +625,6 @@ public class MemberController {
 	       String id = (String) session.getAttribute("sId");
 	       // 세션에 사용자 ID가 존재하는 경우
 	       if (id != null) {
-	           // 전체 상품 목록 조회
-//	           List<ProductVO> allProductList = productService.getProductList(searchKeyword, startRow, listLimit);
-//	           int totalProductCount = productService.getProductListCount(searchKeyword);
-
-	           // 로그인한 사용자 ID에 맞는 상품만 필터링
-//	           List<ProductVO> filteredProductList = allProductList.stream()
-//	               .filter(product -> id.equals(product.getMember_id()))
-//	               .collect(Collectors.toList());
 	           
 	           // 아이디에 해당하는 구매내역 리스트 조회
 	    	   List<Map<String, String>> buyList = productService.getBuyList(id);
@@ -689,15 +634,13 @@ public class MemberController {
 	    	   
 	    	   model.addAttribute("buyList", buyList);
 
-	           // 필터링된 상품 리스트와 전체 개수 설정
-//	           model.addAttribute("productList", filteredProductList);
-//	           model.addAttribute("totalProductCount", filteredProductList.size());
 
 	           // 회원 정보 조회 (필요한 경우)
 	           MemberVO member = new MemberVO();
 	           member.setMember_id(id);
 	           member = service.getMember(member);
 	           model.addAttribute("member", member);
+	           
 	       }
 
 	       return "mypage/purchasehistory";
