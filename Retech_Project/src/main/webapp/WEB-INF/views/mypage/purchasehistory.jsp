@@ -248,8 +248,8 @@
                 </c:when>
                 <c:otherwise>
                     <!-- member_id 파라미터가 없을 때 -->
-                    <a href="SaleHistory" class="selected">판매내역</a>
-                    <a href="PurchaseHistory">구매내역</a>
+                    <a href="SaleHistory">판매내역</a>
+                    <a href="PurchaseHistory" class="selected">구매내역</a>
                     <a href="Wishlist">찜한상품</a>
                     <a href="CsHistory">문의내역</a>
                     <a href="MemberInfo">회원정보수정</a>
