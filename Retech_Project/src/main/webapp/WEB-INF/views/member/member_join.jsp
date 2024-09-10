@@ -13,11 +13,15 @@
             background-color: #f4f7f6;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .content {
+            flex: 1;
             padding: 50px 0;
-            margin-top: 130px; 
+            margin-top: 130px;
         }
 
         .tab {
@@ -143,6 +147,11 @@
         .address-btn:hover {
             background-color: #45a049;
         }
+
+        footer {
+		    margin-top: auto; 
+		    width: 100%;
+		}
     </style>
     <script type="text/javascript">
         function checkId() {

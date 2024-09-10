@@ -7,25 +7,30 @@
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
         body {
             font-family: 'Noto Sans', sans-serif;
             background-color: #f4f7f6;
-            margin: 0;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         header, footer {
             background-color: #fff;
             border-bottom: 1px solid #ddd;
-            padding: 10px 0;
+            padding: 0px 0;
         }
 
         .content {
-		    padding: 50px 0;
-		    text-align: center;
-		    margin-top: 130px; 
-		}
-
+            padding: 50px 0;
+            text-align: center;
+            flex: 1; 
+            margin-top: 130px; 
+        }
 
         .tab {
             width: 720px;
@@ -48,6 +53,11 @@
             width: 33.33%;
             background-color: #eee;
             border-radius: 10px 10px 0 0;
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+            height: 40px;
+            line-height: 40px; 
         }
 
         .tab > ul > li a {
@@ -110,6 +120,11 @@
         .btn-login:hover {
             background-color: #1976D2;
         }
+        
+        footer {
+		    margin-top: auto;
+		    width: 100%;
+		}
     </style>
 </head>
 <body>

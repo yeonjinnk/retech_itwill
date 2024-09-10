@@ -8,7 +8,6 @@
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
-        /* 스타일 코드 여기에 */
         body {
             font-family: 'Noto Sans', sans-serif;
             background-color: #f4f7f6;
@@ -39,10 +38,16 @@
         }
 
         .tab > ul > li {
-            width: 33.33%;
-            background-color: #eee;
-            border-radius: 10px 10px 0 0;
-        }
+		    width: 33.33%;
+		    background-color: #eee;
+		    border-radius: 10px 10px 0 0;
+		    display: flex;
+		    align-items: center; 
+		    justify-content: center; 
+		    height: 40px;
+		    line-height: 40px; 
+		}
+
 
         .tab > ul > li a {
             display: block;
@@ -153,6 +158,10 @@
         .auth_code button:hover {
             background-color: #45a049;
         }
+        footer {
+		    margin-top: auto;
+		    width: 100%;
+		}
     </style>
 </head>
 <body>
