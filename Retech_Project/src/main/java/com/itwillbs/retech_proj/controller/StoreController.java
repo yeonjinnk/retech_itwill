@@ -47,18 +47,19 @@ public class StoreController {
 	}
 	
 	//상품 목록 출력 ajax..
+	@ResponseBody
 	@GetMapping("StoreProductList")
-	public String productList() {
+	public List<Map<String, Object>> productList(@RequestParam Map<String, String> map) {
 		
-		List<Map<String, Object>> productList = service.selectProductList();
+		List<Map<String, Object>> productList = service.selectProductList(map);
 		
-		return "";
+		return productList;
 	}
 	
 	@GetMapping("StoreDetail")
-	public String storeDetail(StoreVO store, Model model) {
+	public String storeDetail(@RequestParam int store_idx, StoreVO store, Model model) {
 		//상품 정보 조회
-		Map<String, Object> Product = service.selectProduct(store);
+		Map<String, Object> Product = service.selectProduct(store_idx);
 		System.out.println("Product : " + Product);
 		
 		model.addAttribute("Product", Product);
@@ -73,17 +74,40 @@ public class StoreController {
 		int insertCount = service.insertPayProduct(order_store_item, order_store_quantity, order_store_pay);
 		Map<String, Object> payProduct = service.selectPayProduct(order_store_item);
 		model.addAttribute("payProduct", payProduct);*/
-	public String storePay(@RequestParam("order_store_item") int store_idx, Model model) {
+	public String storePay(@RequestParam("order_store_item") int store_idx, @RequestParam int order_store_quantity, 
+			Model model) {
 //		System.out.println("store_idx" + store_idx);
+		System.out.println("!!!!!!!!!스토어 결제하기 파라미터 조회 : " + store_idx + ", " + order_store_quantity);
 		//상품 정보 조회
 		Map<String, Object> Store = service.selectStore(store_idx);
 		System.out.println("Store : " + Store);
 		
+		int shippingCost = 3000;
+		int amt = order_store_quantity * (int)Store.get("store_price");
+		int order_store_pay = amt + shippingCost;
 		model.addAttribute("Store", Store);
+		model.addAttribute("order_store_quantity", order_store_quantity);
+		model.addAttribute("order_store_pay", order_store_pay);
+		model.addAttribute("amt", amt);
 		return "store/store_pay";
 	} 
 	
+	//스토어 결제 정보 저장하기
+	@PostMapping("StorePay")
+	public String SaveStorePay(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		System.out.println("!!!!!!!!!!!!결제 완료 후 들고온 파라미터!!!!!!!!!!! : " + map);
 		
+		//스토어 결제 정보 저장하기
+		int isInsert = service.insertStorePay(map);
+		if(isInsert > 0) {
+			return "store/store_pay_completed";
+		} else {
+			model.addAttribute("msg", "결제 실패!");
+			model.addAttribute("targetURL", "StoreProductList");
+			return "result/fail";
+		}
+	}
+	
 	
 	
 }

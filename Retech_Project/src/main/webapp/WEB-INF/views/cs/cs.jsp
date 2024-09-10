@@ -32,6 +32,7 @@
         <th width="200px">제목</th>
         <th width="400px">문의내용</th>
         <th width="100px">확인여부</th>
+        <th width="200px">등록일자</th>
     </tr>
     <c:set var="pageNum" value="1" />
     
@@ -58,6 +59,7 @@
 	            </td>
 	            <td>${cs.cs_content}</td>
 	            <td>${cs.cs_check}</td>
+	            <td>${cs.cs_date}</td>
 	        </tr>
 	    </c:forEach>
     </c:if>

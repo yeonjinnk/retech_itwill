@@ -40,11 +40,13 @@ public class CsController {
 			@RequestParam(defaultValue ="") String searchKeyword) {
 		// -------------------------------------------------------------------------------------------
 		// 페이징 처리
+		String id = (String)session.getAttribute("sId");
+		
 		int listLimit = 5; // 페이지 당 게시물 수
 		int startRow = (pageNum - 1) * listLimit; // 조회할 게시물의 행 번호
 		
 		// 검색 기능 추가 (0705)
-		int listCount = service.getCsListCount(); // 총 게시물 개수
+		int listCount = service.getCsListCount(id); // 총 게시물 개수
 		//System.out.println(listCount);
 		int pageListLimit = 3; // 임시) 페이지 당 페이지 번호 갯수를 3개로 지정(1 2 3 or 4 5 6)
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
@@ -73,7 +75,6 @@ public class CsController {
 		
 		// -------------------------------------------------------------------------------------------
 		
-		String id = (String)session.getAttribute("sId");
 		
 		if(id == null) {
 			model.addAttribute("msg", "로그인 필수!");
@@ -97,6 +98,7 @@ public class CsController {
 		System.out.println("csListddddd" + csList);
 		model.addAttribute("csList", csList);
 		model.addAttribute("pageInfo", pageInfo);
+		System.out.println("pageInfo " + pageInfo);
 		
 		return "cs/cs";
 	}

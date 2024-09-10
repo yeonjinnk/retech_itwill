@@ -9,9 +9,10 @@ import com.itwillbs.retech_proj.vo.StoreVO;
 
 public interface StoreMapper {
 
-	List<Map<String, Object>> selectProductList();
+	//상품 목록 띄우기
+	List<Map<String, Object>> selectProductList(Map<String, String> map);
 
-	Map<String, Object> selectProduct(StoreVO store);
+	Map<String, Object> selectProduct(int store_idx);
 
 	//결제 상품 조회
 	Map<String, Object> selectPayProduct(@Param("order_store_item") String order_store_item);
@@ -23,5 +24,8 @@ public interface StoreMapper {
 	 */
 	//상품 정보 조회2
 	Map<String, Object> selectStore(int store_idx);
+
+	//상품 결제 정보 저장하기
+	int insertStorePay(Map<String, Object> map);
 
 }

@@ -1,0 +1,59 @@
+@charset "UTF-8";
+/* 기본 스타일 */
+.store_product {
+    display: flex;
+    flex-wrap: wrap; /* 줄바꿈 허용 */
+    gap: 20px; /* 항목 간 간격 */
+    padding: 20px;
+    justify-content: space-between; /* 요소 사이에 여백 배분 */
+    margin: 100px;
+}
+
+.store_list {
+    flex: 1 1 calc(33.333% - 20px); /* 3개가 한 줄에 들어가도록 설정 (여백을 고려) */
+    box-sizing: border-box; /* padding과 border를 포함한 크기 계산 */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+}
+
+/* 이미지 스타일 */
+.store_img {
+    max-width: 100%;
+}
+
+.store_img img {
+	cursor: pointer;
+    width: 100%; /* 이미지가 div를 가득 채우도록 */
+    height: auto;
+    border-radius: 4px;
+}
+
+/* 프리뷰 스타일 */
+.store_preview {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+/* ID 및 콘텐츠 스타일 */
+.store_id {
+	cursor:pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.store_content {
+    font-size: 1em;
+    color: #333;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+}

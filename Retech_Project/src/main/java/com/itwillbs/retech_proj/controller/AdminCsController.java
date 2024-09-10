@@ -1,5 +1,6 @@
 package com.itwillbs.retech_proj.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -318,6 +319,28 @@ public class AdminCsController {
 		CsVO selectedCs = service.getCs(cs_idx);
 		
 		model.addAttribute("selectedCs", selectedCs);
+		
+		List<String> fileList = new ArrayList<String>();
+		fileList.add(selectedCs.getCs_file1());
+		fileList.add(selectedCs.getCs_file2());
+//		System.out.println(fileList);
+		
+		// -------------------------------------------------------------------------------
+		// 만약, 컨트롤러 측에서 원본 파일명을 추출하여 별도의 객체로 저장 후 전송할 경우
+		// => List 객체를 반복하면서 파일명에서 원본 파일명을 추출
+		List<String> originalFileList = new ArrayList<String>();
+		for(String file : fileList) {
+			if(!file.equals("")) {
+				// "_" 기호 다음(해당 인덱스값 + 1)부터 끝까지 추출하여 리스트에 추가
+				originalFileList.add(file.substring(file.indexOf("_") + 1));
+			}
+		}
+//		System.out.println("originalFileList : " + originalFileList);
+		// -------------------------------------------------------------------------------
+		
+		// Model 객체에 파일 목록 저장
+		model.addAttribute("fileList", fileList);
+		model.addAttribute("originalFileList", originalFileList);
 		
 		return "admin/admin_Cs_write_reply_popup";
 	}

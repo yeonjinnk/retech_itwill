@@ -136,10 +136,27 @@ public class ChatController {
 		
 		 // 세션에 거래 정보 저장
 	    session.setAttribute("newTrade", newTrade);
+	    
+	    String pdStatus = "예약중";
+	    
+	    // 상품 상태 '예약중'으로 변경
+	    int updateCount = service.updatePdStatus(pd_idx, pdStatus);
+	    
+	    if(updateCount > 0) {
+	    	
+	    	System.out.println("상품상태 예약중으로 업데이트 완료!");
+	    	
+	    	//정보를 다시 들고 가야 하니까 redirect..
+	    	return "redirect:/ChatRoom?room_id=" + roomId + "&receiver_id=" + receiverId 
+	    			+ "&sender_id=" + senderId + "&status=" + status + "&pd_idx=" + pd_idx;
+	    	
+	    } else {
+			model.addAttribute("msg", "거래하기 실패!"); 
+			model.addAttribute("targetURL", "SelectTrade"); 
+			return "result/fail";	    	
+	    }
+	    
 		
-		//정보를 다시 들고 가야 하니까 redirect..
-		return "redirect:/ChatRoom?room_id=" + roomId + "&receiver_id=" + receiverId 
-				+ "&sender_id=" + senderId + "&status=" + status + "&pd_idx=" + pd_idx;
 	}
 	
 	@GetMapping("DeliveryPay")

@@ -3,10 +3,10 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
     <mapper namespace="com.itwillbs.retech_proj.mapper.StoreMapper">
-    	<select id="selectProductList">
+    	<select id="selectProductList" resultType="map">
     		SELECT *
     		FROM store
-    		
+    		WHERE store_category = #{store_category}
     	
     	</select>
 
@@ -15,6 +15,7 @@
     <select id="selectProduct" resultType="map">
     	SELECT *
     	FROM store
+    	WHERE store_idx = #{store_idx}
     </select>
     
     		<!-- 상품상세조회2 -->
@@ -43,5 +44,19 @@
     		)
     </insert>
      -->
+     
+     <!-- 상품 결제 정보 저장하기 -->
+     <insert id="insertStorePay">
+     	INSERT INTO order_store
+     	VALUES (
+     		null
+     		, #{order_store_item}
+     		, #{order_store_member_id}
+     		, now()
+     		, #{order_store_quantity}
+     		, #{order_store_pay}
+     		, #{payment}
+     	)
+     </insert>
     
     </mapper>

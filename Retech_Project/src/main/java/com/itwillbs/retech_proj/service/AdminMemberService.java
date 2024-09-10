@@ -41,5 +41,8 @@ public List<ProductVO> getProductList() {
     public MemberVO getMemberById(String memberId) {
         return memberMapper.selectMemberById(memberId);
     }
+	public List<MemberVO> getMemberList22(int startRow, int listLimit, String searchKeyword) {
+		return mapper.selectMemberList22(startRow, listLimit, searchKeyword);
+	}
    
 }

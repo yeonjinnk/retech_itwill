@@ -15,14 +15,13 @@ public class StoreService {
 	@Autowired
 	StoreMapper mapper;
 	//상품 목록 조회
-	public List<Map<String, Object>> selectProductList() {
-		// TODO Auto-generated method stub
-		return mapper.selectProductList();
+	public List<Map<String, Object>> selectProductList(Map<String, String> map) {
+		return mapper.selectProductList(map);
 	}
 	
 	//상품 정보 조회
-	public Map<String, Object> selectProduct(StoreVO store) {
-		return mapper.selectProduct(store);
+	public Map<String, Object> selectProduct(int store_idx) {
+		return mapper.selectProduct(store_idx);
 	}
 
 	//결제 상품 조회
@@ -38,6 +37,11 @@ public class StoreService {
 	//상품 정보 조회2
 	public Map<String, Object> selectStore(int store_idx) {
 		return mapper.selectStore(store_idx);
+	}
+
+	// 상품 결제 정보 저장하기
+	public int insertStorePay(Map<String, Object> map) {
+		return mapper.insertStorePay(map);
 	}
 	
 

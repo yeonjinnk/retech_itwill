@@ -100,6 +100,11 @@ public class ChatService {
 		return mapper.selectPdIDX(member_id);
 	}
 
+    // 상품 상태 '예약중'으로 변경	
+	public int updatePdStatus(int pd_idx, String pdStatus) {
+		return mapper.updatePdStatus(pd_idx, pdStatus);
+	}
+
 	//택배 주소 입력
 
 	//저장한 거래 정보 조회하기

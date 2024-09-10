@@ -5,7 +5,9 @@
     <mapper namespace="com.itwillbs.retech_proj.mapper.CsMapper">
 	<select id="selectCsListCount" resultType="int">
 		SELECT COUNT(*)
-		FROM cs	
+		FROM cs
+		WHERE
+		cs_member_id = #{id}
 	</select>   
 	
 	<select id="selectCsList" resultType="cs">

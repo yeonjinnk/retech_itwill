@@ -9,19 +9,18 @@
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/store/store_pay.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<%-- 포트원 결제 라이브러리 포함시키기 --%>
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+<!-- 포트원 결제 연동 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<!-- 포트원 라이브러리 추가 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<!-- 포트원 라이브러리 추가 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
 </head>
 <body>
 <script type="text/javascript">
-	
-	$(document).ready(function() {
-		//공동현관 출입방법 따라 비밀번호 입력창 노출 제어
+	//공동현관 출입방법 따라 비밀번호 입력창 노출 제어
+	$(function() {
 		$('input:radio[name=enter]').click(function() {
 			//공동현관 비밀번호에 체크시 입력창 노출
 			if($("input[name=enter]:checked").val() == "lock") {
@@ -31,138 +30,43 @@
 				$(".input_pw").css("display", "none");
 			}
 		})
-		
-// 		$('#addButton').click(function() {
-//                 $('body').append('<button class="dynamicButton">동적 버튼</button>');
-//             });
-// 		 let storePrice = parseFloat("${Store.store_price}"); // Store.store_price 값을 실수로 변환
-//         let amount = parseFloat("${order_store_quantity}");
-//         console.log("amount : " + amount);
-        
-// 		 let shippingCost = 3000; // 배송비
-//         let order_store_pay = (storePrice*amount + shippingCost; // 총 결제 금액 계산
-//         console.log("order_store_pay : " + order_store_pay);
-        
-        
-		
-// 		let order_store_pay ="${Store.store_price} + 3000";
-// 			console.log("order_store_pay : " + order_store_pay);
-	    // 결제 처리
-	    function pay() {
-
-// 	        event.preventDefault(); 
-	        var selectedPaymentMethod = $('input[name="payment"].selected').val();
-			// 결제방법 미선택시 다음 단계 진행 불가 
-	        if (!selectedPaymentMethod) {
-	            alert('결제 방법을 선택해 주세요.');
-	            return false;
-	        }
-			
-	        var selectedPaymentMethod = $('input[name="payment"].selected').val();
-			// 결제방법 미선택시 다음 단계 진행 불가 
-	        if (!selectedPaymentMethod) {
-	            alert('결제 방법을 선택해 주세요.');
-	            return false;
-	        }
-	
-			// 선택된 결제방법에 따라 각각 함수 호출
-	        if (selectedPaymentMethod === '네이버페이') {
-	            return naverConfirm();
-	        } else if (selectedPaymentMethod === '카카오페이') {
-	            return kakaoConfirm();
-	        } else if (selectedPaymentMethod === '신용/체크카드') {
-	            return cardConfirm();
-	        }
-	    }
-	
-	    // 결제방법은 한 가지만 선택 가능
-	    $('input[name="payment"]').on('click', function() {
-	        $('input[name="payment"]').removeClass('selected');
-	        $(this).addClass('selected');
-	    });
-	
-	    
-	    // 결제 공통 정보 저장
-	    let IMP = window.IMP;
-	    IMP.init("imp33031510"); // 가맹점 식별코드	 
-// 	    var myAmount = $('#final-price').val(); // 최종 결제 금액
-	    var myAmount = ${order_store_pay}; // 최종 결제 금액
-	    console.log("myAmout : " + myAmount);
-	    
-	    // 네이버페이 결제
-	    function naverConfirm() {
-	        var confirmNaver = confirm('네이버페이로 결제하시겠습니까?');
-	        if (confirmNaver) {
-	            console.log('네이버페이 결제 진행');
-	            alert('네이버페이로 결제가 진행됩니다.');
-// 	            $('form[name="reservation"]').off('submit').submit(); // Proceed with form submission
-	        } else {
-	            console.log('네이버페이 결제 취소');
-	            alert('결제가 취소되었습니다.');
-	        }
-	    }
-	
-	 	// 카카오페이 결제
-	    function kakaoConfirm() {
-	        var confirmKakao = confirm('카카오페이로 결제하시겠습니까?');
-	            console.log("카카오페이 결제금액 : " + myAmount);
-	        if (confirmKakao) {
-	            console.log('카카오페이 결제 진행');
-// 	            var myAmount = document.getElementById('finalFee').innerText;
-	            console.log("카카오페이 결제금액 : " + myAmount);
-	
-// 	            // Initialize IMP with the correct merchant code
-// 	            IMP.init("imp33031510"); // Example: imp00000000
-	
-	            IMP.request_pay({
-	                    pg: "kakaopay",
-	                    pay_method: "card",
-	                    name: "리테크 결제",
-	                    amount: myAmount,
-// 	                    buyer_email: "gildong@gmail.com",
-// 	                    buyer_name: "홍길동",
-// 	                    buyer_tel: "010-4242-4242",
-// 	                    buyer_addr: "서울특별시 강남구 신사동",
-// 	                    buyer_postcode: "01181"
-	                }, async (rsp) => {
-	                    if (rsp.success) {
-	                        console.log('결제성공', rsp);
-	                        alert('결제가 완료되었습니다!');
-	                        
-	            	        $("#nexBtn").prepend('<input type="hidden" name="pay_method_name" value="카카오페이" id="pay_method_name">');
-	                        
-// 	                        document.getElementById('reservationPayForm').submit();
-	                        
-	            	        $('form[name="StorePayForm"]').submit();
-	                    } else {
-	                        console.error('Payment failed:', rsp);
-	                        alert(`결제 실패!`);
-                            if (confirm('결제를 다시 시도하시겠습니까?')) {
-                                kakaoConfirm();
-                            } else {
-                                return;
-                            }
-	                    }
-	                }
-	            );
-	        } else {
-	            alert('결제가 취소되었습니다.');
-	        }
-	    }//kakaoConfirm
-	 	
-	
-	    // 결제하기 버튼 클릭 시, payment 함수 호출
-	    $('#nexBtn').on('click', pay);
-	    
 	});
 	
+	//포트원 결제 코드
+	//1. SDK 초기화하기
+// 	IMP.init("imp50610540"); // 예: 'imp00000000'
+
+	//2. 결제창 불러오기
+// 	IMP.request_pay(
+// 		{
+// 			pg: "{PG사 코드}.{상점 ID}",
+// 			pay_method: "card",
+// 			merchant_uid: `payment-${crypto.randomUUID()}`, // 주문 고유 번호
+// 			name: "노르웨이 회전 의자",
+// 			amount: 64900,
+// 			buyer_email: "gildong@gmail.com",
+// 			buyer_name: "홍길동",
+// 			buyer_tel: "010-4242-4242",
+// 			buyer_addr: "서울특별시 강남구 신사동",
+// 			buyer_postcode: "01181",
+// 	 	},
+// 		 function (response) {
+// 		 	// 결제 종료 시 호출되는 콜백 함수
+// 		 	// response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
+// 		 	// 결제 결과를 처리하는 로직을 작성합니다.
+// 		 	},
+// 	 );
 	
 	
 	
 </script>
+
+</head>
+<body>
+	<header>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+	</header>
 	<article id="articleForm">
-	<form name="StorePayForm" action="StorePay" id="storePayForm" method="post">
 		<h1>주문/결제</h1>
 		<div class="left">
 			<div class="deliver">
@@ -170,7 +74,7 @@
 					<tr>
 						<th width="150px">배송지 정보</th>
 						<td>
-							<input type="button" value="배송지 정보 입력"></td>
+							<input type="button" value="배송지 정보 입력">						</td>
 					</tr>
 					<tr class="table">
 						<th>공동현관 출입방법</th>
@@ -193,7 +97,7 @@
 					<tr class="detail">
 						<td><img src="${Store.store_img1}" width="100px" height="100px"></td>
 						<td>${Store.store_id}</td>
-						<td>${amt}원</td>
+						<td>${Store.store_price}원</td>
 					</tr>
 					<tr>
 						<th>배송일자</th>
@@ -205,12 +109,10 @@
 				<table class="tbl_row">
 					<tr>
 						<th>결제수단</th>
-						<td><input type="radio" id="credit" name="payment" value="신용/체크카드">
-						<label for="credit">신용/체크카드</label></td>
-						<td><input type="radio" id="kakaopay" name="payment" value="카카오페이">
+						<td><input type="radio" id="credit" name="payment">
+						<label for="credit">신용카드</label></td>
+						<td><input type="radio" id="kakaopay" name="payment">
 						<label for="kakaopay">카카오페이</label></td>
-						<td><input type="radio" id="naverpay" name="payment" value="네이버페이">
-						<label for="naverpay">네이버페이</label></td>
 					</tr>
 					<tr class="table">
 					</tr>
@@ -230,18 +132,24 @@
 				<table class="tbl_row_right">
 					<tr>
 						<td>상품 금액</td>
-						<td>${amt}원</td>
+						<c:set var="price" value="${Store.store_price}"/>
+						<td><c:out value="${price}"/>원</td>
 					</tr>
 					<tr>
 						<td>배송비</td>
-						<td>3000원</td>
+						<c:set var="shipping" value="3000"/>
+						<td><c:out value="${shipping}"/>원</td>
 					</tr>
 					<tr>
 						<td>최종 결제 금액</td>
-						<td>${order_store_pay}원</td>
+						<c:set var="final_price" value="${price + shipping}"/>
+						<td><c:out value="${final_price}"/>원</td>
 					</tr>
 				</table>
-						<button type="button" id="nexBtn" onclick="pay()">결제하기</button>	
+<!-- 						<button type="button" onclick="request_pay()"> -->
+						<button type="button" id="payment">
+							<span class="text">결제하기</span>
+						</button>
 			</div>
 			<div class="agree">
 				위 주문내용을 확인하였으며, 결제에 동의합니다
@@ -322,12 +230,8 @@
 							이용자는 제공을 거부하실 수 있는 권리가 있으며, 거부 시에는 서비스 이용이 불가합니다.						</div>
 			
 			</div>
-		<input type="hidden" name="order_store_item" value="${param.order_store_item}">
-		<input type="hidden" name="order_store_member_id" value="${sessionScope.sId}">
-		<input type="hidden" name="order_store_quantity" value="${order_store_quantity}">
-		<input type="hidden" name="order_store_pay" value="${order_store_pay}">
+		
 		</div>
-		</form>
 	<script type="text/javascript">
 	$(function() {
 	    $(".fold_box_contents").hide();  // 모든 내용 숨기기
@@ -343,6 +247,127 @@
 	    	
 	    });
 	});
+	
+// 	//결제하기 버튼 클릭
+// 	$(function() {
+// 		$("#payment").click() {
+// 			//SDK 초기화하기
+// // 			IMP.init("고객사 식별코드"); // 예: 'imp00000000
+			
+// 			//결제창 불러오기
+// 			IMP.request_pay(
+// 					  {
+// 					    pg: "{PG사 코드}.{TC0ONETIME}", //PG사 코드표에서 선택
+// 					    pay_method: "card", //결제 방식
+// 					    merchant_uid: `payment-${crypto.randomUUID()}`, // 주문 고유 번호
+// 					    name: "노르웨이 회전 의자", //제품명
+// 					    amount: 64900, //금액
+// 					    //구매자 정보
+// 					    buyer_email: "gildong@gmail.com",
+// 					    buyer_name: "홍길동",
+// 					    buyer_tel: "010-4242-4242",
+// 					    buyer_addr: "서울특별시 강남구 신사동",
+// 					    buyer_postcode: "01181",
+// 					  },
+// 					  function (response) {
+// 					    // 결제 종료 시 호출되는 콜백 함수
+// 					    // response.imp_uid 값으로 결제 단건조회 API를 호출하여 결제 결과를 확인하고,
+// 					    // 결제 결과를 처리하는 로직을 작성합니다.
+// 					    if(rsp.success) {
+// 					    	alert("결제가 완료되었습니다(신용/체크카드).");
+// 					    	location.href = 
+					    	
+// 					    }
+// 					  },
+// 					);
+			
+// 			//SDK 반환값으로 처리하기
+// 			IMP.request_pay(
+// 					  {
+// 					    /* 파라미터 생략 */
+// 					  },
+// 					  async (response) => {
+// 					    if (response.error_code != null) {
+// 					      return alert(`결제에 실패하였습니다. 에러 내용: ${response.error_msg}`);
+// 					    }
+
+// 					    // 고객사 서버에서 /payment/complete 엔드포인트를 구현해야 합니다.
+// 					    // (다음 목차에서 설명합니다)
+// 					    const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
+// 					      method: "POST",
+// 					      headers: { "Content-Type": "application/json" },
+// 					      // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
+// 					      body: JSON.stringify({
+// 					        imp_uid: response.imp_uid,
+// 					        merchant_uid: response.merchant_uid,
+// 					        // 주문 정보...
+// 					      }),
+// 					    });
+// 					  },
+// 					);
+			
+			
+// 			//4. 결제 완료 처리하기
+// 			// JSON 요청을 처리하기 위해 body-parser 미들웨어 세팅
+// 			app.use(bodyParser.json());
+
+// 			// POST 요청을 받는 /payments/complete
+// 			app.post("/payment/complete", async (req, res) => {
+// 			  try {
+// 			    // 요청의 body로 imp_uid와 merchant_uid가 전달되기를 기대합니다.
+// 			    const { imp_uid, merchant_uid } = req.body;
+
+// 			    // 1. 포트원 API 엑세스 토큰 발급
+// 			    const tokenResponse = await fetch("https://api.iamport.kr/users/getToken", {
+// 			      method: "POST",
+// 			      headers: { "Content-Type": "application/json" },
+// 			      body: JSON.stringify({
+// 			        imp_key: "imp_apikey", // REST API 키
+// 			        imp_secret: "ekKoeW8RyKuT0zgaZsUtXXTLQ4AhPFW", // REST API Secret
+// 			      }),
+// 			    });
+// 			    if (!tokenResponse.ok)
+// 			      throw new Error(`tokenResponse: ${await tokenResponse.json()}`);
+// 			    const { access_token } = await tokenResponse.json();
+
+// 			    // 2. 포트원 결제내역 단건조회 API 호출
+// 			    const paymentResponse = await fetch(
+// 			      `https://api.iamport.kr/payments/${imp_uid}`,
+// 			      { headers: { Authorization: access_token } },
+// 			    );
+// 			    if (!paymentResponse.ok)
+// 			      throw new Error(`paymentResponse: ${await paymentResponse.json()}`);
+// 			    const payment = await paymentResponse.json();
+
+// 			    // 3. 고객사 내부 주문 데이터의 가격과 실제 지불된 금액을 비교합니다.
+// 			    const order = await OrderService.findById(merchant_uid);
+// 			    if (order.amount === payment.amount) {
+// 			      switch (payment.status) {
+// 			        case "ready": {
+// 			          // 가상 계좌가 발급된 상태입니다.
+// 			          // 계좌 정보를 이용해 원하는 로직을 구성하세요.
+// 			          break;
+// 			        }
+// 			        case "paid": {
+// 			          // 모든 금액을 지불했습니다! 완료 시 원하는 로직을 구성하세요.
+// 			          break;
+// 			        }
+// 			      }
+// 			    } else {
+// 			      // 결제 금액이 불일치하여 위/변조 시도가 의심됩니다.
+// 			    }
+// 			  } catch (e) {
+// 			    // 결제 검증에 실패했습니다.
+// 			    res.status(400).send(e);
+// 			  }
+// 			});
+			
+			
+			
+			
+			
+// 		}
+// 	})
 	</script>
 	</article>
 		<footer>

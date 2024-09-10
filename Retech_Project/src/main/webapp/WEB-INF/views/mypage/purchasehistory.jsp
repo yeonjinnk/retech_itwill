@@ -182,14 +182,14 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.cancel-request').on('click', function() {
-                var productId = $(this).data('id');
-                if (confirm('거래를 취소하시겠습니까?')) {
+                var trade_idx = $(this).data('id');
+                if (confirm('거래취소를 요청하시겠습니까?')) {
                     $.ajax({
-                        url: 'updateTransactionStatus',
+                        url: 'updateTradeStatusAjax',
                         type: 'POST',
                         data: {
-                            id: productId,
-                            status: '거래취소 확정'
+                            trade_idx: trade_idx,
+                            trade_status: '4'
                         },
                         success: function(response) {
                             if(response.success) {
@@ -276,10 +276,10 @@
                         </thead>
                         <tbody>
                             <c:forEach var="product" items="${buyList}">
-                                <c:if test="${product.pd_status == '결제완료' || 
-                                             product.pd_status == '거래취소 요청' || 
-                                             product.pd_status == '거래취소 확정' || 
-                                             product.pd_status == '거래확정'}">
+<%--                                 <c:if test="${product.pd_status == '결제완료' ||  --%>
+<%--                                              product.pd_status == '거래취소 요청' ||  --%>
+<%--                                              product.pd_status == '거래취소 확정' ||  --%>
+<%--                                              product.pd_status == '거래확정'}"> --%>
                                     <tr>
                                         <td>
                                             <c:choose>
@@ -293,7 +293,7 @@
                                         </td>
                                         <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
-                                        <td>${product.pd_price}</td>
+                                        <td>${product.trade_amt}</td>
                                         <td>${product.pd_first_date}</td>
                                         <td>
                                             <div class="status-buttons">
@@ -304,28 +304,28 @@
                                                     <c:when test="${product.trade_status == 2}">
                                                         결제완료
                                                         <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소요청</button>
-                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래확정</button>
+                                                        <button class="status-button confirm-request" data-id="${product.pd_idx}">거래확정</button>
                                                     </c:when>
                                                     <c:when test="${product.trade_status == 3}">
                                                         거래완료
-                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">리뷰쓰기</button>
+                                                        <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
                                                     </c:when>
                                                     <c:when test="${product.trade_status == 4}">
                                                         거래취소대기
                                                     </c:when>
-                                                    <c:when test="${product.pd_status == 5}">
+                                                    <c:when test="${product.trade_status == 5}">
                                                         거래취소승인
                                                     </c:when>
                                                 </c:choose>
                                             </div>
                                         </td>
                                     </tr>
-                                </c:if>
+<%--                                 </c:if> --%>
                             </c:forEach>
                         </tbody>
                     </table>
                 </c:if>
-                <c:if test="${empty productList}">
+                <c:if test="${empty buyList}">
                     <table class="mypage">
                         <tr>
                             <td align="center" colspan="6">검색결과가 없습니다.</td>
