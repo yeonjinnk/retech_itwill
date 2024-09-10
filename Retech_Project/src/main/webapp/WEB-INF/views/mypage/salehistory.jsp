@@ -245,17 +245,28 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <a href="SaleHistory" class="selected">판매내역</a>
-            <a href="PurchaseHistory">구매내역</a>
-            <a href="Wishlist">찜한상품</a>
-            <a href="CsHistory">문의내역</a>
-            <a href="MemberInfo">회원정보수정</a>
+            <c:choose>
+                <c:when test="${not empty param.member_id}">
+                    <!-- member_id 파라미터가 있을 때 -->
+                    <a href="SaleHistory?member_id=${param.member_id}" class="selected">판매내역</a>
+                    <a href="PurchaseHistory?member_id=${param.member_id}">구매내역</a>
+                    <a href="Wishlist?member_id=${param.member_id}">찜한상품</a>
+                </c:when>
+                <c:otherwise>
+                    <!-- member_id 파라미터가 없을 때 -->
+                    <a href="SaleHistory" class="selected">판매내역</a>
+                    <a href="PurchaseHistory">구매내역</a>
+                    <a href="Wishlist">찜한상품</a>
+                    <a href="CsHistory">문의내역</a>
+                    <a href="MemberInfo">회원정보수정</a>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <div class="content-area">
              <div class="store-info">
                 <div>
-                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}">               	
+                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}">               
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>
@@ -299,22 +310,22 @@
                                    <td>
                                        <c:choose>
                                            <c:when test="${product.trade_status == '0'}">
-                                           	판매대기
+                                            판매대기
                                            </c:when>
                                            <c:when test="${product.trade_status == '1'}">
-                                           	결제대기
+                                            결제대기
                                            </c:when>
                                            <c:when test="${product.trade_status == '2'}">
-                                           	결제완료
+                                            결제완료
                                            </c:when>
                                            <c:when test="${product.trade_status == '3'}">
-                                           	거래확정
+                                            거래확정
                                            </c:when>
                                            <c:when test="${product.trade_status == '4'}">
                                                <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소승인</button>
                                            </c:when>
                                            <c:when test="${product.trade_status == '5'}">
-                                           	거래취소승인완료
+                                            거래취소승인완료
                                            </c:when>
                                        </c:choose>
                                    </td>
