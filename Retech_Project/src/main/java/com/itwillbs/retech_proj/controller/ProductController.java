@@ -131,12 +131,14 @@ public class ProductController {
 			List<HashMap<String, String>> changedProductList = service.getChangedProductList(searchKeyword, pageNum, pd_category, pd_selectedManufacturer,pd_selectedPdStatus, sort, endRow, startRow, listLimit);
 			// 전체 게시물 갯수 계산
 			int listCount = service.getChangedProductListCount(pageNum, pd_category, pd_selectedManufacturer, pd_selectedPdStatus, sort, type);
+			System.out.println("!!!!!!!!!listCount 멀까요 : " + listCount);
 			
 
 		// 전체페이지 목록 개수 계산
 		int maxPage = listCount / listLimit + (listCount % listLimit > 0 ? 1 : 0);
 		// => 이것도 리턴값으로 들고가고 싶다 => 객체로 넣기(boardList = XX, maxPage = xx) => JSONObject
 
+		System.out.println("!!!!!!!!!maxpage 멀까요 : " + maxPage);
 		// 최대 페이지번호(maxPage) 값도 JSON 데이터로 함께 넘기기
 		JSONObject jsonObject = new JSONObject();
 

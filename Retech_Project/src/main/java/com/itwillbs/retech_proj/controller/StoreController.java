@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.retech_proj.service.StoreService;
+import com.itwillbs.retech_proj.vo.MemberVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
 import com.itwillbs.retech_proj.vo.StoreVO;
 
@@ -108,6 +109,21 @@ public class StoreController {
 		}
 	}
 	
+	@GetMapping("PurchaseStoreHistory")
+	public String purchaseStoreHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
+            @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+            @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
+            Model model, HttpSession session) {
+
+		String id = (String) session.getAttribute("sId");
+		// 세션에 사용자 ID가 존재하는 경우
+		if (id != null) {
+		
+		return "mypage/purchaseStorehistory";
+		} else {
+			return "result/fail";
+		}
+			
 	
-	
+	}
 }

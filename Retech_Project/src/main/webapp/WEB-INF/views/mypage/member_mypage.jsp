@@ -123,6 +123,7 @@
 <!--         	class="selected" -->
             <a href="SaleHistory">판매내역</a>
             <a href="PurchaseHistory">구매내역</a>
+            <a href="PurchaseStoreHistory">스토어 구매내역</a>
             <a href="Wishlist">찜한상품</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>

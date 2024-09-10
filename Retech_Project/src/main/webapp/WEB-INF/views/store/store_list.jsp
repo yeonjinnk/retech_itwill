@@ -21,10 +21,11 @@
 		            let store = data[i];
 		            let divStore = "<div class='store_list'>"
 		                + "<div class='store_img'>"
+		                + "<a href='StoreDetail?store_idx=" + store.store_idx + "'>"
 		                + "<img src='" + store.store_img1 + "' alt='Store Image'/>"
+	               		+ "</a>"
 		                + "</div>"
 		                + "<div class='store_preview'>"
-		                + "<div class='store_idx'>" + store.store_idx + "</div>"
 		                + "<div class='store_id'>" + store.store_id + "</div>"
 		                + "<div class='store_content'>" + store.store_content + "</div>"
 		                + "</div>"
@@ -32,13 +33,14 @@
 		            $(".store_product").prepend(divStore);
 		          //이미지 또는 상품명 클릭 시, 상세페이지로 이동
 //		     	   // 클릭된 요소의 상위 store_list 요소에서 store_idx 값 추출
-           			let store_idx = $(this).closest(".store_list").data("store-idx");
-		    		$(".store_img").click(function() {
-		    			location.href="StoreDetail?store_idx="+store_idx;
-		    		});
-		    		$(".store_id").click(function() {
-		    			location.href="StoreDetail?store_idx="+store_idx;
-		    		});
+//            			let store_idx = $(this).closest(".store_list").data("store-idx");
+// 		          	console.log("store_idx : " + store_idx);
+// 		    		$(".store_img").click(function() {
+// 		    			location.href="StoreDetail?store_idx="+store_idx;
+// 		    		});
+// 		    		$(".store_id").click(function() {
+// 		    			location.href="StoreDetail?store_idx="+store_idx;
+// 		    		});
 		        }
 		    },
 		    error: function(request, status, error) {
