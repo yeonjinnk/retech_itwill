@@ -80,7 +80,7 @@
  } 
 
 .searchBoxBlock { 
-    display: none; 
+    display: none;  
     position: absolute; 
     top: 100%; 
     left: 0; 
