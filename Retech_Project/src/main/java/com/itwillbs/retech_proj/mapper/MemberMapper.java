@@ -49,4 +49,7 @@ public interface MemberMapper {
 	   @Select("SELECT verification_code FROM member_verification WHERE member_id = #{memberId}")
 	   String selectVerificationCodeByMemberId(@Param("memberId") String memberId);
 
+	   //별점 평균 신뢰지수 조회
+	   Float selectStarRate(String loggedInUserId);
+
 }

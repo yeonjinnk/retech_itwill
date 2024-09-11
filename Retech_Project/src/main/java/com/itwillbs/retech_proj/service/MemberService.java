@@ -90,6 +90,11 @@ public class MemberService {
         return storedCode != null && storedCode.equals(inputCode);
     }
 
+    //별점 평균 신뢰지수 조회
+	public Float getStarRate(String loggedInUserId) {
+		return mapper.selectStarRate(loggedInUserId);
+	}
+
 
 	
 }

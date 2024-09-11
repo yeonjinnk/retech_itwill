@@ -245,75 +245,84 @@
                 }
             });
 
-            $('.review-request').on('click', function() {
-                var productId = $(this).data('id');
-                window.location.href = '${pageContext.request.contextPath}/writeReview?id=' + productId;
-            });
+//             $('.review-request').on('click', function() {
+//                 var productId = $(this).data('id');
+//                 window.location.href = '${pageContext.request.contextPath}/writeReview?id=' + productId;
+//             });
             
             
             //모달창 기본 숨김
             $(".modalOpen").hide();
             
             //리뷰쓰기 버튼 클릭 시 모달창 띄움
-            $("#btnReview").click(function() {
+            $(".review-request").click(function() {
 				console.log("리뷰쓰기 버튼 클릭됨!");
+				let pd_idx = $(this).data('id');
 				$(".modalOpen").show();
 				console.log("리뷰쓰기 모달 띄움!");
+				
+				
+				
+				
+			      //별점 클릭 이벤트 처리
+	    		$('.starRev span').click(function(){
+	    			//모든 별에서 'on' 클래스를 제거
+	    			  $(this).parent().children('span').removeClass('on');
+	    			
+	    			//클릭된 별 및 이전 별들에 'on' 클래스 추가
+	    			  $(this).addClass('on').prevAll('span').addClass('on');
+	    			  return false;
+	    			});
+	    		
+	    		// 버튼 클릭 시 별점 및 리뷰 내용을 콘솔에 출력
+	    	    $('#btnReviewSub').click(function(){
+	    	    	//별점 = 'on' 클래스 총 길이
+	    	        let starCount = $('.starRev .starR.on').length; // 별점 개수
+	    	        let reviewContent = $('#content').val(); // 리뷰 내용
+
+	    	        console.log('별점: ' + starCount);
+	    	        console.log('리뷰 내용: ' + reviewContent);
+	    	        
+	    	        let review_writer = "${sessionScope.sId}";
+// 	    	        let review_pd_idx = $("#pd_idx").val();
+// 	    	        console.log("!!!!!!!!!!!review_pd_idx : " + review_pd_idx);
+	    	        let review_star_rating = starCount;
+	    	        let review_content = reviewContent;
+	    	        console.log("!!!!!!!!!!!!!!!!!!!! review_writer : " + review_writer);
+	    	        console.log("!!!!!!!!!!!!!!!!!!!! review_star_rating : " + review_star_rating);
+	    	        console.log("!!!!!!!!!!!!!!!!!!!! review_content : " + review_content);
+	    	        
+	    	        $.ajax({
+	    	        	data: {
+	    	        		review_writer: review_writer,
+	    	        		review_pd_idx: pd_idx,
+	    	        		review_star_rating: review_star_rating,
+	    	        		review_content: review_content
+	    	        	},
+	    	        	url: "RegistReview",
+	    				type: "GET",
+	    				success: function(data) {
+	    					console.log("리뷰 등록 성공!");
+	    				},
+	    				error: function(request,status,error) {
+	    					alert("code:"+request.status+"\n"
+	    							+"message:"+request.responseText+"\n"
+	    							+"error:"+error);
+	    	 				console.log("리뷰 등록 실패!");
+	    				}
+	    	        });
+	    	        
+	    	        // 실제 전송 로직은 여기에 추가
+	    	        /*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
+						$(".modalOpen").hide();
+					});
+				
+				
+				
 			});
             
             
-          //별점 클릭 이벤트 처리
-    		$('.starRev span').click(function(){
-    			//모든 별에서 'on' 클래스를 제거
-    			  $(this).parent().children('span').removeClass('on');
-    			
-    			//클릭된 별 및 이전 별들에 'on' 클래스 추가
-    			  $(this).addClass('on').prevAll('span').addClass('on');
-    			  return false;
-    			});
-    		
-    		// 버튼 클릭 시 별점 및 리뷰 내용을 콘솔에 출력
-    	    $('#btnReviewSub').click(function(){
-    	    	//별점 = 'on' 클래스 총 길이
-    	        let starCount = $('.starRev .starR.on').length; // 별점 개수
-    	        let reviewContent = $('#content').val(); // 리뷰 내용
-
-    	        console.log('별점: ' + starCount);
-    	        console.log('리뷰 내용: ' + reviewContent);
-    	        
-    	        let review_writer = "${sessionScope.sId}";
-    	        let review_member_id = null;
-    	        let review_star_rating = starCount;
-    	        let review_content = reviewContent;
-    	        console.log("!!!!!!!!!!!!!!!!!!!! review_writer : " + review_writer);
-    	        console.log("!!!!!!!!!!!!!!!!!!!! review_member_id : " + review_member_id);
-    	        console.log("!!!!!!!!!!!!!!!!!!!! review_star_rating : " + review_star_rating);
-    	        console.log("!!!!!!!!!!!!!!!!!!!! review_content : " + review_content);
-    	        
-    	        $.ajax({
-    	        	data: {
-    	        		review_writer: review_writer,
-    	        		review_member_id: review_writer,
-    	        		review_star_rating: review_star_rating,
-    	        		review_content: review_content
-    	        	},
-    	        	url: "RegistReview",
-    				type: "GET",
-    				success: function(data) {
-    					console.log("리뷰 등록 성공!");
-    				},
-    				error: function(request,status,error) {
-    					alert("code:"+request.status+"\n"
-    							+"message:"+request.responseText+"\n"
-    							+"error:"+error);
-    	 				console.log("리뷰 등록 실패!");
-    				}
-    	        });
-    	        
-    	        // 실제 전송 로직은 여기에 추가
-    	        /*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
-					$(".modalOpen").hide();
-				});
+    
     		
     	    /*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
 			$("#btnReviewClose").click(function(e) {
@@ -361,14 +370,20 @@
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>
-                    <p>신뢰지수: </p>
+                     <c:choose>
+                    	<c:when test="${member.member_starRate eq 0.0}">
+                    <p>신뢰지수: -     (<a href="ProductRegistForm"> !!이곳을 클릭해 판매를 시작해주세요!! )</a></p>
+                    	</c:when>
+                    	<c:otherwise>
+                    <p>신뢰지수: ${member.member_starRate}</p>
+                    	</c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 
             <ul class="tabs">
                 <li><a href="#" class="selected">구매내역</a></li>
-                <li><a href="#">리뷰</a></li>
-                <button id="btnReview">리뷰 쓰기</button>
+                <li><a href="BuyerReview">작성한 리뷰</a></li>
             </ul>
 
 
@@ -378,7 +393,8 @@
 						거래 리뷰
 						<hr>
 						별점과 리뷰를 남겨주세요!
-						
+						<b>dd${product.pd_idx}</b>
+						<input type="hidden" id="pd_idx" value="${product.pd_idx}">
 						<div class="starRev">
 						  <!-- 편의 상 가장 첫번째의 별은 기본으로 class="on"이 되게 설정해주었습니다. -->
 						  <span class="starR on">⭐</span>
@@ -454,6 +470,9 @@
                                                     </c:when>
                                                     <c:when test="${product.trade_status == 5}">
                                                         거래취소승인
+                                                    </c:when>
+                                                    <c:when test="${product.trade_status == 6}">
+                                                        리뷰완료
                                                     </c:when>
                                                 </c:choose>
                                             </div>

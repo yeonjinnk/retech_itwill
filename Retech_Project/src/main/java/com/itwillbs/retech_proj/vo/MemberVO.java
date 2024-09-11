@@ -23,4 +23,5 @@ public class MemberVO {
     private int member_isAdmin;
     private Date member_subscription;  
     private MultipartFile profile; // 업로드된 파일을 저장하는 필드
+    private Float member_starRate;
 }

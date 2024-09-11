@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <title>구매내역</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/resources/css/mypage/purchasehistory.css" rel="stylesheet" type="text/css">
     <style type="text/css">
         html, body {
             height: 100%;
@@ -177,59 +178,13 @@
         .review-request:hover {
             background-color: #1976D2;
         }
+        
+        
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('.cancel-request').on('click', function() {
-                var productId = $(this).data('id');
-                if (confirm('거래를 취소하시겠습니까?')) {
-                    $.ajax({
-                        url: 'updateTransactionStatus',
-                        type: 'POST',
-                        data: {
-                            id: productId,
-                            status: '거래취소 확정'
-                        },
-                        success: function(response) {
-                            if(response.success) {
-                                alert('거래가 취소되었습니다.');
-                                location.reload(); // 페이지 새로고침
-                            } else {
-                                alert('거래 취소 중 오류가 발생했습니다.');
-                            }
-                        }
-                    });
-                }
-            });
-
-            $('.confirm-request').on('click', function() {
-                var productId = $(this).data('id');
-                if (confirm('거래 확정하시겠습니까?')) {
-                    $.ajax({
-                        url: 'updateTransactionStatus',
-                        type: 'POST',
-                        data: {
-                            id: productId,
-                            status: '거래확정'
-                        },
-                        success: function(response) {
-                            if(response.success) {
-                                alert('거래가 확정되었습니다.');
-                                location.reload(); // 페이지 새로고침
-                            } else {
-                                alert('거래 확정 중 오류가 발생했습니다.');
-                            }
-                        }
-                    });
-                }
-            });
-
-            $('.review-request').on('click', function() {
-                var productId = $(this).data('id');
-                window.location.href = '${pageContext.request.contextPath}/writeReview?id=' + productId;
-            });
-        });
+    		
+            
     </script>
 </head>
 <body>
@@ -239,11 +194,24 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <a href="SaleHistory">판매내역</a>
-            <a href="PurchaseHistory" class="selected">구매내역</a>
-            <a href="Wishlist">찜한상품</a>
-            <a href="CsHistory">문의내역</a>
-            <a href="MemberInfo">회원정보수정</a>
+            <c:choose>
+                <c:when test="${not empty param.member_id}">
+                    <!-- member_id 파라미터가 있을 때 -->
+                    <a href="SaleHistory?member_id=${param.member_id}">판매내역</a>
+                    <a href="PurchaseHistory?member_id=${param.member_id}" class="selected">구매내역</a>
+                     <a href="PurchaseStoreHistory?member_id=${param.member_id}">스토어 구매내역</a>
+                    <a href="Wishlist?member_id=${param.member_id}">찜한상품</a>
+                </c:when>
+                <c:otherwise>
+                    <!-- member_id 파라미터가 없을 때 -->
+                    <a href="SaleHistory">판매내역</a>
+                    <a href="PurchaseHistory" class="selected">구매내역</a>
+                    <a href="PurchaseStoreHistory">스토어 구매내역</a>
+                    <a href="Wishlist">찜한상품</a>
+                    <a href="CsHistory">문의내역</a>
+                    <a href="MemberInfo">회원정보수정</a>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <div class="content-area">
@@ -253,35 +221,41 @@
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>
+                     <c:choose>
+                    	<c:when test="${member.member_starRate eq 0.0}">
+                    <p>신뢰지수: -     (<a href="ProductRegistForm"> !!이곳을 클릭해 판매를 시작해주세요!! )</a></p>
+                    	</c:when>
+                    	<c:otherwise>
                     <p>신뢰지수: ${member.member_starRate}</p>
+                    	</c:otherwise>
+                    </c:choose>
                 </div>
             </div>
 
             <ul class="tabs">
-                <li><a href="#" class="selected">구매내역</a></li>
-                <li><a href="#">리뷰</a></li>
+                <li><a href="PurchaseHistory">구매내역</a></li>
+                <li><a href="BuyerReview" class="selected">작성한 리뷰</a></li>
             </ul>
 
             <div class="content">
-                <c:if test="${not empty productList}">
+                <c:if test="${not empty myReview}">
                     <table>
                         <thead>
                             <tr>
                                 <th>상품사진</th>
                                 <th>상품명</th>
-                                <th>상품가격</th>
-                                <th>등록날짜</th>
-                                <th>거래상태</th>
+                                <th>리뷰별점</th>
+                                <th>리뷰내용</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="product" items="${productList}">
-                                <c:if test="${product.pd_status == '결제완료' || 
-                                             product.pd_status == '거래취소 요청' || 
-                                             product.pd_status == '거래취소 확정' || 
-                                             product.pd_status == '거래확정'}">
+                            <c:forEach var="product" items="${myReview}">
+<%--                                 <c:if test="${product.pd_status == '결제완료' ||  --%>
+<%--                                              product.pd_status == '거래취소 요청' ||  --%>
+<%--                                              product.pd_status == '거래취소 확정' ||  --%>
+<%--                                              product.pd_status == '거래확정'}"> --%>
                                     <tr>
-                                        <td>
+                                        <td> <!-- 상품사진 -->
                                             <c:choose>
                                                 <c:when test="${not empty product.pd_image1}">
                                                     <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
@@ -291,33 +265,39 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
+                                        <!-- 상품명 -->
                                         <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
-                                        <td>${product.pd_price}</td>
-                                        <td>${product.pd_first_date}</td>
+  										 <!-- 리뷰별점 -->
                                         <td>
-                                            ${product.pd_status}
-                                            <div class="status-buttons">
-                                                <c:choose>
-                                                    <c:when test="${product.pd_status == '결제완료'}">
-                                                        <!-- No buttons -->
-                                                    </c:when>
-                                                    <c:when test="${product.pd_status == '거래취소 요청'}">
-                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소승인</button>
-                                                    </c:when>
-                                                    <c:when test="${product.pd_status == '거래확정'}">
-                                                        <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
-                                                    </c:when>
-                                                </c:choose>
-                                            </div>
+                                        <c:choose>
+                                        	<c:when test="${product.review_star_rating eq 1}">
+                                        	★
+                                        	</c:when>
+                                        	<c:when test="${product.review_star_rating eq 2}">
+                                        	★★
+                                        	</c:when>
+                                        	<c:when test="${product.review_star_rating eq 3}">
+                                        	★★★
+                                        	</c:when>
+                                        	<c:when test="${product.review_star_rating eq 4}">
+                                        	★★★★
+                                        	</c:when>
+                                        	<c:when test="${product.review_star_rating eq 5}">
+                                        	★★★★★
+                                        	</c:when>
+                                        </c:choose>
+                                        
                                         </td>
+                                         <!-- 리뷰내용 -->
+                                        <td>${product.review_content}</td>
                                     </tr>
-                                </c:if>
+<%--                                 </c:if> --%>
                             </c:forEach>
                         </tbody>
                     </table>
                 </c:if>
-                <c:if test="${empty productList}">
+                <c:if test="${empty myReview}">
                     <table class="mypage">
                         <tr>
                             <td align="center" colspan="6">검색결과가 없습니다.</td>
