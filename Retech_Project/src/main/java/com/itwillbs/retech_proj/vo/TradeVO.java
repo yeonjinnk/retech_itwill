@@ -1,6 +1,7 @@
 package com.itwillbs.retech_proj.vo;
 
-import java.sql.Time;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +16,7 @@ public class TradeVO {
 	private String trade_seller_id;
 	private int trade_pd_idx;
 	private String trade_type;
-	private Time trade_date;
+	private Date trade_date;
 	private int trade_status;
 	private int trade_amt; // 잠시
 }
