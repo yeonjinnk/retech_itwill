@@ -89,31 +89,9 @@ public class MemberService {
         return storedCode != null && storedCode.equals(inputCode);
     }
 
-
+    // 카카오서비스
+    public MemberVO getMemberFromEmail(String email) {
+		return mapper.selectMemberFromEmail(email);
+	}
 	
 }
-//    // SMS 인증
-//    public void certifiedPhoneNumber(String phoneNumber, String numStr) {
-//        String api_key = "NCSZKCG2GR2BZDI7"; // 여기에 실제 발급받은 API 키를 입력하세요
-//        String api_secret = "V3VJ27QUITAHGQS1HVWP97PIEFRG81JM"; // 여기에 실제 발급받은 API Secret을 입력하세요
-//
-//        // Coolsms 객체 생성
-//        Coolsms coolsms = new Coolsms(api_key, api_secret);
-//
-//        // SMS 발송 파라미터 설정
-//        HashMap<String, String> params = new HashMap<>();
-//        params.put("to", phoneNumber);    
-//        params.put("from", "본인의 휴대폰번호");   
-//        params.put("type", "SMS");
-//        params.put("text", "작성할내용 [" + numStr + "] 내용");
-//        params.put("app_version", "test app 1.2"); // application name and version
-//
-//        try {
-//            // SMS 발송 요청
-//            JSONObject obj = (JSONObject) coolsms.send(params);
-//            System.out.println(obj.toString());
-//        } catch (CoolsmsException e) {
-//            System.out.println(e.getMessage());
-//            System.out.println(e.getCode());
-//        }
-//    }

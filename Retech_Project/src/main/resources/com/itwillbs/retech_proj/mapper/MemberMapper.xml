@@ -89,7 +89,6 @@
 	</select>
 	
 	<!-- 전화번호와 회원 ID로 회원 정보 조회 -->
-	<!-- 전화번호와 회원 ID로 회원 정보 조회 -->
 	<select id="selectByPhoneAndId" parameterType="map" resultType="member">
 	    SELECT *
 	    FROM member
@@ -115,4 +114,9 @@
         WHERE member_id = #{memberId}
     </select>
 	
+	<select id="selectMemberFromEmail" resultType="member">
+		SELECT * 
+		FROM member
+		WHERE member_id = #{member_id}
+	</select>
 </mapper>
