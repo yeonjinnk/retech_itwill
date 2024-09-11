@@ -31,5 +31,7 @@
 		WHERE review_idx = #{review_idx}
 	</delete>
 	
+	
+	
 
 </mapper>
