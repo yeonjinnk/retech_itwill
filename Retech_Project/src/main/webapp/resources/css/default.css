@@ -14,7 +14,7 @@ html, body {
     flex-direction: column;
 }
 
-.main_section {
+.main_section { 
     flex: 1;
 }
 
