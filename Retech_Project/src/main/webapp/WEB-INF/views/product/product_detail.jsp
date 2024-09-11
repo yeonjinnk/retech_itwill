@@ -263,24 +263,10 @@ $(document).ready(function() {
 
 </script>
 <style type="text/css">
-  .thumbnails {
-    display: flex; /* Display thumbnails in a row */
-    overflow-x: auto; /* Enable horizontal scrolling if there are too many thumbnails */
-    margin-top: 10px; /* Space above the thumbnails */
-  }
 
-  .thumbnail {
-    width: 100px; /* Set the width of the thumbnails */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 10px; /* Space between thumbnails */
-    cursor: pointer; /* Change cursor to pointer on hover */
-  }
-  
-  .thumbnail:hover {
-    opacity: 0.7; /* Slightly dim the thumbnail on hover */
-  }
 
 </style> 
+<link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<header>

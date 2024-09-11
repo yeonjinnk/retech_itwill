@@ -5,7 +5,6 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<link href="${pageContext.request.contextPath}/resources/css/inc/top.css" rel="stylesheet">
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
 <script type="text/javascript">
@@ -187,16 +186,6 @@ let popularClick = true;
 $(function(){
 	// ######################테스트 데이터 설정######################
 		var clickCount = 0;
-		$('.nav-inner').click(function() {
-			clickCount++;
-		    if (clickCount === 3) {
-		    	var keywords = ["테스트1", "테스트2", "테스트3", "테스트4", "테스트5", "테스트6", "테스트7", "테스트8", "테스트9", "테스트10"];
-		    	localStorage.setItem("keywords", JSON.stringify(keywords));
-		    	updateTable();
-		    	clickCount = 0;
-		   	}
-		});	
-
 //==============================================================================================
 	// 로컬 스토리지 값이 변경될 때 실행할 함수
 	updateTable();
@@ -248,7 +237,7 @@ $(function(){
   	});
 
 	
-	$(".recentWordColor").css("color", "#d3d3d3");  // 연한 회색
+	$(".recentWordColor").css("color", "#39d274");  // 연한 회색
 	$(".popularWordColor").css("color", "black");   // 검은색
 	
 	//키보드를 누를때마다 작동
@@ -265,6 +254,7 @@ $(function(){
 		}
 	});
 	
+	
 });// document.ready function END
 	
 function searchAjax(){
@@ -273,6 +263,7 @@ function searchAjax(){
 		url:"RelationSearchKeyWord",
 		data: {searchKeyWord : $("#searchKeyword").val()},
 		success:function(res){
+			console.log("연관 검색어!");
 			$("#Popular").hide();
 			$("#Recent").hide();
 			$("#Relation").show();
@@ -310,43 +301,6 @@ function searchAjax(){
 	});
 }
 
-// function searchKeyword(pkeyword) {
-// 	$("#Relation").removeClass("hidden");
-// 	$("#Relation").show();
-// 	let keyword = "";
-// 	if(pkeyword == null){
-// 		keyword = $("#searchKeyword").val();
-		
-// 	}else{
-// 		keyword = pkeyword;
-// 	}
-	
-// 	keyword = keyword.trim();
-	
-// 	if(keyword != "" && keyword != null){
-// 		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
-// 		// 로컬스토리지에 저장할 키의 이름
-// 		const localStorageKey = 'keywords';
-// 		// 기존의 키워드 배열 가져오기
-// 		let keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
-// 		// 새로운 키워드 추가하기
-// 		if (!keywords.includes(keyword)) {
-// 		  keywords.push(keyword);
-// 		}
-// 		// 최대 갯수를 초과하는 경우 가장 오래된 데이터부터 제거
-// 		if (keywords.length > 10) {
-// 		  keywords = keywords.slice(keywords.length - 10);
-// 		}
-// 		// 로컬스토리지에 업데이트된 키워드 배열 저장
-// 		localStorage.setItem(localStorageKey, JSON.stringify(keywords));
-// 		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
-	
-// 		var searchKeywordUrl = "ProductList?keyword=" + encodeURIComponent(keyword);
-// 		window.location.href = searchKeywordUrl;
-// 	}
-	
-// 	SaveWord(keyword);
-// }
 function searchKeyword(pkeyword) {
     $("#Relation").removeClass("hidden");
     $("#Relation").show();
@@ -382,21 +336,39 @@ function sendKeyword(element) {
 }
 
 	
-function showHandler(){
-	if($("#searchKeyword").val() == null || $("#searchKeyword").val() == ''){
-		$("#Recent").show();
-	}else{
-		searchAjax();
-	}
+function showHandler() {
+    if ($("#searchKeyword").val() == null || $("#searchKeyword").val() == '') {
+    	console.log("showHandler 실행함!");
+        $("#searchResults").show(); 
+        $("#Relation").hide();
+//         $("#Recent").show();
+        
+			if(recentClick == true){
+				console.log("recentClick" + recentClick);
+				$("#Recent").show();
+			}else if(popularClick == true){
+				console.log("popularClick" + popularClick);
+				$("#Recent").hide();
+				$("#Popular").show();
+			}
+			$("#Relation").hide();
+        
+    } else {
+        searchAjax(); 
+        $("#searchResults").hide(); 
+    }
 }
+
 //최근 검색어
 function RecentSearchs(){
+    	console.log("RecentSearchs 실행함!");
 	$("#Recent").show();
 	$("#Popular").hide();
 	$(".recentWordColor").css("color","#39d274");
 	$(".popularWordColor").css("color","black");
 	recentClick = true;
 	popularClick = false;
+	console.log("진짜 왜 계속 뜨냐고");
 	
 }
 //연관검색어 검색어 저장
@@ -416,19 +388,18 @@ function SaveWord(keyword){
 //인기 검색어 목록에서 특정 검색어를 선택 가능
 //선택된 검색어는 sendKeyword(this) 함수를 통해 처리
 function PopularSearches(){
-	$("#Popular").show();
-	
-	popularClick = true;
+	//추가한 부분
 	recentClick = false;
+	popularClick = true;
+	$("#Popular").show();
 	
 	$.ajax({
 		type:"GET",
 		url:"popularSearchKeywordList",
 		success:function(res){
+			console.log("최근 검색어랑 인기검색어 뜸!!!!");
 			let stringList = res.myArrayList;
 			let withoutQuotesList = stringList.map((str) => str.replace(/'/g, ''));
-			console.log(withoutQuotesList); // ['문자열1', '문자열2', '문자열3']
-			console.log(withoutQuotesList[0]);
 			
 			
 			let tableHTML = '<table id="PopularTableBoarder">';
@@ -488,11 +459,13 @@ function PopularSearches(){
 	});
 	
 }
+console.log("popular : " + PopularSearches);
 //'keywords' 항목을 로컬 스토리지에서 삭제하고, 
 //'최근검색어' 및 '인기검색어'와 관련된 테이블을 업데이트
 //'최근검색어 삭제' 링크를 함수 다시 호출, 삭제 후에 업데이트된 메시지가 표시
 function localStorageClean(){
 	window.localStorage.removeItem('keywords');
+	console.log("localStorageClean !!!!!!!!!!!!!");
 	// 테이블 생성
 	let tableHTML = '<table>';
 	tableHTML += 
@@ -555,6 +528,7 @@ function updateTable() {
 			+"</tr>"
 	}else{
 		for (let index = keywords.length - 1; index >= 0; index--) {
+			console.log("최근 검색어!!!!!");
 			const keyword = keywords[index];
 		    tableHTML +=
 		    	"<tr class=" + keyword + ">"
@@ -600,133 +574,213 @@ function localStarageDeleteOne(keyword) {
 
 
 </script>
+<style type="text/css">
+.header_main {
+    background-color: #fff; /* Adjust as needed */
+    padding: 20px;
+    position: relative; /* Required for absolute positioning of search results */
+}
 
-<!-- 탑 최상단 영역 -->
+.main_inner {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    margin-right: auto; /* Pushes the rest of the content to the right */
+}
+
+.main_search {
+    margin-right: 20px; /* Space between search box and menu items */
+    position: relative; /* Required for absolute positioning of search results */
+    flex-grow: 1; /* Allows the search box to grow and fill available space */
+    max-width: 100%; /* Ensures it does not exceed container width */
+}
+
+#searchBox {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Full width of its container */
+}
+
+.main-menu-search {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd; /* Adjust border */
+    padding: 5px;
+    border-radius: 4px;
+    width: 100%; /* Full width of its container */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.navbar-search {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Full width of the parent container */
+    height: 100%; /* Ensures it takes full height of the parent */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.search-input {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Full width of its container */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+#searchKeyword {
+    border: none;
+    padding: 5px;
+    width: calc(100% - 40px); /* Adjust for the space taken by the search button */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.search-btn {
+    margin-left: 10px;
+}
+
+.search-btn button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.searchBoxBlock {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%; /* Position it below the search box */
+    left: 0;
+    background: #fff; /* Adjust background */
+    border: 1px solid #ddd; /* Adjust border */
+    border-radius: 4px;
+    width: 100%;
+    z-index: 1000; /* Make sure it appears on top */
+}
+
+.searchBoxBlock div {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Optional border between sections */
+}
+
+.searchBoxBlock div:last-child {
+    border-bottom: none; /* Remove border from the last section */
+}
+
+.main_menu {
+    display: flex;
+}
+
+.menu_area {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu_list {
+    margin-right: 20px; /* Adjust spacing as needed */
+}
+</style>
 <div class="header_top">
-	<div class="top_inner">
-		<div class="top_left_blank"></div>
-		<div class="top_menu">
-			<nav class="top_menu_container">
-				<ul class="top_area">
-					<li class="top_list"><a href="TechPayMain" class="top_link" id="top_link1">테크페이</a></li>
-					<li class="top_list alarmLi"><a class="top_link" id="top_link1" onclick="alarmListOpen()">알림 <!-- 채팅 수신 시 알림 포인터 --> <span
-							id="alarmPoint" style="display: none;">● </span>
-					</a>
-						<div class="layer_box" id="alram1" style="display: none;">
-							<div class="box_content">
-								<%@ include file="/WEB-INF/views/alarm/alarm_list.jsp"%>
-								<%-- 								<jsp:include page="/WEB-INF/views/alarm/alarm_list.jsp"></jsp:include> --%>
-							</div>
-						</div></li>
-					<li class="top_list">
-						<!-- 채팅하기 새 창으로 열기 --> <!-- window.open 자바스크립트니까 javascript, 반환값 없으므로 void --> <!-- window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
-						<c:choose>
-							<c:when test="${not empty sessionScope.sId}">
-								<a href="javascript:void(window.open('ChatList', '${sessionScope.sId}','width=600px,height=600px'))" class="top_link"> 채팅</a>
-							</c:when>
-							<c:when test="${empty sessionScope.sId}">
-								<a href="ChatList" class="top_link"> 채팅</a>
-							</c:when>
-						</c:choose>
-					</li>
-					<!-- 					<li class="top_list"> -->
-					<!-- 					채팅하기 새 창으로 열기 -->
-					<!-- 					window.open 자바스크립트니까 javascript, 반환값 없으므로 void -->
-					<!-- 					window.open(url, name(지정 시, 창 2개 열때 하나로 열수 있음), spec, ...) -->
-					<%-- 					<c:choose> --%>
-					<%-- 						<c:when test="${not empty sessionScope.sId}"> --%>
-					<!-- 							<a href="javascript:void(window.open('ChatList?receiver_id=' + 'sender@naver.com', '','width=600px,height=600px'))" class="top_link"> -->
-					<!-- 							채팅(rec)</a> -->
-					<%-- 						</c:when> --%>
-					<%-- 						<c:when test="${empty sessionScope.sId}"> --%>
-					<!-- 							<a href="ChatList" class="top_link"> -->
-					<!-- 							채팅(rec)</a> -->
-					<%-- 						</c:when> --%>
-					<%-- 					</c:choose> --%>
-					<!-- 					</li> -->
-					<li class="top_list"><a href="ProductRegistForm" class="top_link">판매하기</a></li>
-					<c:choose>
-						<c:when test="${empty sessionScope.sId}">
-							<%-- 로그인 상태가 아닐 경우 --%>
-							<li class="top_list"><a href="MemberLogin" class="login top_link">로그인</a></li>
-						</c:when>
-						<c:otherwise>
-							<%-- 로그인 상태일 경우 --%>
-							<li class="top_list"><a href="SaleHistory" class="top_link">${sessionScope.sName}님</a></li>
-							<li class="top_list"><a href="javascript:confirmLogout()" class="top_link">로그아웃</a></li>
-
-							<!-- 관리자 계정일 경우 관리자 페이지 링크 표시 -->
-							<c:if test="${sessionScope.sIsAdmin eq 1}">
-								<li class="top_list"><a href="AdminHome" class="top_link">관리자페이지</a></li>
-							</c:if>
-						</c:otherwise>
-					</c:choose>
-				</ul>
-			</nav>
-		</div>
-	</div>
+    <div class="top_inner">
+        <div class="top_left_blank"></div>
+        <div class="top_menu">
+            <nav class="top_menu_container">
+                <ul class="top_area">
+                    <li class="top_list"><a href="TechPayMain" class="top_link" id="top_link1">테크페이</a></li>
+                    <li class="top_list alarmLi"><a class="top_link" id="top_link1" onclick="alarmListOpen()">알림 <!-- 채팅 수신 시 알림 포인터 --> <span id="alarmPoint" style="display: none;">● </span></a>
+                        <div class="layer_box" id="alram1" style="display: none;">
+                            <div class="box_content">
+                                <%@ include file="/WEB-INF/views/alarm/alarm_list.jsp"%>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="top_list">
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.sId}">
+                                <a href="javascript:void(window.open('ChatList', '${sessionScope.sId}','width=600px,height=600px'))" class="top_link">채팅</a>
+                            </c:when>
+                            <c:when test="${empty sessionScope.sId}">
+                                <a href="ChatList" class="top_link">채팅</a>
+                            </c:when>
+                        </c:choose>
+                    </li>
+                    <li class="top_list"><a href="ProductRegistForm" class="top_link">판매하기</a></li>
+                    <c:choose>
+                        <c:when test="${empty sessionScope.sId}">
+                            <li class="top_list"><a href="MemberLogin" class="login top_link">로그인</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="top_list"><a href="SaleHistory" class="top_link">${sessionScope.sName}님</a></li>
+                            <li class="top_list"><a href="javascript:confirmLogout()" class="top_link">로그아웃</a></li>
+                            <c:if test="${sessionScope.sIsAdmin eq 1}">
+                                <li class="top_list"><a href="AdminHome" class="top_link">관리자페이지</a></li>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
-<!-- 탑 로고 및 메뉴,], 검색어 영역 -->
+<!-- 탑 최상단 영역 -->
 <div class="header_main">
-	<div class="main_inner">
-		<div class="logo">
-			<a href="./" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
-		</div>
-		<div class="main_menu">
-			<nav class="menu_container">
-				<ul class="menu_area">
-					<li class="menu_list"><a href="ProductList" class="menu_link" id="menu_link1">상품</a></li>
-					<li class="menu_list"><a href="Store" class="menu_link">스토어</a>
-						<ul class="sub_menu">
-							<li><a href="#">키스킨</a></li>
-							<li><a href="#">마우스패드</a></li>
-							<li><a href="StoreDetail">받침대</a></li>
-							<li><a href="#">파우치</a></li>
-						</ul></li>
-					<li class="menu_list"><a href="Notice" class="menu_link">고객센터</a></li>
-
-				</ul>
-				<ul class="main_search">
-					<li>
-						<div class="col-lg-5 col-md-7 d-xs-none" id="searchBox" onclick="showHandler()">
-							<!-- Start Main Menu Search -->
-							<div class="main-menu-search">
-								<!-- navbar search start -->
-								<div class="navbar-search search-style-5">
-									<div class="search-input">
-										<input type="text" id="searchKeyword" placeholder="상품명 입력, 닉네임 입력" value="${param.searchKeyword}" maxlength="100">
-									</div>
-									<div class="search-btn">
-										<button onclick="searchKeyword()">
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-											  <path
-													d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-											</svg>
-										</button>
-									</div>
-								</div>
-								<!-- navbar search Ends -->
-							</div>
-							<!-- End Main Menu Search -->
-							<div class="searchBoxBlock">
-								<div id="Recent">
-									<!-- 최근검색어 테이블이 표시될 영역 -->
-								</div>
-								<div id="Relation">
-									<!-- 연관검색어 테이블이 표시될 영역 -->
-								</div>
-								<div id="Popular">
-									<!-- 인기검색어 테이블이 표시될 영역 -->
-								</div>
-							</div>
-						</div> <!-- 						<input type="text" placeholder="검색어를 입력하세요" width="120"> -->
-					</li>
-				</ul>
-
-			</nav>
-		</div>
-	</div>
+    <div class="main_inner">
+        <div class="logo">
+            <a href="./" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
+        </div>
+        <div class="main_search">
+            <div class="col-lg-5 col-md-7 d-xs-none" id="searchBox" onclick="showHandler()">
+                <!-- Start Main Menu Search -->
+                <div class="main-menu-search">
+                    <!-- navbar search start -->
+                    <div class="navbar-search">
+                        <div class="search-input">
+                            <input type="text" id="searchKeyword" placeholder="상품명 입력, 닉네임 입력" value="${param.searchKeyword}" maxlength="100">
+                            <div class="search-btn">
+                                <button onclick="searchKeyword()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Main Menu Search -->
+                </div>
+                <div class="searchBoxBlock" id="searchResults">
+                    <div id="Recent">
+                        <!-- 최근검색어 테이블이 표시될 영역 -->
+                    </div>
+                    <div id="Relation">
+                        <!-- 연관검색어 테이블이 표시될 영역 -->
+                    </div>
+                    <div id="Popular">
+                        <!-- 인기검색어 테이블이 표시될 영역 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main_menu">
+            <nav class="menu_container">
+                <ul class="menu_area">
+                    <li class="menu_list"><a href="ProductList" class="menu_link" id="menu_link1">상품</a></li>
+                    <li class="menu_list"><a href="Store" class="menu_link">스토어</a>
+                        <ul class="sub_menu">
+                            <li><a href="#">키스킨</a></li>
+                            <li><a href="#">마우스패드</a></li>
+                            <li><a href="StoreDetail">받침대</a></li>
+                            <li><a href="#">파우치</a></li>
+                        </ul></li>
+                    <li class="menu_list"><a href="Notice" class="menu_link">고객센터</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
+
+
+
 
 <%-- 로그인 상태일 경우에만 채팅 관련 스크립트를 클라이언트 측으로 전송 --%>
 <c:if test="${not empty sId}">

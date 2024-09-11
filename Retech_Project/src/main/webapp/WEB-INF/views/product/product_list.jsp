@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="${pageContext.request.contextPath}/resources/css/defualt.css" rel="stylesheet" type="text/css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
 <%-- 반응형웹페이지 위한 설정  --%>
@@ -69,15 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         element.textContent = timeAgo;
     });
 });
-
-
-
-
-
-
-
-
-
 
 
 let isOpen = false; // 정렬 목록에 사용할 함수 기본값 false
@@ -258,13 +248,157 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 
 
 </script>
+<style type="text/css">
+/* 헤더 스타일 */
+/* 카테고리 선택 영역 */
+
+/* 카테고리 선택, 제조사 선택, 거래상태 선택 영역 */
+/* 각 select box의 너비를 5cm로 설정하고 높이를 유지 */
+#categoryNav {
+    margin-top: 20px; /* 위쪽 여백 추가 */
+}
+
+#categoryNav .select {
+    width: 5cm;
+    height: 35px; /* 높이 유지 */
+    margin-right: 10px; /* 각 select box 사이에 여백 추가 */
+}
+
+#c_id, #c_id2, #c_id3 {
+    width: 5cm;
+    height: 35px; /* 높이 유지 */
+    margin-right: 10px; /* 각 select box 사이에 여백 추가 */
+}
 
 
-<link href="${pageContext.request.contextPath}/resources/css/product/product_list.css" rel="stylesheet" type="text/css">
+header {
+    position: relative; /* 다른 요소들과 겹치지 않도록 설정 */
+    z-index: 1000; /* 다른 요소들 위에 표시되도록 설정 */
+    background-color: #fff; /* 배경색 설정 */
+    padding: 20px; /* 여백 설정 */
+    width: 100%; /* 전체 너비 사용 */
+}
+
+/* 상품 목록 영역 스타일 */
+.productListArea {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-top: 80px; /* 헤더 높이에 따라 조정 */
+}
+
+/* 개별 상품 스타일 */
+.productListArea .col-lg-3 {
+    flex: 1 1 calc(25% - 20px);
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 썸네일 이미지 */
+.photoDiv {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.photoDiv img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+/* 거래상태 버튼 */
+.pd_status {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    z-index: 10;
+}
+
+/* 카드 본문 */
+.card-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 제목 링크 */
+.card-title {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.listInfo {
+    display: flex;
+    justify-content: space-between; /* 아이템들을 양 끝으로 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+    margin-bottom: 20px; /* 하단 여백 */
+}
+
+.listInfoCount {
+     font-size: 18px;
+}
+
+.listInfoSort {
+    position: relative; /* listSort의 위치를 relative로 설정하여 하위 요소에 위치 조정을 가능하게 함 */
+}
+
+.listInfoBtn {
+    background-color: #f0f0f0; /* 버튼 배경색 */
+    border: 1px solid #ccc; /* 버튼 테두리 */
+    padding: 5px 10px; /* 버튼 안쪽 여백 */
+    font-size: 14px; /* 버튼 폰트 크기 */
+    cursor: pointer; /* 커서 모양 변경 */
+    border-radius: 5px; /* 버튼 모서리 둥글게 */
+    transition: background-color 0.3s ease; /* 배경색 변경 애니메이션 */
+    margin-left: auto; /* 왼쪽 여백 자동 설정으로 오른쪽으로 정렬 */
+    margin-right: 0.5cm; /* 오른쪽 여백 0.5cm 설정 */
+}
+
+.listInfoBtn:hover {
+    background-color: #e0e0e0; /* 버튼 호버시 배경색 */
+}
+
+.listSort {
+    list-style: none; /* 리스트 스타일 제거 */
+    padding: 0; /* 패딩 제거 */
+    margin: 0; /* 마진 제거 */
+    display: none; /* 기본적으로 숨김 */
+    position: absolute; /* 리스트를 버튼 바로 아래에 위치시키기 위해 */
+    top: 100%; /* 버튼 아래에 위치 */
+    left: 0; /* 버튼 왼쪽에 정렬 */
+    background-color: white; /* 배경색 설정 */
+    border: 1px solid #ccc; /* 테두리 설정 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 설정 */
+    z-index: 1000; /* 버튼과 리스트가 겹치지 않도록 설정 */
+}
+
+.listSort li {
+    padding: 10px 15px; /* 리스트 항목 안쪽 여백 */
+    cursor: pointer; /* 커서 모양 변경 */
+}
+
+.listSort li:hover {
+    background-color: #f0f0f0; /* 리스트 항목 호버시 배경색 */
+}
+
+
+
+</style>
+
+<link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <header>
-	<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 </header>
 
 <%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1로 설정) --%>
@@ -276,47 +410,48 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 		<div class="container">
 			<!-- 카테고리 선택 영역 -->
 			<div id="category">
-    <!-- 카테고리 및 거래상태 필터링 -->
-	   <nav id="categoryNav">
-		    <select class="select" id="c_id" name="c_id" style="width: 30%; height: 35px;">
-		        <option value="">카테고리 선택</option>
-		        <option value="PC">PC</option>
-		        <option value="NB">노트북</option>
-		    </select>
-		    <select class="select" id="c_id2" name="c_id2" style="width: 30%; height: 35px;">
-		        <option value="">제조사 선택</option>
-		        <option value="SA">삼성</option>
-		        <option value="AP">애플</option>
-		        <option value="LG">LG</option>
-		        <option value="ET">기타</option>
-		    </select> 
-		    <select class="select" id="c_id3" name="c_id3" style="width: 30%; height: 35px;">
-		        <option value="">거래상태 선택</option>
-		        <option value="판매중">판매중</option>
-		        <option value="거래중">거래중</option>
-		        <option value="결제완료">결제완료</option>
-		    </select> 
-		    <input type="hidden" name="pd_category" id="pd_category_hidden" value="${product.pd_category}">
-		    <span id="selectedCategorySpan">
-		        <!-- 선택된 카테고리 값을 여기에 출력 -->
-		    </span>
-		</nav>
-
-</div><!-- 카테고리 끝 -->
+	    <!-- 카테고리 및 거래상태 필터링 -->
+				 <nav id="categoryNav">
+				    <select class="select" id="c_id" name="c_id">
+				        <option value="">카테고리 선택</option>
+				        <option value="PC">PC</option>
+				        <option value="NB">노트북</option>
+				    </select>
+				    <select class="select" id="c_id2" name="c_id2">
+				        <option value="">제조사 선택</option>
+				        <option value="SA">삼성</option>
+				        <option value="AP">애플</option>
+				        <option value="LG">LG</option>
+				        <option value="ET">기타</option>
+				    </select> 
+				    <select class="select" id="c_id3" name="c_id3">
+				        <option value="">거래상태 선택</option>
+				        <option value="판매중">판매중</option>
+				        <option value="거래중">거래중</option>
+				        <option value="결제완료">결제완료</option>
+				    </select> 
+				    <input type="hidden" name="pd_category" id="pd_category_hidden" value="${product.pd_category}">
+				    <span id="selectedCategorySpan">
+				        <!-- 선택된 카테고리 값을 여기에 출력 -->
+				    </span>
+				</nav>
+			</div><!-- 카테고리 끝 -->
 
 			<!-- 상품갯수, 정렬 -->
 			<div class="listInfo">
 			    <span class="listInfoCount">전체 상품 <span id="listCount">${listCount}</span>개</span>
 			    
-			    <button class="listInfoBtn">
-			        최신순 
-			    </button>
-			    <!-- 정렬 방법 (기본 형태는 보이지 않음, 클릭시 style 지우기) -->
-			    <ul class="listSort" style="display: none;">
-			        <li id="list1">최신순 </li>
-			        <li id="list2">가격순 </li>
-			        <li id="list3">조회순 </li>
-			    </ul>
+			    <div class="listInfoSort">
+			        <button class="listInfoBtn">
+			            최신순 
+			        </button>
+			        <!-- 정렬 방법 -->
+			        <ul class="listSort">
+			            <li id="list1">최신순 </li>
+			            <li id="list2">가격순 </li>
+			            <li id="list3">조회순 </li>
+			        </ul>
+			    </div>
 			</div>
 			<!-- 목록표시 영역 -->
 			<div class="row" align="left">
