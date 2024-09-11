@@ -7,8 +7,16 @@
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/store/store_list.css" rel="stylesheet">
+<style type="text/css">
+	 .store_product {
+        width: 900px;
+        margin: 0 auto; /* 가운데 정렬 */
+    }
+
+</style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
+
 	//스토어 목록 가져오기
 		$.ajax({
 		    url: "StoreProductList",
