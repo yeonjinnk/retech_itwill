@@ -741,15 +741,32 @@ public class MemberController {
 	   // 거래상태 업데이트
 	   @PostMapping("/updateTradeStatusAjax")
 	   @ResponseBody
-	   public Map<String, Object> updateTransactionStatus2(@RequestParam("trade_idx") int trade_idx,
+	   public Map<String, Object> updateTransactionStatus2(@RequestParam("trade_pd_idx") int trade_pd_idx,
 	                                                       @RequestParam("trade_status") int trade_status) {
+		   System.out.println("업뎃ㅌ으랜잭션 파라미터 넘어오는지 " + trade_pd_idx + ", " + trade_status);
+		   
 		   Map<String, Object> response = new HashMap<>();
-	       int success = productService.updateProductStatus2(trade_idx, trade_status);
-	       System.out.println("success : " + success);
+	       int success = productService.updateProductStatus2(trade_pd_idx, trade_status);
+	       System.out.println("===================success : " + success);
 	       response.put("success", success);
 //	       response.put("status", trade_status);
 	       return response;
 	    }
+	   
+	   // 상품상태 업데이트
+	   @PostMapping("/updateTradeStatusAjax2")
+	   @ResponseBody
+	   public Map<String, Object> updateTransactionStatus3(@RequestParam("id") int id,
+			   @RequestParam("status") String status) {
+		   System.out.println("업뎃ㅌ으랜잭션222222 파라미터 넘어오는지 " + id + ", " + status);
+		   
+		   Map<String, Object> response = new HashMap<>();
+		   int success = productService.updateProductStatus3(id, status);
+		   System.out.println("===================success : " + success);
+		   response.put("success", success);
+//	       response.put("status", trade_status);
+		   return response;
+	   }	   
 	   
 	   @Autowired
 	   private KakaoService kakaoService;

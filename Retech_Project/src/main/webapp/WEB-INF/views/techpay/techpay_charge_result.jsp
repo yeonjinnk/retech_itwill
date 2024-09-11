@@ -21,7 +21,7 @@
 	</header>
 	<section>
 		<%-- 본문 표시 영역 --%>
-		<h1>충전이체 결과</h1>
+		<h1>충전(출금이체) 결과</h1>
 		<div align="center">
 			<%-- withdrawResult 객체에 저장된 출금이체 결과 데이터 출력 --%>
 			<h3>${chargeWithdrawResult.account_holder_name} 고객님의 출금이체 결과 (사용자번호 : ${token.user_seq_no})</h3>

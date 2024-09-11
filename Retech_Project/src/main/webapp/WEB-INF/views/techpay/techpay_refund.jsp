@@ -176,7 +176,7 @@
 		        			<td>${account.bank_name}<br>
 		        				${account.account_num_masked}<br>
 		        			</td>
-		        			<td>${account.account_holder_name}</td>
+		        			<td>${sessionScope.sName}</td>
 		        			<td>
 	        					<input type="hidden" name="deposit_fintech_use_num" value="${account.fintech_use_num}">
 	        					<input type="hidden" name="deposit_client_name" value="${account.account_holder_name}">

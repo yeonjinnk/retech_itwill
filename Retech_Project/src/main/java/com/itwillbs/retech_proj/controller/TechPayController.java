@@ -102,9 +102,11 @@ public class TechPayController {
 	@GetMapping("PayHistoryJson")
 	public String historyJson(Model model, @RequestParam Map<String, Object> map) {
 
+		System.out.println("=======ajax 테크페이 PayHistoryJson=========");
+		
 		Map<String, Object> prammap = map; 
 		
-		System.out.println("prammap : " + prammap);
+		System.out.println("=======ajax 테크페이 prammap========= : " + prammap);
 		// --------------------------------------------------
 		// 페이징
 		// 한 페이지에서 표시할 글 목록 갯수 지정
@@ -119,28 +121,34 @@ public class TechPayController {
 		map.put("listLimit", listLimit);
 		map.put("startRow", startRow);
 		
-		logger.info("map객체는 >>>>" + map);
+		System.out.println("========ajax 테크페이 map객체====== : " + map);
 
 		// 테크페이 사용 목록 불러오기
 		List<Map<String, Object>> payHistoryList = techPayService.getPayHistory(map);
 		logger.info(payHistoryList.toString());
-		
+		System.out.println("========ajax 테크페이 사용목록====== : " + payHistoryList);
+		System.out.println("---------payHistoryList의 사이즈--------- : " + payHistoryList.size());
 		
 		// 테크페이 사용 목록 개수 세기(페이징)
 		int listCount = techPayService.getPayHistoryCount(map);
+		System.out.println("========ajax 테크페이 listCount====== : " + listCount);
 //		
 		int maxPage = listCount / listLimit + ((listCount % listLimit) > 0 ? 1 : 0);
+		System.out.println("========ajax 테크페이 maxPage====== : " + maxPage);
 		
 		// 게시물 목록 조회 결과 Map 객체에 추가
 		Map<String, Object> historyMap = new HashMap<String, Object>();
 		historyMap.put("payHistoryList", payHistoryList);
+		historyMap.put("payHistoryList.size()", payHistoryList.size());
 		System.out.println(map);
 		
 		// 마지막 페이지 번호 Map 객체에 추가
 		historyMap.put("maxPage", maxPage);
 		historyMap.put("listCount", listCount);
-//		
+		System.out.println("========ajax 테크페이 historyMap====== : " + historyMap);
+		
 		JSONObject jsonObject = new JSONObject(historyMap);
+		System.out.println("========ajax 테크페이 jsonObject====== : " + jsonObject);
 		System.out.println("jsonObject = " + jsonObject);
 		
 		return jsonObject.toString();
@@ -904,8 +912,13 @@ public class TechPayController {
 //		trade_idx = map.get("trade_idx");
 		System.out.println("==============trade_idx : " + trade_idx);
 		
+		// trade_pd_idx 불러오기
+		String trade_pd_idx = techPayService.getTradePdIdx(trade_idx);
+		System.out.println("==============trade_pd_idx :" + trade_pd_idx);
+		
+		
 		// 결제결과 불러오기
-		Map<String, String> paymentResult = techPayService.getPaymentsResult(id, trade_idx);
+		Map<String, String> paymentResult = techPayService.getPaymentsResult(id, trade_pd_idx);
 		System.out.println("=====================paymentResult : " + paymentResult);
 		model.addAttribute("paymentResult", paymentResult);
 		

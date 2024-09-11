@@ -348,11 +348,19 @@
 		            t.trade_seller_id = #{loggedInUserId}
 	</select>
 	
-	<!-- 상품 상태 업데이트 -->
+	<!-- 거래 상태 업데이트 -->
 	<update id="updateProductStatus2">
 		UPDATE trade
 		SET trade_status = #{trade_status}
-		WHERE trade_idx = #{trade_idx}	
+		WHERE trade_pd_idx = #{trade_pd_idx}	
+	</update>
+	
+	
+	<!-- 상품 상태 업데이트 -->
+	<update id="updateProductStatus3">
+		UPDATE product
+		SET pd_status = #{status}
+		WHERE pd_idx = #{id}	
 	</update>
 	
 </mapper>
