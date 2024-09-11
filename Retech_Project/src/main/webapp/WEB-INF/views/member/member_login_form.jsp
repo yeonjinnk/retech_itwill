@@ -20,21 +20,6 @@
                 $("#hiddenId").val(rsa.encrypt($("#member_id").val()));
                 $("#hiddenPasswd").val(rsa.encrypt($("#member_passwd").val()));
             });
-
-            Kakao.init('2148dfcbfa10f00502540073a8c41792');
-            Kakao.Auth.createLoginButton({
-                container: '#kakao-login-button',
-                success: function(authObj) {
-                    if (authObj.code) {
-                        window.location.href = '/retech_proj/kakao-callback?code=' + authObj.code;
-                    } else {
-                        console.error('Authorization code is missing.');
-                    }
-                },
-                fail: function(err) {
-                    console.error('Kakao login failed:', err);
-                }
-            });
         });
     </script>
 <style>
@@ -256,7 +241,7 @@
                         </label>
                     </div>
                     
-                    <input type="submit" value="로그인" id="login_btn">
+                    <input type="submit" value="로그인" id="login_btn"> <br><br>
                     
                     <c:set var="client_id" value="01fd1f26d7e150593f036ef9d1ecb279" />
 					<c:set var="redirect_uri" value="http://localhost:8082/retech_proj/" />
