@@ -59,7 +59,7 @@
         }
 
         .tab > ul > li.on {
-            background-color: #4CAF50;
+            background-color: #34495e;
             color: white;
             font-weight: bold;
         }
@@ -103,7 +103,7 @@
         .join_detail input[type="text"]:focus,
         .join_detail input[type="password"]:focus,
         .join_detail input[type="file"]:focus {
-            border-color: #4CAF50;
+            border-color: #34495e;
         }
 
         .check {

@@ -37,7 +37,7 @@
             padding: 15px;
             font-size: 22px;
             color: #fff;
-            background-color: #007bff;
+            background-color: #34495e;
             border-radius: 8px 8px 0 0;
             text-align: center;
         }
@@ -80,7 +80,8 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #007bff;
+            background-color: #34495e;
+            
             color: #fff;
             cursor: pointer;
             margin: 5px 0;
@@ -91,7 +92,7 @@
         .join_detail input[type="button"]:hover, 
         .join_detail input[type="submit"]:hover, 
         .join_detail input[type="reset"]:hover {
-            background-color: #0056b3;
+            background-color: #34495e;
         }
 
         #checkPasswdResult, #checkPasswdResult2, #checkNameResult, #checkBirthResult, #checkPhoneResult {
@@ -132,6 +133,8 @@
         .form-buttons input[type="reset"] {
             width: auto; 
             margin: 5px;
+            background-color: #34495e;
+            color: #fff;
         }
 
         .input_text {
@@ -356,12 +359,6 @@
     <header class="header-section">
         <jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
     </header>
-
-    <div class="logo">
-        <a href="./" class="main_logo">
-            <img src="${pageContext.request.contextPath}/resources/images/main_logo.png" alt="Main Logo">
-        </a>
-    </div>
 
     <section>
         <div class="tab">

@@ -16,18 +16,6 @@
             padding: 0;
         }
 
-        .logo {
-            width: 120px;
-            margin: 30px auto;
-            text-align: center;
-        }
-
-        .logo img {
-            width: 100%;
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
         article {
             width: 100%;
             max-width: 400px;
@@ -57,7 +45,7 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #4CAF50;
+            background-color: #34495e;
             color: white;
             font-size: 16px;
             cursor: pointer;
@@ -65,7 +53,7 @@
         }
 
         article input[type="button"]:hover {
-            background-color: #45a049;
+            background-color: #34495e; 
         }
 
         footer {
@@ -82,10 +70,6 @@
     <header>
         <jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>
     </header>
-
-    <div class="logo">
-        <a href="./" class="main_logo"><img src="resources/images/main_logo.png" alt="로고"></a>
-    </div>
 
     <article>
         <div>
