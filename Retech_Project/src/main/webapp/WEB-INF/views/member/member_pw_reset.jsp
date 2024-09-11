@@ -99,18 +99,16 @@
     $(document).ready(function() {
         $("form").submit(function(event) {
             checkPasswd(); 
+            checkSamePasswd();
 
-            if (!checkPasswdResult) {
-                alert("패스워드를 부적합하게 입력했습니다.");
-                $("#member_passwd").focus();
+            if (!checkPasswdResult || !checkPasswd2Result) {
                 event.preventDefault();
-            } else {
-                checkSamePasswd();
-
-                if (!checkPasswd2Result) {
+                if (!checkPasswdResult) {
+                    alert("패스워드를 부적합하게 입력했습니다.");
+                    $("#member_passwd").focus();
+                } else if (!checkPasswd2Result) {
                     alert("패스워드 확인 항목이 일치하지 않습니다!");
                     $("#member_passwd2").focus();
-                    event.preventDefault(); 
                 }
             }
         });

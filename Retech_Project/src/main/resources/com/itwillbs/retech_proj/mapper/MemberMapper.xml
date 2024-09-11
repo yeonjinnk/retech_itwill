@@ -89,15 +89,17 @@
 	</select>
 	
 	<!-- 전화번호와 회원 ID로 회원 정보 조회 -->
+	<!-- 전화번호와 회원 ID로 회원 정보 조회 -->
 	<select id="selectByPhoneAndId" parameterType="map" resultType="member">
 	    SELECT *
 	    FROM member
 	    WHERE 
 	        member_phone = #{phoneNumber}
-	    <if test="memberId != ''">
-	        AND member_id = #{memberId}
-	    </if>
+	        <if test="memberId != null and memberId != ''">
+	            AND member_id = #{memberId}
+	        </if>
 	</select>
+
 	
 	<!-- 회원 아이디 조회(채팅용) -->
 	<select id="selectMemberId" resultType="string">
