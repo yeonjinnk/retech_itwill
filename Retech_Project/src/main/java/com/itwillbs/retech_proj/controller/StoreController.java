@@ -25,7 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.retech_proj.service.MemberService;
 import com.itwillbs.retech_proj.service.StoreService;
+import com.itwillbs.retech_proj.vo.MemberVO;
+import com.itwillbs.retech_proj.vo.OrderStoreVO;
 import com.itwillbs.retech_proj.vo.ProductVO;
 import com.itwillbs.retech_proj.vo.StoreVO;
 
@@ -33,6 +36,9 @@ import com.itwillbs.retech_proj.vo.StoreVO;
 public class StoreController {
 	@Autowired
 	StoreService service;
+	
+	@Autowired
+	 private MemberService memberService;
 	
 	@GetMapping("Review")
 	public String review() {
@@ -57,10 +63,12 @@ public class StoreController {
 	}
 	
 	@GetMapping("StoreDetail")
-	public String storeDetail(@RequestParam int store_idx, StoreVO store, Model model) {
+	public String storeDetail(@RequestParam int store_idx, StoreVO store, Model model, HttpSession session) {
 		//상품 정보 조회
 		Map<String, Object> Product = service.selectProduct(store_idx);
 		System.out.println("Product : " + Product);
+		
+		
 		
 		model.addAttribute("Product", Product);
 		return "store/store_detail";
@@ -75,13 +83,19 @@ public class StoreController {
 		Map<String, Object> payProduct = service.selectPayProduct(order_store_item);
 		model.addAttribute("payProduct", payProduct);*/
 	public String storePay(@RequestParam("order_store_item") int store_idx, @RequestParam int order_store_quantity, 
-			Model model) {
+			Model model, HttpSession session) {
 //		System.out.println("store_idx" + store_idx);
 		System.out.println("!!!!!!!!!스토어 결제하기 파라미터 조회 : " + store_idx + ", " + order_store_quantity);
 		//상품 정보 조회
 		Map<String, Object> Store = service.selectStore(store_idx);
 		System.out.println("Store : " + Store);
-		
+		//멤버 정보 조회
+				String id = (String)session.getAttribute("sId");
+				 // 회원 정보 조회 (필요한 경우)
+		        MemberVO member = new MemberVO();
+		        member.setMember_id(id);
+		        member = memberService.getMember(member);
+		        model.addAttribute("member", member);
 		int shippingCost = 3000;
 		int amt = order_store_quantity * (int)Store.get("store_price");
 		int order_store_pay = amt + shippingCost;
@@ -108,6 +122,28 @@ public class StoreController {
 		}
 	}
 	
+	@GetMapping("PurchaseStoreHistory")
+	public String purchaseStoreHistory(@RequestParam(value = "startRow", defaultValue = "0") int startRow,
+            @RequestParam(value = "listLimit", defaultValue = "10") int listLimit,
+            @RequestParam(value = "searchKeyword", defaultValue = "") String searchKeyword,
+            Model model, HttpSession session) {
+
+		String id = (String) session.getAttribute("sId");
+		// 세션에 사용자 ID가 존재하는 경우
+		if (id != null) {
+			List<Map<String, Object>> storeHistoryList = service.getStoreHistory(id);
+			System.out.println("주문한 스토어 내역 : " + storeHistoryList);
+			 // 회원 정보 조회 (필요한 경우)
+	           MemberVO member = new MemberVO();
+	           member.setMember_id(id);
+	           member = memberService.getMember(member);
+	           model.addAttribute("member", member);
+			model.addAttribute("storeHistoryList", storeHistoryList);
+		return "mypage/purchaseStorehistory";
+		} else {
+			return "result/fail";
+		}
+			
 	
-	
+	}
 }

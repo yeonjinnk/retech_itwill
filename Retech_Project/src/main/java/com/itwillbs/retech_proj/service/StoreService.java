@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.retech_proj.mapper.StoreMapper;
+import com.itwillbs.retech_proj.vo.OrderStoreVO;
 import com.itwillbs.retech_proj.vo.StoreVO;
 
 @Service
@@ -42,6 +43,11 @@ public class StoreService {
 	// 상품 결제 정보 저장하기
 	public int insertStorePay(Map<String, Object> map) {
 		return mapper.insertStorePay(map);
+	}
+
+	//주문한 스토어 내역 조회하기
+	public List<Map<String, Object>> getStoreHistory(String id) {
+		return mapper.selectStoreHistory(id);
 	}
 	
 

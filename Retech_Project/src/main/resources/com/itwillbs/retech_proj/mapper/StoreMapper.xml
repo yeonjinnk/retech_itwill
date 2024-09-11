@@ -58,5 +58,13 @@
      		, #{payment}
      	)
      </insert>
+     
+     <!-- 주문한 스토어 내역 조회하기 -->
+     <select id="selectStoreHistory" resultType="map">
+     	SELECT *
+     	FROM store s JOIN order_store o
+     	ON s.store_idx = o.order_store_item
+     	WHERE o.order_store_member_id = #{id}
+     </select>
     
     </mapper>

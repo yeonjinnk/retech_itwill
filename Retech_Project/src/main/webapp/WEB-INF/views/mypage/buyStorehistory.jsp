@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <title>구매내역</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
-    <link href="${pageContext.request.contextPath}/resources/css/mypage/purchasehistory.css" rel="stylesheet" type="text/css">
     <style type="text/css">
         html, body {
             height: 100%;
@@ -178,8 +177,6 @@
         .review-request:hover {
             background-color: #1976D2;
         }
-        
-        
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
@@ -205,24 +202,7 @@
                     });
                 }
             });
-				
-      	   // 날짜 형식 변환 함수
-            function formatDate(dateString) {
-                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-                const date = new Date(dateString);
-                return date.toLocaleDateString('ko-KR', options); // 'ko-KR'은 한국 날짜 형식
-            }
 
-            // 모든 날짜 셀을 찾아서 변환
-            $('td[data-date]').each(function() {
-                const dateString = $(this).data('date');
-                if (dateString) {
-                    $(this).text(formatDate(dateString));
-                }
-                
-                
-            });
-            
             $('.confirm-request').on('click', function() {
                 var productId = $(this).data('id');
                 if (confirm('거래 확정하시겠습니까?')) {
@@ -249,82 +229,7 @@
                 var productId = $(this).data('id');
                 window.location.href = '${pageContext.request.contextPath}/writeReview?id=' + productId;
             });
-            
-            
-            //모달창 기본 숨김
-            $(".modalOpen").hide();
-            
-            //리뷰쓰기 버튼 클릭 시 모달창 띄움
-            $("#btnReview").click(function() {
-				console.log("리뷰쓰기 버튼 클릭됨!");
-				$(".modalOpen").show();
-				console.log("리뷰쓰기 모달 띄움!");
-			});
-            
-            
-          //별점 클릭 이벤트 처리
-    		$('.starRev span').click(function(){
-    			//모든 별에서 'on' 클래스를 제거
-    			  $(this).parent().children('span').removeClass('on');
-    			
-    			//클릭된 별 및 이전 별들에 'on' 클래스 추가
-    			  $(this).addClass('on').prevAll('span').addClass('on');
-    			  return false;
-    			});
-    		
-    		// 버튼 클릭 시 별점 및 리뷰 내용을 콘솔에 출력
-    	    $('#btnReviewSub').click(function(){
-    	    	//별점 = 'on' 클래스 총 길이
-    	        let starCount = $('.starRev .starR.on').length; // 별점 개수
-    	        let reviewContent = $('#content').val(); // 리뷰 내용
-
-    	        console.log('별점: ' + starCount);
-    	        console.log('리뷰 내용: ' + reviewContent);
-    	        
-    	        let review_writer = "${sessionScope.sId}";
-    	        let review_member_id = null;
-    	        let review_star_rating = starCount;
-    	        let review_content = reviewContent;
-    	        console.log("!!!!!!!!!!!!!!!!!!!! review_writer : " + review_writer);
-    	        console.log("!!!!!!!!!!!!!!!!!!!! review_member_id : " + review_member_id);
-    	        console.log("!!!!!!!!!!!!!!!!!!!! review_star_rating : " + review_star_rating);
-    	        console.log("!!!!!!!!!!!!!!!!!!!! review_content : " + review_content);
-    	        
-    	        $.ajax({
-    	        	data: {
-    	        		review_writer: review_writer,
-    	        		review_member_id: review_writer,
-    	        		review_star_rating: review_star_rating,
-    	        		review_content: review_content
-    	        	},
-    	        	url: "RegistReview",
-    				type: "GET",
-    				success: function(data) {
-    					console.log("리뷰 등록 성공!");
-    				},
-    				error: function(request,status,error) {
-    					alert("code:"+request.status+"\n"
-    							+"message:"+request.responseText+"\n"
-    							+"error:"+error);
-    	 				console.log("리뷰 등록 실패!");
-    				}
-    	        });
-    	        
-    	        // 실제 전송 로직은 여기에 추가
-    	        /*모달창 내 제출 버튼 클릭 시 모달창 닫음*/
-					$(".modalOpen").hide();
-				});
-    		
-    	    /*모달창 내 닫기 버튼 클릭 시 모달창 닫음*/
-			$("#btnReviewClose").click(function(e) {
-				console.log("모달 닫기 버튼 클릭됨!");
-				e.preventDefault();
-				$(".modalOpen").hide();
-			});
-    		
-    	    });
-    		
-            
+        });
     </script>
 </head>
 <body>
@@ -334,24 +239,12 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <c:choose>
-                <c:when test="${not empty param.member_id}">
-                    <!-- member_id 파라미터가 있을 때 -->
-                    <a href="SaleHistory?member_id=${param.member_id}">판매내역</a>
-                    <a href="PurchaseHistory?member_id=${param.member_id}" class="selected">구매내역</a>
-                     <a href="PurchaseStoreHistory?member_id=${param.member_id}">스토어 구매내역</a>
-                    <a href="Wishlist?member_id=${param.member_id}">찜한상품</a>
-                </c:when>
-                <c:otherwise>
-                    <!-- member_id 파라미터가 없을 때 -->
-                    <a href="SaleHistory" class="selected">판매내역</a>
-                    <a href="PurchaseHistory">구매내역</a>
-                    <a href="PurchaseStoreHistory">스토어 구매내역</a>
-                    <a href="Wishlist">찜한상품</a>
-                    <a href="CsHistory">문의내역</a>
-                    <a href="MemberInfo">회원정보수정</a>
-                </c:otherwise>
-            </c:choose>
+            <a href="SaleHistory">판매내역</a>
+            <a href="PurchaseHistory">구매내역</a>
+            <a href="PurchaseStoreHistory" class="selected">스토어 구매내역</a>
+            <a href="Wishlist">찜한상품</a>
+            <a href="CsHistory">문의내역</a>
+            <a href="MemberInfo">회원정보수정</a>
         </div>
 
         <div class="content-area">
@@ -368,38 +261,7 @@
             <ul class="tabs">
                 <li><a href="#" class="selected">구매내역</a></li>
                 <li><a href="#">리뷰</a></li>
-                <button id="btnReview">리뷰 쓰기</button>
             </ul>
-
-
-			<div class="modalOpen">
-				<div id="reviewModal">
-					<form action="RegistReview">
-						거래 리뷰
-						<hr>
-						별점과 리뷰를 남겨주세요!
-						
-						<div class="starRev">
-						  <!-- 편의 상 가장 첫번째의 별은 기본으로 class="on"이 되게 설정해주었습니다. -->
-						  <span class="starR on">⭐</span>
-						  <span class="starR">⭐</span>
-						  <span class="starR">⭐</span>
-						  <span class="starR">⭐</span>
-						  <span class="starR">⭐</span>
-						</div>
-						<input type="text" id="content" placeholder="내용을 입력해주세요">
-						<div class="modalBtn">
-							<button type="button" id="btnReviewSub">전송</button>&nbsp;&nbsp;&nbsp;&nbsp;
-							<button type="button" id="btnReviewClose">닫기</button>
-						</div>
-					</form>
-				</div>
-			</div>
-
-
-
-
-
 
             <div class="content">
                 <c:if test="${not empty buyList}">
@@ -433,7 +295,7 @@
                                         <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
                                         <td>${product.trade_amt}</td>
-                                        <td data-date="${product.pd_first_date}"></td>
+                                        <td>${product.pd_first_date}</td>
                                         <td>
                                             <div class="status-buttons">
                                                 <c:choose>
