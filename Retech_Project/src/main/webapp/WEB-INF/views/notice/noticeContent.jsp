@@ -11,7 +11,7 @@
 <style type="text/css">
     body {
         font-family: Arial, sans-serif;
-        background-color: #f4f4f4; /* 페이지 배경색 */
+        background-color: #f4f4f4; 
     }
     
     #listForm {
@@ -21,29 +21,29 @@
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow-y: auto; /* 세로 방향으로 스크롤 추가 */
+    overflow-y: auto; 
 }
     
     #listForm #tr_top {
-        background-color: #2c3e50; /* 네이비색 계열 */
-        color: #ffffff; /* 글자색 흰색 */
+        background-color: #2c3e50; 
+        color: #ffffff; 
     }
     
     h2 {
         text-align: center;
-        color: #2c3e50; /* 제목 색상 네이비색 계열 */
+        color: #2c3e50; 
         margin-top: 20px;
     }
     
     table {
         width: 100%;
-        border-collapse: collapse; /* 테이블 셀 경계선 겹침 방지 */
+        border-collapse: collapse; 
     }
     
     table td {
         text-align: center;
-        padding: 10px; /* 셀 안쪽 여백 추가 */
-        border: 1px solid #ddd; /* 셀 경계선 색상 */
+        padding: 10px; 
+        border: 1px solid #ddd; 
     }
     
     #subject {
@@ -53,12 +53,12 @@
     
     .contentArea > td {
         text-align: left;
-        padding: 20px; /* 내용 영역 여백 */
+        padding: 20px; 
     }
     
     .cont {
         display: block;
-        margin: 20px; /* 내용 마진 */
+        margin: 20px; 
     }
     
     .btnArea {
@@ -69,13 +69,13 @@
     }
     
     .btnArea button {
-        background-color: #3498db; /* 버튼 배경색 */
+        background-color: #3498db; 
         color: white;
         border: none;
         padding: 10px 20px;
         cursor: pointer;
-        border-radius: 5px; /* 버튼 테두리 둥글게 */
-        font-size: 14px; /* 버튼 글자 크기 */
+        border-radius: 5px; 
+        font-size: 14px;
     }
     
     .btnArea button a {
@@ -84,27 +84,27 @@
     }
     
     .btnArea button:hover {
-        background-color: #2980b9; /* 버튼 호버 색상 */
+        background-color: #2980b9; 
     }
     
     .replyContent img {
-        width: 15px; /* 대댓글 작성 아이콘 크기 */
+        width: 15px;
         height: 15px;
     }
     
 #replyArea {
     margin-top: 20px;
     padding: 10px;
-    background-color: #ffffff; /* 배경색 설정 */
-    border: 1px solid #ddd; /* 경계선 추가 */
-    border-radius: 4px; /* 테두리 둥글게 */
-    max-height: 300px; /* 최대 높이 설정 */
-    overflow-y: auto; /* 세로 방향으로 스크롤 추가 */
+    background-color: #ffffff; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    max-height: 300px;
+    overflow-y: auto; 
 }
 
 #replyListArea {
     border-top: 1px solid #ddd;
-    margin-top: 10px; /* 댓글 목록과 댓글 입력 폼 사이 여백 */
+    margin-top: 10px; 
 }
 
 #replyListArea table {
@@ -355,16 +355,4 @@
 	</footer>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 
