@@ -18,7 +18,8 @@ html, body {
 }
 body {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
+    font-family: "Roboto", "Noto Sans KR", "PingFang SC", "Apple SD Gothic Neo", "Microsoft YaHei UI", "Malgun Gothic", sans-serif;
 }
 
 /* header 고정 */
