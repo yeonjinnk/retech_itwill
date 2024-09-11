@@ -35,6 +35,51 @@ $(document).ready(function() {
 
 
 <script type="text/javascript">
+
+document.addEventListener('DOMContentLoaded', function() {
+    const dateElements = document.querySelectorAll('.productDate');
+
+    dateElements.forEach(function(element) {
+        const dateStr = element.getAttribute('data-date');
+        if (dateStr === '날짜 정보 없음') {
+            return;
+        }
+
+        const date = new Date(dateStr);
+        const now = new Date();
+
+        // 날짜를 비교하기 위해 현재 시간의 날짜 부분만 사용
+        const diffTime = now - date;
+        const dayDiff = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const hoursDiff = Math.floor(diffTime / (1000 * 60 * 60));
+        const minutesDiff = Math.floor(diffTime / (1000 * 60));
+
+        let timeAgo;
+        if (dayDiff == 0) {
+        	if (hoursDiff === 0) {
+        		timeAgo = minutesDiff + "분 전";
+        	} else {
+        		timeAgo = hoursDiff + "시간 전";
+        	}
+        } else {
+        		timeAgo = dayDiff + "일 전";
+        }
+
+        // 텍스트를 변경
+        element.textContent = timeAgo;
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
 let isOpen = false; // 정렬 목록에 사용할 함수 기본값 false
 let pageNum = 1; // 임의로 설정
 let maxPage = 1; // 최대 페이지 번호 미리 저장
@@ -86,20 +131,32 @@ $(function() {
 	
 	    $(window).on("scroll", function() {
 	        if (isLoading) return;
-	
+			console.log("스크롤 작동함!");
 	        let scrollTop = $(window).scrollTop();
 	        let windowHeight = $(window).height();
 	        let documentHeight = $(document).height();
 	        let threshold = 50;
 	
 	        if (scrollTop + windowHeight + threshold >= documentHeight) {
-	            if (pageNum < maxPage) {
+			console.log("첫번째 if문 진입!");
+			console.log("pageNum" + pageNum);
+			console.log("maxPage" + maxPage);
+			
+			//연진 수정 부분!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	        	let param = "${param.searchKeyword}";
+			console.log("param 파라미터어어!!!!!!!" + param);
+	            if (param == "") {
+			console.log("두번째 if문 진입!");
 	                pageNum++;
 	                isLoading = true;
 	                loadList(selectedCategory, selectedSort, false);
 	            }
 	        }
+	    	//연진 수정 부분!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	    });
+	    
 });
 
 function loadList(selectedCategory, selectedSort, resetPage) {
@@ -122,6 +179,7 @@ function loadList(selectedCategory, selectedSort, resetPage) {
         url: url,
         dataType: "JSON",
         success: function(data) {
+        	console.log("loadList ajax 진입함!!!!");
             maxPage = data.maxPage;
             $("#listCount").text(data.listCount);
 
@@ -136,7 +194,7 @@ function loadList(selectedCategory, selectedSort, resetPage) {
                 let productDate = new Date(product.pd_first_date);
                 let dateDisplay = "날짜 정보 없음"; // 기본값 설정
 
-
+				console.log("!!!!!!!!!!!! productDate !!!!!!!!: " + productDate);
                 if (!isNaN(productDate.getTime())) {  // 유효한 날짜인지 확인
                     let currentDate = new Date();
                     let timeDiff = currentDate - productDate;
@@ -144,6 +202,8 @@ function loadList(selectedCategory, selectedSort, resetPage) {
                     let dayDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
                     let hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
                     let minutesDiff = Math.floor(timeDiff / (1000 * 60));
+                    console.log("!!!!!!!! dayDiff !!!!!!!!!!!!! : " + dayDiff);
+                    console.log("!!!!!!!! hoursDiff !!!!!!!!!!!!! : " + hoursDiff);
 
                     if (dayDiff === 0) {
                         if (hoursDiff === 0) {
@@ -258,9 +318,6 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 			        <li id="list3">조회순 </li>
 			    </ul>
 			</div>
-			
-			
-			
 			<!-- 목록표시 영역 -->
 			<div class="row" align="left">
 				<div class="productListArea">
@@ -277,10 +334,16 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 								</span>
 							</div>
 							<div class="card-body">
+							
+<!-- 								//연진 수정 부분!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 -->
+<!-- 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 								<!-- 카테고리 가져오기 -->
-								<div class="category" style="font-size:0.8rem;">
-									${product.pd_category }
-								</div>
+<!-- 								<div class="category" style="font-size:0.8rem;"> -->
+<%-- 									${product.pd_category } --%>
+<!-- 								</div> -->
+
+<!-- 	//연진 수정 부분!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 -->
+<!-- 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 								<!-- 제목 링크 -->
 								<div class="card-title" style="white-space: nowrap; overflow:hidden; text-overflow: elipsis;">
 									<a href="product_detail?pd_idx=${product.pd_idx}&member_id=${product.member_id}">
@@ -288,7 +351,7 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 									</a>
 								</div>
 								<p><fmt:formatNumber pattern="#,###" value="${product.pd_price }"/>원</p>
-								<p>${product.pd_first_date != null ? product.pd_first_date : '날짜 정보 없음'}</p>							</div>
+								<p class="productDate" data-date="${product.pd_first_date != null ? product.pd_first_date : '날짜 정보 없음'}">${product.pd_first_date != null ? product.pd_first_date : '날짜 정보 없음'}</p>							</div>
 						</div>
 					</c:forEach>
 				</div>
