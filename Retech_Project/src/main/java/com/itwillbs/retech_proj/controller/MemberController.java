@@ -133,6 +133,7 @@ public class MemberController {
 	       
 	       // 인증번호 생성 및 세션 저장
 	       String verificationCode = generateVerificationCode();
+	       System.out.println();
 	       session.setAttribute("verificationCode", verificationCode);
 	       session.setAttribute("phoneNumber", phone);
 
@@ -301,113 +302,113 @@ public class MemberController {
 						return "result/fail";
 
 					} else {
-//						model.addAttribute("mem_id", mem_id); // model에 아이디값 저장
-						model.addAttribute("dbMember", dbMember); // model에 아이디값 저장
+						model.addAttribute("dbMember", dbMember);
 						return "member/member_pw_find_pro";
 					}
 					
 				}
 				
 				// 비밀번호 재설정 요청
-			    @PostMapping("PwResetPro")
-			    public String pwResetPro(MemberVO member, Model model, HttpSession session) {
-			        System.out.println("비밀번호 재설정 요청");
+				// 비밀번호 재설정 요청
+				@PostMapping("PwResetPro")
+				public String pwResetPro(MemberVO member, Model model, HttpSession session) {
+				    System.out.println("비밀번호 재설정 요청");
 
-			        // 입력된 전화번호로 DB에서 회원 정보를 조회
-			        MemberVO dbMember = service.isExistPhonenumber(member);
-			        
-			        if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
-			            model.addAttribute("msg", "없는 전화번호입니다");
-			            return "result/fail";
-			        }
-			        
-			        // 전화번호가 존재하면 인증번호 생성 및 발송
-			        String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
+				    // 입력된 전화번호로 DB에서 회원 정보를 조회
+				    MemberVO dbMember = service.isExistPhonenumber(member);
+				    
+				    if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
+				        model.addAttribute("msg", "없는 전화번호입니다.");
+				    } else {
+				        // 전화번호가 존재하면 인증번호 생성 및 발송
+				        String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
 
-			        // 인증번호 생성
-			        String verificationCode = generateVerificationCode();
-			        session.setAttribute("verificationCode", verificationCode);
-			        session.setAttribute("phoneNumber", phone_number);
+				        // 인증번호 생성
+				        String verificationCode = generateVerificationCode();
+				        session.setAttribute("verificationCode", verificationCode);
+				        session.setAttribute("phoneNumber", phone_number);
+				        session.setAttribute("memberId", dbMember.getMember_id()); // 세션에 memberId 저장
 
-			        // 인증번호 발송
-			        boolean isSent = service.sendVerificationCode(phone_number, verificationCode);
+				        // 인증번호 발송
+				        boolean isSent = service.sendVerificationCode(phone_number, verificationCode);
 
-			        if (!isSent) {
-			            model.addAttribute("msg", "인증번호 발송에 실패했습니다.");
-			            return "result/fail";
-			        }
+				        // 인증번호 발송 성공/실패 여부와 관계없이 페이지 이동
+				        model.addAttribute("msg", isSent ? "인증번호가 성공적으로 발송되었습니다." : "인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
+				    }
+				    
+				    // 비밀번호 재설정 페이지로 이동
+				    return "member/member_pw_reset";
+				}
 
-			        // 모델에 인증 정보와 전화번호 저장
-			        model.addAttribute("dbMember", dbMember);
-			        
-			        // 인증번호 발송 성공 시 비밀번호 재설정 페이지로 이동
-			        model.addAttribute("msg", "인증번호가 성공적으로 발송되었습니다.");
-			        return "member/member_pw_reset";
-			    }
 
-			    private String generateVerificationCode() {
-			        return String.valueOf((int) (Math.random() * 900000) + 100000);
-			    }
+				private String generateVerificationCode() {
+				    return String.valueOf((int) (Math.random() * 900000) + 100000);
+				}
+
 			    
 			    //검증관련
-			    @PostMapping("/validateAuthCode")
-			    @ResponseBody
-			    public Map<String, Boolean> validateAuthCode(@RequestParam("auth_code") String authCode, HttpSession session) {
-			        // 세션에서 저장된 인증번호와 비교
-			        String sessionCode = (String) session.getAttribute("verificationCode");
-			        boolean isValid = authCode.equals(sessionCode);
+				@PostMapping("/validateAuthCode")
+				@ResponseBody
+				public Map<String, Boolean> validateAuthCode(@RequestParam("auth_code") String authCode, HttpSession session) {
+				    String sessionCode = (String) session.getAttribute("verificationCode");
+				    boolean isValid = authCode.equals(sessionCode);
 
-			        Map<String, Boolean> response = new HashMap<>();
-			        response.put("valid", isValid);
-			        return response;
-			    }
+				    Map<String, Boolean> response = new HashMap<>();
+				    response.put("valid", isValid);
+				    return response;
+				}
 
-			    
-			    
+
 			    // 비밀번호 재설정
-			    @PostMapping("PwResetFinal")
-			    public String pwResetFinal(@RequestParam Map<String, String> map, MemberVO member,
-			                               BCryptPasswordEncoder passwordEncoder, HttpSession session, Model model) {
-			        // 회원 정보가 null이 아닌지 확인
-			        if (member != null) {
-			            member = service.getMember(member); // 기존 member 정보 조회
-			        } else {
-			            model.addAttribute("msg", "회원 정보를 찾을 수 없습니다.");
-			            return "result/fail";
-			        }
+				// 비밀번호 재설정
+				@PostMapping("PwResetFinal")
+				public String pwResetFinal(@RequestParam("member_passwd") String newPasswd,
+				                           HttpSession session, Model model, BCryptPasswordEncoder passwordEncoder) {
+				    // 세션에서 전화번호와 회원 ID 가져오기
+				    String phoneNumber = (String) session.getAttribute("phoneNumber");
+				    String memberId = (String) session.getAttribute("memberId");
 
-			        // 세션에서 저장된 인증번호와 사용자 입력 인증번호 비교
-//			        String sessionVerificationCode = (String) session.getAttribute("verificationCode");
-//			        String authCode = map.get("auth_code");
-//
-//			        if (sessionVerificationCode == null || !sessionVerificationCode.equals(authCode)) {
-//			            model.addAttribute("msg", "인증번호가 일치하지 않습니다.");
-//			            return "result/fail";
-//			        }
+				    if (phoneNumber == null || memberId == null) {
+				        model.addAttribute("msg", "세션이 만료되었습니다. 비밀번호 재설정을 다시 시도해 주세요.");
+				        return "result/fail";
+				    }
 
-			        // 새 비밀번호 입력 여부를 확인하여 새 비밀번호 입력됐을 경우 암호화 수행
-			        String newPasswd = map.get("member_passwd");
-			        if (newPasswd != null && !newPasswd.isEmpty()) {
-			            map.put("member_passwd", passwordEncoder.encode(newPasswd)); // 새 비밀번호 암호화
-			            System.out.println("map : " + map); // passwd 항목 암호화 결과 확인
-			        }
+				    // 전화번호와 회원 ID를 기준으로 회원 정보 조회
+				    MemberVO member = service.getMemberByPhoneAndId(phoneNumber, memberId);
+				    if (member == null) {
+				        model.addAttribute("msg", "회원 정보를 찾을 수 없습니다.");
+				        return "result/fail";
+				    }
 
-			        // 회원 정보 수정
-			        int updateCount = service.modifyPasswd(map);
+				    // 새 비밀번호 입력 여부를 확인하여 새 비밀번호 입력됐을 경우 암호화 수행
+				    if (newPasswd != null && !newPasswd.isEmpty()) {
+				        String encodedPasswd = passwordEncoder.encode(newPasswd);
+				        member.setMember_passwd(encodedPasswd); // 새 비밀번호 암호화
+				    } else {
+				        model.addAttribute("msg", "새 비밀번호를 입력해 주세요.");
+				        return "result/fail";
+				    }
 
-			        if (updateCount > 0) {
-			            model.addAttribute("msg", "패스워드 수정 성공!");
-			            model.addAttribute("targetURL", "MemberLogin");
-			            session.removeAttribute("verificationCode"); // 인증번호 세션 제거
-			            session.removeAttribute("phoneNumber"); // 전화번호 세션 제거
-			            return "result/success";
-			        } else {
-			            model.addAttribute("msg", "패스워드 수정 실패!");
-			            return "result/fail";
-			        }
-			    }
-			
-	
+				    // 회원 정보 수정
+				    int updateCount = service.modifyPasswd(member);
+				    if (updateCount > 0) {
+				        model.addAttribute("msg", "패스워드 수정 성공!");
+				        model.addAttribute("targetURL", "MemberLogin");
+				        session.removeAttribute("verificationCode"); // 인증번호 세션 제거
+				        session.removeAttribute("phoneNumber"); // 전화번호 세션 제거
+				        session.removeAttribute("memberId"); // 회원 ID 세션 제거
+				        return "result/success";
+				    } else {
+				        model.addAttribute("msg", "패스워드 수정 실패!");
+				        return "result/fail";
+				    }
+				}
+
+
+
+
+
+
 				
 	   @GetMapping("MyPageMain")
 	   public String mypageinfo2(@RequestParam Map<String, String> map, HttpSession session, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
@@ -422,13 +423,6 @@ public class MemberController {
 		   return "mypage/member_mypage";
 	   }
 				
-//	   @PostMapping("MyPageMain")
-//	   public String mypageinfo2(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
-//		     
-//		   return "member/member_mypage";
-//	   }
-
-
 	   
 	   @GetMapping("MemberInfo")
 	   public String memberInfo(MemberVO member, HttpSession session, Model model) {
@@ -454,31 +448,6 @@ public class MemberController {
 		   
 		   return "member/member_info";
 	   }
-
-//	   @PostMapping("MemberModify")
-//	   public String mypageinfo(@RequestParam Map<String, String> map, MemberVO member, BCryptPasswordEncoder passwordEncoder, Model model) {
-//		   System.out.println(member);
-//		   System.out.println(map);
-//	      member =service.getMember(member);
-//	      if (!passwordEncoder.matches((CharSequence)map.get("member_oldpw"), member.getMember_passwd())) {
-//	         model.addAttribute("msg", "수정 권한이 없습니다!");
-//	         return "result/fail";
-//	      } else {
-//	         if (!((String)map.get("member_passwd")).equals("")) {
-//	            map.put("member_passwd", passwordEncoder.encode((CharSequence)map.get("member_passwd")));
-//	         }
-//
-//	         int updateCount = service.modifyMember(map);
-//	         if (updateCount > 0) {
-//	            model.addAttribute("msg", "회원정보 수정 성공!");
-//	            model.addAttribute("targetURL", "MemberInfo");
-//	            return "result/success";
-//	         } else {
-//	            model.addAttribute("msg", "회원정보 수정 실패!");
-//	            return "result/fail";
-//	         }
-//	      }
-//	   }
 	   
 	   @PostMapping("MemberModify")
 	   public String mypageinfo(
@@ -735,8 +704,6 @@ public class MemberController {
 	       model.addAttribute("selectedCs", selectedCs);
 	       return "cs/csContent"; // cs 폴더 내의 csContent.jsp로 이동
 	   }	
-
-	   
 	   
 	   
 	   // 거래상태 업데이트
@@ -753,34 +720,6 @@ public class MemberController {
 	    }
 	   
 	   
-//	   @GetMapping("Review")
-//	   public String review() {
-//		
-//	   return "mypage/review_popup";
-//	   }
-	   
-	   // 문자인증 해볼게요 
-//	   @Autowired
-//	    private SmsService smsService;
-
-//	    // 인증번호 발송 요청 처리
-//	    @PostMapping("/sendSMS")
-//	    @ResponseBody
-//	    public String sendSms(@RequestParam("phoneNumber") String phoneNumber) {
-//	        String code = smsService.generateVerificationCode(); // 인증번호 생성
-//	        smsService.sendVerificationCode(phoneNumber, code); // 인증번호 발송
-//	        return code; // 클라이언트에 인증번호를 반환 (테스트 용도)
-//	    }
-
-//	    // 인증번호 검증 요청 처리
-//	    @PostMapping("/verifyCode")
-//	    @ResponseBody
-//	    public String verifyCode(@RequestParam("phoneNumber") String phoneNumber,
-//	                             @RequestParam("code") String code) {
-//	        // 인증번호 검증 로직 (예: 저장된 인증번호와 비교)
-//	        boolean isValid = smsService.verifyCode(phoneNumber, code);
-//	        return isValid ? "success" : "error";
-//	    }
 	   
 	   
 }

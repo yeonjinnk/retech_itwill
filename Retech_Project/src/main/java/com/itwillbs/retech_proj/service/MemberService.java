@@ -54,8 +54,8 @@ public class MemberService {
     }
     
     // 회원 비밀번호 변경
-    public int modifyPasswd(Map<String, String> map) {
-        return mapper.updatePasswd(map);
+    public int modifyPasswd(MemberVO member) {
+        return mapper.updatePasswd(member);
     }
 
     // 회원 아이디 전화번호 비교

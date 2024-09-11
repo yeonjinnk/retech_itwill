@@ -205,7 +205,24 @@
                     });
                 }
             });
+				
+      	   // 날짜 형식 변환 함수
+            function formatDate(dateString) {
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ko-KR', options); // 'ko-KR'은 한국 날짜 형식
+            }
 
+            // 모든 날짜 셀을 찾아서 변환
+            $('td[data-date]').each(function() {
+                const dateString = $(this).data('date');
+                if (dateString) {
+                    $(this).text(formatDate(dateString));
+                }
+                
+                
+            });
+            
             $('.confirm-request').on('click', function() {
                 var productId = $(this).data('id');
                 if (confirm('거래 확정하시겠습니까?')) {
@@ -416,7 +433,7 @@
                                         <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
                                         <td>${product.trade_amt}</td>
-                                        <td>${product.pd_first_date}</td>
+                                        <td data-date="${product.pd_first_date}"></td>
                                         <td>
                                             <div class="status-buttons">
                                                 <c:choose>

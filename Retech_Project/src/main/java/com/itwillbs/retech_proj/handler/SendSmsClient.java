@@ -7,9 +7,9 @@ import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 
 public class SendSmsClient {
     private static final String SMS_API_URL = "https://api.coolsms.co.kr";
-    private static final String API_KEY = "NCSRQIXWYXX6IWMU"; // 실제 API_KEY로 교체하세요
-    private static final String API_SECRET = "QSKMOJBK5IWQLLHUUWVMVD6HNEJG3FZO"; // 실제 API_SECRET로 교체하세요
-    private static final String PHONE_NUM = "01021225374"; // 발신 번호를 실제 번호로 교체하세요
+    private static final String API_KEY = "NCS2HFLDTRFRAHCJ"; // 실제 API_KEY로 교체하세요
+    private static final String API_SECRET = "DRXLZHDJBGOUL631AZJFOPV0NYKBZXY3"; // 실제 API_SECRET로 교체하세요
+    private static final String PHONE_NUM = "01072808558"; // 발신 번호를 실제 번호로 교체하세요
 
     private static DefaultMessageService messageService;
 

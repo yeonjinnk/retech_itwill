@@ -24,7 +24,7 @@ public interface MemberMapper {
 
 	   MemberVO selectId(MemberVO member);
 
-	   int updatePasswd(Map<String, String> map);
+	   int updatePasswd(MemberVO member);
 
 	   MemberVO selectTel(MemberVO member);
 

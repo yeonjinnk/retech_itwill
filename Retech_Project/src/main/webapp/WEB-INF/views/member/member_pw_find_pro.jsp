@@ -16,15 +16,16 @@
         margin: 20px auto; 
     }
 
-    #next {
+    #next, #sendCode {
         padding: 8px 20px;
         border: none;
         border-radius: 8px; 
         background-color: #4CAF50; 
         color: white; 
+        cursor: pointer;
     }
 
-    #next:hover {
+    #next:hover, #sendCode:hover {
         background-color: #45a049; 
     }
 
@@ -68,44 +69,78 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $("#smsForm").on("submit", function(event) {
-        var submitButton = event.originalEvent.submitter;
+    var isCodeSent = false; // 인증번호 발송 여부를 추적하는 변수
 
-        // 인증번호 받기 버튼 클릭 시 폼을 제출하여 인증번호 발송
-        if (submitButton && submitButton.id === "sendCode") {
-            // 폼 제출을 막고 AJAX로 인증번호 발송 요청
-            event.preventDefault(); // 기본 제출 동작 방지
-            
-            var form = $(this);
-            $.ajax({
-                url: form.attr('action'),
-                type: form.attr('method'),
-                data: form.serialize(),
-                success: function(response) {
-                    // 인증번호 발송 성공 후 사용자에게 안내
-                    alert("인증번호가 발송되었습니다. 확인 후 입력해 주세요.");
-                },
-                error: function() {
-                    // 인증번호 발송 실패 시 사용자에게 안내
-                    alert("인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
-                }
-            });
+    $("#sendCode").on("click", function(event) {
+        event.preventDefault(); // 폼 제출 막기
+
+        var name = $("input[name='name']").val().trim();
+        var phone = $("input[name='member_phone']").val().trim();
+
+        if (name === "" || phone === "") {
+            alert("이름과 전화번호를 입력해 주세요.");
+            return;
         }
 
-        // 다음 버튼 클릭 시 인증번호 입력 여부 확인
-        if (submitButton && submitButton.id === "next") {
-            var authCode = $("input[name='auth_code']").val().trim();
+        if (isCodeSent) {
+            alert("이미 인증번호를 발송하였습니다.");
+            return;
+        }
 
-            // 인증번호가 6자리 숫자인지 확인
-            if (!/^\d{6}$/.test(authCode)) {
-                alert("6자리 숫자의 인증번호를 입력해 주세요.");
-                event.preventDefault(); // 기본 제출 동작 방지
-                return;
+        $.ajax({
+            url: $("#smsForm").attr('action'),
+            type: "POST",
+            data: {
+                name: name,
+                member_phone: phone
+            },
+            success: function(response) {
+                alert("인증번호가 발송되었습니다. 확인 후 입력해 주세요.");
+                isCodeSent = true; // 인증번호가 발송되었음을 기록
+            },
+            error: function() {
+                alert("인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
             }
+        });
+    });
 
-            // 인증번호 입력이 유효한 경우 폼을 제출하여 다음 페이지로 이동
-            $("#smsForm").off('submit').submit();
+    $("#smsForm").on("submit", function(event) {
+        var authCode = $("input[name='auth_code']").val().trim();
+
+        // 인증번호가 6자리 숫자인지 확인
+        if (!/^\d{6}$/.test(authCode)) {
+            alert("6자리 숫자의 인증번호를 입력해 주세요.");
+            event.preventDefault(); // 기본 제출 동작 방지
+            return;
         }
+
+        if (!isCodeSent) {
+            alert("먼저 인증번호를 발송해 주세요.");
+            event.preventDefault(); // 기본 제출 동작 방지
+            return;
+        }
+
+        // 서버에서 인증번호 검증
+        $.ajax({
+            url: "${pageContext.request.servletContext.contextPath}/validateAuthCode",
+            type: "POST",
+            data: {
+                auth_code: authCode
+            },
+            success: function(response) {
+                if (response.valid) {
+                    // 인증번호가 유효할 경우 폼을 제출하여 다음 페이지로 이동
+                    $("#smsForm").off("submit").submit();
+                } else {
+                    alert("인증번호가 유효하지 않습니다. 다시 확인해 주세요.");
+                }
+            },
+            error: function() {
+                alert("인증번호 검증에 실패했습니다. 다시 시도해 주세요.");
+            }
+        });
+
+        event.preventDefault(); // 기본 제출 동작 방지
     });
 });
 
@@ -145,10 +180,10 @@ $(document).ready(function() {
                                 </tr>
                                 <tr>
                                     <td><input type="text" name="member_phone" size="10" placeholder="전화번호 입력"></td>
-                                    <td><input type="submit" value="인증번호 받기" id="sendCode"></td>
+                                    <td><input type="button" value="인증번호 받기" id="sendCode"></td>
                                 </tr>    
                                 <tr>
-                                    <td colspan="3"><input type="text" name="auth_code" placeholder="인증번호 입력" size="10" maxlength="8"></td>
+                                    <td colspan="3"><input type="text" name="auth_code" placeholder="인증번호 입력" size="10" maxlength="6"></td>
                                 </tr>    
                                 <tr>
                                     <td colspan="3" align="center">
@@ -167,3 +202,4 @@ $(document).ready(function() {
     </footer>
 </body>
 </html>
+
