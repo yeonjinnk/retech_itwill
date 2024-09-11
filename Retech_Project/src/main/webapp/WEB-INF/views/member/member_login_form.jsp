@@ -20,21 +20,6 @@
                 $("#hiddenId").val(rsa.encrypt($("#member_id").val()));
                 $("#hiddenPasswd").val(rsa.encrypt($("#member_passwd").val()));
             });
-
-            Kakao.init('2148dfcbfa10f00502540073a8c41792');
-            Kakao.Auth.createLoginButton({
-                container: '#kakao-login-button',
-                success: function(authObj) {
-                    if (authObj.code) {
-                        window.location.href = '/retech_proj/kakao-callback?code=' + authObj.code;
-                    } else {
-                        console.error('Authorization code is missing.');
-                    }
-                },
-                fail: function(err) {
-                    console.error('Kakao login failed:', err);
-                }
-            });
         });
     </script>
 <style>
@@ -69,45 +54,49 @@
     }
 
     .tab {
-        width: 100%;
-        margin-bottom: 30px;
-        text-align: center;
-    }
+	    width: 100%;
+	    margin-bottom: 30px;
+	    text-align: center;
+	}
+	
+	.tab ul {
+	    display: flex;
+	    justify-content: center;
+	    padding: 0;
+	    margin: 0;
+	    width: 100%;
+	}
+	
+	.tab ul li {
+	    flex: 1;
+	    list-style: none;
+	    background-color: #eee;
+	    border-radius: 10px 10px 0 0;
+	    margin: 0;
+	    text-align: center;
+	}
+	
+	.tab ul li a {
+	    display: block;
+	    width: 100%;
+	    padding: 15px;
+	    text-decoration: none;
+	    color: #555;
+	    transition: background-color 0.3s, color 0.3s;
+	    text-align: center;
+	    box-sizing: border-box;
+	}
+	
+	.tab ul li.on {
+	    background-color: #4CAF50;
+	    color: white;
+	    font-weight: bold;
+	}
+	
+	.tab ul li.on a {
+	    color: white;
+	}
 
-    .tab ul {
-        display: flex;
-        justify-content: center;
-        padding: 0;
-    }
-
-    .tab ul li {
-        width: 50%;
-        list-style: none;
-        background-color: #eee;
-        border-radius: 10px 10px 0 0;
-        margin: 0;
-    }
-
-    .tab ul li a {
-        display: block;
-        width: 100%;
-        padding: 15px;
-        text-decoration: none;
-        color: #555;
-        transition: background-color 0.3s, color 0.3s;
-        text-align: left;
-        margin-right: 20px; 
-    }
-
-    .tab ul li.on {
-        background-color: #4CAF50;
-        color: white;
-        font-weight: bold;
-    }
-
-    .tab ul li.on a {
-        color: white;
-    }
 
     article {
         width: 100%;
@@ -252,7 +241,13 @@
                         </label>
                     </div>
                     
-                    <input type="submit" value="로그인" id="login_btn">
+                    <input type="submit" value="로그인" id="login_btn"> <br><br>
+                    
+                    <c:set var="client_id" value="01fd1f26d7e150593f036ef9d1ecb279" />
+					<c:set var="redirect_uri" value="http://localhost:8081/retech_proj/" />
+					<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}">
+						<img src="${pageContext.request.servletContext.contextPath}/resources/images/kakao_login_medium_narrow.png">
+					</a>
                     
                     <ul>
                         <li><a href="MemberSearchId">아이디 찾기</a></li>

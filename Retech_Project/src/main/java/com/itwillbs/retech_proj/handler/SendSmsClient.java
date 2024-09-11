@@ -7,9 +7,9 @@ import net.nurigo.sdk.message.exception.NurigoMessageNotReceivedException;
 
 public class SendSmsClient {
     private static final String SMS_API_URL = "https://api.coolsms.co.kr";
-    private static final String API_KEY = "NCS2HFLDTRFRAHCJ"; // 실제 API_KEY로 교체하세요
-    private static final String API_SECRET = "DRXLZHDJBGOUL631AZJFOPV0NYKBZXY3"; // 실제 API_SECRET로 교체하세요
-    private static final String PHONE_NUM = "01072808558"; // 발신 번호를 실제 번호로 교체하세요
+    private static final String API_KEY = "NCSSPRGJU9JFRMUX"; // 실제 API_KEY로 교체하세요
+    private static final String API_SECRET = "K3A3TVLQKB9IOL84AP69AYJIZFLSPSLE"; // 실제 API_SECRET로 교체하세요
+    private static final String PHONE_NUM = "01050369800"; // 발신 번호를 실제 번호로 교체하세요
 
     private static DefaultMessageService messageService;
 
@@ -19,6 +19,7 @@ public class SendSmsClient {
     }
 
     public static boolean sendSms(String phoneNumber, String content) {
+    	System.out.println(">>>>>>>>>>>>>>> sendSms");
         Message message = new Message();
         message.setFrom(PHONE_NUM);
         message.setTo(phoneNumber);
@@ -28,7 +29,7 @@ public class SendSmsClient {
             messageService.send(message);
             return true;
         } catch (NurigoMessageNotReceivedException exception) {
-            // 발송에 실패한 메시지 목록을 확인할 수 있습니다.
+//             발송에 실패한 메시지 목록을 확인할 수 있습니다.
             System.out.println("Failed Messages: " + exception.getFailedMessageList());
             System.out.println("Error Message: " + exception.getMessage());
             return false;

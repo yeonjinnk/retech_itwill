@@ -7,13 +7,28 @@
 <title>비밀번호 재설정</title>
 <link href="${pageContext.request.servletContext.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    main {
+        flex: 1;
+    }
+
     #findPw_wrap {
         border: 1px solid #ccc;
         border-radius: 12px;
-        padding: 6px 18px; /* 패딩 크기 축소 */
+        padding: 6px 18px; 
         background-color: #ffffff;
-        max-width: 600px; /* 최대 너비 설정 */
-        margin: 0 auto; /* 중앙 정렬 */
+        max-width: 600px;
+        margin: 0 auto;
     }
 
     #next {
@@ -31,18 +46,22 @@
     #sec02 {
         background-color: #f9fafb;
         border-radius: 8px; 
-        margin: 6px auto; /* 양옆 여백을 자동으로 조정하여 중앙 정렬 */
-        padding: 6px; /* 패딩 축소 */
-        max-width: 560px; /* 최대 너비 설정 */
+        margin: 6px auto; 
+        padding: 6px; 
+        max-width: 560px; 
     }
 
     table {
         font-size: 0.9em;
-        width: 100%; /* 테이블 너비 100%로 설정 */
+        width: 100%; 
     }
 
     td {
         padding: 5px 8px; 
+    }
+    
+    footer {
+        padding: 0px;
     }
 </style>
 </head>
