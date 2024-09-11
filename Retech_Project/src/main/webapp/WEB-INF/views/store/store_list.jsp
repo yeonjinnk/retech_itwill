@@ -27,6 +27,11 @@
 		                + "</div>"
 		                + "<div class='store_preview'>"
 		                + "<div class='store_id'>" + store.store_id + "</div>"
+// 		                + "<div class='tags'><div class='tag display_tag_item' style='background-color: rgb(244, 244, 244); color: rgb(130, 139, 157);'>"
+// 		                + "<span class='tag_text'> 쿠폰 </span></div><div class='tag display_tag_item' style='background-color: rgb(244, 244, 244); color: rgb(130, 139, 157);'>"
+// 		                + "<span class='tag_text'> 적립 </span></div><div class='tag display_tag_item' style='background-color: rgb(244, 244, 244); color: rgb(130, 139, 157);'>"
+// 		                + "<span class='tag_text'> 무료배송 </span></div></div>"
+		                + "<div class='store_content'>" + store.store_price + "</div>"
 		                + "<div class='store_content'>" + store.store_content + "</div>"
 		                + "</div>"
 		                + "</div>";
