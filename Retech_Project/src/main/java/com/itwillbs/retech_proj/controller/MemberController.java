@@ -569,8 +569,14 @@ public class MemberController {
 	       MemberVO member = new MemberVO();
 	       member.setMember_id(loggedInUserId);
 	       member = service.getMember(member);
-	       model.addAttribute("member", member);
 	       
+	       //-------------리뷰 불러오기----------------------------
+	       Float myStarRate = service.getStarRate(loggedInUserId);
+	       if(myStarRate != null) {
+	    	   member.setMember_starRate(myStarRate);
+	       }
+	       //---------------------------------------------------
+	       model.addAttribute("member", member);
 	       model.addAttribute("pageName", "SaleHistory");
 	       
 	       return "mypage/salehistory";
@@ -603,6 +609,15 @@ public class MemberController {
 	           MemberVO member = new MemberVO();
 	           member.setMember_id(id);
 	           member = service.getMember(member);
+	           
+	         //-------------리뷰 불러오기----------------------------
+		       Float myStarRate = service.getStarRate(id);
+		       if(myStarRate != null) {
+		    	   member.setMember_starRate(myStarRate);
+		       }
+		       //---------------------------------------------------
+		       
+	           
 	           model.addAttribute("member", member);
 	           
 	       }
@@ -623,6 +638,17 @@ public class MemberController {
 	       if (id != null) {
 	           member.setMember_id(id);
 	           member = service.getMember(member);
+	           
+	           //-------------리뷰 불러오기----------------------------
+		       Float myStarRate = service.getStarRate(id);
+		       if(myStarRate != null) {
+		    	   member.setMember_starRate(myStarRate);
+		       }
+		       //---------------------------------------------------
+		       
+		       
+	           
+	           
 	           model.addAttribute("member", member);
 	           System.out.println("모델에 담은 member : " + member);
 
@@ -678,6 +704,17 @@ public class MemberController {
 			   member = service.getMember(member);
 			   model.addAttribute("member", member);    
 	            
+			   
+			   //-------------리뷰 불러오기----------------------------
+		       Float myStarRate = service.getStarRate(id);
+		       if(myStarRate != null) {
+		    	   member.setMember_starRate(myStarRate);
+		       }
+		       //---------------------------------------------------
+		       
+		       
+			   
+			   
 	            // 페이징을 고려한 변수 설정 (예: 현재 페이지, 페이지당 항목 수)
 	            int startRow = 0; // 시작 행 (페이지 계산에 따라 동적으로 설정 필요)
 	            int listLimit = 10; // 한 페이지에 보여줄 항목 수

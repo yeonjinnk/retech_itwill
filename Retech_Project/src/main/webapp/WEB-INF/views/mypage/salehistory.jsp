@@ -271,13 +271,21 @@
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>
-                    <p>신뢰지수: </p>
+                    <c:choose>
+                    	<c:when test="${member.member_starRate eq 0.0}">
+                    <p>신뢰지수: -     (<a href="ProductRegistForm"> !!이곳을 클릭해 판매를 시작해주세요!! )</a></p>
+                    	</c:when>
+                    	<c:otherwise>
+                    <p>신뢰지수: ${member.member_starRate}</p>
+                    	</c:otherwise>
+                    </c:choose>
+                    
                 </div>
             </div>
 
             <ul class="tabs">
-                <li><a href="#" class="selected">판매내역</a></li>
-                <li><a href="#">리뷰</a></li>
+                <li><a href="SaleHistory" class="selected">판매내역</a></li>
+                <li><a href="SellerReview">받은 리뷰</a></li>
             </ul>
 
             <div class="content">

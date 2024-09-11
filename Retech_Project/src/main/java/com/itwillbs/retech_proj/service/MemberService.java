@@ -94,5 +94,8 @@ public class MemberService {
         return mapper.selectMemberFromEmail(memberId);
     }
 
-	
+  //별점 평균 신뢰지수 조회
+  	public Float getStarRate(String loggedInUserId) {
+  		return mapper.selectStarRate(loggedInUserId);
+  	}
 }

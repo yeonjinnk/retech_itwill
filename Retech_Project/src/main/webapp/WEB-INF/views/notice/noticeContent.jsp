@@ -9,61 +9,152 @@
 <!-- 외부 CSS 파일(css/default.css) 연결하기 -->
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
-	#listForm {
-		width: 1024px;
-		max-height: 610px;
-		margin: auto;
-	}
-	
-	#listForm #tr_top {
-		background-color: #eee;
-	}
-	
-	h2 {
-		text-align: center;
-	}
-	
-	table {
-		margin: auto;
-		width: 1024px;
-	}
-	
-	table td {
-		text-align: center;
-	}
-	
-	a {
-		text-decoration: none;
-	}
-	
-	#subject {
-		text-align: left;
-		padding-left: 20px;
-	}
-	.contentArea > td {
-		text-align: left;	
-	}
-	
-	.cont {
-		display: block;
-		margin: 50px;
-		height: 100%;
-	}
-	
-	.btnArea {
-		width: 100px;
-		margin: 0 auto;
-		margin-top: 30px;
-		margin-bottom: 30px;
-		display: flex;
-		justify-content: space-between;
-	}
-	
-	.replyContent img {
-		width: 10px;
-		height: 10px;
-	}
-	}
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4; /* 페이지 배경색 */
+    }
+    
+    #listForm {
+    width: 900px;
+    max-height: 610px;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 세로 방향으로 스크롤 추가 */
+}
+    
+    #listForm #tr_top {
+        background-color: #2c3e50; /* 네이비색 계열 */
+        color: #ffffff; /* 글자색 흰색 */
+    }
+    
+    h2 {
+        text-align: center;
+        color: #2c3e50; /* 제목 색상 네이비색 계열 */
+        margin-top: 20px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse; /* 테이블 셀 경계선 겹침 방지 */
+    }
+    
+    table td {
+        text-align: center;
+        padding: 10px; /* 셀 안쪽 여백 추가 */
+        border: 1px solid #ddd; /* 셀 경계선 색상 */
+    }
+    
+    #subject {
+        text-align: left;
+        padding-left: 20px;
+    }
+    
+    .contentArea > td {
+        text-align: left;
+        padding: 20px; /* 내용 영역 여백 */
+    }
+    
+    .cont {
+        display: block;
+        margin: 20px; /* 내용 마진 */
+    }
+    
+    .btnArea {
+        margin: 30px auto;
+        display: flex;
+        justify-content: space-between;
+        width: 300px;
+    }
+    
+    .btnArea button {
+        background-color: #3498db; /* 버튼 배경색 */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px; /* 버튼 테두리 둥글게 */
+        font-size: 14px; /* 버튼 글자 크기 */
+    }
+    
+    .btnArea button a {
+        color: white;
+        text-decoration: none;
+    }
+    
+    .btnArea button:hover {
+        background-color: #2980b9; /* 버튼 호버 색상 */
+    }
+    
+    .replyContent img {
+        width: 15px; /* 대댓글 작성 아이콘 크기 */
+        height: 15px;
+    }
+    
+#replyArea {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ffffff; /* 배경색 설정 */
+    border: 1px solid #ddd; /* 경계선 추가 */
+    border-radius: 4px; /* 테두리 둥글게 */
+    max-height: 300px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 세로 방향으로 스크롤 추가 */
+}
+
+#replyListArea {
+    border-top: 1px solid #ddd;
+    margin-top: 10px; /* 댓글 목록과 댓글 입력 폼 사이 여백 */
+}
+
+#replyListArea table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#replyListArea td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: top; /* 텍스트 상단 정렬 */
+}
+
+.replyTr {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* 댓글 구분선 */
+}
+
+.replyContent {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px; /* 내용과 날짜 사이 여백 */
+}
+
+.replyWriter {
+    font-weight: bold;
+    display: inline-block; /* 아이디와 날짜를 같은 줄에 표시하기 위해 inline-block 사용 */
+    margin-right: 10px; /* 날짜와의 간격 */
+}
+
+.replyDate {
+    font-size: 12px;
+    color: #888;
+    display: inline-block; /* 아이디와 날짜를 같은 줄에 표시하기 위해 inline-block 사용 */
+}
+
+.replyMeta {
+    margin-bottom: 10px; /* 댓글 내용과 메타 정보 사이 여백 */
+}
+
+.reReplyTr {
+    padding: 10px;
+    background-color: #f9f9f9; /* 대댓글 배경색 */
+    margin-left: 20px; /* 대댓글 들여쓰기 */
+}
+
+.reReplyContent {
+    font-size: 14px;
+    color: #555;
+}
 </style>
 <script type="text/javascript">
 	function confirmDelete() {
@@ -218,66 +309,36 @@
 			<%-- 댓글 목록 표시 영역 --%>
 			<div id="replyListArea">
 				<table>
-					<%-- 댓글 내용(reply_content), 작성자(reply_name), 작성일시(reply_date) 표시 --%>
-					<%-- 반복문 통해 List 객체(tinyReplyBoardList)로부터 Map 객체 꺼내서 출력 --%>
-					<c:forEach var="tinyReplyNotice" items="${tinyReplyNoticeList}" varStatus="status">
-						<tr class="replyTr">
-							<td class="replyContent">
-								<%-- 대댓글 들여쓰기 --%>
-								<c:forEach var="i" begin="1" end="${tinyReplyNotice.reply_re_lev}">
-									&nbsp;&nbsp;
-								</c:forEach>
-								${tinyReplyNotice.reply_content}
-								<%-- 세션 아이디가 존재할 경우 대댓글 작성 이미지(reply-icon.png) 추가 --%>
-								<c:if test="${not empty sessionScope.sId}">
-									<%-- 대댓글작성 아이콘 클릭 시 자바스크립트 함수 reReplyWriteForm() 호출 --%>
-									<%-- 파라미터 : 대상 댓글번호(reply_num), 댓글 참조글번호, 들여쓰기레벨, 순서번호, 반복 인덱스값(status.index) --%>
-									<a href="javascript:reReplyWriteForm(${tinyReplyNotice.reply_idx}, ${tinyReplyNotice.reply_re_ref}, ${tinyReplyNotice.reply_re_parent_reply_idx}, ${tinyReplyNotice.reply_re_lev}, ${tinyReplyNotice.reply_re_seq}, ${status.index})">
-										<img src="${pageContext.request.contextPath}/resources/images/reply-icon.png" title="대댓글작성">
-									</a>
-									<%-- 또한, 세션 아이디가 댓글 작성자와 동일하거나 관리자("admin") 일 경우 --%>
-									<%-- 댓글 삭제 이미지(delete-icon.png) 추가 --%>
-									<c:if test="${sessionScope.sId eq 'admin@naver.com' or sessionScope.sId eq tinyReplyNotice.reply_name}">
-										<%-- 댓글 삭제 아이콘 클릭 시 자바스크립트 함수 confirmReplyDelete() 호출 --%>
-										<%-- 파라미터 : 댓글번호, 반복 인덱스(status.index) --%>
-										<a href="javascript:confirmReplyDelete(${tinyReplyNotice.reply_idx}, ${status.index})">
-											<img src="${pageContext.request.contextPath}/resources/images/delete-icon.png" title="댓글삭제">
-										</a>
-									</c:if>
-								</c:if>
-							</td>
-							<td class="replyWriter">
-								${tinyReplyNotice.reply_name}
-							</td>
-							<td class="replyDate">
-<%-- 								${tinyReplyNotice.reply_date} --%>
-								<%-- 
-								테이블 조회를 Map 타입으로 관리 시 날짜 및 시각 데이터가
-								LocalXXX 타입으로 관리됨(ex. LocalDate, LocalTime, LocalDateTime)
-								=> 날짜 및 시각 정보 조회 시 2024-08-05T10:26:56 형식으로 저장되어 있음
-								=> 일반 Date 타입에서 사용하는 형태로 파싱 후 다시 포맷팅 작업 필요
-								=> JSTL fmt 라이브러리 - <fmt:parseDate> 태그 활용하여 파싱 후
-								   <fmt:formatDate> 태그 활용하여 포맷팅 수행
-								   var 속성 : 파싱 후 해당 날짜 및 시각 정보를 다룰 객체명(변수명)
-								   value 속성 : 파싱할 대상 날짜 데이터
-								   pattern 속성 : 파싱할 대상 날짜 데이터의 기존 형식(2024-08-05T10:26:56)에 대한 패턴 지정
-								                  => 날짜와 시각 사이의 구분자 T 도 정확하게 명시
-								                     (단, 구분자 T 는 단순 텍스트로 취급하기 위해 '' 로 둘러쌈)
-								   type 속성 : 대상 날짜 파싱 타입(time : 시각, date : 날짜, both : 둘 다)
-								--%>
-								<fmt:parseDate var="parsedReplyDate" 
-												value="${tinyReplyNotice.reply_date}" 
-												pattern="yyyy-MM-dd'T'HH:mm" 
-												type="both" />
-								<%-- 파싱 후 날짜 및 시각 형식 : Mon Aug 05 10:26:00 KST 2024 --%>
-<%-- 								${parsedReplyDate} --%>
-								<%-- 파싱된 날짜 및 시각이 저장된 Date 객체의 포맷팅 수행 --%>								
-								<%-- 월월-일일 시시:분분 형태로 포맷팅 --%>
-								<fmt:formatDate value="${parsedReplyDate}" pattern="MM-dd HH:mm" />
-							</td>
-						</tr>
-					</c:forEach>
-				</table>
+    <c:forEach var="tinyReplyNotice" items="${tinyReplyNoticeList}" varStatus="status">
+        <tr class="replyTr">
+            <td colspan="3">
+                <div class="replyMeta">
+                    <span class="replyWriter">${tinyReplyNotice.reply_name}</span>
+                    <span class="replyDate">
+                        <fmt:parseDate var="parsedReplyDate" 
+                                       value="${tinyReplyNotice.reply_date}" 
+                                       pattern="yyyy-MM-dd'T'HH:mm" 
+                                       type="both" />
+                        <fmt:formatDate value="${parsedReplyDate}" pattern="MM-dd HH:mm" />
+                    </span>
+                </div>
+                <div class="replyContent">
+                    ${tinyReplyNotice.reply_content}
+                </div>
+                <c:if test="${not empty sessionScope.sId}">
+                    <a href="javascript:reReplyWriteForm(${tinyReplyNotice.reply_idx}, ${tinyReplyNotice.reply_re_ref}, ${tinyReplyNotice.reply_re_parent_reply_idx}, ${tinyReplyNotice.reply_re_lev}, ${tinyReplyNotice.reply_re_seq}, ${status.index})">
+                        <img src="${pageContext.request.contextPath}/resources/images/reply-icon.png" title="대댓글작성">
+                    </a>
+                    <c:if test="${sessionScope.sId eq 'admin@naver.com' or sessionScope.sId eq tinyReplyNotice.reply_name}">
+                        <a href="javascript:confirmReplyDelete(${tinyReplyNotice.reply_idx}, ${status.index})">
+                            <img src="${pageContext.request.contextPath}/resources/images/delete-icon.png" title="댓글삭제">
+                        </a>
+                    </c:if>
+                </c:if>
+            </td>
+        </tr>
+    </c:forEach>
+</table>
 			</div>
 		</section>		
 		

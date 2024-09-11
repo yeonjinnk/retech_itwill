@@ -119,4 +119,13 @@
 		FROM member
 		WHERE member_id = #{memberId}
 	</select>
+	
+	<!-- 별점 평균 신뢰지수 조회 -->
+	<select id="selectStarRate">
+		SELECT AVG(review_star_rating) AS avg_rating
+		FROM review r
+		JOIN product p ON r.review_pd_idx = p.pd_idx
+		WHERE p.member_id = #{loggedInUserId}
+		GROUP BY p.member_id;
+	</select>
 </mapper>

@@ -50,5 +50,8 @@ public interface MemberMapper {
 	   String selectVerificationCodeByMemberId(@Param("memberId") String memberId);
 
 	   MemberVO selectMemberFromEmail(String email);
+	   
+	   //별점 평균 신뢰지수 조회
+	   Float selectStarRate(String loggedInUserId);
 
 }

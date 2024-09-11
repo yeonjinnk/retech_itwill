@@ -10,9 +10,31 @@
   	VALUES (
   		null
   		, #{review_writer}
-  		, #{review_member_id}
+  		, #{review_pd_idx}
   		, #{review_star_rating}
   		, #{review_content}
   	)
   </insert>
+  
+  <update id="updateStatus">
+  	UPDATE trade
+  	SET trade_status = 6
+  	WHERE trade_pd_idx = #{review_pd_idx}
+  </update>
+  
+  <!-- 구매자가 쓴 리뷰 조회 -->
+  <select id="selectMyReview" resultType="map">
+  	SELECT *
+  	FROM review r JOIN product p
+  	ON r.review_pd_idx = p.pd_idx
+  	WHERE r.review_writer = #{id}
+  </select>
+  
+  <!-- 판매자가 받은 리뷰 조회 -->
+  <select id="selectSellerReview" resultType="map">
+  	SELECT *
+  	FROM review r JOIN product p
+  	ON r.review_pd_idx = p.pd_idx
+  	WHERE p.member_id = #{id}
+  </select>
 </mapper>
