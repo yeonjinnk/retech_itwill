@@ -90,8 +90,9 @@ public class MemberService {
     }
 
     // 카카오서비스
-    public MemberVO getMemberFromEmail(String email) {
-		return mapper.selectMemberFromEmail(email);
-	}
+    public MemberVO getMemberFromEmail(String memberId) {
+        return mapper.selectMemberFromEmail(memberId);
+    }
+
 	
 }

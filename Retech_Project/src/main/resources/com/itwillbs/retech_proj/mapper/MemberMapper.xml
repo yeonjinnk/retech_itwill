@@ -117,6 +117,6 @@
 	<select id="selectMemberFromEmail" resultType="member">
 		SELECT * 
 		FROM member
-		WHERE member_id = #{member_id}
+		WHERE member_id = #{memberId}
 	</select>
 </mapper>
