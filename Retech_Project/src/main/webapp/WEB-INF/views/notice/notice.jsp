@@ -8,285 +8,212 @@
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
-.@charset "UTF-8";
-/* ------- 공통 ------- */
-/* 하이퍼링크 밑줄 제거 */
-a {
-	text-decoration: none;
-}
-/*/
-/* ----- top.jsp, bottom.jsp 공통 ----- */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;	
-}
-.main_section {
- 	flex: 1;	
-}
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-/* header 고정 */
-header {
-	position: fixed;
-	width: 100%;
-	height: 150px;
-	top:0;
-	z-index: 50;
-	background-color: white;
-	margin-bottom: 500px;
-}
-
-#header_top{
-		margin-bottom: 500px;
-	}
-
-/* header 고정 후 다음 section 시작 */
-section {
-	margin-top: 150px;
-}
-/* header 고정 후 다음 section 시작 */
-section {
-	margin-top: 150px;
-}
-footer {
-	display: block;
-}
-/*---- header 영역 시작 ----*/
-/*---- top 최상단 ----*/
-.header_top {
-	box-sizing: border-box;
-	display: block;
-	margin-left: 50px;
-	margin-right: 50px;
-	max-width: 1000px;
-	max-height: 60px;
-	margin: auto;
-}
-.header_top li {
-	list-style-type: none;
-}
-.top_inner {
-	box-sizing: border-box;
-	display: flex;
-	justify-content: space-between;
-	padding: 10px 40px;
-	white-space: nowrap;
-}
-.top_menu {
-	box-sizing: border-box;
-	display: flex;
-	justify-content: flex-end;	
-}
-.top_menu_container {
-	box-sizing: border-box;
-	display: block;	
-}
-.top_area {
-	box-sizing: border-box;
-	display: flex;
-	margin-top: auto;
-	margin-bottom: 10px;
-	
-}
-.top_link {
-	font-size: 12px;
-	margin-left: 40px;
-}
-/*---- top 메뉴 ----*/
-.header_main {
-	box-sizing: border-box;
-	display: block;
-	margin-left: 50px;
-	margin-right: 50px;
-	max-width: 1000px;
-	max-height: 100px;
-	margin: auto;
-}
-.header_main li {
-	list-style-type: none;
-}
-.main_inner {
-	box-sizing: border-box;
-/* 	height: 64px; */
-	display: flex;
-	justify-content: space-between;
-	padding: 20px 40px;
-	align-items: center;
-	white-space: nowrap;
-}
-.main_menu {
-	box-sizing: border-box;
-	display: flex;
-	justify-content: flex-end;
-}
-.menu_container {
-	box-sizing: border-box;
-	display: block;
-}
-.menu_area {
-	box-sizing: border-box;
-	display: flex;
-	margin-bottom: 10px;
-}
-.menu_link {
-	font-size: 16px;
-	margin-left: 40px;
-	display:block;
-	
-}
-.main_search {
-	box-sizing: border-box;
-	display: flex;
-	justify-content: flex-end;
-	margin-bottom: 0;
-	margin-top: 0;
+/* 게시판 스타일 */
+#listForm table {
+    width: 80%; /* 테이블 크기를 조정하여 너무 크지 않게 */
+    margin: auto;
+    border-collapse: collapse;
+    background-color: #f0f4f8; /* 배경색을 살짝 밝은 회색으로 */
 }
 
 
-.menu_list {
-    position: relative; /* 서브메뉴 위치를 조정하기 위해 */
-}
-/*서브메뉴*/
-.sub_menu {
-	display:none; /*서브메뉴 숨기기*/
-	position:absolute; /*부모메뉴 위치 따라 이동 */
-	top: 50%; /* 부모 메뉴 항목 바로 아래에 위치 */
-    left: 1200px; /* 부모 메뉴 항목의 왼쪽에 정렬 */
-    background-color: white; /* 배경색 설정 */
-    border: 1px solid black; /* 테두리 추가 */
-    list-style: none; /* 리스트 스타일 제거 */
-    padding: 0;
-    margin: 0;
-    font-size: 0.5em;
+/* 각 열의 헤더 색상 */
+#listForm table th {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ccc;
+    font-size: 1rem;
 }
 
-.sub_menu li:hover{
-	background: lime;
+/* 색상 지정 */
+#listForm table th.column {
+    background-color: #3498db; /* 글번호 색상 */
+    color: white;
 }
 
-.menu_list:hover .sub_menu {
-    display: block; /* 마우스 오버 시 서브메뉴 표시 */
+#listForm table td {
+    padding: 15px; /* 여백 추가로 가독성 향상 */
+    text-align: center;
+    border: 1px solid #ccc; /* 얇은 테두리 추가 */
+    font-size: 1rem; /* 글씨 크기 조정 */
 }
 
-.sub_menu li {
-    padding: 10px;
+/* 제목 링크 색상 */
+#listForm table td a {
+    color: #2c3e50; /* 제목 링크도 네이비 */
+    text-decoration: none;
+    font-weight: bold;
 }
 
-.sub_menu li a {
+/* 페이지네이션 버튼 스타일 */
+#pageList {
+    text-align: center;
+    margin: 20px 0;
+}
+
+#pageList input, #pageList a {
+    padding: 10px 15px;
+    margin: 0 5px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#pageList b {
+    padding: 10px 15px;
+    background-color: #2c3e50;
+    color: white;
+}
+
+#pageList input:disabled {
+    background-color: #95a5a6;
+    cursor: default;
+}
+
+#pageList a:hover, #pageList input:hover {
+    background-color: #34495e;
+}
+
+/* 공지사항 영역 조정 */
+h2 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin: 10px 0; /* 간격을 줄이기 위해 margin 조정 */
+}
+
+.area {
+    text-align: center; /* 중앙 정렬 */
+}
+
+.area a {
+    padding: 10px 20px; 
     text-decoration: none;
     color: #333;
+    border: 1px solid #ccc; 
+    background-color: #f9f9f9; 
+    margin: 0 5px; 
+    cursor: pointer; 
 }
 
-/*---- header 영역 끝 ----*/
-/*---- body 영역 시작 ----*/
+  .area a.selected {
+            background-color: #34495e;
+            color: #fff;
+        }
+
+/* 클릭된 링크 스타일 */
+.area a.active {
+    background-color: #2980b9; /* 클릭된 링크 배경색 */
+    color: white; /* 클릭된 링크 텍스트 색상 */
+    border-radius: 5px; /* 링크에 둥근 테두리 추가 */
+    padding: 5px 10px; /* 패딩 추가 */
+}
+
+#listForm {
+  width: 900px; /* 리스트폼 너비 900px로 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
+#buttonArea {
+    margin-top: 10px; /* 상단 여백을 줄이기 위해 margin 조정 */
+}
 
 
-
-
-
-/*---- body 영역 끝 ----*/
-/*---- bottom 영역 시작 ----*/
-.bottom_area {
-	box-sizing: border-box;
-	display: block;
-	width: 100%;	
-	background-color: lightgray;
-	margin: auto;
-    bottom: 0; 
-}
-.inc_info {
-	box-sizing: border-box;
-	padding-bottom: 40px;
-	padding-top: 30px;
-	padding-bottom: 40px; 
-	padding-top: 30px; 
-	padding-left: 35px;
-    white-space: pre-line;	
-    display: flex;
-    font-size: 10px;
-   	max-width: 1280px;
-   	margin: auto;
-}
-.inc_info > div:not(.bottom_logo) {
-	 margin-left: 40px;
-}
-.inc_intro1, .inc_intro2 {
-    width: 30%;
-}
-/*---- bottom 영역 끝 ----*/
-}
 </style>
 </head>
 <body>
 <header>
-		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
-	</header>
-	
-	<h2>공지사항</h2>
-	<br>
-	<section id="buttonArea">
+    <jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>    
+</header>
+
+<section>
+    <h3>고객센터</h3> <!-- 고객센터 제목 추가 -->
+</section>
+<section id="buttonArea">
     <div class="area">
-        <a href="Notice" >공지사항</a> | 
-        <a href="FAQ" >자주찾는질문</a> | 
-        <a href="Cs" >1:1문의</a>  
+        <a href="Notice" data-page="Notice" class="selected">공지사항</a> | 
+        <a href="FAQ" data-page="FAQ">자주찾는질문</a> | 
+        <a href="Cs" data-page="Cs">1:1문의</a>  
     </div>
     <br>
-    </section>   
-	<section id="listForm">
-		<table border="1">
-			<tr id="tr_top">			
-				<td width="100px">글번호</td>
-				<td>제목</td>
-				<td width="150px">등록일</td>
-				<td>조회수</td>
+</section>   
+<section id="listForm">
+    <table border="1">
+        <tr id="tr_top">            
+            <th class="column" width="100px">글번호</th>
+            <th class="column">제목</th>
+            <th class="column" width="150px">등록일</th>
+            <th class="column">조회수</th>
+        </tr>
+        <c:set var="pageNum" value="1" />
+        <c:if test="${not empty param.pageNum}">
+            <c:set var="pageNum" value="${param.pageNum}" />
+        </c:if>
+        <c:forEach var="notice" items="${noticeList}">
+            <tr>
+                <td>${notice.notice_idx}</td>
+                <td><a href="NoticeDetail?notice_idx=${notice.notice_idx}">${notice.notice_subject}</a></td>                    
+                <td>${notice.notice_date}</td>
+                <td>${notice.notice_readcount}</td>
+            </tr>
+        </c:forEach>
+    </table>
+</section>
+<section id="pageList">
+    <input type="button" value="이전" 
+           onclick="location.href='Notice?pageNum=${pageNum - 1}'"
+           <c:if test="${pageNum <= 1}">disabled</c:if> >
+    <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+        <c:choose>
+            <c:when test="${i eq pageNum}">
+                <b>${i}</b> 
+            </c:when>
+            <c:otherwise>
+                <a href="Notice?pageNum=${i}">${i}</a> 
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+    <input type="button" value="다음" 
+           <c:if test="${pageNum >= pageInfo.maxPage}">disabled</c:if>
+    >
+</section>
 
-			</tr>
-			<c:set var="pageNum" value="1" />
-	
-			<c:if test="${not empty param.pageNum}">
-				<c:set var="pageNum" value="${param.pageNum}" />
-			</c:if>
-			<c:forEach var="notice" items="${noticeList}">
-				<tr>
-					<td>${notice.notice_idx}</td>
-					<td><a href="NoticeDetail?notice_idx=${notice.notice_idx}">${notice.notice_subject}</a></td>					
-					<td>${notice.notice_date}</td>
-					<td>${notice.notice_readcount}</td>
-				</tr>
-			</c:forEach>
-		</table>
-	</section>
-	<section id="pageList">
+<footer>
+    <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>    
+</footer>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    // URL의 쿼리 파라미터에서 페이지 정보를 가져옵니다.
+    var urlParams = new URLSearchParams(window.location.search);
+    var currentPage = urlParams.get('page') || '';
 
-		<input type="button" value="이전" 
-				onclick="location.href='Notice?pageNum=${pageNum - 1}'"
-				<c:if test="${pageNum <= 1}">disabled</c:if>>
+    // 모든 링크 요소를 선택
+    var links = document.querySelectorAll('.area a');
 
-		<c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
+    // 링크 클릭 시
+    links.forEach(function(link) {
+        if (link.getAttribute('data-page') === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
 
-			<c:choose>
-				<c:when test="${i eq pageNum}">
-					<b>${i}</b> 
-				</c:when>
-				<c:otherwise>
-					<a href="Notice?pageNum=${i}">${i}</a> 
-				</c:otherwise>
-			</c:choose>
-		</c:forEach>
-
-		<input type="button" value="다음" 
-				<c:if test="${pageNum >= pageInfo.maxPage}">disabled</c:if>
-		>
-	</section>
-	
-	<footer>
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
-	</footer>
+        link.addEventListener('click', function() {
+            // 모든 링크에서 'active' 클래스를 제거
+            links.forEach(function(el) {
+                el.classList.remove('active');
+            });
+            // 클릭된 링크에 'active' 클래스 추가
+            this.classList.add('active');
+        });
+    });
+});
+</script>
 </body>
 </html>

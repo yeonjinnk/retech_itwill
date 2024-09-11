@@ -14,5 +14,6 @@
 		<typeAlias type="com.itwillbs.retech_proj.vo.ChatMessage" alias="chatMessage"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.TradeVO" alias="trade"/>
 		<typeAlias type="com.itwillbs.retech_proj.vo.OrderStoreVO" alias="orderStore"/>
+		<typeAlias type="com.itwillbs.retech_proj.vo.ReviewVO" alias="review"/>
 	</typeAliases>
 </configuration>
