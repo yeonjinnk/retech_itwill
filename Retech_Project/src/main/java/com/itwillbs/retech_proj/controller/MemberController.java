@@ -555,13 +555,11 @@ public class MemberController {
 
 	       String loggedInUserId = (String) session.getAttribute("sId");
 	       
-	       // 로그인한 사용자의 ID가 null인지 확인
-	       if (loggedInUserId == null) {
-	           // 로그인하지 않은 사용자 처리
-	           return "redirect:/login"; // 로그인 페이지로 리다이렉트 (예시)
-	       }
-	       	
-	       // 상품 
+	       if(loggedInUserId == null) { //로그인x
+				model.addAttribute("msg", "로그인 필수!"); //alert창
+				model.addAttribute("targetURL", "MemberLogin"); //로그인창으로 돌아감
+			return "result/fail";
+			}
 	       
            // 아이디에 해당하는 판매내역 리스트 조회(trade 있을 때)
     	   List<Map<String, String>> saleList = productService.getSaleList(loggedInUserId);
