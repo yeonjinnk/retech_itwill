@@ -724,7 +724,7 @@ public class MemberController {
 			
 			Map<String, Object> userInfo = kakaoService.requestKakaoUserInfo(token);
 			
-			// 이메일 저장된 kakaoAccount 객체 꺼내기
+			// 아이디(이메일)에 저장된 kakaoAccount 객체 꺼내기
 			Map<String, Object> kakaoAccount = (Map<String, Object>) userInfo.get("kakao_account");
 			
 			MemberVO member = service.getMemberFromEmail((String)kakaoAccount.get("member_id"));
@@ -732,7 +732,7 @@ public class MemberController {
 			
 			if(member == null) {
 				model.addAttribute("msg", "가입되지 않은 회원입니다!\\n회원가입 페이지로 이동합니다.");
-				model.addAttribute("targetURL", "MemberJoin?member_id=" + kakaoAccount.get("member_id"));
+				model.addAttribute("targetURL", "MemberJoinForm?member_id=" + kakaoAccount.get("member_id"));
 				return "result/success";
 			} else {
 				// 가입된 회원은 즉시 로그인 처리
