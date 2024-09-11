@@ -29,6 +29,7 @@ header {
     height: 150px;
     background-color: white;
     border-bottom: 1px solid #ddd; /* 헤더와 콘텐츠 구분을 위해 추가 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
 }
 
 /* header 다음 section 시작 */
