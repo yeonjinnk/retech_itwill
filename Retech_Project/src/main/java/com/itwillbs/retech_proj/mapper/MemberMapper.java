@@ -49,4 +49,6 @@ public interface MemberMapper {
 	   @Select("SELECT verification_code FROM member_verification WHERE member_id = #{memberId}")
 	   String selectVerificationCodeByMemberId(@Param("memberId") String memberId);
 
+	   MemberVO selectMemberFromEmail(String email);
+
 }

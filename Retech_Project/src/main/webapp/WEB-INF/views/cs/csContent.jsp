@@ -62,6 +62,12 @@
 	.reply {
 		background-color: #eee;
 	}
+	
+	.button-container {
+            text-align: center; 
+            margin-top: 50px; 
+    }
+	
 </style>
 </head>
 <body>
@@ -99,7 +105,10 @@
 					</td>
 				</tr>
 			</c:if>
-		</table>
+		</table>		
+		<div class="button-container">
+        	<input type="button" class="button" value="돌아가기" onclick="history.back()">
+   		</div>		 
 	</section>
 	<footer>		
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
