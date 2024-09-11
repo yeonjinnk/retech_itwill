@@ -14,7 +14,6 @@
             padding: 0;
         }
         
-        /* 로고 영역 */
         .logo2 {
             width: 120px;
             margin: 30px auto;

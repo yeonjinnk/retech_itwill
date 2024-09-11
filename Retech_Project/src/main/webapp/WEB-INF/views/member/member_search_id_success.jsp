@@ -31,7 +31,7 @@
         article {
             width: 100%;
             max-width: 400px;
-            margin: 60px auto; /* 기존 30px에서 60px으로 조정 */
+            margin: 60px auto; 
             padding: 30px;
             background-color: #ffffff;
             border-radius: 10px;
@@ -75,8 +75,6 @@
             text-align: center;
             color: #999;
             font-size: 14px;
-            background-color: #fff; /* 푸터의 배경색을 추가하여 가독성을 높임 */
-            padding: 10px 0;
         }
     </style>
 </head>

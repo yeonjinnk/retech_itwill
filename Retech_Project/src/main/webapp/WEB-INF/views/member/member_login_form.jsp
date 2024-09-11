@@ -95,6 +95,8 @@
         text-decoration: none;
         color: #555;
         transition: background-color 0.3s, color 0.3s;
+        text-align: left;
+        margin-right: 20px; 
     }
 
     .tab ul li.on {
@@ -200,6 +202,14 @@
     #login_btn:hover {
         background-color: #45a049;
     }
+    footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+        }
 </style>
 
 </head>
