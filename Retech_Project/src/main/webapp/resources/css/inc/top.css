@@ -80,12 +80,14 @@
 	background-color: #f4f6f8;
 	border: 3px solid #f4f6f8;
     border-radius: 20px;
+    z-index: 2;
 }
 .alarmContainer {
 	margin: auto;
 /* 	max-width: 300px; */
 	padding: 15px;
 	cursor: auto;
+    z-index: 2;
 }
 .alarmContentArea {
 	margin: auto;
@@ -94,21 +96,25 @@
 	background-color: white;
 	width: 320px;
     min-height: 380px;
+        z-index: 2;
 }
 .alarmTitleArea {
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 5px;
+	    z-index: 2;
 }
 .alarmTitle {
 	font-weight: bold;
 	margin-left: 5px;
 	font-size: 20px;
+	    z-index: 2;
 }
 .moreAlarm {
 	text-decoration: none;
 	color: #555;
 	font-size: 14px;
+	    z-index: 2;
 }
 
 
@@ -118,6 +124,7 @@
 	font-size: 17px;
 	text-decoration: none;
 	color: black;
+	    z-index: 2;
 }
 
 
@@ -126,6 +133,7 @@
 	padding-left: 5px;
 	font-size: 12px;
 	color: #aaa;
+	    z-index: 2;
 }
 
 .alarmContent {
@@ -136,4 +144,5 @@
 	overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+        z-index: 2;
 }

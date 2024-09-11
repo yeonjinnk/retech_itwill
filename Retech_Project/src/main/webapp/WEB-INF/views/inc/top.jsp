@@ -6,7 +6,115 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<link href="${pageContext.request.contextPath}/resources/css/inc/top.css" rel="stylesheet">
+<style type="text/css">
+ .header_main { 
+     background-color: #fff;
+     padding: 20px; 
+/*      position: relative;  */
+     z-index: 1; 
+ } 
 
+ .main_inner { 
+     display: flex; 
+     align-items: center; 
+ } 
+
+ .logo { 
+     margin-right: auto; 
+ } 
+
+ .main_search { 
+     margin-right: 20px; 
+     position: relative; 
+     flex-grow: 1; 
+     max-width: 100%; 
+ } 
+
+ #searchBox { 
+     display: flex; 
+     align-items: center; 
+     width: 100%; 
+ } 
+
+ .main-menu-search { 
+     display: flex; 
+     align-items: center; 
+     border: 1px solid #ddd;
+     padding: 5px; 
+     border-radius: 4px; 
+     width: 100%; 
+     box-sizing: border-box; 
+ } 
+
+ .navbar-search { 
+     display: flex; 
+     align-items: center; 
+     width: 100%; 
+     height: 100%; 
+     box-sizing: border-box; 
+ } 
+
+ .search-input { 
+     display: flex; 
+     align-items: center; 
+     width: 100%;
+     box-sizing: border-box; 
+ } 
+
+ #searchKeyword { 
+     border: none; 
+     padding: 5px; 
+     width: calc(100% - 40px); 
+     box-sizing: border-box; 
+ } 
+
+ .search-btn { 
+    margin-left: 10px; 
+ } 
+
+.search-btn button { 
+    border: none; 
+    background: none; 
+     cursor: pointer; 
+ } 
+
+.searchBoxBlock { 
+    display: none; 
+    position: absolute; 
+    top: 100%; 
+    left: 0; 
+    background: #fff; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    width: 100%; 
+    z-index: 0; 
+} 
+
+ .searchBoxBlock div { 
+     padding: 10px; 
+     border-bottom: 1px solid #ddd; /* Optional border between sections 
+ } 
+
+ .searchBoxBlock div:last-child { 
+     border-bottom: none; /* Remove border from the last section 
+ } 
+ 
+ .main_menu { 
+     display: flex; 
+ } 
+
+ .menu_area { 
+     display: flex; 
+     list-style: none; 
+     padding: 0; 
+     margin: 0; 
+ } 
+
+ .menu_list { 
+     margin-right: 20px; /* Adjust spacing as needed 
+ } 
+</style>
 <script type="text/javascript">
 	function confirmLogout() {
 		let isLogout = confirm("로그아웃 하시겠습니까?");
@@ -574,113 +682,7 @@ function localStarageDeleteOne(keyword) {
 
 
 </script>
-<style type="text/css">
-.header_main {
-    background-color: #fff; /* Adjust as needed */
-    padding: 20px;
-    position: relative; /* Required for absolute positioning of search results */
-}
 
-.main_inner {
-    display: flex;
-    align-items: center;
-}
-
-.logo {
-    margin-right: auto; /* Pushes the rest of the content to the right */
-}
-
-.main_search {
-    margin-right: 20px; /* Space between search box and menu items */
-    position: relative; /* Required for absolute positioning of search results */
-    flex-grow: 1; /* Allows the search box to grow and fill available space */
-    max-width: 100%; /* Ensures it does not exceed container width */
-}
-
-#searchBox {
-    display: flex;
-    align-items: center;
-    width: 100%; /* Full width of its container */
-}
-
-.main-menu-search {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd; /* Adjust border */
-    padding: 5px;
-    border-radius: 4px;
-    width: 100%; /* Full width of its container */
-    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
-}
-
-.navbar-search {
-    display: flex;
-    align-items: center;
-    width: 100%; /* Full width of the parent container */
-    height: 100%; /* Ensures it takes full height of the parent */
-    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
-}
-
-.search-input {
-    display: flex;
-    align-items: center;
-    width: 100%; /* Full width of its container */
-    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
-}
-
-#searchKeyword {
-    border: none;
-    padding: 5px;
-    width: calc(100% - 40px); /* Adjust for the space taken by the search button */
-    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
-}
-
-.search-btn {
-    margin-left: 10px;
-}
-
-.search-btn button {
-    border: none;
-    background: none;
-    cursor: pointer;
-}
-
-.searchBoxBlock {
-    display: none; /* Hidden by default */
-    position: absolute;
-    top: 100%; /* Position it below the search box */
-    left: 0;
-    background: #fff; /* Adjust background */
-    border: 1px solid #ddd; /* Adjust border */
-    border-radius: 4px;
-    width: 100%;
-    z-index: 1000; /* Make sure it appears on top */
-}
-
-.searchBoxBlock div {
-    padding: 10px;
-    border-bottom: 1px solid #ddd; /* Optional border between sections */
-}
-
-.searchBoxBlock div:last-child {
-    border-bottom: none; /* Remove border from the last section */
-}
-
-.main_menu {
-    display: flex;
-}
-
-.menu_area {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.menu_list {
-    margin-right: 20px; /* Adjust spacing as needed */
-}
-</style>
 <div class="header_top">
     <div class="top_inner">
         <div class="top_left_blank"></div>

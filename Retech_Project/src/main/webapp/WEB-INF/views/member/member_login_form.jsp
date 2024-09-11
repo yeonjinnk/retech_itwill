@@ -88,7 +88,7 @@
 	}
 	
 	.tab ul li.on {
-	    background-color: #4CAF50;
+	    background-color: #34495e; /* 탭의 회원 로그인 배경색 */
 	    color: white;
 	    font-weight: bold;
 	}
@@ -134,7 +134,7 @@
     }
 
     article form .info input:focus {
-        border-color: #4CAF50;
+        background-color: #34495e;
     }
 
     article form .search {
@@ -176,21 +176,18 @@
         color: #333;
     }
 
-    #login_btn {
-        width: 100%;
-        padding: 15px;
-        background-color: #4CAF50;
-        border: none;
-        border-radius: 5px;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    #login_btn:hover {
-        background-color: #45a049;
-    }
+   #login_btn {
+	    width: 100%;
+	    padding: 15px;
+	    background-color: #34495e; /* 로그인 버튼의 배경색 */
+	    border: none;
+	    border-radius: 5px;
+	    color: white;
+	    font-size: 16px;
+	    cursor: pointer;
+	    transition: background-color 0.3s;
+	}
+	
     footer {
             position: fixed;
             bottom: 0;

@@ -515,8 +515,15 @@ public class MemberController {
 	           return "result/fail";
 	       }
 	   }
+	   
+	   @GetMapping("MemberWithdraw")
+	   public String withdrawForm(HttpSession session, Model model) {
+	      String id = (String) session.getAttribute("sId");
+	      return "member/member_withdraw_form"; 
+	   }
 
-
+		      
+	   
 	   @PostMapping("MemberWithdraw")
 	   public String withdrawPro(MemberVO member, HttpSession session, Model model, BCryptPasswordEncoder passwordEncoder) {
 	      String id = (String)session.getAttribute("sId");
@@ -793,11 +800,13 @@ public class MemberController {
 			   return "result/success";
 		   } else {
 			   // 가입된 회원은 즉시 로그인 처리
+			   
 			   session.setAttribute("sId", member.getMember_id());
 			   session.setMaxInactiveInterval(60 * 60); // 60초 * 60분
 			   return "redirect:/";
 		   }
 			
+		   
 	}
 	   
 	   
