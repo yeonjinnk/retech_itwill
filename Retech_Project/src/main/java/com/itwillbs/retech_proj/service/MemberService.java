@@ -82,7 +82,6 @@ public class MemberService {
     }
 
     // 인증번호 검증
- // 인증번호 검증
     public boolean verifyVerificationCode(HttpSession session, String inputCode) {
         String storedCode = (String) session.getAttribute("verificationCode");
         System.out.println("Stored Code: " + storedCode);

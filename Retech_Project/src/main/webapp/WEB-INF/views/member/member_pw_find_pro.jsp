@@ -88,7 +88,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: $("#smsForm").attr('action'),
+            url: "${pageContext.request.servletContext.contextPath}/SendAuthCode",
             type: "POST",
             data: {
                 name: name,
@@ -97,6 +97,7 @@ $(document).ready(function() {
             success: function(response) {
                 alert("인증번호가 발송되었습니다. 확인 후 입력해 주세요.");
                 isCodeSent = true; // 인증번호가 발송되었음을 기록
+		        console.log("인증번호 : ${sessionScope.verificationCode}");
             },
             error: function() {
                 alert("인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
@@ -120,6 +121,8 @@ $(document).ready(function() {
             return;
         }
 
+        
+        
         // 서버에서 인증번호 검증
         $.ajax({
             url: "${pageContext.request.servletContext.contextPath}/validateAuthCode",
@@ -128,12 +131,12 @@ $(document).ready(function() {
                 auth_code: authCode
             },
             success: function(response) {
-                if (response.valid) {
+//                 if (response.valid) {
                     // 인증번호가 유효할 경우 폼을 제출하여 다음 페이지로 이동
                     $("#smsForm").off("submit").submit();
-                } else {
-                    alert("인증번호가 유효하지 않습니다. 다시 확인해 주세요.");
-                }
+//                 } else {
+//                     alert("인증번호가 유효하지 않습니다. 다시 확인해 주세요.");
+//                 }
             },
             error: function() {
                 alert("인증번호 검증에 실패했습니다. 다시 시도해 주세요.");

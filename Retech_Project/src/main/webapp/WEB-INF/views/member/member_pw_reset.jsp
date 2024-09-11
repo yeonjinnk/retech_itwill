@@ -116,6 +116,22 @@
 </script>
 
 <style type="text/css">
+	html, body {
+	    height: 100%; 
+	    margin: 0;
+	}
+	
+	main {
+	    padding-bottom: 60px; 
+	}
+	
+	footer {
+	    position: fixed;
+	    bottom: 0;
+	    left: 0;
+	    width: 100%;
+	}
+	
     #findPw_wrap3 {
         border: 1px solid #ccc;
         border-radius: 12px;
@@ -180,6 +196,11 @@
     #checkPasswd2Result {
         margin-top: 5px;
     }
+    
+    footer {
+        padding: 0px;
+    }
+    
 </style>
 
 </head>

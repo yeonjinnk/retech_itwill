@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.retech_proj.handler.RsaKeyGenerator;
 import com.itwillbs.retech_proj.service.CsService;
+import com.itwillbs.retech_proj.service.KakaoService;
 import com.itwillbs.retech_proj.service.MemberService;
 import com.itwillbs.retech_proj.service.ProductService;
 import com.itwillbs.retech_proj.vo.CsVO;
@@ -128,7 +129,7 @@ public class MemberController {
 
 	   @PostMapping("/SendAuthCode")
 	   @ResponseBody
-	   public Map<String, String> sendAuthCode(@RequestParam("phone") String phone, HttpSession session) {
+	   public Map<String, String> sendAuthCode(@RequestParam("member_phone") String phone, HttpSession session) {
 	       Map<String, String> response = new HashMap<>();
 	       
 	       // 인증번호 생성 및 세션 저장
@@ -309,33 +310,32 @@ public class MemberController {
 				}
 				
 				// 비밀번호 재설정 요청
-				// 비밀번호 재설정 요청
 				@PostMapping("PwResetPro")
 				public String pwResetPro(MemberVO member, Model model, HttpSession session) {
 				    System.out.println("비밀번호 재설정 요청");
 
-				    // 입력된 전화번호로 DB에서 회원 정보를 조회
-				    MemberVO dbMember = service.isExistPhonenumber(member);
-				    
-				    if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
-				        model.addAttribute("msg", "없는 전화번호입니다.");
-				    } else {
-				        // 전화번호가 존재하면 인증번호 생성 및 발송
-				        String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
-
-				        // 인증번호 생성
-				        String verificationCode = generateVerificationCode();
-				        session.setAttribute("verificationCode", verificationCode);
-				        session.setAttribute("phoneNumber", phone_number);
-				        session.setAttribute("memberId", dbMember.getMember_id()); // 세션에 memberId 저장
-
-				        // 인증번호 발송
-				        boolean isSent = service.sendVerificationCode(phone_number, verificationCode);
-
-				        // 인증번호 발송 성공/실패 여부와 관계없이 페이지 이동
-				        model.addAttribute("msg", isSent ? "인증번호가 성공적으로 발송되었습니다." : "인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
-				    }
-				    
+//				    // 입력된 전화번호로 DB에서 회원 정보를 조회
+//				    MemberVO dbMember = service.isExistPhonenumber(member);
+//				    
+//				    if (dbMember == null) { // 전화번호가 DB에 존재하지 않음
+//				        model.addAttribute("msg", "없는 전화번호입니다.");
+//				    } else {
+//				        // 전화번호가 존재하면 인증번호 생성 및 발송
+//				        String phone_number = dbMember.getMember_phone(); // DB에서 가져온 전화번호
+//
+//				        // 인증번호 생성
+//				        String verificationCode = generateVerificationCode();
+//				        session.setAttribute("verificationCode", verificationCode);
+//				        session.setAttribute("phoneNumber", phone_number);
+//				        session.setAttribute("memberId", dbMember.getMember_id()); // 세션에 memberId 저장
+//
+//				        // 인증번호 발송
+//				        boolean isSent = service.sendVerificationCode(phone_number, verificationCode);
+//
+//				        // 인증번호 발송 성공/실패 여부와 관계없이 페이지 이동
+//				        model.addAttribute("msg", isSent ? "인증번호가 성공적으로 발송되었습니다." : "인증번호 발송에 실패했습니다. 다시 시도해 주세요.");
+//				    }
+//				    
 				    // 비밀번호 재설정 페이지로 이동
 				    return "member/member_pw_reset";
 				}
@@ -359,7 +359,6 @@ public class MemberController {
 				}
 
 
-			    // 비밀번호 재설정
 				// 비밀번호 재설정
 				@PostMapping("PwResetFinal")
 				public String pwResetFinal(@RequestParam("member_passwd") String newPasswd,
@@ -403,10 +402,6 @@ public class MemberController {
 				        return "result/fail";
 				    }
 				}
-
-
-
-
 
 
 				
@@ -718,7 +713,26 @@ public class MemberController {
 	       return response;
 	    }
 	   
-	   
+	   // 카카오 서비스
+//	   @GetMapping("KakaoLoginCallback")
+//		public String kakaoLogin(String code) {
+////			System.out.println(code);
+//			
+//			Map<String, String> token = KakaoService.requestKakaoAccessToken(code);
+//			System.out.println(token);
+//			
+//			Map<String, Object> userInfo = KakaoService.requestKakaoUserInfo(token);
+////			System.out.println(userInfo);
+////			System.out.println(userInfo.get("properties"));
+//			
+//			Map<String, Object> kakaoAccount = (Map<String, Object>) userInfo.get("kakao_account");
+//			System.out.println(kakaoAccount);
+//			System.out.println(kakaoAccount.get("email"));
+//			
+//			String id = service.getMemberFromEmail((String)userInfo.get("member_id"));
+//			
+//			return "";
+//		}
 	   
 	   
 }
