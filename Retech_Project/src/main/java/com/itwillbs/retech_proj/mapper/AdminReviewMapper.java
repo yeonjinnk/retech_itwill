@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.retech_proj.vo.ReviewVO;
+import com.itwillbs.retech_proj.vo.TradeVO;
 
 
 
@@ -19,6 +20,13 @@ public interface AdminReviewMapper {
 			@Param("searchKeyword") String searchKeyword);
 
 	int deleteReview(int review_idx);
+
+	int selectAdminTradeListCount(String searchKeyword);
+
+	List<TradeVO> selectAdminTrade(@Param("startRow") int startRow, @Param("listLimit") int listLimit,
+			@Param("searchKeyword") String searchKeyword);
+
+	int deleteTrade(int trade_idx);
 
 
 

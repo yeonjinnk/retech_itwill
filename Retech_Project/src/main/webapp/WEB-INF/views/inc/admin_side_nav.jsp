@@ -19,10 +19,7 @@
 			</ul>			
 		</li>
 		<li class="depth01">
-			<a href="">거래 관리</a>
-			<ul class="depth02">
-				<li><a href=""></a></li>
-			</ul>			
+			<a href="AdminTrade">거래 관리</a>
 		</li>
 		<li class="depth01">
 			<a href="AdminStore">스토어 관리</a>
