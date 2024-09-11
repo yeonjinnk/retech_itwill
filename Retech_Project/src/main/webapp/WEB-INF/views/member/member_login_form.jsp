@@ -244,7 +244,7 @@
                     <input type="submit" value="로그인" id="login_btn"> <br><br>
                     
                     <c:set var="client_id" value="01fd1f26d7e150593f036ef9d1ecb279" />
-					<c:set var="redirect_uri" value="http://localhost:8081/retech_proj/" />
+					<c:set var="redirect_uri" value="http://localhost:8081/retech_proj/KakaoLoginCallback" />
 					<a href="https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}">
 						<img src="${pageContext.request.servletContext.contextPath}/resources/images/kakao_login_medium_narrow.png">
 					</a>

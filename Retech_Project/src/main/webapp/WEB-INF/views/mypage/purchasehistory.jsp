@@ -183,29 +183,69 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('.cancel-request').on('click', function() {
-                var trade_idx = $(this).data('id');
-                if (confirm('거래취소를 요청하시겠습니까?')) {
-                    $.ajax({
-                        url: 'updateTradeStatusAjax',
-                        type: 'POST',
-                        data: {
-                            trade_idx: trade_idx,
-                            trade_status: '4'
-                        },
-                        success: function(response) {
-                            if(response.success) {
-                                alert('거래가 취소되었습니다.');
-                                location.reload(); // 페이지 새로고침
-                            } else {
-                                alert('거래 취소 중 오류가 발생했습니다.');
-                            }
+    $(document).ready(function() {
+        $('.cancel-request').on('click', function() {
+            var trade_pd_idx = $(this).data('id');
+            if (confirm('거래취소를 요청하시겠습니까?')) {
+                $.ajax({
+                    url: 'updateTradeStatusAjax',
+                    type: 'POST',
+                    data: {
+                    	trade_pd_idx: trade_pd_idx,
+                        trade_status: '4'
+                    },
+                    success: function(response) {
+                        if(response.success) {
+                            alert('거래가 취소되었습니다.');
+                            location.reload(); // 페이지 새로고침
+                        } else {
+                            alert('거래 취소 중 오류가 발생했습니다.');
                         }
-                    });
-                }
-            });
-				
+                    }
+                });
+            }
+        });
+	
+        $('.confirm-request').on('click', function() {
+            var trade_pd_idx = $(this).data('id');
+            var productId = $(this).data('id');
+            if (confirm('거래를 확정하시겠습니까?')) {
+                $.ajax({
+                    url: 'updateTradeStatusAjax',
+                    type: 'POST',
+                    data: {
+                    	trade_pd_idx: trade_pd_idx,
+                        trade_status: '3'
+                    },
+                    success: function(response) {
+                        if(response.success) {
+                        	console.log("============거래확정-거래상태3으로 변경완료==========");
+                        	
+		                    $.ajax({
+		                        url: 'updateTradeStatusAjax2',
+		                        type: 'POST',
+		                        data: {
+		                            id: productId,
+		                            status: '판매완료'
+		                        },
+		                        success: function(response) {
+		                            if(response.success) {
+	                            	console.log("===============거래확정-상품상태판매완료로 변경완료===========");
+		                                alert('거래확정이 완료되었습니다.');
+		                                location.reload(); // 페이지 새로고침
+		                            } else {
+		                                alert('거래확정 중 오류가 발생했습니다.');
+		                            }
+		                        }
+		                    });                           	
+                        	
+                        } else {
+                            alert('거래 확정 중 오류가 발생했습니다.');
+                        }
+                    }
+                });
+            }
+        });
       	   // 날짜 형식 변환 함수
             function formatDate(dateString) {
                 const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -223,27 +263,6 @@
                 
             });
             
-            $('.confirm-request').on('click', function() {
-                var productId = $(this).data('id');
-                if (confirm('거래 확정하시겠습니까?')) {
-                    $.ajax({
-                        url: 'updateTransactionStatus',
-                        type: 'POST',
-                        data: {
-                            id: productId,
-                            status: '거래확정'
-                        },
-                        success: function(response) {
-                            if(response.success) {
-                                alert('거래가 확정되었습니다.');
-                                location.reload(); // 페이지 새로고침
-                            } else {
-                                alert('거래 확정 중 오류가 발생했습니다.');
-                            }
-                        }
-                    });
-                }
-            });
 
 //             $('.review-request').on('click', function() {
 //                 var productId = $(this).data('id');

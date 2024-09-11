@@ -46,16 +46,19 @@ public interface TechPayMapper {
 	// 테크페이 잔액 업데이트
 	int updatePayBalance(Map<String, Object> map2);
 
-	// 테크페이 사용 목록 불러오기	
+	// 테크페이 사용 목록 불러오기(ajax)
 	List<Map<String, Object>> selectPayHistory(Map<String, Object> map);
 
 	// 테크페이 사용 목록 개수 세기(페이징)
 	int selectPayHistoryCount(Map<String, Object> map);
 
 	// 결제결과 불러오기
-	Map<String, String> selectPaymentsResult(@Param("id") String id, @Param("trade_idx") String trade_idx);
+	Map<String, String> selectPaymentsResult(@Param("id") String id, @Param("trade_pd_idx") String trade_pd_idx);
 
 	// 해당 상품 거래 상태 '결제완료'로 업데이트	
 	int updateTradeStatus(@Param("id") String id, @Param("trade_idx") String trade_idx);
+
+	// trade_pd_idx 불러오기	
+	String selectTradePdIdx(String trade_idx);
 
 }

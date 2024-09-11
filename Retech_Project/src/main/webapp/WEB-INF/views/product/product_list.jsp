@@ -5,6 +5,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&display=swap');
+</style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta charset="UTF-8">
 <%-- 반응형웹페이지 위한 설정  --%>
@@ -249,13 +252,31 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 
 </script>
 <style type="text/css">
+.dongle-light {
+  font-family: "Dongle", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.dongle-regular {
+  font-family: "Dongle", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.dongle-bold {
+  font-family: "Dongle", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
 /* 헤더 스타일 */
 /* 카테고리 선택 영역 */
 
 /* 카테고리 선택, 제조사 선택, 거래상태 선택 영역 */
 /* 각 select box의 너비를 5cm로 설정하고 높이를 유지 */
 #categoryNav {
-    margin-top: 20px; /* 위쪽 여백 추가 */
+    margin-top: 40px; /* 위쪽 여백 추가 */
 }
 
 #categoryNav .select {
@@ -268,6 +289,14 @@ function loadList(selectedCategory, selectedSort, resetPage) {
     width: 5cm;
     height: 35px; /* 높이 유지 */
     margin-right: 10px; /* 각 select box 사이에 여백 추가 */
+}
+
+#category {
+    margin-bottom: 20px; /* 카테고리와 전체 상품 사이에 여백 추가 */
+}
+
+.listInfo {
+    margin-top: 40px; /* 전체 상품과 카테고리 사이에 여백 추가 */
 }
 
 
@@ -297,6 +326,16 @@ header {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
+    max-width: 300px;
+    min-width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 애니메이션 효과 추가 */
+}
+/* 상품 카드에 마우스를 올렸을 때의 스타일 */
+.productListArea .col-lg-3:hover {
+    transform: scale(1.05); /* 살짝 확대 효과 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+    cursor: pointer; /* 클릭 커서로 변경 */
+    transition: opacity 0.3s ease;
 }
 
 /* 썸네일 이미지 */
@@ -320,22 +359,43 @@ header {
     left: 10px;
     z-index: 10;
 }
+/* 상품 카드 본문에 마우스를 올렸을 때의 스타일 */
+.productListArea .col-lg-3:hover .card-body {
+    background-color: #f9f9f9; /* 배경색 변경 */
+}
 
 /* 카드 본문 */
+/* .card-body 스타일 */
 .card-body {
     padding: 10px;
     display: flex;
     flex-direction: column;
+    transition: background-color 0.3s ease;
+    background-color: #f0f0f0; /* 연한 회색 */
+    font-family: "Dongle", sans-serif;
+    font-size: 30px;
+    line-height: 1.1; /* 줄 간격 줄이기 */
+}
+.card-body p {
+    margin: 0; /* 기본 마진 제거 */
+    line-height: 1.1; /* 줄 간격 줄이기 */
+}
+/* productDate p 태그 스타일 */
+.productDate {
+    margin-top: 5px; /* 위쪽 간격 줄이기 */
+    line-height: 1.1; /* 줄 간격 줄이기 */
 }
 
-/* 제목 링크 */
+/* 제목 링크 스타일 */
 .card-title {
-    font-size: 1rem;
-    margin-bottom: 10px;
+    font-size: 2rem;
+    margin-bottom: 5px; /* 제목과 본문 사이의 간격 줄이기 */
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    line-height: 1.1; /* 줄 간격 줄이기 */
 }
+
 .listInfo {
     display: flex;
     justify-content: space-between; /* 아이템들을 양 끝으로 정렬 */
@@ -469,24 +529,14 @@ header {
 								</span>
 							</div>
 							<div class="card-body">
-							
-<!-- 								//연진 수정 부분!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 -->
-<!-- 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-								<!-- 카테고리 가져오기 -->
-<!-- 								<div class="category" style="font-size:0.8rem;"> -->
-<%-- 									${product.pd_category } --%>
-<!-- 								</div> -->
-
-<!-- 	//연진 수정 부분!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 -->
-<!-- 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-								<!-- 제목 링크 -->
 								<div class="card-title" style="white-space: nowrap; overflow:hidden; text-overflow: elipsis;">
 									<a href="product_detail?pd_idx=${product.pd_idx}&member_id=${product.member_id}">
 										${product.pd_subject}
 									</a>
 								</div>
 								<p><fmt:formatNumber pattern="#,###" value="${product.pd_price }"/>원</p>
-								<p class="productDate" data-date="${product.pd_first_date != null ? product.pd_first_date : '날짜 정보 없음'}">${product.pd_first_date != null ? product.pd_first_date : '날짜 정보 없음'}</p>							</div>
+								<p class="productDate" data-date="${product.pd_first_date != null ? product.pd_first_date : '날짜 정보 없음'}">${product.pd_first_date != null ? product.pd_first_date : '날짜 정보 없음'}</p>							
+								</div>
 						</div>
 					</c:forEach>
 				</div>

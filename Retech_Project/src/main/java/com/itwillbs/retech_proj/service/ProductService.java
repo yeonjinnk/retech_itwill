@@ -158,11 +158,15 @@ public class ProductService {
 		return mapper.selectSaleList(loggedInUserId);
 	}
 	
-	// 상품상태 업데이트
-	public int updateProductStatus2(int trade_idx, int trade_status) {
-		return mapper.updateProductStatus2(trade_idx, trade_status);
+	// 거래상태 업데이트
+	public int updateProductStatus2(int trade_pd_idx, int trade_status) {
+		return mapper.updateProductStatus2(trade_pd_idx, trade_status);
 	}
 	
+	// 상품상태 업데이트
+	public int updateProductStatus3(int id, String status) {
+		return mapper.updateProductStatus3(id, status);
+	}
 	
 
 

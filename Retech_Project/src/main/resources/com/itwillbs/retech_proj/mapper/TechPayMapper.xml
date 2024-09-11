@@ -96,22 +96,148 @@ CREATE TABLE techpay_user_info (
 		)
 	</insert>
 
-	<!-- 테크페이 사용 목록 불러오기 --> 	
+	<!-- 테크페이 사용 목록 불러오기(ajax) --> 	
 	<select id="selectPayHistory" resultType="map">
-		SELECT *
-		FROM techpay_history
-		WHERE id = #{pay_id}
-		<if test="pay_history_type != null and !pay_history_type.equals('')">
-			AND techpay_type = #{pay_history_type}
-		</if>
-		<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
-			AND DATE(techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date}
-		</if>
-		ORDER BY techpay_tran_dtime DESC
-		<if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')">
-			LIMIT #{startRow}, #{listLimit}
-		</if>		
+<!-- 		<choose> -->
+<!-- 			<when test="pay_history_type == 3"> -->
+					    SELECT 
+			        th.*,      
+			        p.pd_subject,
+			        p.pd_idx    
+			    FROM 
+			        techpay_history th
+			        LEFT JOIN trade t ON th.trade_idx = t.trade_idx
+			        LEFT JOIN product p ON t.trade_pd_idx = p.pd_idx
+			    WHERE 
+			        th.id = #{pay_id}
+			        <if test="pay_history_type != null and !pay_history_type.equals('')">
+			            AND th.techpay_type = #{pay_history_type}
+			        </if>
+			        <if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+			            AND DATE(th.techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date}
+			        </if>
+			    ORDER BY th.techpay_tran_dtime DESC
+			    <if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')">
+			        LIMIT #{startRow}, #{listLimit}
+			    </if>      
+<!-- 				SELECT  -->
+<!-- 				    th.*, -->
+<!-- 				    t.*, -->
+<!-- 				    p.pd_subject, -->
+<!-- 				    p.pd_idx -->
+<!-- 				FROM  -->
+<!-- 				    techpay_history th -->
+<!-- 				JOIN  -->
+<!-- 				    trade t -->
+<!-- 				    ON th.id = t.trade_buyer_id -->
+<!-- 				JOIN  -->
+<!-- 				    product p -->
+<!-- 				    ON th.trade_idx = p.pd_idx -->
+<!-- 				WHERE  -->
+<!-- 				    th.id = #{pay_id} -->
+<!-- 				<if test="pay_history_type != null and !pay_history_type.equals('')"> -->
+<!-- 					AND techpay_type = #{pay_history_type} -->
+<!-- 				</if> -->
+<!-- 				<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')"> -->
+<!-- 					AND DATE(techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date} -->
+<!-- 				</if> -->
+<!-- 				ORDER BY techpay_tran_dtime DESC -->
+<!-- 				<if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')"> -->
+<!-- 					LIMIT #{startRow}, #{listLimit} -->
+<!-- 				</if>		 -->
+<!-- 			</when> -->
+<!-- 			<when test="pay_history_type == 4"> -->
+<!-- 				SELECT  -->
+<!-- 				    th.*, -->
+<!-- 				    t.*, -->
+<!-- 				    p.pd_subject, -->
+<!-- 				    p.pd_idx -->
+<!-- 				FROM  -->
+<!-- 				    techpay_history th -->
+<!-- 				JOIN  -->
+<!-- 				    trade t -->
+<!-- 				    ON th.id = t.trade_seller_id -->
+<!-- 				JOIN  -->
+<!-- 				    product p -->
+<!-- 				    ON th.trade_idx = p.pd_idx -->
+<!-- 				WHERE  -->
+<!-- 				    th.id = #{pay_id} -->
+<!-- 				<if test="pay_history_type != null and !pay_history_type.equals('')"> -->
+<!-- 					AND techpay_type = #{pay_history_type} -->
+<!-- 				</if> -->
+<!-- 				<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')"> -->
+<!-- 					AND DATE(techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date} -->
+<!-- 				</if> -->
+<!-- 				ORDER BY techpay_tran_dtime DESC -->
+<!-- 				<if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')"> -->
+<!-- 					LIMIT #{startRow}, #{listLimit} -->
+<!-- 				</if>		 -->
+<!-- 			</when> -->
+<!-- 			<otherwise> -->
+<!-- 			    SELECT  -->
+<!-- 			        th.*,       -->
+<!-- 			        p.pd_subject, -->
+<!-- 			        p.pd_idx     -->
+<!-- 			    FROM  -->
+<!-- 			        techpay_history th -->
+<!-- 			        LEFT JOIN trade t ON th.trade_idx = t.trade_idx -->
+<!-- 			        LEFT JOIN product p ON t.trade_pd_idx = p.pd_idx -->
+<!-- 			    WHERE  -->
+<!-- 			        th.id = #{pay_id} -->
+<!-- 			        <if test="pay_history_type != null and !pay_history_type.equals('')"> -->
+<!-- 			            AND th.techpay_type = #{pay_history_type} -->
+<!-- 			        </if> -->
+<!-- 			        <if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')"> -->
+<!-- 			            AND DATE(th.techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date} -->
+<!-- 			        </if> -->
+<!-- 			    ORDER BY th.techpay_tran_dtime DESC -->
+<!-- 			    <if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')"> -->
+<!-- 			        LIMIT #{startRow}, #{listLimit} -->
+<!-- 			    </if>       -->
+<!-- 			</otherwise> -->
+			
+<!-- 			<otherwise> -->
+<!-- 			    SELECT  -->
+<!-- 			        th.*,  -->
+<!-- 			        CASE  -->
+<!-- 			            WHEN th.techpay_type = '3' THEN p.pd_subject -->
+<!-- 			            ELSE NULL -->
+<!-- 			        END AS pd_subject -->
+<!-- 			    FROM  -->
+<!-- 			        techpay_history th -->
+<!-- 			        LEFT JOIN trade t ON th.trade_idx = t.trade_idx -->
+<!-- 			        LEFT JOIN product p ON t.trade_pd_idx = p.pd_idx -->
+<!-- 			    WHERE  -->
+<!-- 			        th.id = #{pay_id} -->
+<!-- 			        <if test="pay_history_type != null and !pay_history_type.equals('')"> -->
+<!-- 			            AND th.techpay_type = #{pay_history_type} -->
+<!-- 			        </if> -->
+<!-- 			        <if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')"> -->
+<!-- 			            AND DATE(th.techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date} -->
+<!-- 			        </if> -->
+<!-- 			    ORDER BY th.techpay_tran_dtime DESC -->
+<!-- 			    <if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')"> -->
+<!-- 			        LIMIT #{startRow}, #{listLimit} -->
+<!-- 			    </if>       -->
+<!-- 			</otherwise> -->
+<!-- 			<otherwise> -->
+<!-- 				SELECT * -->
+<!-- 				FROM techpay_history -->
+<!-- 				WHERE id = #{pay_id} -->
+<!-- 				<if test="pay_history_type != null and !pay_history_type.equals('')"> -->
+<!-- 					AND techpay_type = #{pay_history_type} -->
+<!-- 				</if> -->
+<!-- 				<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')"> -->
+<!-- 					AND DATE(techpay_tran_dtime) BETWEEN #{start_date} AND #{end_date} -->
+<!-- 				</if> -->
+<!-- 				ORDER BY techpay_tran_dtime DESC -->
+<!-- 				<if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')"> -->
+<!-- 					LIMIT #{startRow}, #{listLimit} -->
+<!-- 				</if>		 -->
+<!-- 			</otherwise>		 -->
+<!-- 		</choose> -->
 	</select>
+		
 	
 	<!-- 테크페이 사용 목록 개수 세기(페이징) --> 
 	<select id="selectPayHistoryCount" resultType="int">
@@ -168,24 +294,48 @@ CREATE TABLE techpay_user_info (
 
 
 	<!-- 결제결과 불러오기 -->
+<!-- 	<select id="selectPaymentsResult" resultType="map"> -->
+<!-- 		SELECT  -->
+<!-- 		    th.*, -->
+<!-- 		    t.*, -->
+<!-- 		    p.pd_subject, -->
+<!-- 		    p.pd_idx -->
+<!-- 		FROM  -->
+<!-- 		    techpay_history th -->
+<!-- 		JOIN  -->
+<!-- 		    trade t -->
+<!-- 		    ON th.id = t.trade_buyer_id -->
+<!-- 		JOIN  -->
+<!-- 		    product p -->
+<!-- 		    ON th.trade_idx = p.pd_idx -->
+<!-- 		WHERE  -->
+<!-- 		    th.id = #{id} -->
+<!-- 		    AND t.trade_pd_idx = #{trade_pd_idx}; -->
+<!-- 	</select> -->
+
 	<select id="selectPaymentsResult" resultType="map">
 		SELECT 
-		    th.*,
-		    t.*,
-		    p.pd_subject,
-		    p.pd_idx
+		    product.pd_idx,
+		    product.pd_subject,
+		    techpay_history.techpay_idx,
+		    techpay_history.techpay_tran_dtime,
+		    techpay_history.tran_amt,
+		    techpay_history.pay_balance
 		FROM 
-		    techpay_history th
+		    techpay_history
 		JOIN 
-		    trade t
-		    ON th.id = t.trade_buyer_id
+		    trade ON techpay_history.trade_idx = trade.trade_idx
 		JOIN 
-		    product p
-		    ON th.trade_idx = p.pd_idx
+		    product ON trade.trade_pd_idx = product.pd_idx
 		WHERE 
-		    th.id = #{id}
-		    AND th.trade_idx = #{trade_idx};
+		    trade.trade_buyer_id = #{id}
+	    AND
+	    	product.pd_idx = #{trade_pd_idx};
 	</select>
+	
+	
+	
+	
 	
 	<!-- 해당 상품 거래 상태 '결제완료'로 업데이트 -->
 	<update id="updateTradeStatus">
@@ -196,5 +346,11 @@ CREATE TABLE techpay_user_info (
 			AND trade_idx = #{trade_idx};
 	
 	</update>
+
+	<select id="selectTradePdIdx" resultType="string">
+		SELECT trade_pd_idx
+		FROM trade
+		WHERE trade_idx = #{trade_idx}
+	</select>
 
 </mapper>

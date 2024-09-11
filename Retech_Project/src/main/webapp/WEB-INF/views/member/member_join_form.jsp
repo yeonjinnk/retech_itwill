@@ -163,6 +163,7 @@
 		    width: 100%;
 		}
     </style>
+    
 </head>
 <body>
     <header>
@@ -242,7 +243,6 @@
 			    <span>프로필 사진</span>
 			    <input type="file" name="profile" id="member_profile">
 			    <img id="img_preview_img" src="${pageContext.request.contextPath}/resources/images/${member.member_profile}" alt="미리보기" style="display:${member.member_profile != null ? 'block' : 'none'};">
-			    <span id="img_status">${member.member_profile != null ? '사진 미리보기' : '프로필사진'}</span>
 			    <input type="button" id="del_img" value="사진 삭제" style="${member.member_profile != null ? 'display: block;' : 'display: none;'}">
 			</div>
 

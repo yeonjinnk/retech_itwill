@@ -190,27 +190,55 @@
                 
             });
 
-            // 거래 취소 요청 버튼 클릭 시
-            $('.cancel-request').on('click', function() {
+            // 거래취소승인 버튼 클릭 시
+            $('.cancel-request2').on('click', function() {
+            	// 거래 상태 '5. 거래취소승인'으로 변경
+                var trade_pd_idx = $(this).data('id');
                 var productId = $(this).data('id');
-                if (confirm('거래를 취소하시겠습니까?')) {
+                if (confirm('거래취소를 승인하시겠습니까?')) {
                     $.ajax({
-                        url: 'updateTransactionStatus',
+                        url: 'updateTradeStatusAjax',
                         type: 'POST',
                         data: {
-                            id: productId,
-                            status: '거래취소'
+                        	trade_pd_idx: trade_pd_idx,
+                            trade_status: '5'
                         },
                         success: function(response) {
                             if(response.success) {
-                                alert('거래가 취소되었습니다.');
-                                location.reload(); // 페이지 새로고침
+                            	console.log("============거래취소승인-거래상태5로 변경완료==========");
+                            	
+			                    $.ajax({
+			                        url: 'updateTradeStatusAjax2',
+			                        type: 'POST',
+			                        data: {
+			                            id: productId,
+			                            status: '판매중'
+			                        },
+			                        success: function(response) {
+			                            if(response.success) {
+		                            	console.log("===============거래취소승인완료-상품상태판매중으로 변경완료===========");
+			                                alert('거래취소 승인이 완료되었습니다.');
+			                                location.reload(); // 페이지 새로고침
+			                            } else {
+			                                alert('거래 취소 승인 중 오류가 발생했습니다.');
+			                            }
+			                        }
+			                    });
+                            	
                             } else {
-                                alert('거래 취소 중 오류가 발생했습니다.');
+                                alert('거래취소 승인 중 오류가 발생했습니다.');
                             }
                         }
                     });
+                    
                 }
+                
+                
+                // 상품 상태 '판매중'으로 변경
+//                 if (confirm('거래를 취소하시겠습니까?')) {
+//                 }
+                
+                
             });
 
             // 거래 확정 버튼 클릭 시

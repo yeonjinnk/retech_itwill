@@ -88,17 +88,14 @@ public class MemberService {
         System.out.println("Input Code: " + inputCode);
         return storedCode != null && storedCode.equals(inputCode);
     }
-    
- // 카카오서비스
-    public MemberVO getMemberFromEmail(String email) {
-		return mapper.selectMemberFromEmail(email);
-	}
 
-    //별점 평균 신뢰지수 조회
-	public Float getStarRate(String loggedInUserId) {
-		return mapper.selectStarRate(loggedInUserId);
-	}
+    // 카카오서비스
+    public MemberVO getMemberFromEmail(String memberId) {
+        return mapper.selectMemberFromEmail(memberId);
+    }
 
-
-	
+  //별점 평균 신뢰지수 조회
+  	public Float getStarRate(String loggedInUserId) {
+  		return mapper.selectStarRate(loggedInUserId);
+  	}
 }

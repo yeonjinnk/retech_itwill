@@ -7,8 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Retech_테크페이</title>
-<%-- 외부 CSS 파일(css/default.css) 연결 --%>
-<link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 
 <!-- 자바스크립트 연결 -->
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -20,413 +18,290 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<%-- 외부 CSS 파일(css/default.css) 연결 --%>
+<link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+
 <!-- FontAwesome 아이콘 CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- 수정시작 -->
 <script>
-let pageNum = "1";
-let maxPage = "";
+let pageNum = 1; // 초기 페이지 번호
+let maxPage = 0;
+let isLoading = false; // 로딩 상태 플래그
 let pay_history_type = "";
 let start_date = "";
 let end_date = "";
 
 $(function() {
-	
-    console.log("아이디 " +  "${id}");
-    
-	// 목록 표시 함수 호출
-	load_list(pay_history_type, start_date, end_date);	
+    // 게시물 목록 불러오기
+    load_list(pay_history_type, start_date, end_date);
 
-	
-	$(window).scroll(function() {
-		let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
-		let windowHeight = $(window).height(); // 브라우저 창 높이
-		let documentHeight = $(document).height(); // 문서 높이
-		console.log("scrollTop : " + scrollTop + ", windowHeight : " + windowHeight + ", documentHeight : "+ documentHeight);
-			
-		if(scrollTop + windowHeight + 1 >= documentHeight) {
-			pageNum++; // 페이지번호 1 층가
-			
-			// 페이지 번호를 계속 불러오는 현상 막기
-			if(maxPage != "" && pageNum <= maxPage) {
-				load_list(pay_history_type, start_date, end_date);
-			}
-		}
-		
-	});	
-	
-	
-	// 전체, 충전, 환급, 사용, 수익 탭 클릭 시 pay_history_type 값 재할당
-	$("[name='options']").change(function() {
-		pay_history_type = $(this).val();
-		console.log("---------------------pay_history_type : " + pay_history_type);
-		
-		// div영역과 pageNum을 초기화
-		$("#payHistoryList").html("");
-		pageNum = "1";
-		load_list(pay_history_type, start_date, end_date);
-	});	
-	
-	
-	
-	
-	// 기간선택 모달창
-	// 1, 3, 6개월 탭 선택 시, 오늘날짜 기준으로 해당 날짜 자동 입력
-	$("[name='period']").change(function() {
-		// 체크박스 다중선택 막기
-		if($(this).prop('checked')){	 
-			$('input[type="checkbox"][name="period"]').prop('checked',false);
-			$(this).prop('checked',true);
-		}
-
-		// 체크된 체크박스의 값을 가져와서 변수에 저장
-		let period = parseInt($(this).val());
-		
-		// 오늘 날짜를 불러와서 end_date에 저장
-		let today = new Date();
-		let split_end_date = today.toISOString().split("T");
-		let end_date = split_end_date[0];
-		console.log(end_date);
-
-		$("#end_date").val(end_date);
-
-		// 오늘 날짜에서 버튼에 적힌 개월수만큼을 빼서 start_date에 저장
-		var monthAgo = new Date(today.setMonth(today.getMonth() - period));
-		console.log(monthAgo);
-		let split_stert_date = monthAgo.toISOString().split("T");
-		let start_date = split_stert_date[0];
-		console.log(start_date);
-
-		$("#start_date").val(start_date);
-		
-	});
-
-	// 시작일시
-	$("#start_date").click(function() {
-		// 현재 날짜보다 미래이면 안됨
-		var now_utc = Date.now() // 지금 날짜를 밀리초로
-		// getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
-		var timeOff = new Date().getTimezoneOffset()*60000; // 분단위를 밀리초로 변환
-		// new Date(today-timeOff).toISOString()은 '2024-01-30T11:48'를 반환
-		var today = new Date(now_utc-timeOff).toISOString().substring(0, 10);
-		
-		$("#start_date").attr("max", today);
-	});
-
-	$("#start_date").change(function() {
-		// 끝날짜보다 미래이면 안됨
-		let start_date_real = new Date($("#start_date").val());
-		let end_date_real = new Date($("#end_date").val());
-		
-		if (start_date_real > end_date_real) {
-			$("#start_date").val("");
-			Swal.fire({
-				position: 'center',
-				icon: 'error',
-				title: '마지막 날짜보다 이전의 날짜를 선택해주세요.',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			});
-		}
-		
-		
-		// 간격이 1년 이상 벌어지면 안됨
-		// 두 날짜 사이의 차이를 계산
-		let timeDiff = Math.abs(end_date_real.getTime() - start_date_real.getTime());
-		
-		// 계산한 값을 일 단위로 변환
-		let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-		
-		// 1년(365일) 이상 차이나는지 판별합니다.
-		if (diffDays >= 365) {
-			$("#start_date").val("");
-			Swal.fire({
-				position: 'center',
-				icon: 'error',
-				title: '1년 이내의 기간만 검색 가능합니다.',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			});
-		} 
-	});
-	
-	// 종료일시
-	$("#end_date").click(function() {
-		// 현재날짜보다 미래이면 안됨
-		var now_utc = Date.now() // 지금 날짜를 밀리초로
-		// getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
-		var timeOff = new Date().getTimezoneOffset()*60000; // 분단위를 밀리초로 변환
-		// new Date(today-timeOff).toISOString()은 '2024-01-30T11:48'를 반환
-		var today = new Date(now_utc-timeOff).toISOString().substring(0, 10);
-		
-		$("#end_date").attr("max", today);
-		
-	});
-	
-	$("#end_date").change(function() {
-		// 시작날짜보다 과거이면 안됨
-		var start_date_real = new Date($("#start_date").val());
-		var end_date_real = new Date($("#end_date").val());
-		
-		if (start_date_real > end_date_real) {
-			$("#end_date").val("");
-			Swal.fire({
-				position: 'center',
-				icon: 'error',
-				title: '시작 날짜보다 이후의 날짜를 선택해주세요.',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			});
-		}
-		
-		console.log("체크 " + start_date);
-		
-		// 간격이 1년 이상 벌어지면 안됨
-		// 두 날짜 사이의 차이를 계산
-		let timeDiff = Math.abs(end_date_real.getTime() - start_date_real.getTime());
-		
-		// 계산한 값을 일 단위로 변환
-		let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-		
-		// 1년(365일) 이상 차이나는지 판별합니다.
-		if (diffDays >= 365) {
-			$("#end_date").val("");
-			Swal.fire({
-				position: 'center',
-				icon: 'error',
-				title: '1년 이내의 기간만 검색 가능합니다.',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			});
-		} 		
-		
-	});
-	
-	// 기간선택 모달창 달력 열기
-    $('#start_date').daterangepicker({
-        locale: {
-            format: 'YYYY-MM-DD'
-        },
-        opens: 'right'  // 달력 위치를 오른쪽에 열리게 설정
+    // "더보기" 버튼 클릭 시
+    $("#loadMoreBtn").click(function() {
+        if (!isLoading && pageNum <= maxPage) {
+            load_list(pay_history_type, start_date, end_date);
+        }
     });
-    
-    $('#end_date').daterangepicker({
-        locale: {
-            format: 'YYYY-MM-DD'
-        },
-        opens: 'right'  // 달력 위치를 오른쪽에 열리게 설정
+
+    // 모아보기 버튼을 클릭하면 에이젝스를 새로 요청함
+    $("[name='options']").change(function() {
+        pay_history_type = $(this).val();
+
+        // div 영역과 pageNum을 초기화
+        $("#payHistoryList").html(""); // 이전 데이터 초기화
+        pageNum = 1; // 페이지 번호 초기화
+        load_list(pay_history_type, start_date, end_date);
     });
-    
-});
 
-// 테크페이 내역 불러오기(AJAX와 JSON으로 처리)
-function load_list(pay_history_type, start_date, end_date) {
-	
- 	// 회원 id 저장
-	let id = "${id}";
-	console.log("load_list---------id = "  + id);
-	
-	// 테크페이 타입 저장(충전, 환급, 사용, 수익)
-	let  techpay_type = pay_history_type;
-	console.log("load_list---------techpay_type = " + techpay_type + ", id = " + id + ", pageNum = " + pageNum);
-	
-	let start = start_date;
-	let end = end_date;
-	console.log("load_list---------start_date = " + start + ", end_date = " + end);
-	
-	
-	$(".btn-check").each(function() {
-		if ($(this).val() === pay_history_type) {
-			$(this).prop("checked", true);
-			return false; // 반복문 종료
-		}
-	});
-	
-	
-	$.ajax({
-		type: "GET",
-		url: "PayHistoryJson",
-		data: {
-			"id": id,
-			"techpay_type": techpay_type,
-			"pageNum": pageNum,
-			"start_date": start,
-			"end_date": end
-		},
-		dataType: "json",
-		success:  function(data) {
-			
-			console.log(data.payHistory);
-			
-			if(data.listCount == 0) {
-				$("#payHistoryList").append("<div id='list_none'>사용 내역이 없습니다</div>");
-			}
-	
-			$("#info_left").html("총 <span>" + data.listCount + "</span>건");
-			
-			// 연도별로 그룹화할 객체 생성
-			let groupedData = {};
-
-			// payHistoryList를 순회하며 연도별로 그룹화
-			for (let item of data.payHistoryList) {
-				let year = new Date(item.techpay_tran_dtime).getFullYear();
-  
-				if (!groupedData[year]) {
-					groupedData[year] = [];
-				}
-  
-				groupedData[year].push(item);
-			}
-
-			// 그룹화된 데이터를 이용하여 각 연도별로 div 영역에 추가
-			let years = Object.keys(groupedData).reverse(); // 연도 속성을 반대로 순회할 배열 생성
-			for (let year of years) {
-				
-				if($("#" + year).length === 0) {
-					$("#payHistoryList").append(
-						'<div id="'+ year +'">'
-						+	'<span id="year">' + year + '</span>년'
-						+	'<div class="year_list" id="' + year + 'list"></div>'
-						+ '</div>'
-					);
-				}
-				
-				const paymentArray = groupedData[year]; // 데이터 배열
-
-				for (let history of paymentArray) {
-					console.log("history:" + history.buy_product_id);
-					// pay_history_date 값을 분리하여 날짜와 시간을 추출
-					let date = history.techpay_tran_dtime.slice(5, 10);
-					let time = history.techpay_tran_dtime.slice(11, 16);
-					
-					// pay_history_type 값에 따라 다른 결과 출력
-					let pay_history_type = "";
-					let subject = "";
-					if(history.pay_history_type == "1") {
-						pay_history_type = "충전";
-						subject = history.pay_history_message;
-					} else if(history.pay_history_type == "2") {
-						pay_history_type = "환급";
-						subject = history.techpay_idx;
-					} else if(history.pay_history_type == "3") {
-						pay_history_type = "사용";
-// 						if (!history.buy_product_id || history.buy_product_id === 'null') {
-// 						    subject = "취소된 거래입니다";
-// 						} else {
-// 							subject = '<a href="ProductDetail?product_id=' + history.buy_product_id +'">' + history.buy_product_name + '</a><i class="fa fa-angle-right"></i>';
-// 						}
-					} else if(history.pay_history_type == "4") {
-						pay_history_type = "수익";
-						subject = '<a href="ProductDetail?product_id=' + history.sell_product_id +'">' + history.sell_product_name + '</a><i class="fa fa-angle-right"></i>';
-					}
-					
-					let pay_amount = history.pay_amount.toLocaleString();
-					let pay_history_balance = history.pay_history_balance.toLocaleString();
-			    	  
-			    	  $("#" + year + "list").append(
-	 						'<div class="row content_list">'
-	  				        +     '<div class="col-lg-2 col-md-2 col-12">'
-	  				        +         '<h5 class="pay_date">' + date + '</h5>'
-	  				        +     '</div>'
-	  				        +     '<div class="col-lg-7 col-md-7 col-12 subject-area">'
-	  				        +         '<h5 class="product-name">' 
-	  				        + 				subject 
-	  				        +		  '</h5>'
-	  				        +         '<p class="pay-info-sub">'
-	  				        +        		time + ' | '
-	  				        +               pay_history_type
-	  				        +         '</p>'
-	  				        +     '</div>'
-	  				        +     '<div class="col-lg-3 col-md-3 col-12">'
-	  				        +          '<h5 class="pay-amount">' + pay_amount + '</h5>'
-	  				        +          '<p class="pay-balance-sub">'
-	  				        +				pay_history_balance
-	  				        +         '</p>'
-	  				        +     '</div>'
-	  				        +'</div>'
-
-						);
-// 				
-// 					// 끝페이지 번호(maxPage) 값을 변수에 저장
-					maxPage = data.maxPage;
-// 					console.log("maxPage" + maxPage);			
-				}	
-			}
-		},
-		error: function(request, status, error) {
-	      // 요청이 실패한 경우 처리할 로직
-	      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
-		}
-	});
-	
-}
-
-
-</script>
-
-<script>
-$(function() {
-	
-	// 모달버튼 클릭 시 날짜 초기화
-	$('#select_date_modal').on('click', function() {
-	    // 시작일과 종료일 초기화
-	    $('#start_date').val("");
-	    $('#end_date').val("");
-	});	
-	
-	
-	// 테크페이 내역 불러오기
-	load_list(pay_history_type, start_date, end_date);
-	
-	$(window).scroll(function() {
-		let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
-		let windowHeight = $(window).height(); // 브라우저 창 높이
-		let documentHeight = $(document).height(); // 문서 높이
-			
-		if(scrollTop + windowHeight + 1 >= documentHeight) {
-			pageNum++; // 페이지번호 1 층가
-			
-			// 페이지 번호를 계속 불러오는 현상 막기
-			if(maxPage != "" && pageNum <= maxPage) {
-				load_list(pay_history_type, start_date, end_date);
-			}
-		}
-		
-	});
-	
-	
-	// 기간선택 모달 창 닫으면서 이벤트 처리
-    // '조회하기' 버튼 클릭 시 
-    $('#searchButton').on('click', function() {
-        // 모달 창 내의 시작일과 종료일 가져오기
-        var startDate = $('#start_date').val();
-        var endDate = $('#end_date').val();
-
-        // 시작일과 종료일 값이 제대로 들어갔는지 확인
-        if (!startDate || !endDate) {
-            alert("날짜를 선택하세요.");
-        } else {
-            console.log("시작일: " + startDate + ", 종료일: " + endDate);
+    // 기간 선택 버튼을 클릭하면 날짜 자동 설정
+    $("[name='period']").change(function() {
+        // 체크박스 다중 선택 방지
+        if ($(this).prop('checked')) {
+            $('input[type="checkbox"][name="period"]').prop('checked', false);
+            $(this).prop('checked', true);
         }
 
-        // 모달 창 닫기
-        $('#date_modal').modal('hide');
-        
-        // 임시로 넣어보기
-//         $('#payHistoryList').append('<hr>');
-// 		<div align="right"></div>
-//         $('#payHistoryList').append('<div align="center">' + startDate + ' ~ ' + endDate + '</div>');
-//         $('#payHistoryList').append('<hr>');
-        $('#payHistoryList').append('<p><strong>선택한 기간: </strong>' + startDate + ' ~ ' + endDate + '</p>');
-        $('#payHistoryList').append('<p><strong>선택한 기간: </strong>' + startDate + ' ~ ' + endDate + '</p>');
+        // 체크된 체크박스 값 저장
+        let period = parseInt($(this).val());
+
+        // 오늘 날짜 설정
+        let today = new Date();
+        let split_end_date = today.toISOString().split("T");
+        end_date = split_end_date[0];
+        $("#end_date").val(end_date);
+
+        // 선택한 기간만큼 이전 날짜 설정
+        let monthAgo = new Date(today.setMonth(today.getMonth() - period));
+        let split_start_date = monthAgo.toISOString().split("T");
+        start_date = split_start_date[0];
+        $("#start_date").val(start_date);
     });
-	
-	
+
+    // 시작날짜 변경 시 유효성 검사
+    $("#start_date").change(function() {
+        let start_date_real = new Date($("#start_date").val());
+        let end_date_real = new Date($("#end_date").val());
+
+        if (start_date_real > end_date_real) {
+            $("#start_date").val("");
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: '마지막 날짜보다 이전의 날짜를 선택해주세요.',
+                showConfirmButton: false,
+                timer: 2000,
+                toast: true
+            });
+        }
+
+        // 두 날짜 차이가 1년 이상이면 경고
+        let timeDiff = Math.abs(end_date_real.getTime() - start_date_real.getTime());
+        let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        if (diffDays >= 365) {
+            $("#start_date").val("");
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: '1년 이내의 기간만 검색 가능합니다.',
+                showConfirmButton: false,
+                timer: 2000,
+                toast: true
+            });
+        }
+    });
+
+    // 끝날짜 변경 시 유효성 검사
+    $("#end_date").change(function() {
+        let start_date_real = new Date($("#start_date").val());
+        let end_date_real = new Date($("#end_date").val());
+
+        if (start_date_real > end_date_real) {
+            $("#end_date").val("");
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: '시작 날짜보다 이후의 날짜를 선택해주세요.',
+                showConfirmButton: false,
+                timer: 2000,
+                toast: true
+            });
+        }
+
+        // 두 날짜 차이가 1년 이상이면 경고
+        let timeDiff = Math.abs(end_date_real.getTime() - start_date_real.getTime());
+        let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+        if (diffDays >= 365) {
+            $("#end_date").val("");
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: '1년 이내의 기간만 검색 가능합니다.',
+                showConfirmButton: false,
+                timer: 2000,
+                toast: true
+            });
+        }
+    });
 });
+
+// 게시물 목록을 AJAX와 JSON으로 처리하는 함수
+function load_list(pay_history_type, start_date, end_date) {
+    if (isLoading) return; // 이미 로딩 중이면 실행하지 않음
+    isLoading = true; // 로딩 상태로 변경
+
+    let pay_id = $("#pay_id").val();
+    let type = pay_history_type;
+    let start = start_date;
+    let end = end_date;
+
+    $.ajax({
+        type: "GET",
+        url: "PayHistoryJson",
+        data: {
+            "pay_id": pay_id,
+            "pay_history_type": type,
+            "pageNum": pageNum,
+            "start_date": start,
+            "end_date": end
+        },
+        dataType: "json",
+        success: function(data) {
+            console.log("AJAX 응답 데이터:", data);
+            console.log("============data.payHistoryList========== : ", data.payHistoryList);
+
+            if (data.listCount == 0) {
+                $("#payHistoryList").append("<div id='list_none'>사용 내역이 없습니다</div>");
+            }
+
+            $("#info_left").html("총 <span>" + data.listCount + "</span>건");
+
+            // 연도별로 데이터 그룹화
+            let groupedData = {};
+            for (let item of data.payHistoryList) {
+	            console.log("============item(data.payHistoryList)========== : ", item);
+                let year = new Date(item.techpay_tran_dtime).getFullYear();
+                if (!groupedData[year]) {
+                    groupedData[year] = [];
+                }
+                groupedData[year].push(item);
+            }
+
+            
+            
+            // 그룹화된 데이터 연도별로 표시
+            let years = Object.keys(groupedData).reverse();
+            for (let year of years) {
+                if ($("#" + year).length === 0) {
+                    $("#payHistoryList").append(
+                        '<div id="' + year + '">' +
+                        '<span id="year">' + year + '년</span>' +
+                        '<div class="year_list" id="' + year + 'list"></div>' +
+                        '</div>'
+                    );
+                }
+
+                const paymentArray = groupedData[year];
+                for (let history of paymentArray) {
+                    let date = history.techpay_tran_dtime.slice(5, 10);
+                    let time = history.techpay_tran_dtime.slice(11, 16);
+                    console.log("==============history============ : ", history);
+                    let pd_idx = history.pd_idx;
+                    console.log("==============history.pd_idx============ : ", history.pd_idx);
+
+                    let pay_history_type = "";
+                    let subject = "";
+                    if (history.techpay_type == "1") {
+                        pay_history_type = "충전";
+                        subject = "페이충전";
+                    } else if (history.techpay_type == "2") {
+                        pay_history_type = "환급";
+                        subject = "페이환급";
+                    } else if (history.techpay_type == "3") {
+                        pay_history_type = "사용";
+                        subject = '<a href="product_detail?pd_idx=' + history.pd_idx + '&member_id=' + history.id + '">' + history.pd_subject + '</a>';
+                    } else if (history.techpay_type == "4") {
+                        pay_history_type = "수익";
+                        subject = '<a href="product_detail?pd_idx=' + history.pd_idx + '&member_id=' + history.id + '">' + history.pd_subject + '</a>';
+                    }
+
+                    let pay_amount = history.tran_amt.toLocaleString();
+                    let pay_history_balance = history.pay_balance.toLocaleString();
+
+                    $("#" + year + "list").append(
+                        '<div class="row content_list">' +
+                        '<div class="col-lg-2 col-md-2 col-12">' +
+                        '<h5 class="pay_date">' + date + '</h5>' +
+                        '</div>' +
+                        '<div class="col-lg-7 col-md-7 col-12 subject-area">' +
+                        '<h5 class="product-name">' + subject + '</h5>' +
+                        '<p class="pay-info-sub">' + time + ' | ' + pay_history_type + '</p>' +
+                        '</div>' +
+                        '<div class="col-lg-3 col-md-3 col-12">' +
+                        '<h5 class="pay-amount">' + pay_amount + '</h5>' +
+                        '<p class="pay-balance-sub">' + pay_history_balance + '</p>' +
+                        '</div>' +
+                        '</div>'
+                    );
+                }
+            }
+
+            maxPage = data.maxPage; // 끝페이지 번호 갱신
+            pageNum++; // 페이지 번호 증가
+
+            // maxPage와 비교하여 더보기 버튼 표시/숨기기
+            if (pageNum > maxPage) {
+                $("#loadMoreBtn").hide(); // 마지막 페이지에 도달하면 더보기 버튼 숨김
+            }
+
+            isLoading = false; // 로딩 상태 해제
+        },
+        error: function(request, status, error) {
+            console.log("AJAX 요청 실패:", status, error);
+        }
+    });
+}
+
+// 모달창에서 조회하기 버튼 눌렀을 때
+function select_date() {
+    start_date = $("#start_date").val();
+    end_date = $("#end_date").val();
+
+    // div 영역과 pageNum 초기화
+    $("#payHistoryList").html("");
+    pageNum = 1;
+    load_list(pay_history_type, start_date, end_date);
+
+    $('#date_modal').modal('hide');
+
+    // 입력한 기간을 판별하여 표시
+    if ($("input[name='period']:checked").val() != null && $("input[name='period']:checked").val() != "") {
+        let checked = $("input[name='period']:checked").val();
+        if (checked == 12) {
+            $("#info_right").html("1년");
+        } else {
+            $("#info_right").html(checked + "개월");
+        }
+    } else if (start_date != "" && end_date != "") {
+        $("#info_right").html(start_date + " ~ " + end_date);
+    } else {
+        $("#info_right").html("전체기간");
+    }
+
+    $('input[name="period"]').prop('checked', false);
+}
+
 </script>
+
+
+
+<!-- 수정끝 -->
+
+
+
+
 
 
 
@@ -502,9 +377,18 @@ input[type="radio"]:checked + .tab_label {
 }
 
 
+.card-body {
+	padding: 50px;
+}
+
 /*---- 기간선택 모달창 ----*/
 .ui-datepicker {
     z-index: 9999 !important;
+}
+
+.container {
+/* 	max-width: 500px; */
+	padding: 20px 50px 40px 50px;
 }
 
 /* 개월 선택 탭(1개월, 3개월..) 가로로 꽉 차게 */
@@ -513,18 +397,144 @@ input[type="radio"]:checked + .tab_label {
 }
 
 /* 날짜선택 영역 가로로 꽉 차게 */
-        .date_area {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
+.date_area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
 
-        .date_area input {
-            flex-grow: 2; /* 입력 필드가 가로 공간을 최대한 차지하도록 설정 */
-        }
+.date_area input {
+    flex-grow: 2; /* 입력 필드가 가로 공간을 최대한 차지하도록 설정 */
+}
+
+.btn2 {
+    width: 100%; /* 버튼이 부모의 너비를 꽉 채우도록 설정 */
+    padding: 10px 0; /* 버튼의 상하 여백 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    background-color: #007bff; /* 버튼 배경색 */
+    color: white; /* 버튼 텍스트 색상 */
+    border: none; /* 기본 테두리 제거 */
+    border-radius: 5px; /* 버튼의 둥근 모서리 */
+}
+
+.btn2:hover {
+    background-color: #0056b3; /* 마우스를 올렸을 때 배경색 변경 */
+}
+
+.btn22 {
+    display: flex;
+    gap: 10px; /* 버튼 사이의 간격 */
+}
+
+#date_select {
+    display: flex;
+    justify-content: flex-end; /* 버튼을 오른쪽에 정렬 */
+    margin-bottom: 5px; /* 아래에 약간의 간격 추가 */
+}
+
+@media (max-width: 768px) {
+    #date_select {
+        float: none; /* 작은 화면에서는 float 제거 */
+        text-align: right; /* 작은 화면에서 오른쪽 정렬 */
+        margin-top: 10px; /* 여백 추가 */
+    }
+}
+
+#period_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#info_left {
+    font-size: 14px;
+    color: #555; /* 약간 어두운 회색 */
+}
+
+#info_right {
+    font-size: 12px;
+/*     color: #007bff; /* 파란색 텍스트 */ */
+    cursor: pointer; /* 클릭할 수 있음을 나타내는 포인터 커서 */
+/*     text-decoration: underline; /* 밑줄 추가 */ */
+}
+
+#info_right:hover {
+    color: #0056b3; /* 호버 시 텍스트 색상 변경 */
+}
+
+.btn-group {
+	margin-bottom: 20px;
+}
+
+/* ajax 데이터 받는 부분 css */
+/* 연도별 그룹 제목 */
+#payHistoryList #year {
+    font-weight: bold;
+    font-size: 1.2rem;
+/*     color: #007bff; /* 파란색 */ */
+    width: calc(100% - 40px); /* 좌우 20px 여백을 고려하여 너비 조정 */
+    margin-bottom: 12px;
+    margin-left: auto;   
+	padding: 10px 20px;
+}
+
+/* 각 항목을 담고 있는 행 (row) */
+.row.content_list {
+    padding: 10px 20px; /* 상하 및 좌우에 적절한 패딩 추가 */
+    border-bottom: 1px solid #e0e0e0; /* 아래쪽에 구분선 추가 */
+    margin-bottom: 10px;
+    width: calc(100% - 40px); /* 좌우 20px 여백을 고려하여 너비 조정 */
+    margin-left: auto;
+    margin-right: auto;
+}
 
 
+/* 날짜 부분 */
+.pay_date {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 제목 (상품명 등) */
+.product-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #007bff; /* 파란색 */
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.product-name a {
+    color: inherit; /* 링크 상태에서도 동일한 색 유지 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.product-name a:hover {
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+
+/* 상세 설명 (시간 및 사용/충전 등 정보) */
+.pay-info-sub {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* 금액 부분 */
+.pay-amount {
+    font-size: 1rem;
+    font-weight: bold;
+/*     color: #28a745; /* 초록색 */ */
+}
+
+/* 잔액 정보 */
+.pay-balance-sub {
+    font-size: 0.85rem;
+    color: #888;
+}
 
 </style>
 </head>
@@ -544,95 +554,125 @@ input[type="radio"]:checked + .tab_label {
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
 	<section>
-		<div class="payinfo_container">
-	       <!-- 페이 기본 정보 표시  -->
-	       <div class="pay_card">
-			  <div class="title">
-				<h2>${sessionScope.sName} 님</h2>
-				<input type="button" value="테크페이 관리" onclick="location.href='PayManage'">
-			  </div>
-	          <div class="pay_balance">
-		        <h2>페이잔액</h2> 
-	        	<h2><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h2>
-	          </div>
-	          <!-- 페이 충전/환급 버튼  -->
-	          <div class="btn_top">
-	            <button class="btn" onclick="location.href='PayCharge'">충전하기</button>
-	            <button class="btn" onclick="location.href='PayRefund'">환급하기</button>
-	          </div>
-	        </div>
-			<!-- 페이 이용내역  -->
-			<div class="pay_history">
-				<!-- 페이 이용내역 탭  -->
-				<div class="pay_history_tab">
-				   <input type="radio" id="tab1" name="options" class="btn-check" value="" checked>
-				   <label for="tab1" class="tab_label">전체</label>
-				 
-				   <input type="radio" id="tab2" name="options" class="btn-check" value="1">
-				   <label for="tab2" class="tab_label">충전</label>
-				
-				   <input type="radio" id="tab3" name="options" class="btn-check" value="2">
-				   <label for="tab3" class="tab_label">환급</label>
-				
-				   <input type="radio" id="tab4" name="options" class="btn-check" value="3">
-				   <label for="tab4" class="tab_label">사용</label>
+		 <div class="account-login section">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+	                    <div class="card login-form pay-card">
+	                        <div class="card-body">
+	                            <div class="title paytitle">
+		                            <h3 class="user-name">
+										<a href="SaleHistory">
+			                                ${sessionScope.sName} 님
+										</a>								
+		                            </h3>
+	                                <h3 class="pay-name">
+										<input type="button" value="테크페이 관리" onclick="location.href='PayManage'">
+	                                </h3>
+	                            </div>
+	                            <div class="row">
+		                           	<div class="pay-info col-lg-6 col-md-6 col-12">
+										페이잔액
+							        	<h2><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h2><br>							
+									</div>
+									<div class="btn22">
+										<input type="hidden" value="${sessionScope.sId}" id="pay_id">
+	<%-- 									<input type="hidden" value="${payInfo.pay_id}" id="pay_id"> --%>
+			                            <div class="button col-lg-6 col-md-6 col-12">
+			                                <button class="btn2" onclick="location.href='PayCharge'">충전하기</button>
+			                            </div>
+			                            <div class="button col-lg-6 col-md-6 col-12">
+			                                <button class="btn2" onclick="location.href='PayRefund'">환급하기</button>
+			                            </div>
+									</div>
+	                            </div>
+	                        </div>
+	                     </div>   
+	                     <div class="card login-form">   
+	                        <div class="card-body">
+	                           	<div class="btn-group col">
+							        <input type="radio" name="options" class="btn-check" id="btn-check1" value="" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-check1">전체</label>
+							        <input type="radio" name="options" class="btn-check" id="btn-check2" value="1" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-check2">충전</label>
+							        <input type="radio" name="options"class="btn-check" id="btn-check3" value="2" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-check3">환급</label>
+							        <input type="radio" name="options" class="btn-check" id="btn-check4" value="3" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-check4">사용</label>
+							        <input type="radio" name="options" class="btn-check" id="btn-check5" value="4" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-check5">수익</label>
+								</div>
+<!-- 								<div id="date_select"><button id="select_date_modal" data-bs-toggle="modal" data-bs-target="#date_modal">기간선택<i class="fa fa-caret-down"></i></button></div> -->
 
-				   <input type="radio" id="tab5" name="options" class="btn-check" value="4">
-				   <label for="tab5" class="tab_label">수익</label>
-				</div>
-				<!-- 기간 선택 모달창  -->
-                <div id="date_select">
-		            <button id="select_date_modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#date_modal">
-		                기간선택 <i class="fa fa-caret-down"></i>
-		            </button>
-                </div>				
-				
-				<!-- 조회 기간/조회된 건수  -->
-				<div id="period_info">
-					<div id="info_left"></div>
-					<div id="info_right" onclick="#">전체기간</div>
-				</div>
-				
-				<!-- 이용내역 조회 결과  -->
-				<div id="payHistoryList">
-					
-				</div>
-				
-				<!-- 기간 선택 모달 구조 -->
-		         <!-- 기간 선택 모달 -->
-		        <div class="modal fade" id="date_modal" tabindex="-1" aria-labelledby="dateModalLabel" aria-hidden="true">
-		            <div class="modal-dialog">
-		                <div class="modal-content">
-		                    <div class="modal-header">
-		                        <h5 class="modal-title" id="dateModalLabel">조회 기간을 선택해주세요</h5>
-		                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		                    </div>
-		                    <div class="modal-body">
-		                        <div class="btn-group col">
-		                            <input type="radio" name="period" class="btn-check" id="btn-date1" value="1" autocomplete="off">
-		                            <label class="btn btn-outline-primary" for="btn-date1">1개월</label>
-		                            <input type="radio" name="period" class="btn-check" id="btn-date2" value="3" autocomplete="off">
-		                            <label class="btn btn-outline-primary" for="btn-date2">3개월</label>
-		                            <input type="radio" name="period" class="btn-check" id="btn-date3" value="6" autocomplete="off">
-		                            <label class="btn btn-outline-primary" for="btn-date3">6개월</label>
-		                            <input type="radio" name="period" class="btn-check" id="btn-date4" value="12" autocomplete="off">
-		                            <label class="btn btn-outline-primary" for="btn-date4">최대(1년)</label>
-		                        </div>
-		                        <br>
+
+
+								<div id="date_select">
+								    <button id="select_date_modal" data-bs-toggle="modal" data-bs-target="#date_modal">기간선택 <i class="fa fa-caret-down"></i></button>
+								</div>
+								
+								<div id="period_info">
+								    <div id="info_left"></div>
+								    <div id="info_right" onclick="#">전체기간</div>
+								</div>
+								
+<!-- 								<div id="period_info"> -->
+<!-- 									<div id="info_left"></div> -->
+<!-- 									<div id="info_right" onclick="#">전체기간</div> -->
+<!-- 								</div> -->
+								
+								<div id="payHistoryList">
+									<%-- 페이사용 내역이 출력되는 영역 --%>
+								</div>
+							    <div class="text-center mt-4">
+							        <button id="loadMoreBtn" class="btn btn-primary">더보기</button>
+							    </div>
+	                        </div>
+	                    </div>
+	                    
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+
+	    <!-- Review Modal -->
+	    <div class="modal review-modal" id="date_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+	        aria-hidden="true">
+	        <div class="modal-dialog">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="exampleModalLabel">조회 기간을 선택해주세요</h5>
+	                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	                </div>
+	                <div class="modal-body">
+	                    <div class="row">
+	                        <div class="col-sm-12">
+	                            <div class="btn-group col">
+							        <input type="checkbox" name="period" class="btn-check" id="btn-date1" value="1" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-date1">1개월</label>
+							        <input type="checkbox" name="period" class="btn-check" id="btn-date2" value="3" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-date2">3개월</label>
+							        <input type="checkbox" name="period"class="btn-check" id="btn-date3" value="6" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-date3">6개월</label>
+							        <input type="checkbox" name="period" class="btn-check" id="btn-date4" value="12" autocomplete="off">
+								    <label class="btn btn-outline-primary" for="btn-date4">최대(1년)</label>
+								</div>
+	                        </div>
 	                        <div class="date_area col">
 	                            <div class="start_date"><input type="date" id="start_date"></div>
 	                            <div class="pattern"> ~ </div>
 	                            <div class="end_date"><input type="date" id="end_date"></div>
 	                        </div>
-		                    </div>
-		                    <div class="modal-footer">
-		                        <button type="button" class="btn btn-primary" id="searchButton">조회하기</button>
-		                    </div>
-		                </div>
-		            </div>
-        		</div>
-			</div>
-        </div>
+	                    </div>
+	                </div>
+	                <div class="modal-footer button">
+	                    <button type="button" class="btn" id="passwd-btn" onclick="select_date()">조회하기</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <!-- End Review Modal -->
+		
+        
 	</section>
 	<footer>
 		<%-- 회사 소개 영역(inc/bottom.jsp) 페이지 삽입 --%>	

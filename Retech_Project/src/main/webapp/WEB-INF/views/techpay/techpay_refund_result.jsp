@@ -21,11 +21,11 @@
 	</header>
 	<section>
 		<%-- 본문 표시 영역 --%>
-		<h1>입금이체 결과</h1>
+		<h1>환급(입금이체) 결과</h1>
 		<div align="center">
 			<%-- depositResult 객체에 저장된 입금이체 결과 데이터 출력 --%>
 			<%-- 주의! 현재 고객 성명은 res_list 배열 내의 account_holder_name 사용 --%>
-			<h3>${refundDepositResult.res_list[0].account_holder_name} 고객님의 입금이체 결과 (사용자번호 : ${token.user_seq_no})</h3>
+			<h3>${sessionScope.sName} 고객님의 입금이체 결과 (사용자번호 : ${token.user_seq_no})</h3>
 			<table border="1">
 				<tr>
 					<th>입금은행명(기관코드)</th>
@@ -37,7 +37,7 @@
 				</tr>
 				<tr>
 					<th>송금인성명</th>
-					<td>${refundDepositResult.wd_account_holder_name}</td>
+					<td>리테크</td>
 				</tr>
 				<tr>
 					<th>입금금액</th>

@@ -314,7 +314,7 @@ $(document).ready(function() {
 							</a>
 						</div>
 					</div>
-
+					<!-- 진성민 -->
 					<!-- 미리보기 썸네일 추가 -->
 					<div class="thumbnails">
 						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" class="thumbnail" data-target="#carouselExampleIndicators"

@@ -22,6 +22,7 @@
 			, #{member_profile}			-- 프로필 사진 
 			, '0'						-- 관리자 여부 (1: 관리자, 0: 일반 사용자)
 			, now()
+			, NULL								
 		)
 	</insert>
 	
@@ -117,7 +118,7 @@
 	<select id="selectMemberFromEmail" resultType="member">
 		SELECT * 
 		FROM member
-		WHERE member_id = #{member_id}
+		WHERE member_id = #{memberId}
 	</select>
 	
 	<!-- 별점 평균 신뢰지수 조회 -->
