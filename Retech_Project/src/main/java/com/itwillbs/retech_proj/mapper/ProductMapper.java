@@ -102,8 +102,11 @@ public interface ProductMapper {
 	// 아이디에 해당하는 판매내역 리스트 조회		
 	List<Map<String, String>> selectSaleList(String loggedInUserId);
 
+	// 거래 상태 업데이트
+	int updateProductStatus2(@Param("trade_pd_idx") int trade_pd_idx, @Param("trade_status") int trade_status);
+
 	// 상품 상태 업데이트
-	int updateProductStatus2(@Param("trade_idx") int trade_idx, @Param("trade_status") int trade_status);
+	int updateProductStatus3(@Param("id") int id, @Param("status") String status);
 
 
 

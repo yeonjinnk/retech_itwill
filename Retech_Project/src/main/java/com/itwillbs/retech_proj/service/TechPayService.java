@@ -147,13 +147,19 @@ public class TechPayService {
 	}
 
 	// 결제결과 불러오기
-	public Map<String, String> getPaymentsResult(String id, String trade_idx) {
-		return mapper.selectPaymentsResult(id, trade_idx);
+	public Map<String, String> getPaymentsResult(String id, String trade_pd_idx) {
+		System.out.println("<<<<<<결제결과 불러오기파라미터>>>>>>>>>> : " + id + ", " + trade_pd_idx);
+		return mapper.selectPaymentsResult(id, trade_pd_idx);
 	}
 
 	// 해당 상품 거래 상태 '결제완료'로 업데이트
 	public int registTradeStatus(String id, String trade_idx) {
 		return mapper.updateTradeStatus(id, trade_idx);
+	}
+
+	// trade_pd_idx 불러오기
+	public String getTradePdIdx(String trade_idx) {
+		return mapper.selectTradePdIdx(trade_idx);
 	}
 	
 }

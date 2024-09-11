@@ -44,7 +44,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-						<a href="#">메인페이지로 돌아가기</a>
+						<a href="TechPayMain">메인페이지로 돌아가기</a>
 					</td>
 				</tr>
 			</table>
