@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.retech_proj.vo.OrderStoreVO;
 import com.itwillbs.retech_proj.vo.StoreVO;
 
 public interface StoreMapper {
@@ -27,5 +28,8 @@ public interface StoreMapper {
 
 	//상품 결제 정보 저장하기
 	int insertStorePay(Map<String, Object> map);
+
+	//주문한 스토어 내역 조회하기
+	List<Map<String, Object>> selectStoreHistory(String id);
 
 }

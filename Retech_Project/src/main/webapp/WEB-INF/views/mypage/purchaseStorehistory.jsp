@@ -71,7 +71,8 @@
     <div class="main-content">
         <div class="sidebar">
             <a href="SaleHistory">판매내역</a>
-            <a href="PurchaseHistory" class="selected">구매내역</a>
+            <a href="PurchaseHistory">구매내역</a>
+            <a href="PurchaseStoreHistory" class="selected">스토어 구매내역</a>
             <a href="Wishlist">찜한상품</a>
             <a href="CsHistory">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
@@ -90,23 +91,22 @@
 
             <ul class="tabs">
                 <li><a href="#" class="selected">구매내역</a></li>
-                <li><a href="#">리뷰</a></li>
             </ul>
 
             <div class="content">
-                <c:if test="${not empty buyList}">
+                <c:if test="${not empty storeHistoryList}">
                     <table>
                         <thead>
                             <tr>
                                 <th>상품사진</th>
                                 <th>상품명</th>
                                 <th>상품가격</th>
-                                <th>등록날짜</th>
-                                <th>거래상태</th>
+                                <th>구매날짜</th>
+                                <th>구매수단</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="product" items="${buyList}">
+                            <c:forEach var="store" items="${storeHistoryList}">
 <%--                                 <c:if test="${product.pd_status == '결제완료' ||  --%>
 <%--                                              product.pd_status == '거래취소 요청' ||  --%>
 <%--                                              product.pd_status == '거래취소 확정' ||  --%>
@@ -114,49 +114,26 @@
                                     <tr>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${not empty product.pd_image1}">
-                                                    <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                                <c:when test="${not empty store.store_img1}">
+                                                    <img src="${store.store_img1}" alt="${store.store_content}" class="product-image"/>
                                                 </c:when>
                                                 <c:otherwise>
                                                     No Image
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/StoreDetail?store_idx=${store.store_idx}">${store.store_id}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
-                                        <td>${product.trade_amt}</td>
-                                        <td>${product.pd_first_date}</td>
-                                        <td>
-                                            <div class="status-buttons">
-                                                <c:choose>
-                                                    <c:when test="${product.trade_status == 1}">
-                                                        예약중
-                                                    </c:when>
-                                                    <c:when test="${product.trade_status == 2}">
-                                                        결제완료
-                                                        <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소요청</button>
-                                                        <button class="status-button confirm-request" data-id="${product.pd_idx}">거래확정</button>
-                                                    </c:when>
-                                                    <c:when test="${product.trade_status == 3}">
-                                                        거래완료
-                                                        <button class="status-button review-request" data-id="${product.pd_idx}">리뷰쓰기</button>
-                                                    </c:when>
-                                                    <c:when test="${product.trade_status == 4}">
-                                                        거래취소대기
-                                                    </c:when>
-                                                    <c:when test="${product.trade_status == 5}">
-                                                        거래취소승인
-                                                    </c:when>
-                                                </c:choose>
-                                            </div>
-                                        </td>
+                                        <td>${store.order_store_pay}</td>
+                                        <td>${store.order_store_date}</td>
+                                        <td>${store.order_store_method}</td>
                                     </tr>
 <%--                                 </c:if> --%>
                             </c:forEach>
                         </tbody>
                     </table>
                 </c:if>
-                <c:if test="${empty buyList}">
+                <c:if test="${empty storeHistoryList}">
                     <table class="mypage">
                         <tr>
                             <td align="center" colspan="6">검색결과가 없습니다.</td>

@@ -169,8 +169,9 @@
 				<table class="tbl_row">
 					<tr>
 						<th width="150px">배송지 정보</th>
-						<td>
-							<input type="button" value="배송지 정보 입력"></td>
+						<td>${member.member_name} / ${member.member_phone}<br>
+						<span id="address">[ ${member.member_postcode} ] ${member.member_address1} ${member.member_address2}</span><br>
+<!-- 							<input type="button" value="배송지 정보 입력"></td> -->
 					</tr>
 					<tr class="table">
 						<th>공동현관 출입방법</th>
@@ -241,11 +242,11 @@
 						<td>${order_store_pay}원</td>
 					</tr>
 				</table>
-						<button type="button" id="nexBtn" onclick="pay()">결제하기</button>	
 			</div>
 			<div class="agree">
 				위 주문내용을 확인하였으며, 결제에 동의합니다
 			</div>
+						<button type="button" id="nexBtn" onclick="pay()">결제하기</button>	
 			<div class="agree">
 						<div class="fold_box_header">주문 상품 정보 동의
 						<span class="toggle">▼</span></div>

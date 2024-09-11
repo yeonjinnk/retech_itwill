@@ -25,9 +25,10 @@
 			</ul>			
 		</li>
 		<li class="depth01">
-			<a href="">스토어 관리</a>
+			<a href="AdminStore">스토어 관리</a>
 			<ul class="depth02">
-				<li><a href=""></a></li>
+				<li><a href="AdminStore">스토어 상품 관리</a></li>
+				<li><a href="AdminBuyStore">스토어 구매내역 관리</a></li>
 			</ul>			
 		</li>
 		<li class="depth01">
@@ -40,13 +41,13 @@
 			<a href="TotalSearchList">검색어 관리</a>
 		</li>
 		<li class="depth01">
-			<a href="">채팅 관리</a>
+			<a href="AdminChat">채팅 관리</a>
 			<ul class="depth02">
 				<li><a href=""></a></li>
 			</ul>			
 		</li>
 		<li class="depth01">
-			<a href="">리뷰 관리</a>
+			<a href="AdminReview">리뷰 관리</a>
 			<ul class="depth02">
 				<li><a href=""></a></li>
 			</ul>			
@@ -57,6 +58,7 @@
 				<li><a href="AdminNotice">공지사항</a></li>
 				<li><a href="AdminFAQ">자주 찾는 질문</a></li>
 				<li><a href="AdminCs">1:1 문의</a></li>
+				<li><a href="AdminChatReport">채팅</a></li>
 			</ul>			
 		</li>
 		<li class="depth01">

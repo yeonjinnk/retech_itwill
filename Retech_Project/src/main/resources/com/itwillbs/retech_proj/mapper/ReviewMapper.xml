@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.itwillbs.retech_proj.mapper.ReviewMapper">
+  
+  <!-- 리뷰등록 -->
+  <insert id="insertReview">
+  	INSERT INTO review
+  	VALUES (
+  		null
+  		, #{review_writer}
+  		, #{review_member_id}
+  		, #{review_star_rating}
+  		, #{review_content}
+  	)
+  </insert>
+</mapper>

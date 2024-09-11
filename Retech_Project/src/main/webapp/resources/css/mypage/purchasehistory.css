@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+
+.modalOpen {
+ 	font-size: 14px; 
+	margin: 30px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	
+	transform: translate(-50%, -50%);
+	
+	width: 500px;
+	height: 500px;
+	border: 1px solid black;
+	background: #fff;
+	border-radius: 10px;
+	 box-shadow: 5px 10px 10px 1px rgba(0,0,0,.3); 
+}
+
+/* .modalOpen { */
+/* 	padding: 20px;	 */
+/* } */
+
+.modalBtn {
+	display: flex;
+	justify-content: center;
+}
+
+/* 각 별들의 기본 설정 */
+.starR{
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  color: transparent; /*기본 텍스트 색상 투명하게*/
+  text-shadow: 0 0 0 #f0f0f0; /*별의 그림자 색상(회색)*/
+  font-size: 1.8em; /*별의 크기*/
+  box-sizing: border-box; 
+  cursor: pointer; /*마우스 커서 위치시 손가락 모양*/
+}
+
+/* 별 이모지에 마우스 오버 시 */
+.starR:hover {
+  text-shadow: 0 0 0 #ccc; /*마우스 별 위에 올릴 때 별 색상 진한 회색*/
+}
+
+/* 별 이모지를 클릭 후 class="on"이 되었을 경우 */
+.starR.on{
+  text-shadow: 0 0 0 #ffbc00;  /*별의 색상(노란색)*/
+}

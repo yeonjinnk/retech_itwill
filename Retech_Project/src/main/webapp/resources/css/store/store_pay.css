@@ -2,6 +2,7 @@
 
 #articleForm {
 	margin: 200px 150px 200px 150px;
+	 display: flex;
 }
 
 h1 {
@@ -21,7 +22,7 @@ h1 {
 	padding: 20px 10px 20px 10px;
 	border: 1px solid black;
 	border-radius: 10px;
-	width: 600px;
+	width: 800px;
 	height: 150px;
 }
 
@@ -36,7 +37,8 @@ th, td {
 	border: 1px solid black;
 }
 
-
+#address {
+}
 .pay {
 	width: 310px;
 }
@@ -54,7 +56,41 @@ th, td {
 	border: 0;
 	background-color: transparent;
 }
-
+#nexBtn {
+	    color: #fff;
+    background: #5055b1;
+    border: 1px solid #5055b1;
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+	    display: -ms-inline-flexbox;
+    display: inline-flex;
+    display: -webkit-inline-flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-justify-content: center;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    -ms-flex-direction: row;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    min-width: 200px;
+    height: 50px;
+    padding: 0 23px 1px;
+    border-radius: 6px;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+    width: 372px;
+}
 .agree {
 	width: 350px;
 	border: 1px solid black;
