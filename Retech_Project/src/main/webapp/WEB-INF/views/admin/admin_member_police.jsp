@@ -89,42 +89,55 @@
             <c:set var="pageNum" value="${param.pageNum}" />
         </c:if>
         <c:forEach var="member" items="${memberList}">
-            <tr align="center" class="member-row" data-status="${member.member_status}">
-                <td>${member.member_id}</td>
-                <td>${member.member_name}</td>
-                <td>
-                    <c:choose>
-                        <c:when test="${member.member_status eq '1'}">
-                            활동
-                        </c:when>
-                        <c:when test="${member.member_status eq '탈퇴'}">
-                            탈퇴
-                        </c:when>
-                        <c:when test="${member.member_status eq '블랙'}">
-                            블랙
-                        </c:when>
-                        <c:otherwise>
-                            ${member.member_status}
-                        </c:otherwise>
-                    </c:choose>
-                </td>
-                <td>
-                    <c:choose>
-                        <c:when test="${member.member_status eq '1'}">
-                            <input type="button" value="회원 블랙 부여"
-                                onclick="confirmPolice('${member.member_id}', '${member.member_status}', '블랙')">
-                        </c:when>
-                        <c:when test="${member.member_status eq '탈퇴'}">
-                            탈퇴한 회원입니다.
-                        </c:when>
-                        <c:otherwise>
-                            <input type="button" value="회원 블랙 해제" class="yBlack"
-                                onclick="confirmPolice('${member.member_id}', '${member.member_status}', '1')">
-                        </c:otherwise>
-                    </c:choose>
-                </td>
-            </tr>
-        </c:forEach>
+    <tr align="center" class="member-row" data-status="${member.member_status}">
+        <td>${member.member_id}</td>
+        <td>${member.member_name}</td>
+        <td>
+            <c:choose>
+                <c:when test="${member.member_status eq '1'}">
+                    활동
+                </c:when>
+                <c:when test="${member.member_status eq '탈퇴'}">
+                    탈퇴
+                </c:when>
+                <c:when test="${member.member_status eq '블랙'}">
+                    블랙
+                </c:when>
+                <c:otherwise>
+                    ${member.member_status}
+                </c:otherwise>
+            </c:choose>
+        </td>
+        <td>
+            <c:choose>
+                <c:when test="${member.member_status eq '1'}">
+                    <!-- 관리자 여부에 따라 버튼 비활성화 -->
+                    <c:if test="${member.member_isAdmin eq '1'}">
+                        <input type="button" value="회원 블랙 부여" disabled>
+                    </c:if>
+                    <c:if test="${member.member_isAdmin eq '0'}">
+                        <input type="button" value="회원 블랙 부여"
+                            onclick="confirmPolice('${member.member_id}', '${member.member_status}', '블랙')">
+                    </c:if>
+                </c:when>
+                <c:when test="${member.member_status eq '탈퇴'}">
+                    탈퇴한 회원입니다.
+                </c:when>
+                <c:otherwise>
+                    <!-- 관리자 여부에 따라 버튼 비활성화 -->
+                    <c:if test="${member.member_isAdmin eq '1'}">
+                        <input type="button" value="회원 블랙 해제" class="yBlack" disabled>
+                    </c:if>
+                    <c:if test="${member.member_isAdmin eq '0'}">
+                        <input type="button" value="회원 블랙 해제" class="yBlack"
+                            onclick="confirmPolice('${member.member_id}', '${member.member_status}', '1')">
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+        </td>
+    </tr>
+</c:forEach>
+
         <c:if test="${empty memberList}">
             <tr>
                 <td align="center" colspan="7">검색 결과가 없습니다.</td>

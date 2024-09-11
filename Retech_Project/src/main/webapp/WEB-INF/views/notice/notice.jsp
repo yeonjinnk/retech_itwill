@@ -8,6 +8,190 @@
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
+.@charset "UTF-8";
+/* ------- 공통 ------- */
+/* 하이퍼링크 밑줄 제거 */
+a {
+	text-decoration: none;
+}
+/*/
+/* ----- top.jsp, bottom.jsp 공통 ----- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;	
+}
+.main_section {
+ 	flex: 1;	
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* header 고정 */
+header {
+	position: fixed;
+	width: 100%;
+	height: 150px;
+	top:0;
+	z-index: 50;
+	background-color: white;
+	margin-bottom: 500px;
+}
+
+#header_top{
+		margin-bottom: 500px;
+	}
+
+/* header 고정 후 다음 section 시작 */
+section {
+	margin-top: 150px;
+}
+/* header 고정 후 다음 section 시작 */
+section {
+	margin-top: 150px;
+}
+footer {
+	display: block;
+}
+/*---- header 영역 시작 ----*/
+/*---- top 최상단 ----*/
+.header_top {
+	box-sizing: border-box;
+	display: block;
+	margin-left: 50px;
+	margin-right: 50px;
+	max-width: 1000px;
+	max-height: 60px;
+	margin: auto;
+}
+.header_top li {
+	list-style-type: none;
+}
+.top_inner {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: space-between;
+	padding: 10px 40px;
+	white-space: nowrap;
+}
+.top_menu {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: flex-end;	
+}
+.top_menu_container {
+	box-sizing: border-box;
+	display: block;	
+}
+.top_area {
+	box-sizing: border-box;
+	display: flex;
+	margin-top: auto;
+	margin-bottom: 10px;
+	
+}
+.top_link {
+	font-size: 12px;
+	margin-left: 40px;
+}
+/*---- top 메뉴 ----*/
+.header_main {
+	box-sizing: border-box;
+	display: block;
+	margin-left: 50px;
+	margin-right: 50px;
+	max-width: 1000px;
+	max-height: 100px;
+	margin: auto;
+}
+.header_main li {
+	list-style-type: none;
+}
+.main_inner {
+	box-sizing: border-box;
+/* 	height: 64px; */
+	display: flex;
+	justify-content: space-between;
+	padding: 20px 40px;
+	align-items: center;
+	white-space: nowrap;
+}
+.main_menu {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: flex-end;
+}
+.menu_container {
+	box-sizing: border-box;
+	display: block;
+}
+.menu_area {
+	box-sizing: border-box;
+	display: flex;
+	margin-bottom: 10px;
+}
+.menu_link {
+	font-size: 16px;
+	margin-left: 40px;
+	display:block;
+	
+}
+.main_search {
+	box-sizing: border-box;
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+
+.menu_list {
+    position: relative; /* 서브메뉴 위치를 조정하기 위해 */
+}
+/*서브메뉴*/
+.sub_menu {
+	display:none; /*서브메뉴 숨기기*/
+	position:absolute; /*부모메뉴 위치 따라 이동 */
+	top: 50%; /* 부모 메뉴 항목 바로 아래에 위치 */
+    left: 1200px; /* 부모 메뉴 항목의 왼쪽에 정렬 */
+    background-color: white; /* 배경색 설정 */
+    border: 1px solid black; /* 테두리 추가 */
+    list-style: none; /* 리스트 스타일 제거 */
+    padding: 0;
+    margin: 0;
+    font-size: 0.5em;
+}
+
+.sub_menu li:hover{
+	background: lime;
+}
+
+.menu_list:hover .sub_menu {
+    display: block; /* 마우스 오버 시 서브메뉴 표시 */
+}
+
+.sub_menu li {
+    padding: 10px;
+}
+
+.sub_menu li a {
+    text-decoration: none;
+    color: #333;
+}
+
+/*---- header 영역 끝 ----*/
+/*---- body 영역 시작 ----*/
+
+
+
+
+
+/*---- body 영역 끝 ----*/
+/*---- bottom 영역 시작 ----*/
 .bottom_area {
 	box-sizing: border-box;
 	display: block;
@@ -15,6 +199,27 @@
 	background-color: lightgray;
 	margin: auto;
     bottom: 0; 
+}
+.inc_info {
+	box-sizing: border-box;
+	padding-bottom: 40px;
+	padding-top: 30px;
+	padding-bottom: 40px; 
+	padding-top: 30px; 
+	padding-left: 35px;
+    white-space: pre-line;	
+    display: flex;
+    font-size: 10px;
+   	max-width: 1280px;
+   	margin: auto;
+}
+.inc_info > div:not(.bottom_logo) {
+	 margin-left: 40px;
+}
+.inc_intro1, .inc_intro2 {
+    width: 30%;
+}
+/*---- bottom 영역 끝 ----*/
 }
 </style>
 </head>

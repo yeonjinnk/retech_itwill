@@ -15,6 +15,34 @@
   <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
   <link href="${pageContext.request.contextPath}/resources/css/admin_default.css" rel="stylesheet" type="text/css">
   <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<style>
+    .inner {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .wrapper {
+      display: flex;
+      flex: 1;
+    }
+
+    article {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap; /* 여러 줄로 차트를 나누어 배치 */
+      gap: 20px; /* 차트 간의 여백 */
+    }
+
+    .chart-container {
+      min-width: 300px; /* 차트 컨테이너의 최소 너비 */
+      height: 400px; /* 차트의 높이 설정 */
+    }
+
+    .chart-container canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -24,12 +52,7 @@
     <section class="wrapper">
       <jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
       <article>
-      </article>
-    </section>
-  </div>
-
-  <!-- 차트 컨테이너 -->
-  <div class="chart-container">
+        <div class="chart-container">
     <canvas id="line-chart"></canvas>
     <!-- 라인 차트 -->
   </div>
@@ -43,6 +66,12 @@
     <canvas id="bar-chart"></canvas>
     <!-- 막대 차트 -->
   </div>
+      </article>
+    </section>
+  </div>
+
+  <!-- 차트 컨테이너 -->
+
 
   <!-- Chart.js 라이브러리 -->
   <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
