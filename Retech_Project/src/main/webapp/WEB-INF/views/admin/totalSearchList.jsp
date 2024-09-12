@@ -102,7 +102,6 @@ function delKeyword(element) {
     </section>
   </div>
     
-    
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><span>&#x2191;</span></a>
 </body>
