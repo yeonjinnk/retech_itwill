@@ -426,7 +426,11 @@ header {
 .listInfoBtn:hover {
     background-color: #e0e0e0; /* 버튼 호버시 배경색 */
 }
-
+.product-name {
+    font-size: 16px;
+    color: #B0B0B0; /* 연한 회색 */
+    font-family: "Cute Font", sans-serif;
+}
 .listSort {
     list-style: none; /* 리스트 스타일 제거 */
     padding: 0; /* 패딩 제거 */

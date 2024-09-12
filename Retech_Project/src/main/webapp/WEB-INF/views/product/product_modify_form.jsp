@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -463,12 +462,17 @@ function del_img4() {
    let member_id = $("#member_id").val().trim();
    console.log("member_id : " + member_id);
    let p_name = $("#p_name").val().trim();
+   console.log("p_name : " + p_name);
    let c_id = $("#c_id").val();
+   console.log("c_id : " + c_id);
    let c_id2 = $("#c_id2").val();
-   
+   console.log("c_id2 : " + c_id2);
    let p_price = $("#p_price").val().trim();
+   console.log("p_price : " + p_price);
    let p_exp = $("#p_exp").val().trim();
+   console.log("p_exp : " + p_exp);
    let sumimage = $("#sumimage").val(); 
+   console.log("sumimage : " + sumimage);
    
    if(sumimage == ''){
       alert('대표 이미지를 반드시 등록해주세요.');
@@ -537,6 +541,7 @@ function del_img4() {
    let form = $("#imgform")[0];
    let formData = new FormData(form);
    
+   
    //이미지
    //필수 이미지 = sumimage
 
@@ -560,27 +565,35 @@ function del_img4() {
    formData.append('pd_price',p_price);         // 가격
    formData.append('pd_content',p_exp);            // 상품설명
    formData.append('pd_category', pd_category);		//카테고리
+   formData.append('pd_idx', ${param.pd_idx});		//카테고리
    /*   
       파일 데이터를 ajax처리 하기 위해선
       반드시 processData,contentType 들을 false 해주기
     */
    
-    $.ajax({
-      url     : 'ProductRegistPro',
-      type    : 'POST',
-      data    : formData,
-      processData : false,
-      contentType : false,
-      dataType : 'json',
-      success  : function(res){
-         if(res == true){
-            alert('해당 상품이 정상적으로 수정되었습니다!');
-            location.href='${pageContext.request.contextPath }/ProductList';
-         }
-      },error  : function(err){
-         alert('해당 상품 수정에 실패했습니다. 관리자나 1:1 게시판에 문의하세요.');
-      }
-   });
+	   $.ajax({
+		    url         : 'productModifyPro',
+		    type        : 'POST',
+		    data        : formData,
+		    processData : false,
+		    contentType : false,
+		    dataType    : 'json',  // 서버가 문자열로 응답하는 경우
+		    success: function(res){
+		        // JSON 응답을 처리하여 res.result 값을 확인
+		        if(res.result === 'true'){  // JSON 내부의 result 값 비교
+		            alert('상품이 정상적으로 수정되었습니다!');
+		            window.location = '/retech_proj/ProductList';
+		        } else {
+		            alert('상품 수정 실패. 응답: ' + res.result);
+		        }
+		    },
+
+		    error       : function(err){
+		        console.error('AJAX 요청 에러:', err);  // 에러 로그 추가
+		        alert('상품수정에 실패했습니다. 관리자에게 문의하세요.');
+		    }
+		});
+
 }
 
 // 상품등록을 취소하게 하는 함수(procancel)   
