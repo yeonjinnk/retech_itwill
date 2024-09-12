@@ -29,6 +29,7 @@
         color: #ffffff; 
     }
     
+    
     h2 {
         text-align: center;
         color: #2c3e50; 
@@ -87,10 +88,11 @@
         background-color: #2980b9; 
     }
     
-    .replyContent img {
-        width: 15px;
-        height: 15px;
-    }
+    #replyArea .img {
+    width: 15px;
+    height: 15px;
+}
+
     
 #replyArea {
     margin-top: 20px;
@@ -155,6 +157,9 @@
     font-size: 14px;
     color: #555;
 }
+
+
+
 </style>
 <script type="text/javascript">
 	function confirmDelete() {

@@ -222,13 +222,13 @@
     const visitorCounts = labels.map(date => {
         return productData.reduce((acc, item) => {
             const itemDate = formatDate(item.pd_first_date);
-            // 날짜가 일치하고, pd_status가 '거래확정'인 경우만 카운팅
-            return itemDate === date && item.pd_status === '거래확정' ? acc + 1 : acc;
+            // 날짜가 일치하고, pd_status가 '판매완료'인 경우만 카운팅
+            return itemDate === date && item.pd_status === '판매완료' ? acc + 1 : acc;
         }, 0);
     });
 
     const visitorData = {
-        label: '거래완료 수',
+        label: '판매완료 수',
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgb(255, 0, 0)',
         data: visitorCounts,

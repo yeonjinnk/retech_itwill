@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -231,15 +232,17 @@
 				<table class="tbl_row_right">
 					<tr>
 						<td>상품 금액</td>
-						<td>${amt}원</td>
+						<td>
+						<fmt:formatNumber pattern="#,###" value="${amt}"/>원
+						</td>
 					</tr>
 					<tr>
 						<td>배송비</td>
-						<td>3000원</td>
+						<td>&nbsp;&nbsp;&nbsp;3,000원</td>
 					</tr>
 					<tr>
 						<td>최종 결제 금액</td>
-						<td>${order_store_pay}원</td>
+						<td><fmt:formatNumber pattern="#,###" value="${order_store_pay}"/>원</td>
 					</tr>
 				</table>
 			</div>
