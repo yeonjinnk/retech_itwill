@@ -935,7 +935,7 @@ function localStarageDeleteOne(keyword) {
 				//생성할 채팅방 div 태그 문자열을 변수에 저장
 				//생성할 채팅방 hidden 태그에 채팅방의 룸아이디와 수신자아이디를 저장
 				let divRoom = '<div class="chatRoom ' + room.room_id + '">'
-				+ '	<div class="chatTitleArea">&lt;' + receiver_id + '&gt;</div>'
+// 				+ '	<div class="chatTitleArea">&lt;' + receiver_id + '&gt;</div>'
 				+ '	<div class="chatMessageArea"></div>'
 				+ '	<div class="commandArea">'
 				+ '		<input type="hidden" class="room_id" value="' + room.room_id + '">'
@@ -1135,18 +1135,18 @@ function localStarageDeleteOne(keyword) {
 				//새로 생성할 채팅방 목록 1개의 div 태그 작성
 				//<div class="chatRoomList 룸아이디 status_상태">제목</div>
 				let divRoom = "<div class='chatRoomList " + room.room_id + " status_" + status + "'>"
-							+ "<div class='title'>" //title 시작
-							+ title
-							+ "</div>" //title 끝
+// 							+ "<div class='title'>" //title 시작
+// 							+ title
+// 							+ "</div>" //title 끝
 							+ "<div class='message'>" //message 시작
 							+ "<div class='message-avatar'>" //message-avatar 시작
-							+ 
+// 							+ "<img src='https://t4.ftcdn.net/jpg/02/29/75/83/240_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg'>"
 							+ "<img src='https://ssl.pstatic.net/static/pwe/address/img_profile.png'>"
 							+ "</div>" //message-avatar 끝
 							+ "<div class='message-body'>" //message-body 시작
 							+ "<div class='message-body-heading'>" //message-bod-heading 시작
 							+ "<h5>"
-							+ room.receiver_id
+							+ room.receiver_id 
 							+ "</h5>"
 							+ "<span>"
 							+ room.last_send_time

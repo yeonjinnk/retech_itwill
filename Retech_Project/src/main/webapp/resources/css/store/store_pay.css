@@ -37,7 +37,7 @@ th {
 button#nexBtn {
     width: 100%; /* 버튼을 100% 넓이로 설정 */
     padding: 10px;
-    background-color: #00509e; /* 네이비색 버튼 */
+    background-color: #34495E; /* 네이비색 버튼 */
     color: white;
     border: none;
     cursor: pointer;
@@ -51,12 +51,12 @@ button#nexBtn:hover {
 }
 
 .fold_box_header {
+	background-color: #ffffff;
+    border: 1px solid #d4d4d4;
     font-size: 16px;
     font-weight: bold;
-    background-color: #eee;
     padding: 10px;
     cursor: pointer;
-    border: 1px solid #ddd;
     margin-top: 10px;
 }
 

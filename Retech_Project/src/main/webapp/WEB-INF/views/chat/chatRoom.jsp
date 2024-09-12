@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -305,13 +306,21 @@
 		</div>
 		<div class="top">
 			<div class="art_firstRow">
-				<div class="product_photo co01">
-					<img src="${productInfo.pd_image1}">
+				<div class="product_photo co01"><br><br>
+					<c:choose>
+						<c:when test="${not empty product.pd_image1}">
+	                    	<img src="${pageContext.request.contextPath}/resources/img/main/${productInfo.pd_image1}" class="product-image"/>
+	                    </c:when>
+	                    <c:otherwise>
+	                    	<img src="https://st.depositphotos.com/52259964/54244/v/450/depositphotos_542449510-stock-illustration-isometric-laptop-linear-icon-empty.jpg" class="product-image"/>
+	                    </c:otherwise>
+					</c:choose>
 				</div>
 				<div class="co02">
 					<div class="co02-1">${productInfo.pd_status}</div><br>
 					<div class="co02-2">${productInfo.pd_subject}</div><br>
-					<div class="co02-2\3">${productInfo.pd_price}원</div>
+					<div class="co02-2\3">
+					<fmt:formatNumber pattern="#,###" value="${productInfo.pd_price }" />원</div>
 				</div>
 			</div>
 			<div class="btnClose">
@@ -321,6 +330,9 @@
 		<div class="art_secondRow">
 			<div class="left">
 				<c:choose>
+					<c:when test="${sessionScope.sId eq productInfo.member_id and newTrade.trade_status == 1}">
+						<button class="btnTrade" disabled><span>거래하기</span></button>
+					</c:when>
 					<c:when test="${sessionScope.sId eq productInfo.member_id and newTrade == null}">
 						<button class="btnTrade"><span>거래하기</span></button>
 					</c:when>
@@ -352,7 +364,7 @@
 			</div>
 			
 			
-			<div class="modalOpen">
+<!-- 			<div class="modalOpEen"> -->
 				<!-- 구매자 '테크페이(택배)' -->
 				<div id="deliveryModal">
 					<form action="DeliveryPay">
@@ -423,10 +435,10 @@
 						</div>
 					</form>
 				</div>
-			</div>
+<!-- 			</div> -->
 							
 		<!-- ===================================================================================================== -->
-			<div class="modalOpen">
+<!-- 			<div class="modalOpen"> -->
 				<!-- 구매자 '테크페이(직거래)' -->
 				<div id="directModal">
 					<form action="directPay">
@@ -470,7 +482,7 @@
 						</div>
 				</form>
 			</div>
-		</div>
+<!-- 		</div> -->
 				
 				
 			

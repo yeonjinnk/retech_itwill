@@ -64,7 +64,8 @@ $(function() {
 		if(result > 0) {
 // 			console.log("result : " + result + "데이터타입 : " + typeof(result));
 			result += 1;
-			let price = result * $("#unit_price").val(); //가격 = 수량 * 단위가격
+			let price0 = result * $("#unit_price").val(); //가격 = 수량 * 단위가격
+			let price = price0.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 			$("#selected_quantity").val(result);
 			$("#amount").html(result);
 			$("#price").html(price); //총 가격 표시 자리에 계산한 금액 출력
@@ -132,6 +133,9 @@ $(function() {
 					</div>
 					<div class="price">
 						<h3>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							<fmt:formatNumber pattern="#,###" value="${Product.store_price}"/>원
 						</h3>
 					</div>
@@ -148,20 +152,28 @@ $(function() {
 					</div>
 					<div class="quantity">
 <%-- 						<c:if test="${ }" disabled/> --%>
-						<input type="button" value="-" id="minus" >
-						<input type="number" id="selected_quantity" value="1">
-						<input type="button" value="+" id="plus">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" value="-" id="minus" class="quant">
+						<input type="number" id="selected_quantity" value="1" class="quant">
+						<input type="button" value="+" id="plus" class="quant">
 						
-					</div>
+					</div><br>
 					<input type="hidden" value="${Product.store_price}" id="unit_price">
 					<input type="hidden" value="${Product.store_price}" id="unit_price">
 					<div class="amount">
-						총<span id="amount" name="order_store_quantity"></span>개
-						<span id="price">${Product.store_price}</span>원
-					</div>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						총&nbsp;<span id="amount" name="order_store_quantity"></span>개
+						<span id="price"><fmt:formatNumber pattern="#,###" value="${Product.store_price}"/></span>원
+					</div><br>
 					<div class="btn-Area">
-						<input type="button" value="장바구니" id="cart">
-						<input type="button" value="바로구매" id="buy">
+						<button type="button" id="cart">장바구니</button>
+						<button type="button" id="buy">바로구매</button>
 		 			</div>
 				</div>
 			</div>

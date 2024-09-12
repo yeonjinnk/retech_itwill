@@ -52,7 +52,7 @@ body {
 .art_firstRow div img{
 	border: 1px solid;
 	width: 100px;
-	height: 50px;
+	height: 70px;
 }
 .art_firstRow .co01 {
 	max-width: 90px;
@@ -69,6 +69,7 @@ body {
 }
 
 .co02 {
+	margin: 20px;
 	max-width: 600px;
 	min-width: 290px;
 	cursor: pointer;
@@ -113,8 +114,17 @@ body {
 	font-size: 14px;
 }
 
+.art_firstRow, .btnClose {
+  vertical-align: middle;	
+}
 
+#btnReport, #reportTitle {
+	text-align: center;	
+}
 
+#reportTitle {
+	margin-right: 20px;
+}
 
 #chatRoomSubject {
 	width: 100%;
@@ -133,7 +143,7 @@ body {
 	width: 40px;
 /* 	heigth: 20px; */
 	bacground-color: white;
-	padding-right: 10px;
+	padding-bottom: 10px;
 	border: 0;
   background-color: transparent;
   	font-size: 15px;
@@ -151,12 +161,12 @@ body {
 /* 	background:: rgba(0, 0, 0, 0.5); */
 
 .modal {
- 	font-size: 14px; 
+ 	font-size: 18px; 
 	margin: 30px;
 	position: absolute;
 	left: 50%;
 	top: 50%;
-	
+	padding: 20px;	
 	transform: translate(-50%, -50%);
 	
 	width: 500px;
@@ -299,9 +309,9 @@ body {
 /* 하단*/
 /*입력창*/
 .chatMessage {
-	padding-left: 10px;
+	padding-left: 30px;
 	box-sizing: border-box;
-	width: 300px;
+	width: 420px;
 	height: 30px;
 	backgorund-color: #f4f4fa;
 	border: solid 1px #039be5;
@@ -314,7 +324,10 @@ body {
 }
 
 .commandArea {
+	padding-top: 15px;
+	padding-left:20px;
 	display: inline-block;
+	vertical-align:middle;
 	text-align: center;
 }
 

@@ -50,7 +50,7 @@ body {
 position: sticky;
     top: 140px;
     float: left;
-    width: 500px;
+    width: 400px;
 } 
 
 .img {
@@ -83,7 +83,7 @@ position: sticky;
 
 
 #big { /* 큰 사진*/
-	width: 300px;
+	width: 400px;
 	height: 300px;
 }
 
@@ -123,5 +123,98 @@ position: sticky;
 #small { /* 작은 사진들*/
 	width: 100px;
 	height: 80px;
+}
+
+button {
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+}
+
+.quant {
+	border-right: 5px;
+    display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    min-height: 25px;
+    position: relative;
+    width: 36px;
+    min-width: initial;
+    height: 36px;
+    font-size: 20px;
+    font-weight: 400;
+    color: rgb(160, 160, 160);
+    background: rgb(255, 255, 255);
+    border-width: 1px 0px 1px 1px;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-top-color: rgb(212, 212, 212);
+    border-bottom-color: rgb(212, 212, 212);
+    border-left-color: rgb(212, 212, 212);
+    border-image: initial;
+    border-radius: 0px;
+    border-right-style: initial;
+    border-right-color: initial;
+}
+
+
+
+
+#cart {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 25px;
+    width: 100%;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #d4d4d4;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+#buy {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 25px;
+    width: 100%;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #34495E;
+    box-shadow: 10px 10px 16px 0 rgb(0 0 0 / 30%);
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
 }
 

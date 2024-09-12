@@ -173,6 +173,7 @@ WHERE
 		SELECT *
 		FROM chat_message
 		WHERE room_id = #{room_id}
+		ORDER BY send_time
 	</select>
 	
 	<!-- 채팅 메세지 저장 - INSERT -->
