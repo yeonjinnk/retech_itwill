@@ -389,12 +389,12 @@ $(document).ready(function() {
 						<%-- 판매자 프로필 --%>
 						<div class="column">
 							<c:choose>
-								<c:when test="${not empty seller.member_image }">
-									<img src="${pageContext.request.contextPath }/resources/upload/${seller.member_image}" width="120px" height="120px"
+								<c:when test="${not empty seller.member_profile }">
+									<img src="${pageContext.request.contextPath }/resources/upload/${seller.member_profile}" width="120px" height="120px"
 										style="margin: 20px; border-radius: 50%;">
 								</c:when>
 								<c:otherwise>
-									<img src="${pageContext.request.contextPath }/resources/mypage_img/blank_profile.4347742.png" width="120px" height="120px"
+									<img src="${pageContext.request.contextPath }/resources/images/blank_profile.png" width="120px" height="120px"
 										style="margin: 20px; border-radius: 50%;">
 								</c:otherwise>
 							</c:choose>

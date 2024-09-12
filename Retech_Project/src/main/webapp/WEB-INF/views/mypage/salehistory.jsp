@@ -305,7 +305,10 @@
         <div class="content-area">
              <div class="store-info">
                 <div>
-                    <img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}">               
+                <c:choose>
+                	<c:when test="${empty member.member_profile}"><img src="https://cdn.litt.ly/images/U0UQOgi7NRuOXgn6LHSikIDTy1TWh688?s=1200x630&m=inside"></c:when>
+                	<c:otherwise><img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}"></c:otherwise>
+                </c:choose>
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>
