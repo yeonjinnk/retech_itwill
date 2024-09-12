@@ -81,6 +81,7 @@
             margin: 0 auto;
         }
 
+
         .store-info h2 {
             margin-top: 0;
         }
@@ -90,6 +91,7 @@
             list-style-type: none;
             padding: 0;
             display: flex;
+            margin-left: 115px;
         }
 
         .tabs li {
