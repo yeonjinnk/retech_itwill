@@ -14,6 +14,19 @@
 <meta content="" name="description">
 <meta content="" name="keywords">
 <style type="text/css">
+div.pagetitle {
+display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+
+}
+
+table.table.datatable {
+justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+display: flex;
+
+}
 </style>
 <script type="text/javascript">
 function delKeyword(element) {
@@ -45,12 +58,6 @@ function delKeyword(element) {
 	 	<div id="date"></div>
 		<div class="pagetitle">
 			<h1>인기 검색어 관리</h1>
-			<nav>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="AdminChart">Home</a></li>
-					<li class="breadcrumb-item active">인기 검색어 관리</li>
-				</ol>
-			</nav>
 		</div><!-- End Page Title -->
 	
 		<section class="section">
@@ -60,14 +67,12 @@ function delKeyword(element) {
 						<div class="card-body">
 							<!-- Table with stripped rows -->
 							<table class="table datatable">
-								<thead>
 									<tr>
 										<th>검색어 순위</th>
 										<th>검색어 내용</th>
 										<th>검색어 조회수</th>
 										<th>비고</th>
-								</thead>
-								<tbody>
+									</tr>	
 									<c:forEach var="data" items="${searchList}" varStatus="loop">
 										<tr>
 											<td>${loop.index + 1}</td>
@@ -82,7 +87,6 @@ function delKeyword(element) {
 											</td>
 										</tr>
 									</c:forEach>
-								</tbody>
 							</table>
 							<!-- End Table with stripped rows -->
 						</div>

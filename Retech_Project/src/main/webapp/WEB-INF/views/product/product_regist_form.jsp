@@ -13,6 +13,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
 	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<style type="text/css">
+div#insert_box {
+ width: 900px;
+}
+</style>
 <!-- 반응형웹페이지를 위한 설정 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -863,9 +868,5 @@
 		</div>
 	</div>
 	<div style="min-height: 200px;"></div>
-	</div>
-	<footer>
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-	</footer>
 </body>
 </html>
