@@ -17,7 +17,7 @@
 
         .content {
             padding: 50px 0;
-            margin-top: 130px;
+            margin-top: 0px;
         }
 
         .tab {
@@ -249,10 +249,6 @@
             <button id="submit" type="submit">가입하기</button>
         </form>
     </section>
-
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 
     <script type="text/javascript">
     $(document).ready(function() {

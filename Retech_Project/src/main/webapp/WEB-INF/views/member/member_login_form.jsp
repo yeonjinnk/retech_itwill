@@ -165,12 +165,12 @@
         margin: 0 10px;
     }
 
-    article form ul li a {
-        color: #4CAF50;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
-    }
+   article form ul li a {
+	    color: #34495e;
+	    text-decoration: none;
+	    font-weight: 500;
+	    transition: color 0.3s;
+	}
 
     article form ul li a:hover {
         color: #333;

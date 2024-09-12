@@ -131,8 +131,5 @@
             <button><a href="javascript:history.back()">돌아가기</a></button>
         </div>		 
     </section>
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 </body>
 </html>

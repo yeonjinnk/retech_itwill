@@ -29,13 +29,14 @@
             padding: 50px 0;
             text-align: center;
             flex: 1; 
-            margin-top: 130px; 
+            margin-top: 0px; 
         }
 
         .tab {
             width: 720px;
             margin: 0 auto;
             text-align: center;
+            margin-top: 0px; 
         }
 
         .tab > ul {
@@ -70,7 +71,7 @@
         }
 
         .tab > ul > li.on {
-            background-color: #4CAF50;
+            background-color: #34495E;
             color: white;
             font-weight: bold;
         }
@@ -146,8 +147,5 @@
             <input type="button" class="btn-login" value="로그인" onclick="location.href='MemberLogin'">
         </div>
     </article>
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 </body>
 </html>

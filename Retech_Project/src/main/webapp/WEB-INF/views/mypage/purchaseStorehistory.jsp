@@ -74,6 +74,23 @@
                 }
             });
 
+         // 날짜 형식 변환 함수
+            function formatDate(dateString) {
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ko-KR', options); // 'ko-KR'은 한국 날짜 형식
+            }
+
+            // 모든 날짜 셀을 찾아서 변환
+            $('td[data-date]').each(function() {
+                const dateString = $(this).data('date');
+                if (dateString) {
+                    $(this).text(formatDate(dateString));
+                }
+                
+                
+            });            
+            
             $('.review-request').on('click', function() {
                 var productId = $(this).data('id');
                 window.location.href = '${pageContext.request.contextPath}/writeReview?id=' + productId;
@@ -87,10 +104,7 @@
     </header>
 
     <div class="main-content">
-
-        <div class="content-area" style="padding:0;">
-        
-        <div class="sidebar" style="display:inline-block;">
+        <div class="sidebar">
             <a href="SaleHistory">판매내역</a>
             <a href="PurchaseHistory">구매내역</a>
             <a href="PurchaseStoreHistory" class="selected">스토어 구매내역</a>
@@ -98,8 +112,11 @@
             <a href="CsHistory">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
+
+        <div class="content-area">
         
-        <div class="right" style="display:inline-block;width:calc(100vw - 400px);vertical-align:top; ">
+        
+        <div class="right">
         
              <div class="store-info">
                 <div>
@@ -157,11 +174,10 @@
                                         </td>
                                         <td><a href="${pageContext.request.contextPath}/StoreDetail?store_idx=${store.store_idx}">${store.store_id}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
-                                        <td>${store.order_store_pay}</td>
-                                        <td>${store.order_store_date}</td>
+                                        <td><fmt:formatNumber value="${store.order_store_pay}" pattern="#,##0"/></td>
+                                        <td data-date="${store.order_store_date}"></td>
                                         <td>${store.order_store_method}</td>
                                     </tr>
-<%--                                 </c:if> --%>
                             </c:forEach>
                         </tbody>
                     </table>
@@ -175,9 +191,6 @@
                 </c:if>
             </div>
           </div>
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
     </div>
      </div>   
      

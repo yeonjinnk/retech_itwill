@@ -28,7 +28,7 @@
 			}
 			
 			.main .wrapper_top .search {
-				width: 270px;
+				width: 280px;
 				position: absolute;
 				left: 40%;
 			}
@@ -331,9 +331,6 @@
 				}
 			}
 		</script>
-		<footer>
-			<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-		</footer>
 	</body>
 </html>
 

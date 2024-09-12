@@ -324,7 +324,7 @@
 			m.member_id = p.member_id
 		WHERE
 			p.member_id = #{member_id}
-	
+		ORDER BY pd_first_date DESC 
 	</select>
 	
 	<!-- 아이디에 해당하는 구매내역 리스트 조회 -->
@@ -338,6 +338,7 @@
 			p.pd_idx = t.trade_pd_idx
 		WHERE 
 			t.trade_buyer_id = #{id}
+		ORDER BY pd_first_date DESC
 	</select>
 	
 	
@@ -352,6 +353,7 @@
 		            p.pd_idx = t.trade_pd_idx
 		        WHERE 
 		            t.trade_seller_id = #{loggedInUserId}
+		        ORDER BY pd_first_date DESC
 	</select>
 	
 	<!-- 거래 상태 업데이트 -->

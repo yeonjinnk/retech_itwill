@@ -21,7 +21,7 @@
         .content {
             flex: 1;
             padding: 50px 0;
-            margin-top: 130px;
+            margin-top: 0px;
         }
 
         .tab {
@@ -192,8 +192,5 @@
         </form>
     </section>
 
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 </body>
 </html>

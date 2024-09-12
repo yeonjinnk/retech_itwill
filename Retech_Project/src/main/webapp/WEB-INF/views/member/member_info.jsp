@@ -15,13 +15,13 @@
             padding: 0;
         }
 
-        .logo {
-            margin: 20px 0;
-        }
+/*         .logo { */
+/*             margin: 20px 0; */
+/*         } */
 
-        .logo img {
-            max-width: 120px; 
-        }
+/*         .logo img { */
+/*             max-width: 120px;  */
+/*         } */
 
         .tab {
             width: 80%; 

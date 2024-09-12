@@ -718,7 +718,7 @@ function localStarageDeleteOne(keyword) {
                             <li class="top_list"><a href="SaleHistory" class="top_link">${sessionScope.sName}님</a></li>
                             <li class="top_list"><a href="javascript:confirmLogout()" class="top_link">로그아웃</a></li>
                             <c:if test="${sessionScope.sIsAdmin eq 1}">
-                                <li class="top_list"><a href="AdminHome" class="top_link">관리자페이지</a></li>
+                                <li class="top_list"><a href="AdminChart" class="top_link">관리자페이지</a></li>
                             </c:if>
                         </c:otherwise>
                     </c:choose>

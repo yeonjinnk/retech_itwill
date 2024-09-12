@@ -29,10 +29,6 @@
 			</form>	
 		</div>
 	</article>
-	<footer>
-		<%-- 회사 소개 영역(inc/bottom.jsp) 페이지 삽입 --%>
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-	</footer>
 </body>
 </html>
 

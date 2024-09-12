@@ -28,9 +28,8 @@
 //              $("#hiddenTechPasswd").val(rsa.encrypt($("#techpay_passwd").val())); // 아이디 암호화
 //             $("#hiddenTechPasswd2").val(rsa.encrypt($("#techpay_passwd2").val())); // 패스워드 암호화		 
 //  	}); 
-
 </script>
-
+ 
 <script>
 	
     // 전체 폼 유효성 검사
@@ -124,18 +123,18 @@
         
     });
 </script>
-ㅌ
+
 <style type="text/css">
 /*---- techpay_manage 영역 전체 ----*/
 .paymanage_container {
-	max-width: 500px;
+	max-width: 600px;
 	margin: auto;
 	margin-bottom: 40px;
-	margin-top: 20px;
-	border: 1px solid gray;
-	border-radius: 10px;
-	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
-	padding: 20px 50px 40px 50px;
+	margin-top: 10px;
+	border: 1px solid lightgray;
+	border-radius: 5px;
+/* 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);  */
+	padding: 10px 20px 20px 20px;
 	box-sizing: border-box;
 	display: block;
 }
@@ -148,8 +147,75 @@
 }
 
 .pay_account_list, .account_list_table {
-	margin-top: 20px;
+	margin-top: 10px;
 }
+
+/* 비밀번호 설정 폼 영역 */
+.pay_pwd_contents {
+    padding: 20px;
+    background-color: #f9f9f9; /* 배경색 추가 */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.pay_pwd_contents h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* 입력 필드 스타일 */
+.pay_pwd_contents input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.pay_pwd_contents input[type="password"]:focus {
+    border-color: #007BFF; /* 포커스 시 테두리 색상 */
+    outline: none;
+}
+
+/* 비밀번호 체크 결과 메시지 */
+.check {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.check.success {
+    color: #28a745; /* 성공 시 초록색 */
+}
+
+.check.error {
+    color: #dc3545; /* 오류 시 빨간색 */
+}
+
+/* 제출 버튼 스타일 */
+.pay_pwd_contents input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #34495E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 22px;
+    margin-top: 0px;
+    transition: background-color 0.3s ease;
+}
+
+.pay_pwd_contents input[type="submit"]:hover {
+    background-color: #0064FF; /* 테마보다 약간 어두운 색상으로 변경 */
+}
+
 
 .acc_info_btn { 
 	padding: 10px 20px;
@@ -162,27 +228,135 @@
 	width: 100%;
 } 
 
+
+#techpay_passwd_db{
+    margin-bottom: 30px; /* "새 테크페이 비밀번호" 위에 10px 여백 추가 */
+}
+
 .bank_symbol {
 	margin-top: 5px 0px 5px 0px;
 	width: 40px;
 	height: 30px;
 }
 
-/*---- 유효성 체크 영역 ----*/
-/* .check { */
-/*     font-size: 13px; */
-/*     margin-top: 5px; */
-/* } */
+.pay_pwd_contents {
+	font-size: 1.2em;
+}
 
-/* .check.success { */
-/*     color: #4CAF50; */
-/* } */
+#sName {
+	color: #0064FF;
+	font-size: 28px;
+	padding-top: 5px;
+}
 
-/* .check.error { */
-/*     color: #e74c3c; */
-/* } */
+.account_list {
+	margin-top: 10px;
+}
+
+/* 계좌 목록 컨테이너 */
+.account_list {
+    margin: 20px auto;
+    max-width: 900px; /* 컨테이너 너비 설정 */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.account_list h2 {
+    text-align: center;
+    color: #34495E; /* 테마 색상 적용 */
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* 계좌 목록 테이블 스타일 */
+.account_list_table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 경계선 겹침 제거 */
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.account_list_table th, .account_list_table td {
+    padding: 5px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    color: #555;
+}
+
+.account_list_table th {
+    background-color: #f2f2f2; /* 테이블 헤더 배경색 */
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+.account_list_table tr {
+    transition: background-color 0.3s ease;
+}
 
 
+/* 은행 아이콘 이미지 */
+.bank_symbol {
+    display: block;
+    margin: 0 auto; /* 이미지 가로 가운데 정렬 */
+    width: 55px; /* 원하는 이미지 크기 */
+    height: 40px;
+    vertical-align: middle; /* 이미지 세로 가운데 정렬 */
+}
+
+/* 예금주명 열 가운데 정렬 */
+.account_list_table td:nth-child(4) {
+    text-align: center;
+    padding-left: 0px;
+    font-size: 20px;
+}
+
+.account_list_table td:nth-child(2) {
+    font-size: 20px;
+}
+
+.account_list_table td:nth-child(1) {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+/* 계좌 정보 버튼 스타일 */
+.acc_info_btn {
+    padding: 8px 12px;
+    background-color: #34495E; /* 테마색 적용 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.acc_info_btn:hover {
+    background-color: #2c3e50; /* 마우스 오버 시 색상 변경 */
+}
+
+.title img {
+	margin-right: 10px;
+}
+
+#pay_pwd_title {
+	padding-left: 20px;
+}
+
+
+.title-container {
+	margin-top: 30px;
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    padding-right: 330px; /* 오른쪽 여백 추가 (원하는 대로 조정) */
+	color: #34495E;
+	font-size: 12px;
+}
 
 </style>
 </head>
@@ -192,9 +366,21 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
 	<section>
+		<div class="title-container">
+			<h2 id="techpay_title">테크페이  > 테크페이 관리</h2>
+		</div>
 		<div class="paymanage_container">
 		<div class="paymanage_title">
-			<h2>${sessionScope.sName} 님의 테크페이</h2>					
+				
+	       <div class="pay_card">
+			  <div class="title">
+				<h2>
+				<a href="SaleHistory" id="sName">
+                        ${sessionScope.sName} 님
+				</a></h2>	
+<%-- 				<img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="50" width="100"> --%>
+			  </div>
+			</div>					
 		</div>
         	<%-- 페이 비밀번호 정보 존재 여부에 따라 다른 링크 표시 --%>
 			<c:choose>
@@ -203,7 +389,7 @@
 					<!-- 페이 비밀번호 미설정 회원이므로 비밀번호 설정 영역 표시 -->
 					<div class="pay_pwd">
 						<div class="title">
-							<h2>페이 비밀번호 설정</h2>					
+							<h2 id="pay_pwd_title">페이 비밀번호 설정</h2>					
 						</div>
 						<div class="pay_pwd_contents">
 							<form action="PayPwdSet" id="payPwdSetForm">
@@ -213,7 +399,7 @@
 							 	테크페이 비밀번호 확인
 								<input type="password" id ="techpay_passwd2" placeholder="비밀번호를 다시 입력해주세요" onkeyup="checkSamePw()"><br>
 				                <span id="checkPasswdResult2" class="check"></span><br>
-								<input type="submit" value="비밀번호 설정">
+								<input type="submit" value="비밀번호 변경">
 								
 								<input type="hidden" name="pay_pwd" id="hiddenTechPasswd">
                     			<input type="hidden" name="pay_pwd2" id="hiddenTechPasswd2">   								
@@ -227,7 +413,7 @@
 					<!-- 페이 비밀번호 설정된 회원이므로 비밀번호 변경 영역 표시 -->
 					<div class="pay_pwd">
 						<div class="title">
-							<h2>페이 비밀번호 변경</h2>					
+							<h2 id="pay_pwd_title">페이 비밀번호 변경</h2>					
 						</div>
 						<div class="pay_pwd_contents">
 							<form action="PayPwdSet" id="payPwdSetForm">
@@ -252,11 +438,18 @@
 	       <!-- 페이에 등록한 계좌 목록 표시  -->
 	       <div class="account_list">
 			  <div class="title">
-				<h2>${sessionScope.sName} 님의 계좌 목록</h2>
+				<h2>계좌 목록</h2>
 			  </div>
 	          <div class="pay_account_list">
 	    		<form action="AccountDetail" method="get" id="accountDetailForm">
 			        <table border="1" class="account_list_table">
+			        		<tr>
+			        			<th>은행</th>
+			        			<th>계좌별칭</th>
+			        			<th>계좌번호</th>
+			        			<th>예금주명</th>
+			        			<th>상세정보</th>
+			        		</tr>
 			        	<c:forEach var="account" items="${accountList.res_list}" begin="0" end="1">
 			        		<tr>
 			        			<td>
@@ -275,9 +468,6 @@
 			        					<input type="hidden" name="account_num_masked" value="${account.account_num_masked}">
 			        					<input type="button" class="acc_info_btn" value="계좌정보" >
 			        			</td>
-	<!-- 		        			<td> -->
-	<!-- 		        				<input type="button" value="삭제" onclick="deleteAccount()">		        				 -->
-	<!-- 		        			</td> -->
 			        		</tr>
 			        	</c:forEach>
 			        </table>

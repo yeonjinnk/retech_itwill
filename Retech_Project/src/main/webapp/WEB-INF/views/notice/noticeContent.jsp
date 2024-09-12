@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,74 +89,98 @@
         background-color: #2980b9; 
     }
     
-    #replyArea .img {
+    #replyArea img {
     width: 15px;
     height: 15px;
 }
 
     
-#replyArea {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #ffffff; 
-    border: 1px solid #ddd; 
-    border-radius: 4px; 
-    max-height: 300px;
-    overflow-y: auto; 
-}
-
-#replyListArea {
-    border-top: 1px solid #ddd;
-    margin-top: 10px; 
-}
-
-#replyListArea table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#replyListArea td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    vertical-align: top; /* 텍스트 상단 정렬 */
-}
-
-.replyTr {
-    padding: 10px;
-    border-bottom: 1px solid #ddd; /* 댓글 구분선 */
-}
-
-.replyContent {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 5px; /* 내용과 날짜 사이 여백 */
+	#replyArea {
+		width: 500px;
+		height: 100%;
+		margin: auto;
+		margin-top: 20px;
+		margin-bottom: 50px;
+	}
+	
+	#replyTextarea { /* 댓글 입력 공간 */
+		width: 400px;
+		height: 50px;
+		resize: none;
+		vertical-align: middle;
+	}
+	
+	#replySubmit { /* 댓글 작성 버튼 */
+		width: 85px;
+		height: 55px;		
+		vertical-align: middle;
+	}
+	
+	#replyListArea {
+		font-size: 12px;
+		margin-top: 20px;
+	}
+	
+	#replyListArea table, tr, td {
+		border: none;
+	}
+	
+	#replyListArea tr {
+		height: 35px;
+	}
+	
+	.replyContent {
+		width: 300px;
+		text-align: left;
+	}
+	
+	.replyContent img {
+		width: 10px;
+		height: 10px;
+	}
+	
+	.replyWriter {
+		width: 80px;
+	}
+	
+	.replyDate {
+		width: 100px;
+	}
+	
+	/* ---- 대댓글 ---- */
+	#reReplyTextarea {
+		width: 300px;
+		height: 20px;
+		resize: none;
+		vertical-align: middle;
+	}
+		
+	#reReplySubmit {
+		width: 65px;
+		height: 25px;
+		vertical-align: middle;
+		font-size: 12px;
+	}
+	.replyMeta {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 12px;
 }
 
 .replyWriter {
+    margin-right: 10px; /* 아이디와 날짜 간격 조정 */
     font-weight: bold;
-    display: inline-block; /* 아이디와 날짜를 같은 줄에 표시하기 위해 inline-block 사용 */
-    margin-right: 10px; /* 날짜와의 간격 */
 }
 
 .replyDate {
-    font-size: 12px;
-    color: #888;
-    display: inline-block; /* 아이디와 날짜를 같은 줄에 표시하기 위해 inline-block 사용 */
+    color: #777; /* 날짜의 색을 연하게 변경 */
 }
 
-.replyMeta {
-    margin-bottom: 10px; /* 댓글 내용과 메타 정보 사이 여백 */
-}
-
-.reReplyTr {
-    padding: 10px;
-    background-color: #f9f9f9; /* 대댓글 배경색 */
-    margin-left: 20px; /* 대댓글 들여쓰기 */
-}
-
-.reReplyContent {
-    font-size: 14px;
-    color: #555;
+.replyContent {
+    text-align: left; /* 댓글 내용 왼쪽 정렬 */
+    margin-left: 0; /* 왼쪽 간격 없앰 */
 }
 
 
@@ -355,8 +380,5 @@
 			<button value=""><a href="NoticeDetail?notice_idx=${selectedNotice.notice_idx + 1}">다음</a></button>
 		</div>
 	</section>
-	<footer>		
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-	</footer>
 </body>
 </html>

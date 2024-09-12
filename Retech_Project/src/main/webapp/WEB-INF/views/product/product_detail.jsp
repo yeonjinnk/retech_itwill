@@ -16,19 +16,24 @@
 <%-- <link href="${pageContext.request.contextPath}/resources/css/defualt.css" rel="stylesheet" type="text/css"> --%>
 <link href="${pageContext.request.contextPath}/resources/css/product/product_list.css" rel="stylesheet" type="text/css">
 <style type="text/css">
-.container {
+div.container {
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
     }
 .w-100 {
-    width: 900px !important;
+    width: 400px !important;
     height: 300px;    
 }
 img {
     vertical-align: middle;
     border-style: none;
     width: 175px;
+}    
+#pdcontent {
+    margin-bottom: 1rem;
+    white-space: pre;
+    width: 400px;
 }
 </style>
 <!-- jQuery -->
@@ -288,7 +293,9 @@ $(document).ready(function() {
 						<span class="registDate">등록일 ${product.pd_first_date }</span>
 					</div>
 					<hr>
+					<div id="pdcontent">
 					<p>${product.pd_content }</p>
+					</div>
 					<br>
 					<hr>
 					<%-- sessionId 일치하는경우 (판매자본인일경우) - 수정하기 / 삭제하기 버튼 활성화 
@@ -466,8 +473,5 @@ $(document).ready(function() {
 		</div>
 	</div>
 	</article>
-	<footer>
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-	</footer>
 </body>
 </html>

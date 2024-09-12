@@ -38,6 +38,7 @@
 
     table {
         width: 100%; 
+        font-size: 1.3em;
         border-collapse: collapse; 
     }
 
@@ -200,9 +201,6 @@ $(document).ready(function() {
             </div>
         </section>
     </main>
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 </body>
 </html>
 
