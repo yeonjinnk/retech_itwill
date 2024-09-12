@@ -28,7 +28,6 @@
 //              $("#hiddenTechPasswd").val(rsa.encrypt($("#techpay_passwd").val())); // 아이디 암호화
 //             $("#hiddenTechPasswd2").val(rsa.encrypt($("#techpay_passwd2").val())); // 패스워드 암호화		 
 //  	}); 
-
 </script>
 
 <script>
