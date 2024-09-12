@@ -68,7 +68,7 @@ button {
     outline: none;
 }
 
-.btn {
+.btn { 
 	text-align: center;
     display: -webkit-box;
     display: -webkit-flex;
