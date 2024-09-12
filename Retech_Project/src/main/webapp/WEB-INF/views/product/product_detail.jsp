@@ -15,7 +15,22 @@
 <!-- Custom CSS -->
 <%-- <link href="${pageContext.request.contextPath}/resources/css/defualt.css" rel="stylesheet" type="text/css"> --%>
 <link href="${pageContext.request.contextPath}/resources/css/product/product_list.css" rel="stylesheet" type="text/css">
-
+<style type="text/css">
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    }
+.w-100 {
+    width: 900px !important;
+    height: 300px;    
+}
+img {
+    vertical-align: middle;
+    border-style: none;
+    width: 175px;
+}
+</style>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
@@ -528,6 +543,7 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</div>
+	</div>
 	</article>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
