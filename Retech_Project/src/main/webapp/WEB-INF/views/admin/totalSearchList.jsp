@@ -14,11 +14,6 @@
 <meta content="" name="description">
 <meta content="" name="keywords">
 <style type="text/css">
-article {
-    display: block;
-    unicode-bidi: isolate;
-    margin: auto;
-}
 </style>
 <script type="text/javascript">
 function delKeyword(element) {
