@@ -29,7 +29,7 @@ img {
     vertical-align: middle;
     border-style: none;
     width: 175px;
-    
+     
 }
 </style>
 <!-- jQuery -->
