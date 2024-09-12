@@ -69,6 +69,7 @@
             padding: 20px;
             background-color: #f9f9f9;
             overflow-y: auto;
+            justify-content: center;
         }
 
         .store-info {
@@ -77,6 +78,8 @@
             border-radius: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
+            width: 80%;
+            margin: 0 auto;
         }
 
         .store-info h2 {
@@ -88,6 +91,7 @@
             list-style-type: none;
             padding: 0;
             display: flex;
+            margin-left: 115px;
         }
 
         .tabs li {
@@ -115,6 +119,8 @@
             background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 10px;
+            width: 80%;
+            margin: 0 auto;
         }
 
         table {

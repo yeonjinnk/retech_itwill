@@ -81,7 +81,6 @@
             margin: 0 auto;
         }
 
-
         .store-info h2 {
             margin-top: 0;
         }
