@@ -121,7 +121,7 @@
             padding: 12px;
             border: none;
             border-radius: 5px;
-            background-color: #4CAF50;
+            background-color: #34495e;
             color: white;
             font-size: 16px;
             cursor: pointer;
@@ -137,7 +137,7 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            background-color: #4CAF50;
+            background-color: #34495e;
             color: white;
             font-size: 14px;
             cursor: pointer;

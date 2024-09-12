@@ -104,21 +104,21 @@
         }
 
         .btn-home {
-            background-color: #4CAF50;
+            background-color: #34495e;
             color: white;
         }
 
         .btn-home:hover {
-            background-color: #45a049;
+            background-color: #34495e;
         }
 
         .btn-login {
-            background-color: #2196F3;
+            background-color: #34495e;
             color: white;
         }
 
         .btn-login:hover {
-            background-color: #1976D2;
+            background-color: #34495e;
         }
         
         footer {

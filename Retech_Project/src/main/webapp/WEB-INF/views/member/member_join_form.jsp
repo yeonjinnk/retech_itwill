@@ -122,7 +122,7 @@
         #submit {
             width: 100%;
             padding: 15px;
-            background-color: #4CAF50;
+            background-color: #34495e;
             border: none;
             border-radius: 5px;
             color: white;
@@ -132,7 +132,7 @@
         }
 
         #submit:hover {
-            background-color: #45a049;
+            background-color: #34495e;
         }
 
         .auth_code {
