@@ -5,13 +5,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>Retech 관리자페이지</title>
+<link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/resources/css/admin_default.css" rel="stylesheet" type="text/css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta content="" name="description">
 <meta content="" name="keywords">
-<link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+article {
+    display: block;
+    unicode-bidi: isolate;
+    margin: auto;
+}
+</style>
 <script type="text/javascript">
 function delKeyword(element) {
 	var content = $(element).data("content");
@@ -29,21 +37,14 @@ function delKeyword(element) {
 
 </head>
 <body>
-
-    <!-- ======= Header ======= -->
-    <header>
-        <jsp:include page="/WEB-INF/views/inc/admin_top.jsp"></jsp:include>
-    </header>
-
-    <!-- ======= Main Content and Sidebar ======= -->
-    <div class="main-content">
-        <!-- ======= Sidebar ======= -->
-        <aside id="sidebar" class="sidebar">
-            <jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
-        </aside>
-        <!-- End Sidebar -->
-
-        <!-- ======= Main Content ======= -->
+  <header>
+    <jsp:include page="/WEB-INF/views/inc/admin_top.jsp"></jsp:include>  
+  </header>
+  <div class="inner">
+    <section class="wrapper">
+      <jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
+      <article>
+      	   <div class="main-content">
         <main id="main" class="main">
 
 	 	<div id="date"></div>
@@ -51,7 +52,7 @@ function delKeyword(element) {
 			<h1>인기 검색어 관리</h1>
 			<nav>
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
+					<li class="breadcrumb-item"><a href="AdminChart">Home</a></li>
 					<li class="breadcrumb-item active">인기 검색어 관리</li>
 				</ol>
 			</nav>
@@ -98,12 +99,18 @@ function delKeyword(element) {
 
         <!-- End #main -->
     </div>
-    <!-- End Main Content and Sidebar -->
-
-    <!-- ======= Footer ======= -->
+      	
+      
+      
+      
+      </article>
+    </section>
+  </div>
     <footer>
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
     </footer>
+    
+    
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><span>&#x2191;</span></a>
 </body>

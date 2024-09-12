@@ -64,7 +64,7 @@ public class AdminChart {
             
             
         }
-        return "admin/admin_chart";
+        return "admin/admin_main";
     }
     
     @GetMapping("AdminChartTest")

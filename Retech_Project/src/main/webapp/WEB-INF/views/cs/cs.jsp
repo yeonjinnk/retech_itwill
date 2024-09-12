@@ -143,10 +143,10 @@ h2, h3 {
 	<section id="listForm">
 		<table>
 		    <tr id="tr_top">
-		        <th width="200px">글번호</th>
+		        <th width="100px">글번호</th>
 		        <th width="200px">제목</th>
 		        <th width="400px">문의내용</th>
-		        <th width="100px">확인여부</th>
+		        <th width="200px">확인여부</th>
 		        <th width="200px">등록일자</th>
 		    </tr>
 		    
