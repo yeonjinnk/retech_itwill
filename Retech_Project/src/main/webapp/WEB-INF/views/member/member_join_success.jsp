@@ -147,8 +147,5 @@
             <input type="button" class="btn-login" value="로그인" onclick="location.href='MemberLogin'">
         </div>
     </article>
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 </body>
 </html>

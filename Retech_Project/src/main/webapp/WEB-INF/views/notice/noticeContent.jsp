@@ -380,8 +380,5 @@
 			<button value=""><a href="NoticeDetail?notice_idx=${selectedNotice.notice_idx + 1}">다음</a></button>
 		</div>
 	</section>
-	<footer>		
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-	</footer>
 </body>
 </html>

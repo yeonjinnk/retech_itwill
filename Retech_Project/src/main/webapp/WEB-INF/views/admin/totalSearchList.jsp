@@ -106,9 +106,6 @@ function delKeyword(element) {
       </article>
     </section>
   </div>
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
     
     
 

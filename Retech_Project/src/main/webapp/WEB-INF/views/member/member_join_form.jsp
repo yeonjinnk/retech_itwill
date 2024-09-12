@@ -250,10 +250,6 @@
         </form>
     </section>
 
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
-
     <script type="text/javascript">
     $(document).ready(function() {
     	

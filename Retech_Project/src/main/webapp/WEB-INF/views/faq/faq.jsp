@@ -169,8 +169,5 @@ h2, h3 {
            <c:if test="${pageNum >= pageInfo.maxPage}">disabled</c:if> >
 </section>
 
-<footer>
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
-</footer>
 </body>
 </html>

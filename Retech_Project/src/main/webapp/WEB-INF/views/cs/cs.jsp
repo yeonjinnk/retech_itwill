@@ -200,8 +200,5 @@ h2, h3 {
 		}
 	</script>
 	
-	<footer>
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
-	</footer>
 </body>
 </html>

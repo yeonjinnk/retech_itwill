@@ -121,8 +121,5 @@
             <button><a href="FaqDetail?faq_idx=${selectedFaq.faq_idx + 1}">다음</a></button>
         </div>
     </section>
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 </body>
 </html>

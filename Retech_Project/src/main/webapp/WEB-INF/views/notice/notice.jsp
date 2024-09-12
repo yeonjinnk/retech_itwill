@@ -183,10 +183,6 @@ h3 {
            <c:if test="${pageNum >= pageInfo.maxPage}">disabled</c:if>
     >
 </section>
-
-<footer>
-    <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>    
-</footer>
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
     // URL의 쿼리 파라미터에서 페이지 정보를 가져옵니다.
