@@ -32,11 +32,10 @@ img {
 }
 </style>
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 <%-- 반응형웹페이지 위한 설정  --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -91,6 +90,7 @@ function showSlides(n) {
 }
 
 
+
 //거래상태 예약중일경우 채팅불가 처리하는 reservedProduct() 함수
 function reservedProduct(){
 	alert("거래중인 상품이므로 채팅하실 수 없습니다");
@@ -98,34 +98,6 @@ function reservedProduct(){
 //찜하기 받아오기
 $(function() {
 	console.log("!!!!!!페이지 로딩됨 !!!!!");
-	
-// 	let sId = $("#sessionId").val();
-// 		console.log(sId);
-// 	$.ajax ({
-// 		type: 'GET',
-// 		url: 'likeProductShow',
-// 		data: {'member_id' : sId},
-// 		dataType: 'JSON',
-// 		success: function(result) {
-// //			console.log(result);
-			
-// 			for(let i = 1; i <= 4; i++) {
-// 				let ProductNo = $("" + $("#likeProduct" + i).data("target")).val();	
-				
-// 				for(let like of result) {
-// 					if(like.pd_idx == ProductNo) {	// 일치하면
-// 			    		$(element).find("img").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
-
-// 						$("#clickCk" + i).attr("disabled", true);
-// 					}
-// 				}
-// 			}
-// 		},
-// 		error: function() {
-// 			alert("찜하기받아오기 에러!!");
-// // 			console.log("에러");
-// 		}
-// 	});
 	
 	   let pd_idx = "${product.pd_idx}";
 	    
@@ -139,15 +111,6 @@ $(function() {
 	        },
 	        dataType: 'JSON',
 	        success: function(result) {
-//	             if (result.isLiked) {
-//	                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
-//	                 $("#likeProduct").addClass("like");
-//	                 localStorage.setItem(pd_idx, "liked");
-//	             } else {
-//	                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
-//	                 $("#likeProduct").removeClass("like");
-//	                 localStorage.removeItem(pd_idx);
-//	             }
 	            if (result) {
 	                $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
 	                $("#likeProduct").addClass("like");
@@ -170,41 +133,13 @@ $(function() {
 
 //찜하기 기능
 function checkProduct(element) {
-//     let sId = $("#sessionId").val();
-//     let pd_idx = $("#" + $(element).data('target')).val();
     let member_id = "${sessionScope.sId}";
     let pd_idx = "${product.pd_idx}";
-//     let targetId = 'clickCk' + i;
-//     let target = $("#likeProduct" + i).data("target");
     console.log("member_id 값: " + member_id);  // 이 값을 콘솔에서 확인
     console.log("pd_idx 값: " + pd_idx);  // 이 값을 콘솔에서 확인
-//     console.log("data-target 값: " + target);  // 이 값을 콘솔에서 확인
-//     console.log("기대하는 targetId: " + targetId);
-//     console.log("목표 요소: " + $("#" + target));  // 해당 요소가 존재하는지 확인
     // 현재 버튼의 찜 상태 확인
     let isLike = $("#likeProduct").hasClass("like");
     console.log(isLike);
-    
-//     if(!isLike) { // 좋아요 없는 상태
-//     	$("#likeProduct").addClass("like"); // 좋아요 표시
-//     	console.log("likeImage : " + $("#likeImage").html());
-// //     	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
-//     	// 좋아요 상태로 변경 및 좋아요 저장
-    	
-//     	// ${pageContext.request.contextPath}/resources/images/heartIcon3.png
-//     } else { // 좋아요 있는 상태
-//     	console.log("likeImage : " + $("#likeImage").html());
-//     	$("#likeProduct").removeClass("like"); // 좋아요 제거
-// //     	$("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
-    	
-//     	// 좋아요 상태 해제 및 좋아요 해제 상태 저장
-    	
-//     }
-//     console.log("변경 후 : "  + $("#likeProduct").hasClass("like"));
-	
-    // 현재 상태의 반대값으로 isLike 설정 (true -> false, false -> true)
-//     let isLike = !isCurrentlyLiked;
-// 	console.log("망할놈의 i의 값 : " + i);
     $.ajax({
         type: 'POST',
         url: 'likeProduct',
@@ -235,46 +170,7 @@ function checkProduct(element) {
 }
 //페이지 로드 시 찜 상태 복원
 $(document).ready(function() {
-//     let pd_idx = "${product.pd_idx}";
-    
-//     // 서버에서 찜 상태를 가져오는 AJAX 요청
-//     $.ajax({
-//         type: 'GET',
-//         url: 'checkLikeStatus',
-//         data: {
-//             'member_id': "${sessionScope.sId}",
-//             'pd_idx': pd_idx
-//         },
-//         dataType: 'JSON',
-//         success: function(result) {
-// //             if (result.isLiked) {
-// //                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
-// //                 $("#likeProduct").addClass("like");
-// //                 localStorage.setItem(pd_idx, "liked");
-// //             } else {
-// //                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
-// //                 $("#likeProduct").removeClass("like");
-// //                 localStorage.removeItem(pd_idx);
-// //             }
-//             if (isLiked) {
-//                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon2.png");
-//                 $("#likeProduct").addClass("like");
-//                 localStorage.setItem(pd_idx, "liked");
-//             } else {
-//                 $("#likeImage").attr("src", "${pageContext.request.contextPath}/resources/images/heartIcon3.png");
-//                 $("#likeProduct").removeClass("like");
-//                 localStorage.removeItem(pd_idx);
-//             }
-//         },
-//         error: function(xhr, status, error) {
-//             console.error("AJAX 오류: ", error);
-//         }
-//     });
 });
-
-
-
-
 
 </script>
 <style type="text/css">
@@ -294,56 +190,81 @@ $(document).ready(function() {
 			<%-- 큰이미지 --%>
 			<div class="row" style="margin-top: 20px;">
 				<div class="column">
-					<%-- 상품이미지영역 - 슬라이드 --%>
 					<div id="slid">
-						<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
-							<ol class="carousel-indicators">
-								<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-								<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-								<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-								<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-								<li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-							</ol>
-							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" class="d-block w-100" alt="Image 1">
-								</div>
-								<div class="carousel-item">
-									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image2}" class="d-block w-100" alt="Image 2">
-								</div>
-								<div class="carousel-item">
-									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image3}" class="d-block w-100" alt="Image 3">
-								</div>
-								<div class="carousel-item">
-									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image4}" class="d-block w-100" alt="Image 3">
-								</div>
-								<div class="carousel-item">
-									<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image5}" class="d-block w-100" alt="Image 3">
-								</div>
-								<!-- 추가 이미지들 -->
-							</div>
-							<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev"> <span
-								class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="sr-only">Previous</span>
-							</a> <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next"> <span
-								class="carousel-control-next-icon" aria-hidden="true"></span> <span class="sr-only">Next</span>
-							</a>
-						</div>
-					</div>
-					<!-- 진성민 -->
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+                        <ol class="carousel-indicators">
+                            <c:if test="${not empty product.pd_image1}">
+                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                            </c:if>
+                            <c:if test="${not empty product.pd_image2}">
+                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                            </c:if>
+                            <c:if test="${not empty product.pd_image3}">
+                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                            </c:if>
+                            <c:if test="${not empty product.pd_image4}">
+                                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                            </c:if>
+                            <c:if test="${not empty product.pd_image5}">
+                                <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                            </c:if>
+                        </ol>
+                        <div class="carousel-inner">
+                            <c:if test="${not empty product.pd_image1}">
+                                <div class="carousel-item active">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image1}" class="d-block w-100" alt="Image 1">
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty product.pd_image2}">
+                                <div class="carousel-item">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image2}" class="d-block w-100" alt="Image 2">
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty product.pd_image3}">
+                                <div class="carousel-item">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image3}" class="d-block w-100" alt="Image 3">
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty product.pd_image4}">
+                                <div class="carousel-item">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image4}" class="d-block w-100" alt="Image 4">
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty product.pd_image5}">
+                                <div class="carousel-item">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image5}" class="d-block w-100" alt="Image 5">
+                                </div>
+                            </c:if>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+					
 					<!-- 미리보기 썸네일 추가 -->
-					<div class="thumbnails">
-						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image1}" class="thumbnail" data-target="#carouselExampleIndicators"
-							data-slide-to="0" alt="Thumbnail 1"> 
-						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image2}" class="thumbnail" data-target="#carouselExampleIndicators" 
-							data-slide-to="1" alt="Thumbnail 2"> 
-						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image3}" class="thumbnail" data-target="#carouselExampleIndicators"
-							data-slide-to="3" alt="Thumbnail 3">
-						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image4}" class="thumbnail" data-target="#carouselExampleIndicators"
-							data-slide-to="4" alt="Thumbnail 4">
-						<img src="${pageContext.request.contextPath }/resources/upload/${product.pd_image5}" class="thumbnail" data-target="#carouselExampleIndicators"
-							data-slide-to="5" alt="Thumbnail 5">
-						<!-- 추가 썸네일들 -->
-					</div>
+					 <div class="thumbnails">
+	                    <c:if test="${not empty product.pd_image1}">
+	                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image1}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="0" alt="Thumbnail 1">
+	                    </c:if>
+	                    <c:if test="${not empty product.pd_image2}">
+	                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image2}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="1" alt="Thumbnail 2">
+	                    </c:if>
+	                    <c:if test="${not empty product.pd_image3}">
+	                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image3}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="2" alt="Thumbnail 3">
+	                    </c:if>
+	                    <c:if test="${not empty product.pd_image4}">
+	                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image4}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="3" alt="Thumbnail 4">
+	                    </c:if>
+	                    <c:if test="${not empty product.pd_image5}">
+	                        <img src="${pageContext.request.contextPath}/resources/upload/${product.pd_image5}" class="thumbnail" data-target="#carouselExampleIndicators" data-slide-to="4" alt="Thumbnail 5">
+	                    </c:if>
+	                </div>
 					<%-- 1행 1열 -- 왼쪽 column끝 --%>
 				<!--------------------------------------------------------------------------------------------- -->
 				<%--1행 2열 -- 오른쪽 column 추가하기 --%>

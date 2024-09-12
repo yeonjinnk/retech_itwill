@@ -26,6 +26,18 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 
+<script type="text/javascript">
+
+//버튼 클릭 시 페이지 상단으로 스크롤
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth" // 부드럽게 스크롤
+    });
+}
+
+</script>
+
 <style>
 
 /*---- 메인 영역 제목  ----*/
@@ -45,6 +57,7 @@
     height: 450px; /* 메인 슬라이드의 높이 조정 */
     display: flex;     
     align-items: stretch;     
+    margin-bottom: 50px;
 }
 
 .main_slide_container {
@@ -130,11 +143,26 @@
     margin: auto;
 }
 
+/* .category_section { */
+/*     border-bottom: 1px solid #eaeaea; /* 구분선을 추가 */ */
+/*     padding-bottom: 50px; /* 구분선과의 간격 */ */
+/*     margin-bottom: 50px; /* 다음 영역과의 간격 */ */
+/* } */
+
 /*---- 메인 이미지 영역 ----*/
 /*---- 메인 이미지 영역 1. 카테고리 ----*/
 .category_section {
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 100px;
+	margin-bottom: 100px;
+}
+
+
+.category_subject {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eaeaea; /* 연한 회색 구분선 */
+    padding-bottom: 5px;
 }
 
 .inner_photo {
@@ -232,11 +260,52 @@
     height: auto;
 }
  
+/*---- 메인 이미지(인기상품) ----*/
+/*---- 메인 이미지(최근 업데이트 상품) ----*/
+.pd_popular_photo, .pd_recent_photo {
+    width: 32%; /* 원하는 가로 크기 */
+    height: auto;
+    display: inline-block;
+    text-align: center; /* 텍스트를 중앙 정렬 */
+/*     margin: 2px; /* 이미지 간격을 위해 추가 */ */
+}
+
+.pd_popular_photo img, .pd_recent_photo img {
+    width: 100%; /* 이미지의 가로 영역을 맞춤 */
+    height: 200px; /* 고정된 세로 크기 설정 */
+    object-fit: cover; /* 이미지가 영역을 넘어가지 않도록 */
+}
+
+.pd_popular_photo .subject, .pd_recent_photo img  {
+    margin-top: 5px; /* 이미지와 텍스트 사이의 여백 */
+    font-size: 14px; /* 텍스트 크기 */
+}
+ 
+
 /*---- 메인 이미지(상품명) ----*/
 .subject {
 	font-size: 15px;
 	font-weight: bold;
 	text-align: center;
+}
+
+/*---- 상단 이동 버튼 ----*/
+.scrollToTop {
+    position: fixed; /* 스크롤을 내려도 고정 */
+    bottom: 20px; /* 화면 하단에서 20px 떨어진 위치 */
+    right: 20px; /* 화면 오른쪽에서 20px 떨어진 위치 */
+    background-color: #ffffff; /* 버튼 배경색 */
+    border: none; /* 테두리 없애기 */
+    border-radius: 50%; /* 버튼을 둥글게 만들기 */
+    padding: 10px 15px; /* 버튼 크기 */
+    font-size: 18px; /* 글자 크기 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+    cursor: pointer; /* 커서를 포인터로 */
+    z-index: 1000; /* 다른 요소보다 위에 표시 */
+}
+
+.scrollToTop:hover {
+    background-color: #f0f0f0; /* 마우스 오버 시 배경색 변경 */
 }
 
 </style>
@@ -368,7 +437,7 @@
 			
 			<!-- 메인 이미지 영역 2. 인기상품 -->
 			<div class="pd_popular category_section">    
-			    <h2 class="category_subject">인기상품</h2>
+			    <h2 class="category_subject">인기상품~~</h2>
 			    <div class="pd_popular_area area">
 			        <c:forEach var="product" items="${popularProducts}">
 			            <div class="pd_popular_photo photo">
@@ -376,7 +445,7 @@
 			                <img src="${pageContext.request.contextPath }/resources/img/main/${product.pd_image1}" 
     							 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}" class="inner_photo"/>
 			                </a>
-					        <div class="subject">${product.pd_subject}</div>
+					        <div class="photo_subject">${product.pd_subject}</div>
 			            </div>
 			        </c:forEach>
 			    </div>
@@ -388,12 +457,12 @@
 			    <h2 class="category_subject">최근 업데이트 상품</h2>
 			    <div class="pd_recent_area area">
 				    <c:forEach var="product" items="${recentProducts}">
-					    <div class="photo">
+					    <div class="pd_recent_photo photo">
 							<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
 					        	<img src="${pageContext.request.contextPath }/resources/img/main/${product.pd_image1}" 
 					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}" class="inner_photo"/>
 					        </a>
-					        <div class="subject">${product.pd_subject}</div>
+					        <div class="photo_subject">${product.pd_subject}</div>
 					    </div>
 					</c:forEach>
 			    </div>
@@ -414,8 +483,12 @@
 <%-- 					</c:forEach> --%>
 <!-- 			    </div> -->
 <!-- 			</div>		 -->
+<!-- 		</div> -->
+
+			<!-- 페이지 맨 위로 이동하는 버튼 -->
+			<button id="topBtn" class="scrollToTop" onclick="scrollToTop()">▲</button>
+
 			</div>
-		</div>
 	</section>
 	<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	

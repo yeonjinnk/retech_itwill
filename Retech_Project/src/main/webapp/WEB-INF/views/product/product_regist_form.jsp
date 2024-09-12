@@ -736,7 +736,7 @@
 						<span class="pro_info">등록 상품 이미지</span> 
 						<span class="pro_info" id="img_number">(0/5)</span> 
 						<span style="color: red">*</span> 
-						<input type="image" id="imgup" onclick="img_preview();"src="${ pageContext.request.contextPath }/resources/img/image_upload.png" width="150px" height="150px">
+						<input type="image" id="imgup" onclick="img_preview();"src="${ pageContext.request.contextPath }/resources/images/image_upload.png" width="150px" height="150px">
 					</td>
 					<td class="td2" align="left">
 						<!-- 이미지 등록 영역 -->
