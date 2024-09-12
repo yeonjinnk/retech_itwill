@@ -437,7 +437,7 @@ function scrollToTop() {
 			
 			<!-- 메인 이미지 영역 2. 인기상품 -->
 			<div class="pd_popular category_section">    
-			    <h2 class="category_subject">인기상품</h2>
+			    <h2 class="category_subject">인기상품~~</h2>
 			    <div class="pd_popular_area area">
 			        <c:forEach var="product" items="${popularProducts}">
 			            <div class="pd_popular_photo photo">
