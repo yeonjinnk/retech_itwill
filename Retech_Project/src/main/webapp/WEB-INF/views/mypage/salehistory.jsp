@@ -15,7 +15,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             display: flex;
             flex-direction: column;
@@ -69,6 +68,7 @@
             padding: 20px;
             background-color: #f9f9f9;
             overflow-y: auto;
+            justify-content: center;
         }
 
         .store-info {
@@ -77,6 +77,8 @@
             border-radius: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
+            width: 80%;
+            margin: 0 auto;
         }
 
         .store-info h2 {
@@ -115,6 +117,8 @@
             background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 10px;
+            width: 80%;
+            margin: 0 auto;
         }
 
         table {
