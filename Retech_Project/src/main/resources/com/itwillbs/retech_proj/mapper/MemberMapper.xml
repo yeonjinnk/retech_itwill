@@ -118,7 +118,7 @@
 	<select id="selectMemberFromEmail" resultType="member">
 		SELECT * 
 		FROM member
-		WHERE member_id = #{memberId}
+		WHERE member_id = #{email}
 	</select>
 	
 	<!-- 별점 평균 신뢰지수 조회 -->

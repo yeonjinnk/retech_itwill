@@ -240,14 +240,20 @@
 		SET 
 			pd_price = #{pd_price}
 			, pd_content = #{pd_content}
-				<if test="!file1.equals('')">
-					, pd_image1 = #{pd_image1}
+				<if test="file1 != null and !file1.equals('')">
+				    , pd_image1 = #{pd_image1}
 				</if>
-				<if test="!file2.equals('')">
-					, pd_image2 = #{pd_image2}
+				<if test="file2 != null and !file2.equals('')">
+				    , pd_image2 = #{pd_image2}
 				</if>
-				<if test="!file3.equals('')">
-					, pd_image3 = #{pd_image3}
+				<if test="file3 != null and !file3.equals('')">
+				    , pd_image3 = #{pd_image3}
+				</if>
+				<if test="file4 != null and !file4.equals('')">
+				    , pd_image4 = #{pd_image4}
+				</if>
+				<if test="file5 != null and !file5.equals('')">
+				    , pd_image5 = #{pd_image5}
 				</if>
 			, pd_category = #{pd_category}
 		WHERE
