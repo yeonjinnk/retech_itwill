@@ -306,16 +306,22 @@ function select_date() {
 
 
 <style type="text/css">
+
+.container {
+	max-width:1600px;
+ 	width: 100%;
+}
 /*---- techpay_info 영역 전체 ----*/
 .payinfo_container {
-	max-width: 500px;
-	margin: auto;
+	width:100%;
+/* 	max-width: 900px; */
+	margin: 0 auto;
 	margin-bottom: 20px;
 	margin-top: 20px;
 	border: 1px solid gray;
 	border-radius: 10px;
 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
-	padding: 20px 50px;
+	padding: 20px 10px;
 	box-sizing: border-box;
 	display: block;
 }
@@ -349,15 +355,37 @@ function select_date() {
 /*---- 페이내역 탭 ----*/
 .pay_history_tab {
     display: flex;
-    border: 1px solid skyblue;  /* 스카이블루 색상으로 변경 */
+    border: 1px #34495E; 
     border-radius: 3px;
     overflow: hidden;
     margin-bottom: 20px;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 input[type="radio"] {
     display: none;
+}
+
+#techpay_manage_btn {
+	padding: 10px 20px;
+	font-size: 20px;
+	border: 2px solid #34495E;
+	background-color: #F0F0F0;
+	border-radius: 5px;
+}
+
+#techpay_manage_btn:hover {
+	background-color: #34495E;
+	color: #ffffff;
+}
+
+#loadMoreBtn {
+	background-color: #34493E;
+	color: #ffffff;
+}
+
+h5.product-name {
+	color: #0064FF;
 }
 
 .tab_label {
@@ -372,13 +400,13 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked + .tab_label {
-    background-color: skyblue;
+    background-color: #34495E;
     color: white;
 }
 
-
 .card-body {
-	padding: 50px;
+/* 	font-size : 2em; */
+	padding: 20px 20px;
 }
 
 /*---- 기간선택 모달창 ----*/
@@ -388,7 +416,7 @@ input[type="radio"]:checked + .tab_label {
 
 .container {
 /* 	max-width: 500px; */
-	padding: 20px 50px 40px 50px;
+	padding: 20px 30px 40px 30px;
 }
 
 /* 개월 선택 탭(1개월, 3개월..) 가로로 꽉 차게 */
@@ -408,23 +436,26 @@ input[type="radio"]:checked + .tab_label {
     flex-grow: 2; /* 입력 필드가 가로 공간을 최대한 차지하도록 설정 */
 }
 
+.btn-group .btn-check {
+	font-size: 30px;
+}
+
 .btn2 {
+	font-size:24px;
     width: 100%; /* 버튼이 부모의 너비를 꽉 채우도록 설정 */
     padding: 10px 0; /* 버튼의 상하 여백 */
     text-align: center; /* 텍스트 중앙 정렬 */
-    background-color: #007bff; /* 버튼 배경색 */
+    background-color: #34495E; /* 버튼 배경색 */
     color: white; /* 버튼 텍스트 색상 */
     border: none; /* 기본 테두리 제거 */
     border-radius: 5px; /* 버튼의 둥근 모서리 */
 }
 
-.btn2:hover {
-    background-color: #0056b3; /* 마우스를 올렸을 때 배경색 변경 */
-}
 
 .btn22 {
     display: flex;
     gap: 10px; /* 버튼 사이의 간격 */
+/*     height: 70px; */
 }
 
 #date_select {
@@ -450,15 +481,31 @@ input[type="radio"]:checked + .tab_label {
 }
 
 #info_left {
-    font-size: 14px;
+    font-size: 22px;
     color: #555; /* 약간 어두운 회색 */
 }
 
 #info_right {
-    font-size: 12px;
+    font-size: 22px;
 /*     color: #007bff; /* 파란색 텍스트 */ */
     cursor: pointer; /* 클릭할 수 있음을 나타내는 포인터 커서 */
 /*     text-decoration: underline; /* 밑줄 추가 */ */
+}
+
+#period_info {
+	margin-bottom: 20px;
+}
+
+h5.pay_date {
+	font-size: 22px;
+}
+
+.pay-info #pay_balance_text {
+	font-size: 25px;
+}
+
+#sName {
+	color: #0064FF;
 }
 
 #info_right:hover {
@@ -469,11 +516,12 @@ input[type="radio"]:checked + .tab_label {
 	margin-bottom: 20px;
 }
 
+
 /* ajax 데이터 받는 부분 css */
 /* 연도별 그룹 제목 */
 #payHistoryList #year {
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 /*     color: #007bff; /* 파란색 */ */
     width: calc(100% - 40px); /* 좌우 20px 여백을 고려하여 너비 조정 */
     margin-bottom: 12px;
@@ -483,7 +531,7 @@ input[type="radio"]:checked + .tab_label {
 
 /* 각 항목을 담고 있는 행 (row) */
 .row.content_list {
-    padding: 10px 20px; /* 상하 및 좌우에 적절한 패딩 추가 */
+    padding: 10px 0px; /* 상하 및 좌우에 적절한 패딩 추가 */
     border-bottom: 1px solid #e0e0e0; /* 아래쪽에 구분선 추가 */
     margin-bottom: 10px;
     width: calc(100% - 40px); /* 좌우 20px 여백을 고려하여 너비 조정 */
@@ -491,17 +539,21 @@ input[type="radio"]:checked + .tab_label {
     margin-right: auto;
 }
 
+/* #pay_area { */
+/*     max-width: 700px; /* 컨테이너의 최대 너비를 700px로 수정 */ */
+/*     padding: 20px 20px; /* 좌우 padding을 줄여서 여백을 줄임 */ */
+/* } */
 
 /* 날짜 부분 */
 .pay_date {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     color: #333;
 }
 
 /* 제목 (상품명 등) */
 .product-name {
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #007bff; /* 파란색 */
     text-decoration: none;
@@ -519,23 +571,58 @@ input[type="radio"]:checked + .tab_label {
 
 /* 상세 설명 (시간 및 사용/충전 등 정보) */
 .pay-info-sub {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     color: #666;
 }
 
 /* 금액 부분 */
 .pay-amount {
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-weight: bold;
 /*     color: #28a745; /* 초록색 */ */
 }
 
+.btn-group .label {
+	font-size: 22px;
+}
+
 /* 잔액 정보 */
 .pay-balance-sub {
-    font-size: 0.85rem;
+    font-size: 1.3rem;
     color: #888;
 }
 
+.btn-outline-primary {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+@media (min-width: 1200px) {
+    .h2, h2 {
+	font-size: 18px;
+    }
+}
+
+.h2, h2 {
+	font-size: 18px;
+}
+
+.title-container {
+	margin-top: 50px;
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    padding-right: 345px; /* 오른쪽 여백 추가 (원하는 대로 조정) */
+	color: #34495E;
+	font-size: 18px !important;
+	font-weight: 1000;
+}
+
+.pay-info.col-lg-6.col-md-6.col-12 {
+	padding-left: 30px;
+}
+#pay_balance_amt {
+	font-size: 40px;
+}
 </style>
 </head>
 <body>
@@ -553,27 +640,30 @@ input[type="radio"]:checked + .tab_label {
 		<%-- 기본 메뉴 표시 영역(inc/top.jsp) 페이지 삽입 --%>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
-	<section>
+		<div class="title-container">
+			<h2 id="techpay_title">테크페이 > 테크페이 홈</h2>
+		</div>
+	<section id="pay_area">
 		 <div class="account-login section">
-	        <div class="container">
+	        <div class="container" id="pay_area">
 	            <div class="row">
 	                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
 	                    <div class="card login-form pay-card">
 	                        <div class="card-body">
 	                            <div class="title paytitle">
 		                            <h3 class="user-name">
-										<a href="SaleHistory">
+										<a href="SaleHistory" id="sName">
 			                                ${sessionScope.sName} 님
 										</a>								
 		                            </h3>
 	                                <h3 class="pay-name">
-										<input type="button" value="테크페이 관리" onclick="location.href='PayManage'">
+										<input type="button" id="techpay_manage_btn"  value="테크페이 관리" onclick="location.href='PayManage'">
 	                                </h3>
 	                            </div>
 	                            <div class="row">
 		                           	<div class="pay-info col-lg-6 col-md-6 col-12">
-										페이잔액
-							        	<h2><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h2><br>							
+										<h3 id="pay_balance_text">페이잔액</h3>
+							        	<h2 id="pay_balance_amt"><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h2><br>							
 									</div>
 									<div class="btn22">
 										<input type="hidden" value="${sessionScope.sId}" id="pay_id">
@@ -592,15 +682,15 @@ input[type="radio"]:checked + .tab_label {
 	                        <div class="card-body">
 	                           	<div class="btn-group col">
 							        <input type="radio" name="options" class="btn-check" id="btn-check1" value="" autocomplete="off">
-								    <label class="btn btn-outline-primary" for="btn-check1">전체</label>
+								    <label class="btn btn-outline-primary label" for="btn-check1">전체</label>
 							        <input type="radio" name="options" class="btn-check" id="btn-check2" value="1" autocomplete="off">
-								    <label class="btn btn-outline-primary" for="btn-check2">충전</label>
+								    <label class="btn btn-outline-primary label" for="btn-check2">충전</label>
 							        <input type="radio" name="options"class="btn-check" id="btn-check3" value="2" autocomplete="off">
-								    <label class="btn btn-outline-primary" for="btn-check3">환급</label>
+								    <label class="btn btn-outline-primary label" for="btn-check3">환급</label>
 							        <input type="radio" name="options" class="btn-check" id="btn-check4" value="3" autocomplete="off">
-								    <label class="btn btn-outline-primary" for="btn-check4">사용</label>
+								    <label class="btn btn-outline-primary label" for="btn-check4">사용</label>
 							        <input type="radio" name="options" class="btn-check" id="btn-check5" value="4" autocomplete="off">
-								    <label class="btn btn-outline-primary" for="btn-check5">수익</label>
+								    <label class="btn btn-outline-primary label" for="btn-check5">수익</label>
 								</div>
 <!-- 								<div id="date_select"><button id="select_date_modal" data-bs-toggle="modal" data-bs-target="#date_modal">기간선택<i class="fa fa-caret-down"></i></button></div> -->
 
