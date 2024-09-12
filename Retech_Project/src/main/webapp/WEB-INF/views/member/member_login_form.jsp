@@ -256,8 +256,8 @@
         </article>
     </div>
 
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
+<!--     <footer> -->
+<%--         <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include> --%>
+<!--     </footer> -->
 </body>
 </html>
