@@ -27,7 +27,7 @@
             flex: 1;
             overflow: hidden;
         }
-		
+        
 		.store-info img {
             border-radius: 50%;
             width: 100px;
@@ -35,7 +35,7 @@
             object-fit: cover;
             margin-right: 20px;
         }
-		
+        
         .sidebar {
             width: 250px;
             background-color: #f4f4f4;
@@ -106,7 +106,7 @@
         }
 
         .tabs a.selected {
-			background-color: #34495e;
+            background-color: #34495e;
             color: #fff;
         }
 
@@ -137,14 +137,15 @@
 
         .product-image {
             width: 100px;
+            height: 100px;
         }
 
-        .action-buttons {
+        .status-buttons {
             display: flex;
             gap: 10px;
         }
 
-        .action-buttons button {
+        .status-buttons button {
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
@@ -154,20 +155,30 @@
         }
 
         .cancel-request {
-            background-color: #f44336; /* 취소 요청 버튼 색상 */
+            background-color: #f44336; 
         }
 
         .confirm-request {
-            background-color: #4caf50; /* 거래 확정 버튼 색상 */
+            background-color: #4caf50; 
+        }
+
+        .review-request {
+            background-color: #2196F3; 
         }
 
         .cancel-request:hover {
-            background-color: #d32f2f; /* 취소 요청 버튼 호버 색상 */
+            background-color: #d32f2f;
         }
 
         .confirm-request:hover {
-            background-color: #388e3c; /* 거래 확정 버튼 호버 색상 */
+            background-color: #388e3c;
         }
+
+        .review-request:hover {
+            background-color: #1976D2;
+        }
+        
+        
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
@@ -314,8 +325,8 @@
             </div>
 
             <ul class="tabs">
-                <li><a href="SaleHistory" class="selected">판매내역</a></li>
-                <li><a href="SellerReview">받은 리뷰</a></li>
+                <li><a href="#" class="selected">판매내역</a></li>
+                <li><a href="SellerReview?member_id=${param.member_id}">받은 리뷰</a></li>
             </ul>
 
             <div class="content">
@@ -336,7 +347,7 @@
                                    <td>
                                        <c:choose>
                                            <c:when test="${not empty product.pd_image1}">
-                                               <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                               <img src="${pageContext.request.contextPath}/resources/img/main/${product.pd_image1}" class="product-image"/>
                                            </c:when>
                                            <c:otherwise>
                                                No Image
@@ -344,7 +355,7 @@
                                        </c:choose>
                                    </td>
                                    <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
-                                   <td>${product.trade_amt}</td>
+                                   <td>${product.pd_price}</td>
                                    <td data-date="${product.pd_first_date}"></td>
                                    <td>
                                        <c:choose>

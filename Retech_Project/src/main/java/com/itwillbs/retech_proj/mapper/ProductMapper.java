@@ -67,7 +67,8 @@ public interface ProductMapper {
 	
 	// 상품 번호 memeber_id에 해당하는 판매자 정보 조회 요청
 	HashMap<String, String> selectSellerInfo(@Param("pd_idx")int pd_idx,
-											 @Param("member_id")String member_id);
+											 @Param("member_id")String member_id
+											 );
 	// 판매자의 판매물품 개수 조회요청
 	int selectSellerProductCount(String member_id);
 	
@@ -107,6 +108,7 @@ public interface ProductMapper {
 
 	// 상품 상태 업데이트
 	int updateProductStatus3(@Param("id") int id, @Param("status") String status);
+
 
 
 

@@ -87,7 +87,10 @@
     </header>
 
     <div class="main-content">
-        <div class="sidebar">
+
+        <div class="content-area" style="padding:0;">
+        
+        <div class="sidebar" style="display:inline-block;">
             <a href="SaleHistory">판매내역</a>
             <a href="PurchaseHistory">구매내역</a>
             <a href="PurchaseStoreHistory" class="selected">스토어 구매내역</a>
@@ -95,8 +98,9 @@
             <a href="CsHistory">문의내역</a>
             <a href="MemberInfo">회원정보수정</a>
         </div>
-
-        <div class="content-area">
+        
+        <div class="right" style="display:inline-block;width:calc(100vw - 400px);vertical-align:top; ">
+        
              <div class="store-info">
                 <div>
                 <c:choose>
@@ -170,12 +174,13 @@
                     </table>
                 </c:if>
             </div>
-        </div>
-    </div>
-
+          </div>
     <footer>
         <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
     </footer>
+    </div>
+     </div>   
+     
 </body>
 </html>
  

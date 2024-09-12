@@ -138,6 +138,7 @@
 
         .product-image {
             width: 100px;
+            height: 100px;
         }
 
         .status-buttons {
@@ -198,7 +199,7 @@
                     <!-- member_id 파라미터가 있을 때 -->
                     <a href="SaleHistory?member_id=${param.member_id}">판매내역</a>
                     <a href="PurchaseHistory?member_id=${param.member_id}" class="selected">구매내역</a>
-                     <a href="PurchaseStoreHistory?member_id=${param.member_id}">스토어 구매내역</a>
+<%--                      <a href="PurchaseStoreHistory?member_id=${param.member_id}">스토어 구매내역</a> --%>
                     <a href="Wishlist?member_id=${param.member_id}">찜한상품</a>
                 </c:when>
                 <c:otherwise>
@@ -236,8 +237,8 @@
             </div>
 
             <ul class="tabs">
-                <li><a href="PurchaseHistory">구매내역</a></li>
-                <li><a href="BuyerReview" class="selected">작성한 리뷰</a></li>
+                <li><a href="PurchaseHistory?member_id=${param.member_id}">구매내역</a></li>
+                <li><a href="BuyerReview?member_id=${param.member_id}" class="selected">작성한 리뷰</a></li>
             </ul>
 
             <div class="content">
@@ -261,7 +262,7 @@
                                         <td> <!-- 상품사진 -->
                                             <c:choose>
                                                 <c:when test="${not empty product.pd_image1}">
-                                                    <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                                    <img src="${pageContext.request.contextPath}/resources/img/main/${product.pd_image1}" class="product-image"/>
                                                 </c:when>
                                                 <c:otherwise>
                                                     No Image
@@ -269,7 +270,7 @@
                                             </c:choose>
                                         </td>
                                         <!-- 상품명 -->
-                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
   										 <!-- 리뷰별점 -->
                                         <td>

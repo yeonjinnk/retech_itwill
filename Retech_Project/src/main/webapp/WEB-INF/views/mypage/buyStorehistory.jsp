@@ -137,6 +137,7 @@
 
         .product-image {
             width: 100px;
+            height: 100px;
         }
 
         .status-buttons {
@@ -293,16 +294,16 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${not empty product.pd_image1}">
-                                                    <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                                    <img src="${pageContext.request.contextPath}/resources/img/main/${product.pd_image1}" class="product-image"/>
                                                 </c:when>
                                                 <c:otherwise>
                                                     No Image
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
-                                        <td>${product.trade_amt}</td>
+										<td>${product.pd_price}</td>
                                         <td>${product.pd_first_date}</td>
                                         <td>
                                             <div class="status-buttons">
