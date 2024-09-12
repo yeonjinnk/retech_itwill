@@ -133,9 +133,9 @@
         transition: border-color 0.3s;
     }
 
-    article form .info input:focus {
-        background-color: #34495e;
-    }
+/*     article form .info input:focus { */
+/*         background-color: #34495e; */
+/*     } */
 
     article form .search {
         text-align: left;
