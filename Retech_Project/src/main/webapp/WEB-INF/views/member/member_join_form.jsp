@@ -305,6 +305,7 @@
         });
     });
 
+    
     function validatePassword() {
         var passwd = $("#member_passwd").val();
         var passwd2 = $("#member_passwd2").val();
