@@ -27,6 +27,37 @@
 	    overflow: hidden;
 	    margin-top: 0px;
 	} 
+	.content {
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .content-area {
+            flex: 1;
+            padding: 20px;
+            background-color: #F9F9F9;
+            overflow-y: auto;
+            justify-content: center;
+        }
+        .store-info {
+            background-color: #F5F5F5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            width: 80%;
+            margin: 0 auto;
+        }
+		.tabs {
+		 	margin-bottom: 20px;
+			list-style-type: none;
+			padding: 0;
+			display: flex;
+		 	margin-left: 115px;
+		}
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
