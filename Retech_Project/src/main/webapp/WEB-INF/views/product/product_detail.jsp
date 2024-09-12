@@ -22,13 +22,14 @@
     padding: 20px;
     }
 .w-100 {
-    width: 900px !important;
+    width: 400px !important;
     height: 300px;    
 }
 img {
     vertical-align: middle;
     border-style: none;
     width: 175px;
+    
 }
 </style>
 <!-- jQuery -->
