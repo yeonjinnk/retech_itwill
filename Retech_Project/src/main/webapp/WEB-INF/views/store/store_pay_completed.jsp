@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/store/store_pay.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/store/store_pay_completed.css" rel="stylesheet">
 
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 

@@ -411,11 +411,10 @@
 
 			<div class="modalOpen">
 				<div id="reviewModal">
-					<form action="RegistReview">
-						거래 리뷰
-						<hr>
-						별점과 리뷰를 남겨주세요!
-						<b>dd${product.pd_idx}</b>
+					<form action="RegistReview" id="form">
+						거래 리뷰<br><br>
+						<hr><br>
+						별점과 리뷰를 남겨주세요!<br><br>
 						<input type="hidden" id="pd_idx" value="${product.pd_idx}">
 						<div class="starRev">
 						  <!-- 편의 상 가장 첫번째의 별은 기본으로 class="on"이 되게 설정해주었습니다. -->
@@ -424,11 +423,13 @@
 						  <span class="starR">⭐</span>
 						  <span class="starR">⭐</span>
 						  <span class="starR">⭐</span>
-						</div>
-						<input type="text" id="content" placeholder="내용을 입력해주세요">
+						</div><br>
+						<input type="text" id="content" placeholder="내용을 입력해주세요"><br><br>
+						<br><br>
 						<div class="modalBtn">
-							<button type="button" id="btnReviewSub">전송</button>&nbsp;&nbsp;&nbsp;&nbsp;
-							<button type="button" id="btnReviewClose">닫기</button>
+						
+							<button type="button" id="btnReviewSub" class="btn">전송</button>&nbsp;&nbsp;&nbsp;&nbsp;
+							<button type="button" id="btnReviewClose" class="btn">닫기</button>
 						</div>
 					</form>
 				</div>

@@ -372,8 +372,9 @@ header {
     flex-direction: column;
     transition: background-color 0.3s ease;
     background-color: #f0f0f0; /* 연한 회색 */
-    font-family: "Dongle", sans-serif;
-    font-size: 30px;
+    font-family: campton, 'Apple SD Gothic Neo', NanumBarunGothic, '나눔바른고딕', 'Malgun Gothic', '맑은 고딕', dotum, sans-serif;
+    -webkit-text-size-adjust: none;
+    font-size: 20px;
     line-height: 1.1; /* 줄 간격 줄이기 */
 }
 .card-body p {
@@ -388,7 +389,7 @@ header {
 
 /* 제목 링크 스타일 */
 .card-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 5px; /* 제목과 본문 사이의 간격 줄이기 */
     overflow: hidden;
     text-overflow: ellipsis;

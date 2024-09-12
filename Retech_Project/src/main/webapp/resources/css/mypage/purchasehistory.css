@@ -2,8 +2,9 @@
 
 
 .modalOpen {
- 	font-size: 14px; 
+ 	font-size: 20px; 
 	margin: 30px;
+	padding: 30px;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -22,16 +23,23 @@
 /* 	padding: 20px;	 */
 /* } */
 
+#reviewModal {
+	padding: 30px;
+}
+
 .modalBtn {
 	display: flex;
 	justify-content: center;
 }
-
+#form {
+	font-size: 20px;
+}
 /* 각 별들의 기본 설정 */
 .starR{
+	font-size: 500px;
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   color: transparent; /*기본 텍스트 색상 투명하게*/
   text-shadow: 0 0 0 #f0f0f0; /*별의 그림자 색상(회색)*/
   font-size: 1.8em; /*별의 크기*/
@@ -47,4 +55,44 @@
 /* 별 이모지를 클릭 후 class="on"이 되었을 경우 */
 .starR.on{
   text-shadow: 0 0 0 #ffbc00;  /*별의 색상(노란색)*/
+}
+
+#content {
+	width:300px;
+}
+
+button {
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+}
+
+.btn {
+	text-align: center;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 25px;
+    width: 20%;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #34495E;
+    box-shadow: 10px 10px 16px 0 rgb(0 0 0 / 30%);
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+	
 }
