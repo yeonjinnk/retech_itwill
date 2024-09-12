@@ -138,6 +138,7 @@
 
         .product-image {
             width: 100px;
+            height: 100px;
         }
 
         .status-buttons {
@@ -366,7 +367,7 @@
                     <!-- member_id 파라미터가 있을 때 -->
                     <a href="SaleHistory?member_id=${param.member_id}">판매내역</a>
                     <a href="PurchaseHistory?member_id=${param.member_id}" class="selected">구매내역</a>
-                     <a href="PurchaseStoreHistory?member_id=${param.member_id}">스토어 구매내역</a>
+<%--                      <a href="PurchaseStoreHistory?member_id=${param.member_id}">스토어 구매내역</a> --%>
                     <a href="Wishlist?member_id=${param.member_id}">찜한상품</a>
                 </c:when>
                 <c:otherwise>
@@ -401,7 +402,7 @@
 
             <ul class="tabs">
                 <li><a href="#" class="selected">구매내역</a></li>
-                <li><a href="BuyerReview">작성한 리뷰</a></li>
+                <li><a href="BuyerReview?member_id=${param.member_id}">작성한 리뷰</a></li>
             </ul>
 
 
@@ -457,16 +458,16 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${not empty product.pd_image1}">
-                                                    <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+                                                    <img src="${pageContext.request.contextPath}/resources/img/main/${product.pd_image1}" class="product-image"/>
                                                 </c:when>
                                                 <c:otherwise>
                                                     No Image
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
 <%--                                         <td>${product.pd_content}</td> --%>
-                                        <td>${product.trade_amt}</td>
+                                        <td>${product.pd_price}</td>
                                         <td data-date="${product.pd_first_date}"></td>
                                         <td>
                                             <div class="status-buttons">

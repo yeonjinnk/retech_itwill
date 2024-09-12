@@ -8,7 +8,6 @@
     <title>찜한 상품</title>
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
     <style type="text/css">
-        <style type="text/css">
         html, body {
             height: 100%;
             margin: 0;
@@ -27,7 +26,7 @@
             flex: 1;
             overflow: hidden;
         }
-		
+        
 		.store-info img {
             border-radius: 50%;
             width: 100px;
@@ -35,7 +34,7 @@
             object-fit: cover;
             margin-right: 20px;
         }
-		
+        
         .sidebar {
             width: 250px;
             background-color: #f4f4f4;
@@ -137,8 +136,48 @@
 
         .product-image {
             width: 100px;
-            height: auto;
+            height: 100px;
         }
+
+        .status-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .status-buttons button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cancel-request {
+            background-color: #f44336; 
+        }
+
+        .confirm-request {
+            background-color: #4caf50; 
+        }
+
+        .review-request {
+            background-color: #2196F3; 
+        }
+
+        .cancel-request:hover {
+            background-color: #d32f2f;
+        }
+
+        .confirm-request:hover {
+            background-color: #388e3c;
+        }
+
+        .review-request:hover {
+            background-color: #1976D2;
+        }
+        
+        
     </style>
 </head>
 <body>
@@ -207,14 +246,14 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${not empty product.pd_image1}">
-                                                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" alt="${product.pd_content}" class="product-image"/>
+											<img src="${pageContext.request.contextPath}/resources/img/main/${product.pd_image1}" class="product-image"/>
                                             </c:when>
                                             <c:otherwise>
                                                 이미지 없음
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
-                                    <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_content}</a></td>
+                                   <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
                                     <td>${product.pd_price}</td>
                                     <td data-date="${product.pd_first_date}"></td>
                                     <td>${product.pd_status}</td>

@@ -46,6 +46,15 @@ public class AdminChart {
             
             List<ProductVO> productList = service.getProductList();
             
+            for(ProductVO p : productList) {
+            	p.setPd_image1("");
+            	p.setPd_image2("");
+            	p.setPd_image3("");
+            	p.setPd_image4("");
+            	p.setPd_image5("");
+            	p.setPd_subject("");
+            	p.setPd_content("");
+            }
             System.out.println("productList 잘오는지" + productList);
             
             model.addAttribute("productData", gson.toJson(productList));
