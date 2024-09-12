@@ -25,7 +25,6 @@
         .main-content {
             display: flex;
             flex: 1;
-            margin-top: 150px;
             overflow: hidden;
         }
 
@@ -53,7 +52,7 @@
         }
 
         .sidebar a.selected {
-            background-color: #FF0000;
+            background-color: #34495e;
             color: #fff;
         }
 
@@ -110,7 +109,7 @@
         }
 
         .tabs a.selected {
-            background-color: #FF0000;
+            background-color: #34495e;
             color: #fff;
         }
 

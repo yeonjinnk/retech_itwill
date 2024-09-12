@@ -59,7 +59,7 @@
         }
 
         .tab > ul > li.on {
-            background-color: #4CAF50;
+            background-color: #34495e;
             color: white;
             font-weight: bold;
         }
@@ -103,7 +103,7 @@
         .join_detail input[type="text"]:focus,
         .join_detail input[type="password"]:focus,
         .join_detail input[type="file"]:focus {
-            border-color: #4CAF50;
+            border-color: #34495e;
         }
 
         .check {
@@ -122,7 +122,7 @@
         #submit {
             width: 100%;
             padding: 15px;
-            background-color: #4CAF50;
+            background-color: #34495e;
             border: none;
             border-radius: 5px;
             color: white;
@@ -132,7 +132,7 @@
         }
 
         #submit:hover {
-            background-color: #45a049;
+            background-color: #34495e;
         }
 
         .auth_code {
@@ -225,8 +225,8 @@
 
             <div class="join_detail">
                 <label for="member_phone" class="title">휴대폰번호</label>
-                <span id="checkPhoneResult" class="check"></span>
                 <input type="text" name="member_phone" id="member_phone" placeholder="- 없이 숫자만 입력해주세요." required>
+                <span id="checkPhoneResult" class="check"></span>
                 <button type="button" id="sendAuthCode">인증번호 받기</button>
                 <span id="authCodeResult" class="check"></span>
             </div>
@@ -256,6 +256,7 @@
 
     <script type="text/javascript">
     $(document).ready(function() {
+    	
         // 비밀번호 유효성 검사
         $("#member_passwd, #member_passwd2").on("blur", validatePassword);
 
@@ -275,12 +276,14 @@
 
         // 인증번호 발송 버튼 클릭 시
         $("#sendAuthCode").on("click", function() {
+        	
             var phone = $("#member_phone").val();
+            console.log("phone : " + phone);
             if (validatePhoneNumber()) {
                 $.ajax({
                     url: "${pageContext.request.contextPath}/SendAuthCode",
                     type: "POST",
-                    data: { phone: phone },
+                    data: { member_phone: phone },
                     success: function(response) {
                         $("#authCodeResult").text("인증번호가 발송되었습니다.").addClass("success");
                     },
@@ -302,6 +305,7 @@
         });
     });
 
+    
     function validatePassword() {
         var passwd = $("#member_passwd").val();
         var passwd2 = $("#member_passwd2").val();

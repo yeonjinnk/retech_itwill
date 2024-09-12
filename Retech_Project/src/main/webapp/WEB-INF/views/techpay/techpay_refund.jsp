@@ -165,7 +165,7 @@
 				원하는 계좌의 '환급하기' 버튼을 누르시면,<br>
 				테크페이 비밀번호 확인 후, 테크페이에서 해당 계좌로 환급이 진행됩니다.     		
  		        <table border="1" class="account_list_table">
-		        	<c:forEach var="account" items="${accountList.res_list}">
+		        	<c:forEach var="account" items="${accountList.res_list}" begin="0" end="1">
 		        		<tr>
 		        			<td>
 			        			<c:if test="${account.bank_code_std eq '002'}">

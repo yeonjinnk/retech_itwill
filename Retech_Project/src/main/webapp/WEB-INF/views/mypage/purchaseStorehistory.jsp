@@ -10,6 +10,24 @@
     <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
     <link href="${pageContext.request.contextPath}/resources/css/mypage/purchaseStorehistory.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style type="text/css">
+     .tabs a.selected {
+            background-color: #34495e;
+            color: #fff;
+        }
+        
+    .sidebar a.selected {
+            background-color: #34495e;
+            color: #fff;
+        } 
+        
+       .main-content {
+	    display: flex;
+	    flex: 1;
+	    overflow: hidden;
+	    margin-top: 0px;
+	} 
+    </style>
     <script type="text/javascript">
         $(document).ready(function() {
             $('.cancel-request').on('click', function() {

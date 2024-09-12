@@ -280,7 +280,7 @@ function loadList(selectedCategory, selectedSort, resetPage) {
 }
 
 #categoryNav .select {
-    width: 5cm;
+    width: 4cm;
     height: 35px; /* 높이 유지 */
     margin-right: 10px; /* 각 select box 사이에 여백 추가 */
 }
@@ -454,8 +454,10 @@ header {
     background-color: #f0f0f0; /* 리스트 항목 호버시 배경색 */
 }
 
-
-
+.container {
+	width: 900px;
+	margin: 0 auto;
+}
 </style>
 
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">

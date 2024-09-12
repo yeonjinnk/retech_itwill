@@ -13,7 +13,6 @@
         margin: 0 auto; /* 가운데 정렬 */
     }
 
-
 </style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
