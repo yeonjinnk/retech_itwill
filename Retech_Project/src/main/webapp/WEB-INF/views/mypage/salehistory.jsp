@@ -90,6 +90,7 @@
             list-style-type: none;
             padding: 0;
             display: flex;
+            margin-left: 115px;
         }
 
         .tabs li {
