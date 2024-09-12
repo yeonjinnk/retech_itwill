@@ -792,7 +792,7 @@ public class MemberController {
 		   // 아이디(이메일)에 저장된 kakaoAccount 객체 꺼내기
 		   Map<String, Object> kakaoAccount = (Map<String, Object>) userInfo.get("kakao_account");
 
-		   MemberVO member = service.getMemberFromEmail((String)kakaoAccount.get("memberId"));
+		   MemberVO member = service.getMemberFromEmail((String)kakaoAccount.get("email"));
 		   System.out.println(member);
 			
 			
