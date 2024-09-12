@@ -15,7 +15,7 @@ header {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 20px;
     background-color: white;
@@ -24,7 +24,7 @@ header {
 }
 
 #slid .carousel-inner img {
-    width: 100%;
+    width: 900px;
     height: auto;
     border-radius: 12px;
 }
@@ -138,10 +138,13 @@ button.btn-danger:hover {
     text-decoration: underline;
 }
 
+/* 썸네일들을 4개 가로로 배치 */
 .thumbnails {
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 .thumbnail {
@@ -152,6 +155,19 @@ button.btn-danger:hover {
     border: 2px solid #ddd;
     transition: border-color 0.3s;
 }
+
+/* 썸네일 이미지를 4개 가로로 배치하고, 크기 조정 */
+.thumbnail:nth-child(4n+1) {
+    clear: both; /* 4번째 이미지 다음에 줄바꿈 */
+}
+
+/* 메인 사진 스타일 (메인 사진을 크게 설정) */
+.store_img img {
+    width: 400px; /* 메인 사진을 더 크게 설정 */
+    height: auto;
+    border-radius: 4px;
+}
+
 
 .thumbnail:hover {
     border-color: #333;
@@ -175,3 +191,11 @@ button.btn-danger:hover {
         font-size: 1.6rem;
     }
 }
+
+.w-100 {
+    width: 200px;
+    height: 200px;
+    margin: 0 5px;	
+}
+
+
