@@ -17,7 +17,7 @@
 <!-- 						<button class="alarmBtn alarmBtnOff" onclick="alarmNotify()"><i class="material-icons">notifications_off</i></button> -->
 					</div>
 					<div class="detailArea">
-						<a class="moreAlarm" href="alarmAll">더보기 > </a>
+<!-- 						<a class="moreAlarm" href="alarmAll">더보기 > </a> -->
 					</div>
 				</div>
 				<hr class="alarmHr">

@@ -136,6 +136,7 @@
 		if(!isAlarmListOpen) {//알림창 열기
 			console.log("알림창 열기!");
 			$(".layer_box").css("display", "");
+			$("#alarmPoint").css("display", "none");
 			isAlarmListOpen = true;
 			
 			// 알림 목록에 DB에 저장된 알림 가져오는 함수
@@ -165,7 +166,7 @@
 					let alarmListCount = $(".alarmItem").length;
 					console.log("클래스가 alarmItem인 요소의 개수 : " + alarmListCount);
 					
-					
+					$(".alarmItem").remove();
 
 					
 					
@@ -214,7 +215,7 @@
 							
 							
 						$("#alarmList").append(divAlarm);
-						$("#alarmPoint").css("display", "");
+// 						$("#alarmPoint").css("display", "");
 						
 						//알림 목록 7개가 넘어가면 오래된 알림 삭제
 						if(alarmListCount > 7) {
@@ -251,6 +252,7 @@
 		} else { //알림창 닫기
 			console.log("알림창 닫기!");
 			$(".layer_box").css("display", "none");
+			$("#alarmPoint").css("display", "none");
 			isAlarmListOpen = false;
 		}
 	}
@@ -1138,6 +1140,7 @@ function localStarageDeleteOne(keyword) {
 							+ "</div>" //title 끝
 							+ "<div class='message'>" //message 시작
 							+ "<div class='message-avatar'>" //message-avatar 시작
+							+ 
 							+ "<img src='https://ssl.pstatic.net/static/pwe/address/img_profile.png'>"
 							+ "</div>" //message-avatar 끝
 							+ "<div class='message-body'>" //message-body 시작
@@ -1148,7 +1151,7 @@ function localStarageDeleteOne(keyword) {
 							+ "<span>"
 							+ room.last_send_time
 							+ "</span>"
-							+ "</div>" //message-bod-heading 끝
+							+ "</div>" //message-bod-heading 끝	
 							+ "<p>"
 							+ room.last_message
 							+ "</p>"

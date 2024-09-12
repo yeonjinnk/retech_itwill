@@ -84,26 +84,34 @@ public class StoreController {
 		model.addAttribute("payProduct", payProduct);*/
 	public String storePay(@RequestParam("order_store_item") int store_idx, @RequestParam int order_store_quantity, 
 			Model model, HttpSession session) {
-//		System.out.println("store_idx" + store_idx);
-		System.out.println("!!!!!!!!!스토어 결제하기 파라미터 조회 : " + store_idx + ", " + order_store_quantity);
-		//상품 정보 조회
-		Map<String, Object> Store = service.selectStore(store_idx);
-		System.out.println("Store : " + Store);
-		//멤버 정보 조회
-				String id = (String)session.getAttribute("sId");
-				 // 회원 정보 조회 (필요한 경우)
-		        MemberVO member = new MemberVO();
-		        member.setMember_id(id);
-		        member = memberService.getMember(member);
-		        model.addAttribute("member", member);
-		int shippingCost = 3000;
-		int amt = order_store_quantity * (int)Store.get("store_price");
-		int order_store_pay = amt + shippingCost;
-		model.addAttribute("Store", Store);
-		model.addAttribute("order_store_quantity", order_store_quantity);
-		model.addAttribute("order_store_pay", order_store_pay);
-		model.addAttribute("amt", amt);
-		return "store/store_pay";
+		
+		String id = (String)session.getAttribute("sId");
+		
+		if(id != null) {
+	//		System.out.println("store_idx" + store_idx);
+				System.out.println("!!!!!!!!!스토어 결제하기 파라미터 조회 : " + store_idx + ", " + order_store_quantity);
+				//상품 정보 조회
+				Map<String, Object> Store = service.selectStore(store_idx);
+				System.out.println("Store : " + Store);
+				//멤버 정보 조회
+				// 회원 정보 조회 (필요한 경우)
+				MemberVO member = new MemberVO();
+				member.setMember_id(id);
+				member = memberService.getMember(member);
+				model.addAttribute("member", member);
+				int shippingCost = 3000;
+				int amt = order_store_quantity * (int)Store.get("store_price");
+				int order_store_pay = amt + shippingCost;
+				model.addAttribute("Store", Store);
+				model.addAttribute("order_store_quantity", order_store_quantity);
+				model.addAttribute("order_store_pay", order_store_pay);
+				model.addAttribute("amt", amt);
+				return "store/store_pay";
+		} else {
+			model.addAttribute("msg", "로그인 후 스토어 결제 이용해주세요!");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "result/fail";
+		}
 	} 
 	
 	//스토어 결제 정보 저장하기
