@@ -357,7 +357,7 @@
 			        </div>
 			
 			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=NB&c_id2=LG'" style="cursor:pointer;">
-			            <img src="${pageContext.request.contextPath }/resources/img/main_category/NBlg.png" style="width:50%;" class="inner_photo category_photo">
+			            <img src="${pageContext.request.contextPath}/resources/img/main_category/NBlg.png" style="width:50%;" class="inner_photo category_photo">
 			            <div class="overlay">
 			                <img src="${pageContext.request.contextPath }/resources/img/main_category/logo_lg.png" style="width:70%;" class="category_logo">
 			            </div>
@@ -373,7 +373,7 @@
 			        <c:forEach var="product" items="${popularProducts}">
 			            <div class="pd_popular_photo photo">
 			                <a href="product_detail?pd_idx=${product.pd_idx}&member_id=${product.member_id}">
-			                <img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" 
+			                <img src="${pageContext.request.contextPath }/resources/img/main/${product.pd_image1}" 
     							 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}" class="inner_photo"/>
 			                </a>
 					        <div class="subject">${product.pd_subject}</div>
@@ -390,7 +390,7 @@
 				    <c:forEach var="product" items="${recentProducts}">
 					    <div class="photo">
 							<a href="product_detail?pd_idx=${product.pd_idx }&member_id=${product.member_id}">
-					        	<img src="${pageContext.request.contextPath}/resources/images/${product.pd_image1}" 
+					        	<img src="${pageContext.request.contextPath }/resources/img/main/${product.pd_image1}" 
 					        		 alt="${fn:substring(product.pd_image1, 11, fn:length(product.pd_image1))}" class="inner_photo"/>
 					        </a>
 					        <div class="subject">${product.pd_subject}</div>
