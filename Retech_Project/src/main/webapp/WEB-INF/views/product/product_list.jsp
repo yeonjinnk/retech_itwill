@@ -455,8 +455,6 @@ header {
 	margin: 0 auto;
 }
 
-
-
 </style>
 
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
