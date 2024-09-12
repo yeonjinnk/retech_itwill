@@ -29,13 +29,14 @@
             padding: 50px 0;
             text-align: center;
             flex: 1; 
-            margin-top: 130px; 
+            margin-top: 0px; 
         }
 
         .tab {
             width: 720px;
             margin: 0 auto;
             text-align: center;
+            margin-top: 0px; 
         }
 
         .tab > ul {
@@ -70,7 +71,7 @@
         }
 
         .tab > ul > li.on {
-            background-color: #4CAF50;
+            background-color: #34495E;
             color: white;
             font-weight: bold;
         }

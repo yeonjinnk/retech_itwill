@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -259,7 +260,7 @@
                                         </c:choose>
                                     </td>
                                    <td><a href="${pageContext.request.contextPath}/productDetail?pd_idx=${product.pd_idx}">${product.pd_subject}</a></td>
-                                    <td>${product.pd_price}</td>
+                                    <td><fmt:formatNumber value="${product.pd_price}" pattern="#,##0"/></td>
                                     <td data-date="${product.pd_first_date}"></td>
                                     <td>${product.pd_status}</td>
                                 </tr>
@@ -277,10 +278,6 @@
             </div>
         </div>
     </div>
-
-    <footer>
-        <jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>
-    </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

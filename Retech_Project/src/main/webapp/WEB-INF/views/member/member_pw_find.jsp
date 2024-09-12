@@ -52,7 +52,7 @@
     }
 
     table {
-        font-size: 0.9em;
+        font-size: 1.3em;
         width: 100%; 
     }
 
