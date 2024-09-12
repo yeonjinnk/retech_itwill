@@ -20,13 +20,13 @@
         padding: 8px 20px;
         border: none;
         border-radius: 8px; 
-        background-color: #4CAF50; 
+        background-color: #34495e; 
         color: white; 
         cursor: pointer;
     }
 
     #next:hover, #sendCode:hover {
-        background-color: #45a049; 
+        background-color: #34495e; 
     }
 
     #sec02 {
@@ -57,13 +57,13 @@
         padding: 10px 20px; 
         border: none;
         border-radius: 8px; 
-        background-color: #4CAF50; 
+        background-color: #34495e;
         color: white;
         cursor: pointer; 
     }
 
     input[type="submit"]:hover {
-        background-color: #45a049; 
+        background-color: #34495e; 
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

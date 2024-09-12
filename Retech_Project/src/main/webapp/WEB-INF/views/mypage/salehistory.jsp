@@ -25,7 +25,6 @@
         .main-content {
             display: flex;
             flex: 1;
-            margin-top: 150px;
             overflow: hidden;
         }
 		
@@ -61,7 +60,7 @@
         }
 
         .sidebar a.selected {
-            background-color: #FF0000;
+            background-color: #34495e;
             color: #fff;
         }
 
@@ -107,7 +106,7 @@
         }
 
         .tabs a.selected {
-            background-color: #FF0000;
+			background-color: #34495e;
             color: #fff;
         }
 
@@ -363,6 +362,9 @@
                                            </c:when>
                                            <c:when test="${product.trade_status == '5'}">
                                             거래취소승인완료
+                                           </c:when>
+                                           <c:when test="${product.trade_status == '6'}">
+                                            거래확정(리뷰완료)
                                            </c:when>
                                        </c:choose>
                                    </td>

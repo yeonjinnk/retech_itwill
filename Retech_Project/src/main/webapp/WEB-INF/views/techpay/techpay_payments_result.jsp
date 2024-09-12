@@ -44,7 +44,11 @@
 				</tr>
 				<tr>
 					<td colspan="2">
+<<<<<<< HEAD
+						<a href="#">테크페이 내역 보기</a>
+=======
 						<a href="TechPayMain">메인페이지로 돌아가기</a>
+>>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git
 					</td>
 				</tr>
 			</table>

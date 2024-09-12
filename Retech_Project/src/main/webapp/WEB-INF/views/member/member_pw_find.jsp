@@ -35,7 +35,7 @@
         padding: 8px 20px; 
         border: none;
         border-radius: 8px; 
-        background-color: #4CAF50; 
+        background-color: #34495e; 
         color: white;
     }
 

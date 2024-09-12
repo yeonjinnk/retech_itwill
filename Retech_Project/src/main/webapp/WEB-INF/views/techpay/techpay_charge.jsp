@@ -161,7 +161,7 @@
 				원하는 계좌의 '충전하기' 버튼을 누르시면,<br>
 				테크페이 비밀번호 확인 후, 해당 계좌에서 출금하여 테크페이로 충전됩니다.
  		        <table border="1" class="account_list_table">
-		        	<c:forEach var="account" items="${accountList.res_list}">
+		        	<c:forEach var="account" items="${accountList.res_list}" begin="0" end="1">
 		        		<tr>
 		        			<td>
 			        			<c:if test="${account.bank_code_std eq '002'}">
