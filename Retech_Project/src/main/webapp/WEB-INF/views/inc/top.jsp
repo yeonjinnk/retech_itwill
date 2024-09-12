@@ -1147,7 +1147,7 @@ function localStarageDeleteOne(keyword) {
 							+ "<div class='message-body-heading'>" //message-bod-heading 시작
 							+ "<h5>"
 							+ room.receiver_id 
-							+ "</h5>"
+							+ "</h5>" 
 							+ "<span>"
 							+ room.last_send_time
 							+ "</span>"
