@@ -141,13 +141,14 @@ public class AdminStoreController {
          model.addAttribute("targetURL", "AdminTrade?pageNum=1");
          return "result/fail";
       }
+      PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
       // -------------------------------------------------------------------------------------------
       // 검색 기능 추가 (0705)
       // 검색어는 기본적으로 "" 널스트링
       // 회원 목록 조회
       List<TradeVO> TradeList = adminreviewservice.getTradeList(startRow, listLimit, searchKeyword);
-//      System.out.println(memberList);
-      PageInfo pageInfo = new PageInfo(listCount, pageListLimit, maxPage, startPage, endPage);
+      System.out.println("TradeList ddddddddd" +TradeList);
+      
       // 회원 목록, 페이징 정보 Model 객체에 저장 -> admin_member_list.jsp 로 전달
       model.addAttribute("TradeList", TradeList);
       model.addAttribute("pageInfo", pageInfo);
