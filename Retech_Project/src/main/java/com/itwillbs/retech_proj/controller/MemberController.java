@@ -567,6 +567,7 @@ public class MemberController {
 			}
 	       
 	       
+	       
            // 아이디에 해당하는 판매내역 리스트 조회(trade 있을 때)
     	   List<Map<String, String>> saleList = productService.getSaleList(loggedInUserId);
     	   
