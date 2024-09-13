@@ -237,9 +237,10 @@
 	<!-- 상품수정  -->
 	<update id="updateProduct" >
 		UPDATE product
-		SET 
+		SET
 			pd_price = #{pd_price}
 			, pd_content = #{pd_content}
+			, pd_subject = #{pd_subject}
 				<if test="file1 != null and !file1.equals('')">
 				    , pd_image1 = #{pd_image1}
 				</if>
