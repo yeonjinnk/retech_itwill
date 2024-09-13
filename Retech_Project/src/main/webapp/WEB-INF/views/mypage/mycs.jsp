@@ -64,7 +64,7 @@
             justify-content: center;
         }
 
-        .store-info {
+        .store-info { 
             background-color: #f5f5f5;
             padding: 20px;
             border-radius: 10px;
