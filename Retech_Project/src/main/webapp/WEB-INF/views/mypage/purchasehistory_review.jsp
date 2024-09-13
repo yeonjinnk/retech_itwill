@@ -184,8 +184,35 @@
         .review-request:hover {
             background-color: #1976D2;
         }
+       
+		  .store-info .progress-container {
+    float: right; /* 오른쪽으로 떠 있게 설정합니다 */
+    margin-left: 800px; /* 왼쪽 여백을 추가하여 내용과 간격을 둡니다 */
+}     
         
         
+        
+        
+         #progress {
+    appearance: none;
+}
+#progress::-webkit-progress-bar {
+    background:#f0f0f0;
+    border-radius:10px;
+    box-shadow: inset 3px 3px 10px #ccc;
+     height: 20px;
+        width: 400px;
+    
+}
+#progress::-webkit-progress-value {
+    border-radius:10px;
+    background: #34495E; /* 베이스 색상 */
+    background: -webkit-linear-gradient(to right, #BDC3C7, #34495E); /* WebKit 브라우저용 그라디언트 */
+    background: linear-gradient(to right, #BDC3C7, #34495E); /* 모든 브라우저용 그라디언트 */
+
+}
+
+ 
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
@@ -223,25 +250,26 @@
         <div class="content-area">
              <div class="store-info">
                 <div>
-                	<c:choose>
+                <c:choose>
                 	<c:when test="${empty member.member_profile}"><img src="https://cdn.litt.ly/images/U0UQOgi7NRuOXgn6LHSikIDTy1TWh688?s=1200x630&m=inside"></c:when>
                 	<c:otherwise><img src="${pageContext.request.contextPath}/resources/images/${member.member_profile}"></c:otherwise>
                 </c:choose>
-                
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>
-                     <c:choose>
-                    	<c:when test="${member.member_starRate eq 0.0}">
-                    <p>신뢰지수: -     (<a href="ProductRegistForm"> !!이곳을 클릭해 판매를 시작해주세요!! )</a></p>
-                    	</c:when>
-                    	<c:otherwise>
-                    <p>신뢰지수: ${member.member_starRate}</p>
-                    	</c:otherwise>
-                    </c:choose>
+                      <c:choose>
+            <c:when test="${member.member_starRate eq 0.0}">
+                <p>신뢰지수: -     (<a href="ProductRegistForm"> !!이곳을 클릭해 판매를 시작해주세요!! </a>)</p>
+            </c:when>
+            <c:otherwise>
+                <p>신뢰지수: ${member.member_starRate}</p>
+            </c:otherwise>
+        </c:choose>
                 </div>
+<!--                 <div class="progress-container"> -->
+                    <progress id="progress" value="${member.member_starRate}" min="0" max="5.0"></progress>
+<!--                 </div> -->
             </div>
-
             <ul class="tabs">
                 <li><a href="PurchaseHistory?member_id=${param.member_id}">구매내역</a></li>
                 <li><a href="BuyerReview?member_id=${param.member_id}" class="selected">작성한 리뷰</a></li>

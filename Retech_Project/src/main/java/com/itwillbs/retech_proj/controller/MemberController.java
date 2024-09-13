@@ -621,7 +621,9 @@ public class MemberController {
 	           
 	         //-------------리뷰 불러오기----------------------------
 		       Float myStarRate = service.getStarRate(id);
+		       System.out.println("불러온 리뷰 별점 myStarRate : " + myStarRate);
 		       if(myStarRate != null) {
+		    	   System.out.println("리뷰를 불러옵니다!!!");
 		    	   member.setMember_starRate(myStarRate);
 		       }
 		       //---------------------------------------------------
