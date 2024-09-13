@@ -59,8 +59,7 @@
 	           OR trade_seller_id LIKE CONCAT('%', #{searchKeyword}, '%')
 	    </if>
 	</select>
-
-		<!-- 리뷰 삭제 -->
+		<!-- 거래 삭제 -->
 	<delete id="deleteTrade">
 		DELETE 
 		FROM trade
