@@ -334,8 +334,22 @@ function scrollToTop() {
 				    <div class="carousel-inner">
 				      <div class="item active">
 					      <div class="image-wrapper">
+					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/bgColor.png" alt="New York" id="item_bg3">
+					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/abcd123.png" alt="New York" style="width:100%; height:100%; position:sticky; z-index: 1;">
+<%-- 					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/darknavy.png" alt="Chicago" id="item_bg2"> --%>
+<%-- 					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/tabletNetc2.png" alt="Chicago" style="width:100%; height:100%; position:sticky; z-index: 1;"> --%>
+						</div>
+				        <div class="carousel-caption item_inner" >
+				          <h3>Better Choice, Re-tech</h3>
+				          <p>더욱 스마트한 테크거래를 즐겨보세요!</p>
+				        </div>
+				      </div>
+				      <div class="item">
+					      <div class="image-wrapper">
 					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/darknavy.png" alt="Chicago" id="item_bg2">
 					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/tabletNetc2.png" alt="Chicago" style="width:100%; height:100%; position:sticky; z-index: 1;">
+<%-- 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/aquablue.png" alt="Los Angeles" id="item_bg1"> --%>
+<%-- 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/computerETC2.png" alt="Los Angeles" style="width: 100%; height: 100%; position:sticky; z-index: 1;"> --%>
 						</div>
 				        <div class="carousel-caption item_inner" >
 				          <h3>Tablet Coming Soon</h3>
@@ -344,24 +358,14 @@ function scrollToTop() {
 				      </div>
 				      <div class="item">
 					      <div class="image-wrapper">
-<%-- 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/PaleYellow.png" alt="Los Angeles" id="item_bg1"> --%>
-<%-- 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/SoftGole.png" alt="Los Angeles" id="item_bg1"> --%>
 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/aquablue.png" alt="Los Angeles" id="item_bg1">
 						    <img src="${pageContext.request.contextPath}/resources/img/main_slide/computerETC2.png" alt="Los Angeles" style="width: 100%; height: 100%; position:sticky; z-index: 1;">
+<%-- 					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/bgColor.png" alt="New York" id="item_bg3"> --%>
+<%-- 					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/abcd123.png" alt="New York" style="width:100%; height:100%; position:sticky; z-index: 1;"> --%>
 						</div>
 				        <div class="carousel-caption item_inner" >
 				          <h3>리테크 Service Open</h3>
 				          <p>PC, NOTEBOOK을 합리적인 가격으로 만나보세요!</p>
-				        </div>
-				      </div>
-				      <div class="item">
-					      <div class="image-wrapper">
-					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/orange.png" alt="New York" id="item_bg3">
-					        <img src="${pageContext.request.contextPath}/resources/img/main_slide/ny.jpg" alt="New York" style="width:100%; height:100%; position:sticky; z-index: 1;">
-						</div>
-				        <div class="carousel-caption item_inner" >
-				          <h3>New York</h3>
-				          <p>We love the Big Apple!</p>
 				        </div>
 				      </div>
 				    </div>
