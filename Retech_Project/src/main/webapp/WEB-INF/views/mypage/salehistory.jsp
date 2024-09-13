@@ -184,6 +184,55 @@
         }
         
         
+/* .store-info { */
+/*     display: flex; /* 플렉스박스를 사용하여 아이템을 정렬합니다 */ */
+/*     align-items: flex-start; /* 아이템을 상단에 맞춥니다 */ */
+/* } */
+
+/* .store-info > div { */
+/*     flex: 1; /* 왼쪽 영역이 가능한 많은 공간을 차지하도록 합니다 */ */
+/* } */
+
+/* .store-info > div img { */
+/*     max-width: 100%; /* 이미지가 부모 요소의 너비를 넘지 않도록 설정합니다 */ */
+/*     height: auto; /* 이미지 비율을 유지하도록 합니다 */ */
+/* } */
+
+/* .store-info .progress-container { */
+/*     display: flex; */
+/*     flex-direction: column; */
+/*     align-items: flex-end; /* 오른쪽에 정렬합니다 */ */
+/*     margin-left: 20px; /* 왼쪽 여백을 추가하여 내용과 간격을 둡니다 */ */
+/* } */
+
+.store-info .progress-container {
+    float: right; /* 오른쪽으로 떠 있게 설정합니다 */
+    margin-left: 800px; /* 왼쪽 여백을 추가하여 내용과 간격을 둡니다 */
+}     
+        
+        
+        
+        
+         #progress {
+    appearance: none;
+}
+#progress::-webkit-progress-bar {
+    background:#f0f0f0;
+    border-radius:10px;
+    box-shadow: inset 3px 3px 10px #ccc;
+     height: 20px;
+        width: 400px;
+    
+}
+#progress::-webkit-progress-value {
+    border-radius:10px;
+    background: #34495E; /* 베이스 색상 */
+    background: -webkit-linear-gradient(to right, #BDC3C7, #34495E); /* WebKit 브라우저용 그라디언트 */
+    background: linear-gradient(to right, #BDC3C7, #34495E); /* 모든 브라우저용 그라디언트 */
+
+}
+        
+        
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
@@ -317,16 +366,18 @@
                     <h2>상점 정보</h2>
                     <p>상점명: ${member.member_nickname}</p>
                     <p>지역: ${member.member_address1}</p>
-                    <c:choose>
-                    	<c:when test="${member.member_starRate eq 0.0}">
-                    <p>신뢰지수: -     (<a href="ProductRegistForm"> !!이곳을 클릭해 판매를 시작해주세요!! )</a></p>
-                    	</c:when>
-                    	<c:otherwise>
-                    <p>신뢰지수: ${member.member_starRate}</p>
-                    	</c:otherwise>
-                    </c:choose>
-                    
+                      <c:choose>
+            <c:when test="${member.member_starRate eq 0.0}">
+                <p>신뢰지수: -     (<a href="ProductRegistForm"> !!이곳을 클릭해 판매를 시작해주세요!! </a>)</p>
+            </c:when>
+            <c:otherwise>
+                <p>신뢰지수: ${member.member_starRate}</p>
+            </c:otherwise>
+        </c:choose>
                 </div>
+<!--                 <div class="progress-container"> -->
+                    <progress id="progress" value="${member.member_starRate}" min="0" max="5.0"></progress>
+<!--                 </div> -->
             </div>
 
             <ul class="tabs">

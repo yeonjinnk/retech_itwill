@@ -434,6 +434,11 @@
 				</c:otherwise>
 			</c:choose>
 		
+		
+		
+		
+		
+		
 			
 	       <!-- 페이에 등록한 계좌 목록 표시  -->
 	       <div class="account_list">
@@ -450,7 +455,11 @@
 			        			<th>예금주명</th>
 			        			<th>상세정보</th>
 			        		</tr>
-			        	<c:forEach var="account" items="${accountList.res_list}" begin="0" end="1">
+			        		       	<%-- 페이 비밀번호 정보 존재 여부에 따라 다른 링크 표시 --%>
+			<c:choose>
+				<c:when test="${empty sessionScope.pay_pwd }">
+				
+			        	<c:forEach var="account" items="${accountList.res_list}"  begin="0" end="0">
 			        		<tr>
 			        			<td>
 				        			<c:if test="${account.bank_code_std eq '002'}">
@@ -470,6 +479,36 @@
 			        			</td>
 			        		</tr>
 			        	</c:forEach>
+				
+
+				</c:when>
+				<c:otherwise>
+		        	<c:forEach var="account" items="${accountList.res_list}" begin="0" end="1">
+			        		<tr>
+			        			<td>
+				        			<c:if test="${account.bank_code_std eq '002'}">
+				        				<img src="${pageContext.request.servletContext.contextPath}/resources/img/kdb_symbol2.png" class="bank_symbol">
+				        			</c:if>
+			        			</td>
+			        			<td><b>${account.account_alias}</b></td>
+			        			<td>${account.bank_name}<br>
+			        				${account.account_num_masked}<br>
+			        			</td>
+			        			<td>${sessionScope.sName}</td>
+			        			<td>
+			        					<input type="hidden" name="fintech_use_num" value="${account.fintech_use_num}">
+			        					<input type="hidden" name=account_holder_name value="${account.account_holder_name}">
+			        					<input type="hidden" name="account_num_masked" value="${account.account_num_masked}">
+			        					<input type="button" class="acc_info_btn" value="계좌정보" >
+			        			</td>
+			        		</tr>
+			        	</c:forEach>
+				</c:otherwise>
+			</c:choose>
+			        		
+			        		
+			        		
+	
 			        </table>
 		        </form>
 	          </div>
