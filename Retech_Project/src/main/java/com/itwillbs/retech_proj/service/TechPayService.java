@@ -161,5 +161,10 @@ public class TechPayService {
 	public String getTradePdIdx(String trade_idx) {
 		return mapper.selectTradePdIdx(trade_idx);
 	}
+
+	public int getTechPayListCount(String searchKeyword) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

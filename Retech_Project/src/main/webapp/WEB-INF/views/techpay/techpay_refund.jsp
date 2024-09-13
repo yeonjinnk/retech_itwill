@@ -76,16 +76,14 @@
 <style type="text/css">
 /*---- techpay_refund 영역 전체 ----*/
 .payrefund_container {
-	max-width: 500px;
-	margin: auto;
-	margin-bottom: 40px;
-	margin-top: 20px;
-	border: 1px solid gray;
-	border-radius: 10px;
-	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
-	padding: 20px 50px 40px 50px;
-	box-sizing: border-box;
-	display: block;
+    max-width: 600px;
+    margin: 40px auto;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    box-sizing: border-box;
 }
 
 .title, .pay_balance {
@@ -95,16 +93,49 @@
     margin-bottom: 20px;
 }
 
-/*---- 환급금액 영역 ----*/
-.refund_amount input[type="text"] {
-	width: 100%;
-	padding: 5px 10px;
-	font-size: 15px;
-	box-sizing: border-box;
+.title img {
+    height: 40px;
+    width: 80px;
 }
 
-.pay_account_list, .account_list_table {
-	margin-top: 20px;
+/* charge_amount - 충전금액 입력 영역 */
+.refund_amount h2 {
+    font-size: 18px;
+    color: #34495E;
+}
+
+/*---- 환급금액 영역 ----*/
+.refund_amount input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.refund_amount input[type="text"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+
+#onlyDigitMessage {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #dc3545; /* 빨간색 경고 메시지 */
+}
+
+/* pay_account_list - 계좌 리스트 영역 */
+.pay_account_list {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    margin-top: 50px;
+    padding: 30px 0px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .refundButtons {
@@ -112,20 +143,123 @@
 }
 
 .refund_btn { 
-	padding: 10px 20px;
-	border: none;
-	border-radius: 2px;
-	background-color: skyblue;
-	color: white;
-	cursor: pointer;
-	font-size: 10px;
-	width: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
 } 
+
+.pay_account_list h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #34495E;
+    font-weight: bold;
+    text-align: center;
+}
+
+.refund_btn {
+    padding: 8px 12px;
+    background-color: #2c3e50; /* 버튼 색상 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+/* 계좌 목록 테이블 스타일 */
+.account_list_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.account_list_table th, .account_list_table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.account_list_table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+.account_list_table td {
+    text-align: center;
+}
+
+.bank_symbol {
+    display: block;
+    margin: 0 auto;
+    width: 40px;
+    height: 30px;
+}
+
+.refund_btn:hover {
+    background-color: #2980b9; /* 호버 시 어두운 색상 */
+}
 
 .bank_symbol {
 	margin-top: 5px 0px 5px 0px;
 	width: 40px;
 	height: 30px;
+}
+
+.refund_btn:hover {
+    background-color: #1a242f; /* 호버 시 버튼 색상 */
+}
+
+#sName {
+	color: #0064FF;
+	font-size: 28px;
+	padding-top: 5px;
+}
+
+.pay_balance{
+	padding: 0px 20px;
+}
+
+.pay_account_list {
+	padding: 0px 20px;
+}
+
+.refund_amount {
+	padding: 0px 20px;
+}
+
+/* #chargeButtons 컨테이너의 버튼을 가로로 꽉 차게 분배 */
+#refundButtons {
+    display: flex;
+    justify-content: space-between; /* 버튼들 사이 간격을 동일하게 만듦 */
+    gap: 5px; /* 버튼 간의 간격을 10px로 설정 */
+}
+
+#refundButtons .refund-btn {
+    flex: 1; /* 버튼이 동일한 비율로 가로 영역을 차지하도록 설정 */
+    padding: 10px 0; /* 버튼의 상하 여백 설정 */
+    background-color: #34495E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+#refundButtons .refund-btn:hover {
+    background-color: #2980b9; /* 호버 시 색상 변경 */
 }
 
 </style>
@@ -165,6 +299,13 @@
 				원하는 계좌의 '환급하기' 버튼을 누르시면,<br>
 				테크페이 비밀번호 확인 후, 테크페이에서 해당 계좌로 환급이 진행됩니다.     		
  		        <table border="1" class="account_list_table">
+			        		<tr>
+			        			<th>은행</th>
+			        			<th>계좌별칭</th>
+			        			<th>계좌번호</th>
+			        			<th>예금주명</th>
+			        			<th>상세정보</th>
+			        		</tr> 		        
 		        	<c:forEach var="account" items="${accountList.res_list}" begin="0" end="1">
 		        		<tr>
 		        			<td>
