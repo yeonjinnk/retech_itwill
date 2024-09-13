@@ -54,7 +54,6 @@ div.container {
 </script>
 
 
-
 <script type="text/javascript">
 //슬라이드인덱스
 let slideIndex = 1;//슬라이드인덱스 기본값 1
