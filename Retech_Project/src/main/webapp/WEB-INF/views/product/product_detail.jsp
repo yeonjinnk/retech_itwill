@@ -25,16 +25,12 @@ div.container {
     width: 400px !important;
     height: 300px;    
 }
-img {
-    vertical-align: middle;
-    border-style: none;
-    width: 175px;
-}    
 #pdcontent {
     margin-bottom: 1rem;
     white-space: pre;
     width: 400px;
 }
+
 </style>
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -327,12 +323,12 @@ $(document).ready(function() {
 							<%-- 로그인 했을 경우 --%>
 							<c:choose>
 								<c:when test="${sessionScope.sId eq product.member_id}"> <%-- 접속자가 현재 상품의 판매자일 경우 --%>
-									<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px"
+									<button class="btn btn-dark col-3" style="font-size: 0.9em; margin: 10px 10px"
 										onclick="location.href='productModifyForm?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">수정하기</button>
 		
-									<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px" onclick="confirmDelete()">삭제하기</button>
+									<button class="btn btn-dark col-3" style="font-size: 0.9em; margin: 10px 10px" onclick="confirmDelete()">삭제하기</button>
 		
-									<button class="btn btn-dark col-3" style="font-size: 1em; margin: 10px 10px"
+									<button class="btn btn-dark col-3" style="font-size: 0.9em; margin: 10px 10px"
 										onclick="location.href='productUpdateDate?pd_idx=${product.pd_idx}&member_id=${product.member_id }'">끌어올리기</button>
 								</c:when>
 								<c:otherwise> <%-- 접속자가 현재 상품의 판매자가 아닐 경우--%>

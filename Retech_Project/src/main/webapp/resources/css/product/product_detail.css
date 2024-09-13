@@ -93,6 +93,7 @@ button.btn-danger:hover {
 #chatting {
     background-color: #e74c3c;
     color: white;
+    width: 900px;
 }
 
 #chatting:hover {
@@ -103,6 +104,11 @@ button.btn-danger:hover {
     width: 40px;
     height: 40px;
 }
+img#likeImage {
+    width: 40px;
+    height: 40px;
+}
+
 
 #likeProduct img.active {
     filter: grayscale(0%);
@@ -188,7 +194,7 @@ button.btn-danger:hover {
     }
 
     h3 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
 }
 
@@ -196,6 +202,11 @@ button.btn-danger:hover {
     width: 200px;
     height: 200px;
     margin: 0 5px;	
+}
+.carousel-indicators .active {
+    margin-right: 65%;
+    opacity: 1;
+    background-color: pink;
 }
 
 
