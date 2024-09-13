@@ -12,6 +12,91 @@
 <script type="text/javascript">
 // 	alert("110,000원이 정상적으로 결제되었습니다");
 </script>
+<style type="text/css">
+/* 섹션 스타일 */
+section {
+    margin: 20px auto;
+    padding: 60px;
+    max-width: 800px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* h1 및 h3 제목 스타일 */
+h1 {
+    font-size: 28px;
+    color: #34495E;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 16px;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+table td {
+    text-align: center;
+}
+
+/* 버튼 스타일 */
+input[type="button"] {
+    padding: 10px 20px;
+    background-color: #34495E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="button"]:hover {
+    background-color: #0064FF;
+}
+
+/* 섹션 내의 div 정렬 */
+div {
+    text-align: center;
+}
+
+/* 페이지 여백 추가 */
+section div {
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.gogo {
+	font-size: 22px;
+	color: #0064FF;
+}
+
+</style>
 </head>
 <body>
 	<header>
@@ -27,8 +112,8 @@
 			<h3>${sessionScope.sName} 고객님의 결제 내역 (결제코드 : ${paymentResult.techpay_idx})</h3>
 			<table border="1">
 				<tr>
-					<th>결제상품(거래코드)</th>
-					<td>${paymentResult.pd_subject}(${paymentResult.trade_idx})</td>
+					<th>결제상품</th>
+					<td>${paymentResult.pd_subject}</td>
 				</tr>
 				<tr>
 					<th>결제일시</th>
@@ -44,11 +129,7 @@
 				</tr>
 				<tr>
 					<td colspan="2">
-<!-- <<<<<<< HEAD -->
-						<a href="TechPayMain">테크페이 내역 보기</a>
-<!-- ======= -->
-<!-- 						<a href="TechPayMain">메인페이지로 돌아가기</a> -->
-<!-- >>>>>>> branch 'main' of https://github.com/devok11/retech_itwill.git -->
+						<a href="TechPayMain" class="gogo">테크페이 내역 보기</a>
 					</td>
 				</tr>
 			</table>

@@ -22,6 +22,9 @@
 	        WHERE r.review_writer LIKE CONCAT('%', #{searchKeyword}, '%')
 	           OR r.review_content LIKE CONCAT('%', #{searchKeyword}, '%')
 	    </if>
+	    LIMIT
+			#{startRow}     
+			, #{listLimit} 
 	</select>
 
 		<!-- 리뷰 삭제 -->
@@ -44,16 +47,19 @@
 	
 	<!-- 거래 목록 조회 -->
 	<select id="selectAdminTrade" resultType="hashmap">
-	    SELECT t.trade_idx, t.trade_buyer_id, t.trade_seller_id, t.trade_pd_idx, p.pd_status, p.pd_subject, p.pd_first_date
-	    FROM trade t
-	    JOIN product p on t.trade_idx = p.pd_idx
+	    SELECT t.trade_idx, t.trade_seller_id, t.trade_pd_idx, p.pd_status, p.pd_subject, p.pd_first_date
+		FROM 
+		    product p
+		JOIN 
+		    trade t 
+		ON 
+		    p.pd_idx = t.trade_pd_idx;
 	    <if test="!searchKeyword.equals('')">
 	        WHERE trade_buyer_id LIKE CONCAT('%', #{searchKeyword}, '%')
 	           OR trade_seller_id LIKE CONCAT('%', #{searchKeyword}, '%')
 	    </if>
 	</select>
-
-		<!-- 리뷰 삭제 -->
+		<!-- 거래 삭제 -->
 	<delete id="deleteTrade">
 		DELETE 
 		FROM trade

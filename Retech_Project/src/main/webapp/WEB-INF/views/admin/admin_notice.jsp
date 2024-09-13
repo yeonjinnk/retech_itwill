@@ -28,7 +28,7 @@
 			}
 			
 			.main .wrapper_top .search {
-				width: 280px;
+				width: 300px;
 				position: absolute;
 				left: 40%;
 			}
@@ -118,7 +118,6 @@
 			.btnArea {
 				margin-top: 30px;
 			}
-			
 		</style>
 		<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 		<script>

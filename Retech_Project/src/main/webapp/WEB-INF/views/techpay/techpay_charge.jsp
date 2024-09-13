@@ -70,59 +70,184 @@
      	
 </script>
 <style type="text/css">
-/*---- techpay_charge 영역 전체 ----*/
+/*---- paycharge_container 전체 ----*/
 .paycharge_container {
-	max-width: 500px;
-	margin: auto;
-	margin-bottom: 40px;
-	margin-top: 20px;
-	border: 1px solid gray;
-	border-radius: 10px;
-	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
-	padding: 20px 50px 40px 50px;
-	box-sizing: border-box;
-	display: block;
+    max-width: 600px;
+    margin: 40px auto;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    box-sizing: border-box;
 }
+
+/* title, pay_balance - 페이잔액 상단 영역 */
 .title, .pay_balance {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
-/*---- 충전금액 영역 ----*/
+
+.title img {
+    height: 40px;
+    width: 80px;
+}
+
+/* charge_amount - 충전금액 입력 영역 */
+.charge_amount h2 {
+    font-size: 18px;
+    color: #34495E;
+}
+
 .charge_amount input[type="text"] {
-	width: 100%;
-	padding: 5px 10px;
-	font-size: 15px;
-	box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
 }
 
-.pay_account_list, .account_list_table {
-	margin-top: 20px;
+.charge_amount input[type="text"]:focus {
+    border-color: #007BFF;
+    outline: none;
 }
 
-.chargeButtons {
-	margin-top: 10px;
+#onlyDigitMessage {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #dc3545; /* 빨간색 경고 메시지 */
 }
 
+/* charge_btn - 충전 금액 버튼들 */
 .charge_btn {
-	padding: 10px 20px;
-	border: none;
-	border-radius: 2px;
-	background-color: skyblue;
-	color: white;
-	cursor: pointer;
-	font-size: 10px;
-	width: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.charge_btn:hover {
+    background-color: #2980b9; /* 호버 시 어두운 색상 */
+}
+
+/* pay_account_list - 계좌 리스트 영역 */
+.pay_account_list {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    margin-top: 50px;
+    padding: 30px 0px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pay_account_list h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #34495E;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* 계좌 목록 테이블 스타일 */
+.account_list_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.account_list_table th, .account_list_table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.account_list_table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+.account_list_table td {
+    text-align: center;
 }
 
 .bank_symbol {
-	margin-top: 5px 0px 5px 0px;
-	width: 40px;
-	height: 30px;
+    display: block;
+    margin: 0 auto;
+    width: 40px;
+    height: 30px;
 }
 
+/* 계좌 충전 버튼 */
+.charge_btn {
+    padding: 8px 12px;
+    background-color: #2c3e50; /* 버튼 색상 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
 
+.charge_btn:hover {
+    background-color: #1a242f; /* 호버 시 버튼 색상 */
+}
+
+#sName {
+	color: #0064FF;
+	font-size: 28px;
+	padding-top: 5px;
+}
+
+.pay_balance{
+	padding: 0px 20px;
+}
+
+.pay_account_list {
+	padding: 0px 20px;
+}
+
+.charge_amount {
+	padding: 0px 20px;
+}
+
+/* #chargeButtons 컨테이너의 버튼을 가로로 꽉 차게 분배 */
+#chargeButtons {
+    display: flex;
+    justify-content: space-between; /* 버튼들 사이 간격을 동일하게 만듦 */
+    gap: 5px; /* 버튼 간의 간격을 10px로 설정 */
+}
+
+#chargeButtons .charge-btn {
+    flex: 1; /* 버튼이 동일한 비율로 가로 영역을 차지하도록 설정 */
+    padding: 10px 0; /* 버튼의 상하 여백 설정 */
+    background-color: #34495E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+#chargeButtons .charge-btn:hover {
+    background-color: #2980b9; /* 호버 시 색상 변경 */
+}
 </style>
 </head>
 <body>
@@ -135,12 +260,15 @@
 	       <!-- 페이 기본 정보 표시  -->
 	       <div class="pay_card">
 			  <div class="title">
-				<h2>${sessionScope.sName} 님</h2>
-				<img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="40" width="80">
+				<h2>
+				<a href="SaleHistory" id="sName">
+                        ${sessionScope.sName} 님
+				</a></h2>	
+<%-- 				<img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="50" width="100"> --%>
 			  </div>
 			</div>				
           <div class="pay_balance">
-	        <h2>페이잔액</h2>
+	        <h2 id="pay_balance_title" >페이잔액</h2>
 	        <h2><fmt:formatNumber value="${sessionScope.pay_balance}" pattern="#,###" />원</h2>
           </div>
           <div class="charge_amount">
@@ -161,6 +289,13 @@
 				원하는 계좌의 '충전하기' 버튼을 누르시면,<br>
 				테크페이 비밀번호 확인 후, 해당 계좌에서 출금하여 테크페이로 충전됩니다.
  		        <table border="1" class="account_list_table">
+ 					        <tr>
+			        			<th>은행</th>
+			        			<th>계좌별칭</th>
+			        			<th>계좌번호</th>
+			        			<th>예금주명</th>
+			        			<th>상세정보</th>
+			        		</tr>        
 		        	<c:forEach var="account" items="${accountList.res_list}" begin="0" end="1">
 		        		<tr>
 		        			<td>
@@ -186,9 +321,9 @@
           </div>
         </div>
 	</section>
-	<footer>
+<!-- 	<footer> -->
 		<%-- 회사 소개 영역(inc/bottom.jsp) 페이지 삽입 --%>	
-		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	
-	</footer>
+<%-- 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>	 --%>
+<!-- 	</footer> -->
 </body>
 </html>

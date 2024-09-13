@@ -582,7 +582,8 @@ function del_img4() {
 		        // JSON 응답을 처리하여 res.result 값을 확인
 		        if(res.result === 'true'){  // JSON 내부의 result 값 비교
 		            alert('상품이 정상적으로 수정되었습니다!');
-		            window.location = '/Retech_proj/ProductList';
+// 		            window.location = '/Retech_proj/ProductList';
+		            window.location.href = 'ProductList';
 		        } else {
 		            alert('상품 수정 실패. 응답: ' + res.result);
 		        }
