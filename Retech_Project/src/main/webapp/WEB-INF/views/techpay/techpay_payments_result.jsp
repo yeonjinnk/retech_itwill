@@ -76,9 +76,9 @@ input[type="button"] {
     transition: background-color 0.3s ease;
 }
 
-input[type="button"]:hover {
-    background-color: #0064FF;
-}
+/* input[type="button"]:hover { */
+/*     background-color: #0064FF; */
+/* } */
 
 /* 섹션 내의 div 정렬 */
 div {
@@ -91,10 +91,6 @@ section div {
     max-width: 700px;
 }
 
-.gogo {
-	font-size: 22px;
-	color: #0064FF;
-}
 
 </style>
 </head>
@@ -129,7 +125,7 @@ section div {
 				</tr>
 				<tr>
 					<td colspan="2">
-						<a href="TechPayMain" class="gogo">테크페이 내역 보기</a>
+						<input type="button" value="테크페이 내역 보기" onclick="location.href='TechPayMain'">
 					</td>
 				</tr>
 			</table>

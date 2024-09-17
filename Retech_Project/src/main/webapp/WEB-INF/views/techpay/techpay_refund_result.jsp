@@ -135,7 +135,7 @@ section div {
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="button" value="계좌관리 홈" onclick="location.href='TechPayMain'">
+						<input type="button" value="테크페이 홈"" onclick="location.href='TechPayMain'">
 					</td>
 				</tr>
 			</table>

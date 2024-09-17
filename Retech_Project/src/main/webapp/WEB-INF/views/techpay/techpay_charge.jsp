@@ -25,29 +25,34 @@
     $(document).ready(function() {
     	// 
         $('#chargeButtons').on('click', '.charge-btn', function() {
+        	
             // 현재 텍스트 박스에 입력된 값을 숫자로 변환(빈 값일 경우 0으로 처리)
-            let currentAmount = parseInt($('#chargeAmount').val()) || 0;
+            let currentAmount = parseInt($('#chargeAmount').val().replace(/,/g, '')) || 0; // 기존 콤마 제거
             // 클릭된 버튼의 data-amount 속성에서 충전 금액 가져오기
             let additionalAmount = parseInt($(this).data('amount'));
             // 기존 금액에 버튼의 금액을 더하기
             let newAmount = currentAmount + additionalAmount;
-            // 텍스트 박스의 값을 업데이트
-            $('#chargeAmount').val(newAmount);
+            // 텍스트 박스의 값을 업데이트 (1000단위 콤마 추가)
+            $('#chargeAmount').val(newAmount.toLocaleString());
         });
-        
-     	// 충전금액 텍스트박스에 숫자가 아닌 값 넣지 못하도록 함
-        $('#chargeAmount').on('keydown', function(event) {
-            // keyCode 가져오기
-            let keyCode = event.keyCode;
-            // 숫자, 백스페이스, Delete 키만 허용
-            if (!(event.keyCode >= 48 && event.keyCode <= 57) && !(event.keyCode >= 96 && event.keyCode <= 105) &&event.keyCode !== 8 && event.keyCode !== 46) {
-                // 허용되지 않은 키가 눌렸을 경우 경고 메시지 표시
-                $('#onlyDigitMessage').show();
-            } else {
-                // 허용된 키가 눌렸을 경우 경고 메시지 숨김
+    	
+
+        // 충전금액 텍스트박스에 숫자만 허용
+        $('#chargeAmount').on('input', function() {
+            let value = this.value.replace(/,/g, '');
+            if (/^\d*$/.test(value)) {
+                this.value = Number(value).toLocaleString();
                 $('#onlyDigitMessage').hide();
+            } else {
+                $('#onlyDigitMessage').show();
             }
         });
+    	
+        // 'X' 버튼 클릭 시 텍스트 박스 내용 초기화
+        $('#clearButton').on('click', function() {
+            $('#chargeAmount').val('');
+        });       
+        
     });
      	
 	// 충전금액 판별 후 페이비밀번호 확인 새 창 열기
@@ -74,6 +79,7 @@
 .paycharge_container {
     max-width: 600px;
     margin: 40px auto;
+    margin-top: 0;
     border: 1px solid lightgray;
     border-radius: 5px;
     padding: 20px;
@@ -145,10 +151,10 @@
 .pay_account_list {
     margin-top: 20px;
     background-color: #f9f9f9;
-    margin-top: 50px;
-    padding: 30px 0px;
+    padding: 60px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 320px;
 }
 
 .pay_account_list h2 {
@@ -164,6 +170,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    
 }
 
 .account_list_table th, .account_list_table td {
@@ -178,6 +185,7 @@
     color: #333;
     font-weight: bold;
     text-align: center;
+    padding: 5px;
 }
 
 .account_list_table td {
@@ -225,6 +233,25 @@
 	padding: 0px 20px;
 }
 
+/* input-container 클래스를 추가하여 텍스트 박스와 버튼을 같은 줄에 배치 */
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 'X' 버튼 스타일 */
+.clear-btn {
+    position: absolute;
+    right: 10px; /* 버튼 위치 조정 */
+    border: none;
+    background: none;
+    color: #007BFF;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
 /* #chargeButtons 컨테이너의 버튼을 가로로 꽉 차게 분배 */
 #chargeButtons {
     display: flex;
@@ -248,6 +275,22 @@
 #chargeButtons .charge-btn:hover {
     background-color: #2980b9; /* 호버 시 색상 변경 */
 }
+
+.title-container {
+    display: grid;
+    grid-template-columns: 1fr auto; /* 왼쪽은 남겨두고, 오른쪽에 텍스트를 정렬 */
+    max-width: 600px; /* paymanage_container와 동일한 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+    color: #34495E;
+    font-size: 12px;
+    margin-top: 50px;
+}
+
+#techpay_title {
+    justify-self: end; /* 오른쪽 정렬 */
+    margin-right: 0;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -256,6 +299,9 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
 	<section>
+		<div class="title-container">
+			<h2 id="techpay_title">테크페이 | 충전</h2>
+		</div>
 		<div class="paycharge_container">
 	       <!-- 페이 기본 정보 표시  -->
 	       <div class="pay_card">
@@ -273,7 +319,11 @@
           </div>
           <div class="charge_amount">
 	        <h2>충전금액</h2>
-	        <input type="text" id="chargeAmount" onkeypress="checkDigit(event)" placeholder="충전을 원하시는 금액을 입력해주세요">
+		    <div class="input-container">
+		        <input type="text" id="chargeAmount" placeholder="충전을 원하시는 금액을 입력해주세요">
+		        <button type="button" id="clearButton" class="clear-btn">X</button>
+		    </div>	        
+<!-- 	        <input type="text" id="chargeAmount" oninput="this.value = Number(this.value.replace(/,/g, '')).toLocaleString()" onkeypress="checkDigit(event)" placeholder="충전을 원하시는 금액을 입력해주세요"> -->
 	        <div id="onlyDigitMessage" style="color: red; display: none;">숫자만 입력 가능합니다</div>	
 				<div id="chargeButtons">
 				    <button type="button" class="charge-btn" data-amount="10000">+1만원</button>
@@ -285,7 +335,8 @@
           <div class="pay_account_list">	
 			<form action="ChargeBankWithdraw" method="post" id="PayProcessForm">
 <!-- 			<form action="CheckPayPwd" method="get" id="checkPayPwdForm"> -->
-				테크페이 충전 안내<br>
+				<br>
+				■ 테크페이 충전 안내<br>
 				원하는 계좌의 '충전하기' 버튼을 누르시면,<br>
 				테크페이 비밀번호 확인 후, 해당 계좌에서 출금하여 테크페이로 충전됩니다.
  		        <table border="1" class="account_list_table">

@@ -127,13 +127,17 @@
 <style type="text/css">
 /*---- techpay_manage 영역 전체 ----*/
 .paymanage_container {
-	max-width: 600px;
-	margin: auto;
+/* 	max-width: 600px; */
+/* 	margin: auto; */
+    width: 600px; /* 기본 너비 */
+    max-width: 100%; /* 화면 너비에 맞게 조정 */
+    margin: 0 auto;   
+    
+    
 	margin-bottom: 40px;
 	margin-top: 10px;
 	border: 1px solid lightgray;
 	border-radius: 5px;
-/* 	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);  */
 	padding: 10px 20px 20px 20px;
 	box-sizing: border-box;
 	display: block;
@@ -350,12 +354,19 @@
 
 
 .title-container {
-	margin-top: 30px;
-    display: flex;
-    justify-content: flex-end; /* 오른쪽 정렬 */
-    padding-right: 330px; /* 오른쪽 여백 추가 (원하는 대로 조정) */
-	color: #34495E;
-	font-size: 12px;
+    display: grid;
+    grid-template-columns: 1fr auto; /* 왼쪽은 남겨두고, 오른쪽에 텍스트를 정렬 */
+    max-width: 600px; /* paymanage_container와 동일한 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+    color: #34495E;
+    font-size: 12px;
+    margin-top: 50px;
+}
+
+#techpay_title {
+    justify-self: end; /* 오른쪽 정렬 */
+    margin-right: 0;
+    font-weight: bold;
 }
 
 </style>
@@ -367,18 +378,16 @@
 	</header>
 	<section>
 		<div class="title-container">
-			<h2 id="techpay_title">테크페이  > 테크페이 관리</h2>
+			<h2 id="techpay_title">테크페이 | 관리</h2>
 		</div>
 		<div class="paymanage_container">
 		<div class="paymanage_title">
-				
 	       <div class="pay_card">
 			  <div class="title">
 				<h2>
 				<a href="SaleHistory" id="sName">
                         ${sessionScope.sName} 님
 				</a></h2>	
-<%-- 				<img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="50" width="100"> --%>
 			  </div>
 			</div>					
 		</div>

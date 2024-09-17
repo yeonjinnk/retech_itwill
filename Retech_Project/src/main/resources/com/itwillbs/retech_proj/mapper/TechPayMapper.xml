@@ -280,12 +280,27 @@ CREATE TABLE techpay_user_info (
 	
 	<!-- 테크페이 내역 DB에 추가 - INSERT -->
 	<insert id="insertPayHistory">
-		INSERT INTO techpay_history
+		INSERT INTO techpay_history  (
+	        techpay_idx,
+	        tran_amt,
+	        techpay_tran_dtime,
+	        pay_balance,
+	        techpay_type,
+	        id,
+	        trade_idx
+	    )
 		VALUES (
 			#{techpay_idx}
 		    , #{tran_amt}
 		    , #{techpay_tran_dtime}
-		    , #{pay_balance}
+			<choose>
+				<when test="techpay_type == 1 or techpay_type == 4">
+					, #{pay_balance} + #{tran_amt}
+				</when>
+				<when test="techpay_type == 2 or techpay_type == 3">
+					, #{pay_balance} - #{tran_amt}
+				</when>
+			</choose>		    
 		    , #{techpay_type}
 		    , #{id}
 		    , #{trade_idx}

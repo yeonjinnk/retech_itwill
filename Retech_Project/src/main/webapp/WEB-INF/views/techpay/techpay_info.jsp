@@ -314,7 +314,6 @@ function select_date() {
 /*---- techpay_info 영역 전체 ----*/
 .payinfo_container {
 	width:100%;
-/* 	max-width: 900px; */
 	margin: 0 auto;
 	margin-bottom: 20px;
 	margin-top: 20px;
@@ -539,11 +538,6 @@ h5.pay_date {
     margin-right: auto;
 }
 
-/* #pay_area { */
-/*     max-width: 700px; /* 컨테이너의 최대 너비를 700px로 수정 */ */
-/*     padding: 20px 20px; /* 좌우 padding을 줄여서 여백을 줄임 */ */
-/* } */
-
 /* 날짜 부분 */
 .pay_date {
     font-size: 1.6rem;
@@ -611,10 +605,14 @@ h5.pay_date {
 	margin-top: 50px;
     display: flex;
     justify-content: flex-end; /* 오른쪽 정렬 */
-    padding-right: 345px; /* 오른쪽 여백 추가 (원하는 대로 조정) */
 	color: #34495E;
 	font-size: 18px !important;
-	font-weight: 1000;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+#techpay_title {
+	font-weight: bold;
 }
 
 .pay-info.col-lg-6.col-md-6.col-12 {
@@ -622,7 +620,9 @@ h5.pay_date {
 }
 #pay_balance_amt {
 	font-size: 40px;
+	padding-right: 0;
 }
+
 </style>
 </head>
 <body>
@@ -640,14 +640,15 @@ h5.pay_date {
 		<%-- 기본 메뉴 표시 영역(inc/top.jsp) 페이지 삽입 --%>
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
-		<div class="title-container">
-			<h2 id="techpay_title">테크페이 > 테크페이 홈</h2>
-		</div>
+
 	<section id="pay_area">
 		 <div class="account-login section">
 	        <div class="container" id="pay_area">
 	            <div class="row">
 	                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+                		<div class="title-container">
+							<h2 id="techpay_title">테크페이 | 홈</h2>
+						</div>
 	                    <div class="card login-form pay-card">
 	                        <div class="card-body">
 	                            <div class="title paytitle">

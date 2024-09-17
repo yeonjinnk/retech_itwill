@@ -28,6 +28,7 @@
 .payments_container {
     max-width: 600px;
     margin: 40px auto;
+    margin-top: 0;
     border: 1px solid lightgray;
     border-radius: 5px;
     padding: 20px;
@@ -222,7 +223,7 @@
 /* } */
 
 .pay_account_list {
-	padding: 20px 20px 20px 20px;
+	padding: 0px 20px 20px 20px;
 
 
 }
@@ -251,6 +252,22 @@
 .payment_btn:hover {
     background-color: #1a242f;
 }
+
+.title-container {
+    display: grid;
+    grid-template-columns: 1fr auto; /* 왼쪽은 남겨두고, 오른쪽에 텍스트를 정렬 */
+    max-width: 600px; /* paymanage_container와 동일한 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+    color: #34495E;
+    font-size: 12px;
+    margin-top: 50px;
+}
+
+#techpay_title {
+    justify-self: end; /* 오른쪽 정렬 */
+    margin-right: 0;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -259,6 +276,9 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
 	<section>
+		<div class="title-container">
+			<h2 id="techpay_title">테크페이 | 결제</h2>
+		</div>
 		<div class="payments_container">
 	       <!-- 페이 기본 정보 표시  -->
 	       <div class="pay_card">
@@ -281,7 +301,8 @@
           </div>
           <div class="pay_account_list">	
      		<form action="TechPaymentsProcess" method="post" id="PayProcessForm">
-    			테크페이 결제 안내<br>
+     		<br>
+    			■ 테크페이 결제 안내<br>
 <!-- 				원하는 계좌의 '결제하기' 버튼을 누르시면,<br> -->
 				테크페이 비밀번호 확인 후, <br>
 				<a id="payments_amt_text" >결제금액 <fmt:formatNumber value="${tran_amt}" pattern="#,###" />원</a>을 

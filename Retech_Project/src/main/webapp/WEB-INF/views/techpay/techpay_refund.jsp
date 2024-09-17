@@ -20,7 +20,7 @@
     $(document).ready(function() {
         $('#refundButtons').on('click', '.refund-btn', function() {
             // 현재 텍스트 박스에 입력된 값을 숫자로 변환(빈 값일 경우 0으로 처리)
-            let currentAmount = parseInt($('#refundAmount').val()) || 0;
+            let currentAmount = parseInt($('#refundAmount').val().replace(/,/g, '')) || 0; // 기존 콤마 제거
         
             // 클릭된 버튼의 data-amount 속성에서 충전 금액 가져오기
             let additionalAmount = parseInt($(this).data('amount'));
@@ -29,24 +29,25 @@
             let newAmount = currentAmount + additionalAmount;
         
             // 텍스트 박스의 값을 업데이트
-            $('#refundAmount').val(newAmount);
+            $('#refundAmount').val(newAmount.toLocaleString());
         });
         
-        
-     // 충전금액 텍스트박스에 숫자가 아닌 값 넣지 못하도록 함
-        $('#refundAmount').on('keydown', function(event) {
-            // keyCode 가져오기
-            let keyCode = event.keyCode;
-
-            // 숫자, 백스페이스, Delete 키만 허용
-            if (!(event.keyCode >= 48 && event.keyCode <= 57) && !(event.keyCode >= 96 && event.keyCode <= 105) &&event.keyCode !== 8 && event.keyCode !== 46) {
-                // 허용되지 않은 키가 눌렸을 경우 경고 메시지 표시
-                $('#onlyDigitMessage').show();
-            } else {
-                // 허용된 키가 눌렸을 경우 경고 메시지 숨김
+        // 충전금액 텍스트박스에 숫자만 허용
+        $('#refundAmount').on('input', function() {
+            let value = this.value.replace(/,/g, '');
+            if (/^\d*$/.test(value)) {
+                this.value = Number(value).toLocaleString();
                 $('#onlyDigitMessage').hide();
+            } else {
+                $('#onlyDigitMessage').show();
             }
-        });    
+        });
+    	
+        // 'X' 버튼 클릭 시 텍스트 박스 내용 초기화
+        $('#clearButton').on('click', function() {
+            $('#refundAmount').val('');
+        });  
+        
     });
     
     
@@ -78,6 +79,7 @@
 .payrefund_container {
     max-width: 600px;
     margin: 40px auto;
+    margin-top: 0;
     border: 1px solid lightgray;
     border-radius: 5px;
     padding: 20px;
@@ -136,6 +138,7 @@
     padding: 30px 0px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 320px;
 }
 
 .refundButtons {
@@ -193,6 +196,7 @@
     color: #333;
     font-weight: bold;
     text-align: center;
+    padding: 5px;
 }
 
 .account_list_table td {
@@ -238,6 +242,25 @@
 	padding: 0px 20px;
 }
 
+/* input-container 클래스를 추가하여 텍스트 박스와 버튼을 같은 줄에 배치 */
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 'X' 버튼 스타일 */
+.clear-btn {
+    position: absolute;
+    right: 10px; /* 버튼 위치 조정 */
+    border: none;
+    background: none;
+    color: #007BFF;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
 /* #chargeButtons 컨테이너의 버튼을 가로로 꽉 차게 분배 */
 #refundButtons {
     display: flex;
@@ -262,6 +285,22 @@
     background-color: #2980b9; /* 호버 시 색상 변경 */
 }
 
+.title-container {
+    display: grid;
+    grid-template-columns: 1fr auto; /* 왼쪽은 남겨두고, 오른쪽에 텍스트를 정렬 */
+    max-width: 600px; /* paymanage_container와 동일한 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+    color: #34495E;
+    font-size: 12px;
+    margin-top: 50px;
+}
+
+#techpay_title {
+    justify-self: end; /* 오른쪽 정렬 */
+    margin-right: 0;
+    font-weight: bold;
+}
+
 </style>
 </head>
 <body>
@@ -270,12 +309,18 @@
 		<jsp:include page="/WEB-INF/views/inc/top.jsp"></jsp:include>	
 	</header>
 	<section>
+		<div class="title-container">
+			<h2 id="techpay_title">테크페이 | 환급</h2>
+		</div>
 		<div class="payrefund_container">
 	       <!-- 페이 기본 정보 표시  -->
 	       <div class="pay_card">
 			  <div class="title">
-				<h2>${sessionScope.sName} 님</h2>
-				<img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="40" width="80">
+				<h2>
+				<a href="SaleHistory" id="sName">
+                        ${sessionScope.sName} 님
+				</a></h2>	
+<%-- 				<img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="40" width="80"> --%>
 			  </div>
 			</div>				
           <div class="pay_balance">
@@ -284,7 +329,12 @@
           </div>
           <div class="refund_amount">
 	        <h2>환급금액</h2>
-	        <input type="text" id="refundAmount" onkeypress="checkDigit(event)" placeholder="환급을 원하시는 금액을 입력해주세요">
+     		<div class="input-container">
+		        <input type="text" id="refundAmount" placeholder="환급을 원하시는 금액을 입력해주세요">
+		        <button type="button" id="clearButton" class="clear-btn">X</button>
+		    </div>	
+	        
+<!-- 	        	<input type="text" id="refundAmount" placeholder="환급을 원하시는 금액을 입력해주세요"> -->
 	        <div id="onlyDigitMessage" style="color: red; display: none;">숫자만 입력 가능합니다</div>	
 				<div id="refundButtons">
 				    <button type="button" class="refund-btn" data-amount="10000">+1만원</button>
@@ -295,7 +345,8 @@
           </div>
           <div class="pay_account_list">	
      		<form action="RefundBankDeposit" method="post" id="PayProcessForm">
-     			테크페이 환급 안내<br>
+     			<br>
+     			■ 테크페이 환급 안내<br>
 				원하는 계좌의 '환급하기' 버튼을 누르시면,<br>
 				테크페이 비밀번호 확인 후, 테크페이에서 해당 계좌로 환급이 진행됩니다.     		
  		        <table border="1" class="account_list_table">
