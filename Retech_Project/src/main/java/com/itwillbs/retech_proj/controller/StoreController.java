@@ -145,6 +145,17 @@ public class StoreController {
 	           MemberVO member = new MemberVO();
 	           member.setMember_id(id);
 	           member = memberService.getMember(member);
+	           
+	           
+		         //-------------리뷰 불러오기----------------------------
+			       Float myStarRate = memberService.getStarRate(id);
+			       System.out.println("불러온 리뷰 별점 myStarRate : " + myStarRate);
+			       if(myStarRate != null) {
+			    	   System.out.println("리뷰를 불러옵니다!!!");
+			    	   member.setMember_starRate(myStarRate);
+			       }
+			       //---------------------------------------------------
+	           
 	           model.addAttribute("member", member);
 			model.addAttribute("storeHistoryList", storeHistoryList);
 		return "mypage/purchaseStorehistory";

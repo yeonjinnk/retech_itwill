@@ -230,6 +230,8 @@
 	padding-top: 5px;
 }
 
+
+
 .pay_balance{
 	padding: 0px 20px;
 }

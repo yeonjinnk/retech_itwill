@@ -58,12 +58,8 @@
 	        WHERE trade_buyer_id LIKE CONCAT('%', #{searchKeyword}, '%')
 	           OR trade_seller_id LIKE CONCAT('%', #{searchKeyword}, '%')
 	    </if>
-	    LIMIT
-			#{startRow}     
-			, #{listLimit} 
 	</select>
-
-		<!-- 리뷰 삭제 -->
+		<!-- 거래 삭제 -->
 	<delete id="deleteTrade">
 		DELETE 
 		FROM trade

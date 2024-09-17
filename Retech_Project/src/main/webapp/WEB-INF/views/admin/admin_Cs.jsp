@@ -28,7 +28,7 @@
 			}
 			
 			.main .wrapper_top .search {
-				width: 280px;
+				width: 300px;
 				position: absolute;
 				left: 40%;
 			}

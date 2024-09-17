@@ -124,3 +124,42 @@ body {
 .listSort li:hover {
     background-color: #f1f1f1; /* 호버 시 배경 색상 */
 }
+
+#chatting {
+    background-color: #e74c3c;
+    color: white;
+    width: 900px;
+}
+
+#chatting:hover {
+    background-color: #c0392b;
+}
+
+#likeProduct img {
+    width: 40px;
+    height: 40px;
+}
+img#likeImage {
+    width: 40px;
+    height: 40px;
+}
+img.thumbnail {
+    width: 80px;
+    height: 80px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    transition: border-color 0.3s;
+}
+.carousel-control-next:focus, .carousel-control-next:hover, .carousel-control-prev:focus, .carousel-control-prev:hover {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    margin-right: 60%;
+    opacity: .9;
+}
+
+.carousel-control-next {
+    margin-right: 60%;
+}
+

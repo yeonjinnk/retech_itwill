@@ -567,6 +567,7 @@ public class MemberController {
 			}
 	       
 	       
+	       
            // 아이디에 해당하는 판매내역 리스트 조회(trade 있을 때)
     	   List<Map<String, String>> saleList = productService.getSaleList(loggedInUserId);
     	   
@@ -607,12 +608,10 @@ public class MemberController {
 	           
 	           // 아이디에 해당하는 구매내역 리스트 조회
 	    	   List<Map<String, String>> buyList = productService.getBuyList(id);
-
 	    	   
 	    	   System.out.println("=====================buyList : " + buyList);
 	    	   
 	    	   model.addAttribute("buyList", buyList);
-
 
 	           // 회원 정보 조회 (필요한 경우)
 	           MemberVO member = new MemberVO();
@@ -621,11 +620,12 @@ public class MemberController {
 	           
 	         //-------------리뷰 불러오기----------------------------
 		       Float myStarRate = service.getStarRate(id);
+		       System.out.println("불러온 리뷰 별점 myStarRate : " + myStarRate);
 		       if(myStarRate != null) {
+		    	   System.out.println("리뷰를 불러옵니다!!!");
 		    	   member.setMember_starRate(myStarRate);
 		       }
 		       //---------------------------------------------------
-		       
 	           
 	           model.addAttribute("member", member);
 	           
@@ -679,9 +679,6 @@ public class MemberController {
 	       return "mypage/wishlist";
 	   }
 
-
-
-	   
 	   // 상품 상세정보
 	   @GetMapping("/productDetail")
 	    public String productDetail(@RequestParam("pd_idx") int pd_Idx, Model model) {

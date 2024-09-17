@@ -57,14 +57,16 @@
     <!-- 라인 차트 -->
   </div>
 
-  <div class="chart-container">
-    <canvas id="pie-chart"></canvas>
-    <!-- 파이 차트 -->
-  </div>
+
   
   <div class="chart-container">
     <canvas id="bar-chart"></canvas>
     <!-- 막대 차트 -->
+  </div>
+  
+    <div class="chart-container">
+    <canvas id="pie-chart"></canvas>
+    <!-- 파이 차트 -->
   </div>
       </article>
     </section>
