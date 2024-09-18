@@ -128,13 +128,26 @@
         };
 
         const config = {
-            type: 'line',
-            data: chartData,
-            options: {
-                maintainAspectRatio: false,
-                responsive: true,
-            }
-        };
+        	    type: 'line',
+        	    data: chartData,
+        	    options: {
+        	        maintainAspectRatio: false,
+        	        responsive: true,
+        	        scales: {
+        	            y: {
+        	                ticks: {
+        	                    stepSize: 1, // 정수 간격
+        	                    callback: function(value) {
+        	                        if (Number.isInteger(value)) {
+        	                            return value; // 정수일 경우만 표시
+        	                        }
+        	                    }
+        	                }
+        	            }
+        	        }
+        	    }
+        	};
+
 
         const lineCtx = document.getElementById('line-chart').getContext('2d');
         new Chart(lineCtx, config);
@@ -240,20 +253,29 @@
     };
 
     const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    stacked: true
-                },
-                y: {
-                    stacked: true
-                }
-            }
-        }
-    };
+    	    type: 'bar',
+    	    data: data,
+    	    options: {
+    	        maintainAspectRatio: false,
+    	        scales: {
+    	            x: {
+    	                stacked: true
+    	            },
+    	            y: {
+    	                stacked: true,
+    	                ticks: {
+    	                    stepSize: 1, // 정수 간격
+    	                    callback: function(value) {
+    	                        if (Number.isInteger(value)) {
+    	                            return value; // 정수일 경우만 표시
+    	                        }
+    	                    }
+    	                }
+    	            }
+    	        }
+    	    }
+    	};
+
 
     const barCtx = document.getElementById('bar-chart').getContext('2d');
     new Chart(barCtx, config);

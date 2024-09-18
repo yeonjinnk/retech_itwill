@@ -10,10 +10,10 @@
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
     #listForm {
-        width: 900px;
-        margin: auto;
-        border-collapse: collapse;
-        background-color: #f0f4f8;
+ 	width: 900px;
+    border-collapse: collapse;
+    background-color: #f0f4f8;
+    margin: 0 auto;
     }
     
     #listForm table {
@@ -85,9 +85,6 @@
         background-color: #2980b9;
     }
 
-    footer {
-        margin-top: 30px;
-    }
 </style>
 </head>
 <body>
@@ -107,19 +104,20 @@
                 <td width="100px">${selectedFaq.faq_category}</td>
                 <td>${selectedFaq.faq_subject}</td>
             </tr>
+            <tr >
+            	<td colspan="2">내용</td>
+            </tr>
             <tr class="contentArea">
                 <td colspan="2" style="text-align: left;">
                     <div class="cont">${selectedFaq.faq_content}</div>
                 </td>
             </tr>
         </table>
-        
-        <!-- 이전글 다음글 구현 필요 -->
-        <div class="btnArea">
+    </section>
+    <div class="btnArea">
             <button><a href="FaqDetail?faq_idx=${selectedFaq.faq_idx - 1}">이전</a></button>
             <button><a href="FAQ">목록</a></button>
             <button><a href="FaqDetail?faq_idx=${selectedFaq.faq_idx + 1}">다음</a></button>
         </div>
-    </section>
 </body>
 </html>

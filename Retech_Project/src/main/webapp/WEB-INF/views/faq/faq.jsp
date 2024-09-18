@@ -8,35 +8,44 @@
 <title>자주찾는질문</title>
 <link href="${pageContext.request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css">
 <style type="text/css">
+/* 게시판 스타일 */
 #listForm table {
-    width: 80%;
+    width: 80%; /* 테이블 크기를 조정하여 너무 크지 않게 */
     margin: auto;
     border-collapse: collapse;
-    background-color: #f0f4f8;
+    background-color: #f0f4f8; /* 배경색을 살짝 밝은 회색으로 */
 }
 
+
+/* 각 열의 헤더 색상 */
 #listForm table th {
     padding: 15px;
     text-align: center;
     border: 1px solid #ccc;
     font-size: 1rem;
-    background-color: #3498db;
+}
+
+/* 색상 지정 */
+#listForm table th.column {
+    background-color: #3498db; /* 글번호 색상 */
     color: white;
 }
 
 #listForm table td {
-    padding: 15px;
+    padding: 15px; /* 여백 추가로 가독성 향상 */
     text-align: center;
-    border: 1px solid #ccc;
-    font-size: 1rem;
+    border: 1px solid #ccc; /* 얇은 테두리 추가 */
+    font-size: 1rem; /* 글씨 크기 조정 */
 }
 
+/* 제목 링크 색상 */
 #listForm table td a {
-    color: #2c3e50;
+    color: #2c3e50; /* 제목 링크도 네이비 */
     text-decoration: none;
     font-weight: bold;
 }
 
+/* 페이지네이션 버튼 스타일 */
 #pageList {
     text-align: center;
     margin: 20px 0;
@@ -67,45 +76,54 @@
     background-color: #34495e;
 }
 
-h2, h3 {
+/* 공지사항 영역 조정 */
+h2 {
     text-align: center;
     color: #2c3e50;
 }
 
-.area {
+h3 {
     text-align: center;
+    color: #2c3e50;
+    margin: 10px 0; /* 간격을 줄이기 위해 margin 조정 */
+}
+
+.area {
+    text-align: center; /* 중앙 정렬 */
 }
 
 .area a {
-    padding: 10px 20px;
+    padding: 10px 20px; 
     text-decoration: none;
     color: #333;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    margin: 0 5px;
-    cursor: pointer;
+    border: 1px solid #ccc; 
+    background-color: #f9f9f9; 
+    margin: 0 5px; 
+    cursor: pointer; 
 }
 
-.area a.selected {
-    background-color: #34495e;
-    color: #fff;
-}
+  .area a.selected {
+            background-color: #34495e;
+            color: #fff;
+        }
 
+/* 클릭된 링크 스타일 */
 .area a.active {
-    background-color: #2980b9;
-    color: white;
-    border-radius: 5px;
-    padding: 5px 10px;
+    background-color: #2980b9; /* 클릭된 링크 배경색 */
+    color: white; /* 클릭된 링크 텍스트 색상 */
+    border-radius: 5px; /* 링크에 둥근 테두리 추가 */
+    padding: 5px 10px; /* 패딩 추가 */
 }
 
 #listForm {
-    width: 900px;
-    margin: 0 auto;
+  width: 900px; /* 리스트폼 너비 900px로 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
 }
 
 #buttonArea {
-    margin-top: 10px;
+    margin-top: 10px; /* 상단 여백을 줄이기 위해 margin 조정 */
 }
+
 </style>
 </head>
 <body>
@@ -129,10 +147,10 @@ h2, h3 {
 <section id="listForm">
     <table>
         <tr id="tr_top">
-            <th width="100px">글번호</th>
-            <th width="100px">카테고리</th>
-            <th>제목</th>
-            <th width="150px">등록일</th>
+            <th class="column" width="100px">글번호</th>
+            <th class="column" width="100px">카테고리</th>
+            <th class="column" > 제목</th>
+            <th class="column" width="150px">등록일</th>
         </tr>
         <c:set var="pageNum" value="1" />
         <c:if test="${not empty param.pageNum}">

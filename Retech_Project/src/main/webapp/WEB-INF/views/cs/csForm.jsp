@@ -9,12 +9,11 @@
 <style type="text/css">
 body {
  	font-family: Arial, sans-serif;
- 	margin-top: 200px;
  	
 }
 
 table {
-	width: 60%;
+	width: 900px;
 	border-collapse: collapse;
 }
 
@@ -53,7 +52,7 @@ textarea {
 	<div align="center">
 		<h2>1:1문의</h2>
 		<form action="CsRegistPro" method="post" enctype="multipart/form-data">
-			<table border="1">
+			<table border="1" >
 			<tr>
 				<th width="100px">문의유형</th> 
 				<td width="600px">
