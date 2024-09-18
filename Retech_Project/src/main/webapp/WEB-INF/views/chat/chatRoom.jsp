@@ -541,15 +541,6 @@
 	</div>
 	<script type="text/javascript">
 	
-// 		$.ajax({
-// 			data:{},
-// 			url:,
-// 			type:,
-			
-				
-// 		});
-	
-	
 		$(function() {
 			startChat();
 		});

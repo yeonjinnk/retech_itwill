@@ -29,8 +29,9 @@
 	</header>
 	<article id="articleForm">
 		<h1>결제 완료!</h1>
+		<div id="storeHistory"></div>
 		<button type="button" id="buyOrderStoreHistory">구매내역 보기</button>
-		
+		</div>
 	</article>
 		<footer>
 		<jsp:include page="/WEB-INF/views/inc/bottom.jsp"></jsp:include>

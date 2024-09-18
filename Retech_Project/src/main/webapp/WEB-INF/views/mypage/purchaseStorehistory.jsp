@@ -189,7 +189,7 @@
                 <p>신뢰지수: -     (<a href="ProductRegistForm"> !!이곳을 클릭해 판매를 시작해주세요!! </a>)</p>
             </c:when>
             <c:otherwise>
-                <p>신뢰지수: ${member.member_starRate}</p>
+                <p>신뢰지수: ${member.member_starRate} / 5.0</p>
             </c:otherwise>
         </c:choose>
                 </div>

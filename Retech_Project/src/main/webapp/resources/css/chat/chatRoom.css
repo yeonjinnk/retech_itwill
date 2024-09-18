@@ -139,6 +139,12 @@ body {
 	font-weight: bold;
 }
 
+.right {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
 #btnReport {
 	width: 40px;
 /* 	heigth: 20px; */
