@@ -8,114 +8,194 @@
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <link href="${pageContext.request.contextPath}/resources/css/inc/top.css" rel="stylesheet">
 <style type="text/css">
- .header_main { 
-     background-color: #fff;
-     padding: 20px; 
-/*      position: relative;  */
-     z-index: 1;  
- } 
+/* 공통 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 테두리 병합 */
+}
 
- .main_inner { 
-     display: flex; 
-     align-items: center; 
- } 
+/* 검색 박스 스타일 */
+.header_main {
+    background-color: #fff;
+    padding: 20px;
+    z-index: 1;
+}
 
- .logo { 
-     margin-right: auto; 
- } 
+.main_inner {
+    display: flex;
+    align-items: center;
+}
 
- .main_search { 
-     margin-right: 20px; 
-     position: relative; 
-     flex-grow: 1; 
-     max-width: 100%; 
- } 
+.logo {
+    margin-right: auto;
+}
 
- #searchBox { 
-     display: flex; 
-     align-items: center; 
-     width: 100%; 
- } 
+.main_search {
+    margin-right: 20px;
+    position: relative;
+    flex-grow: 1;
+    max-width: 100%;
+}
 
- .main-menu-search { 
-     display: flex; 
-     align-items: center; 
-     border: 1px solid #ddd;
-     padding: 5px; 
-     border-radius: 4px; 
-     width: 100%; 
-     box-sizing: border-box; 
- } 
+#searchBox {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
 
- .navbar-search { 
-     display: flex; 
-     align-items: center; 
-     width: 100%; 
-     height: 100%; 
-     box-sizing: border-box; 
- } 
+.main-menu-search {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
 
- .search-input { 
-     display: flex; 
-     align-items: center; 
-     width: 100%;
-     box-sizing: border-box; 
- } 
+.navbar-search {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
 
- #searchKeyword { 
-     border: none; 
-     padding: 5px; 
-     width: calc(100% - 40px); 
-     box-sizing: border-box; 
- } 
+.search-input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
 
- .search-btn { 
-    margin-left: 10px; 
- } 
+#searchKeyword {
+    border: none;
+    padding: 8px;
+    width: calc(100% - 45px);
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
 
-.search-btn button { 
-    border: none; 
-    background: none; 
-     cursor: pointer; 
- } 
+.search-btn {
+    margin-left: 10px;
+}
 
-.searchBoxBlock { 
-    display: none;  
-    position: absolute; 
-    top: 100%; 
-    left: 0; 
-    background: #fff; 
-    border: 1px solid #ddd; 
-    border-radius: 4px; 
-    width: 100%; 
-    z-index: 0; 
-} 
+.search-btn button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background-color: #007bff;
+    border-radius: 4px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
 
- .searchBoxBlock div { 
-     padding: 10px; 
-     border-bottom: 1px solid #ddd; /* Optional border between sections 
- } 
+.search-btn button:hover {
+    background-color: #0056b3;
+}
 
- .searchBoxBlock div:last-child { 
-     border-bottom: none; /* Remove border from the last section 
- } 
- 
- .main_menu { 
-     display: flex; 
- } 
+.searchBoxBlock {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
- .menu_area { 
-     display: flex; 
-     list-style: none; 
-     padding: 0; 
-     margin: 0; 
- } 
+.searchBoxBlock h5 {
+    margin: 0;
+    padding: 10px 15px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
 
- .menu_list { 
-     margin-right: 20px; /* Adjust spacing as needed 
- } 
+.searchBoxBlock div {
+    padding: 10px 15px;
+}
+
+.searchBoxBlock div:last-child {
+    border-bottom: none;
+}
+
+.searchBoxBlock div:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+/* 공통 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 테두리 병합 */
+}
+
+/* 최근 검색어 및 인기 검색어 테이블 스타일 */
+#PopularTableBoarder, #Recent table {
+    border-collapse: collapse; /* 테이블 테두리 병합 */
+}
+
+/* 공통 테이블 셀 스타일 */
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* 항목 구분 선 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 구분선 추가 스타일 */
+#PopularTableBoarder tr:nth-child(2) {
+    border-bottom: 1px solid #ddd; /* 선 추가 */
+    padding: 10px 0;
+}
+
+/* 버튼 스타일 */
+.SelRecentborderBottom, .PopularborderBottom {
+    font-size: 16px; /* 텍스트 크기 */
+    font-weight: bold; /* 글씨 두께 */
+    cursor: pointer; /* 클릭 가능한 상태로 표시 */
+}
+
+/* 선택된 버튼 색상 */
+.SelRecentborderBottom a {
+    color: #39d274;
+}
+
+.PopularborderBottom a {
+    color: black;
+}
+/* 최근검색어와 인기검색어 사이의 세로 선 추가 */
+.SelRecentborderBottom {
+    border-right: 1px solid #ddd; /* 오른쪽에 세로 선 추가 */
+}
+
+.SelPopularborderBottom {
+    border-left: 1px solid #ddd; /* 왼쪽에 세로 선 추가 */
+}
+
+/* 테이블의 세로 선을 나타내기 위한 스타일 */
+#PopularTableBoarder td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* 행 사이 구분선 */
+}
+
+
 </style>
 <script type="text/javascript">
+
 	function confirmLogout() {
 		let isLogout = confirm("로그아웃 하시겠습니까?");
 		// isLogout 변수값이 true 일 경우 로그아웃 작업을 수행할
@@ -497,121 +577,119 @@ function SaveWord(keyword){
 //사용자는 "인기검색어"와 "최근검색어" 탭 간에 전환할 수 있으며, 
 //인기 검색어 목록에서 특정 검색어를 선택 가능
 //선택된 검색어는 sendKeyword(this) 함수를 통해 처리
-function PopularSearches(){
-	//추가한 부분
-	recentClick = false;
-	popularClick = true;
-	$("#Popular").show();
-	
-	$.ajax({
-		type:"GET",
-		url:"popularSearchKeywordList",
-		success:function(res){
-			console.log("최근 검색어랑 인기검색어 뜸!!!!");
-			let stringList = res.myArrayList;
-			let withoutQuotesList = stringList.map((str) => str.replace(/'/g, ''));
-			
-			
-			let tableHTML = '<table id="PopularTableBoarder">';
-			tableHTML +=
-				'<tr class="PopularCenter">'
-				+ '  <td class="RecentborderBottom">'
-			    + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
-			    + '  </td>'
-			    + '  <td class="SelPopularborderBottom">'
-			    + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
-			    + '  </td>'
-			    + '</tr>';
-			    
-			for(let i=0; i<10; i++){
-				let rank1 = i + 1;
-				let rank2 = i + 11;
-				tableHTML +=
-					'<tr>'
-					+'	<td>'
-					+'		<a class="popularWordColorTd marginLeftRank">'
-					+   		rank1
-					+'		</a>'
-					+'		<a onclick="sendKeyword(this)">'+withoutQuotesList[i]+'</a>'
-					+'	</td>'
-					+'	<td>'
-					+'		<a class="popularWordColorTd marginLeftRank">'
-					+   		rank2
-					+'		</a>'
-					+'		<a onclick="sendKeyword(this)">'+withoutQuotesList[i+10]+'</a>'
-					+'	</td>'
-					+'</td>'
-			};
-			    
-			tableHTML += 
-				'<tr>'
-				+	'<td>'
-				+	'	<a id="closeSearchBox">'
-				+	'	</a>'
-				+	'</td>'
-				+	'<td>'
-				+	'	<a id="closeSearchBox">'
-				+	'		닫기'
-				+	'	</a>'
-				+	'</td>'
-				+'</tr>' 
-				+'</table>'
-			
-			$("#Popular").html(tableHTML);	    
-			$("#Recent").hide();
-			$(".popularWordColor").css("color","#39d274");
-			$(".recentWordColor").css("color","black");
-		}
-	
-	
-	
-		
-	});
-	
+function PopularSearches() {
+    recentClick = false;
+    popularClick = true;
+    $("#Popular").show();
+    
+    $.ajax({
+        type: "GET",
+        url: "popularSearchKeywordList",
+        success: function(res) {
+            console.log("최근 검색어랑 인기검색어 뜸!!!!");
+            let stringList = res.myArrayList;
+            let withoutQuotesList = stringList.map((str) => str.replace(/'/g, ''));
+
+            let tableHTML = '<table id="PopularTableBoarder" style="width: 100%; text-align: center; border-collapse: collapse;">';
+            tableHTML +=
+                '<tr class="PopularCenter">'
+                + '  <td class="SelRecentborderBottom">'
+                + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
+                + '  </td>'
+                + '  <td class="SelPopularborderBottom">'
+                + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
+                + '  </td>'
+                + '</tr>';
+
+            for(let i = 0; i < 10; i++) {
+                let rank1 = i + 1;
+                let rank2 = i + 11;
+                tableHTML +=
+                    '<tr>'
+                    + '  <td>'
+                    + '    <a class="popularWordColorTd marginLeftRank">'
+                    +        rank1
+                    + '    </a>'
+                    + '    <a onclick="sendKeyword(this)">' + withoutQuotesList[i] + '</a>'
+                    + '  </td>'
+                    + '  <td>'
+                    + '    <a class="popularWordColorTd marginLeftRank">'
+                    +        rank2
+                    + '    </a>'
+                    + '    <a onclick="sendKeyword(this)">' + withoutQuotesList[i + 10] + '</a>'
+                    + '  </td>'
+                    + '</tr>';
+            }
+
+            tableHTML += 
+                '<tr>'
+                + '  <td colspan="2" style="text-align: center;">'
+                + '    <a id="closeSearchBox">닫기</a>'
+                + '  </td>'
+                + '</tr>';
+            tableHTML += '</table>';
+            
+            $("#Popular").html(tableHTML);
+            $("#Recent").hide();
+            $(".popularWordColor").css("color", "#39d274");
+            $(".recentWordColor").css("color", "black");
+        }
+    });
 }
+
+
 console.log("popular : " + PopularSearches);
 //'keywords' 항목을 로컬 스토리지에서 삭제하고, 
 //'최근검색어' 및 '인기검색어'와 관련된 테이블을 업데이트
 //'최근검색어 삭제' 링크를 함수 다시 호출, 삭제 후에 업데이트된 메시지가 표시
-function localStorageClean(){
-	window.localStorage.removeItem('keywords');
-	console.log("localStorageClean !!!!!!!!!!!!!");
-	// 테이블 생성
-	let tableHTML = '<table>';
-	tableHTML += 
-		'<tr>'
-		+'	<td class="SelRecentborderBottom">'
-		+'		<a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
-		+'	</td>'
-		+'	<td class="PopularborderBottom">'
-		+'		<a onclick="PopularSearches()" class="popularWordColor" style="color:black;">인기검색어</a>'
-		+'	</td>'
-		+'</tr>';
-		
-	tableHTML +=
-		'<tr>'
-		+'<td colspan="2">'
-		+'최근 검색어가 없습니다.'
-		+'</td>'
-		+'</tr>'
-		
-	tableHTML += 
-		'<tr>'
-		+	'<td>'
-		+	'	<a onclick="localStorageClean()" id="localStorageClean">최근검색어 삭제</a>'
-		+	'</td>'
-		+	'<td>'
-		+	'	<a id="closeSearchBox">'
-		+	'		닫기'
-		+	'	</a>'
-		+	'</td>'
-		+'</tr>' 
-		
-		
-	tableHTML += '</table>';
-	// HTML 영역에 테이블 추가
-	$("#Recent").html(tableHTML);
+function localStorageClean() {
+    window.localStorage.removeItem('keywords');
+    console.log("localStorageClean !!!!!!!!!!!!!");
+
+    // 테이블 생성
+    let tableHTML = '<table id="PopularTableBoarder" style="width: 100%; text-align: center; border-collapse: collapse;">';
+    tableHTML += 
+        '<tr class="PopularCenter">'
+        + '  <td class="SelRecentborderBottom">'
+        + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
+        + '  </td>'
+        + '  <td class="SelPopularborderBottom">'
+        + '    <a onclick="PopularSearches()" class="popularWordColor" style="color:black;">인기검색어</a>'
+        + '  </td>'
+        + '</tr>';
+        
+    tableHTML +=
+        '<tr>'
+        + '  <td colspan="2" style="border-bottom: 1px solid #ddd; padding: 10px 0;"></td>'
+        + '</tr>'; // 구분선 추가
+    
+    tableHTML +=
+        '<tr>'
+        + '  <td colspan="2">'
+        + '    최근 검색어가 없습니다.'
+        + '  </td>'
+        + '</tr>';
+
+    tableHTML += 
+        '<tr>'
+        + '  <td>'
+        + '    <a onclick="localStorageClean()" id="localStorageClean">최근검색어 삭제</a>'
+        + '  </td>'
+        + '  <td>'
+        + '    <a id="closeSearchBox">닫기</a>'
+        + '  </td>'
+        + '</tr>';
+    
+    tableHTML += '</table>';
+
+    // HTML 영역에 테이블 추가
+    $("#Recent").html(tableHTML);
 }
+
+
+
+
+
 //로컬 스토리지에서 최근 검색어 목록을 가져와 이를 테이블 형식으로 웹 페이지에 표시
 //사용자는 검색어 목록에서 특정 키워드를 선택하거나 삭제할 수 있으며, 전체 검색어 목록을 삭제 가능
 function updateTable() {
@@ -734,37 +812,41 @@ function localStarageDeleteOne(keyword) {
             <a href="./" class="logo"><img src="${pageContext.request.servletContext.contextPath}/resources/images/logo.png" height="70" width="140"></a>
         </div>
         <div class="main_search">
-            <div class="col-lg-5 col-md-7 d-xs-none" id="searchBox" onclick="showHandler()">
-                <!-- Start Main Menu Search -->
-                <div class="main-menu-search">
-                    <!-- navbar search start -->
-                    <div class="navbar-search">
-                        <div class="search-input">
-                            <input type="text" id="searchKeyword" placeholder="상품명 입력, 닉네임 입력" value="${param.searchKeyword}" maxlength="100">
-                            <div class="search-btn">
-                                <button onclick="searchKeyword()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Main Menu Search -->
-                </div>
-                <div class="searchBoxBlock" id="searchResults">
-                    <div id="Recent">
-                        <!-- 최근검색어 테이블이 표시될 영역 -->
-                    </div>
-                    <div id="Relation">
-                        <!-- 연관검색어 테이블이 표시될 영역 -->
-                    </div>
-                    <div id="Popular">
-                        <!-- 인기검색어 테이블이 표시될 영역 -->
-                    </div>
-                </div>
-            </div>
-        </div>
+		    <div class="col-lg-5 col-md-7 d-xs-none" id="searchBox" onclick="showHandler()">
+		        <!-- Start Main Menu Search -->
+		        <div class="main-menu-search">
+		            <!-- navbar search start -->
+		            <div class="navbar-search">
+		                <div class="search-input">
+		                    <input type="text" id="searchKeyword" placeholder="상품명 입력, 닉네임 입력" value="${param.searchKeyword}" maxlength="100">
+		                    <div class="search-btn">
+		                        <button onclick="searchKeyword()">
+		                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+		                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+		                            </svg>
+		                        </button>
+		                    </div>
+		                </div>
+		            </div>
+		            <!-- End Main Menu Search -->
+		        </div>
+		        <div class="searchBoxBlock" id="searchResults">
+		            <div id="Recent">
+		                <h5>최근 검색어</h5>
+		                <!-- 최근검색어 테이블이 표시될 영역 -->
+		            </div>
+		            <div id="Relation">
+		                <h5>연관 검색어</h5>
+		                <!-- 연관검색어 테이블이 표시될 영역 -->
+		            </div>
+		            <div id="Popular">
+		                <h5>인기 검색어</h5>
+		                <!-- 인기검색어 테이블이 표시될 영역 -->
+		            </div>
+		        </div>
+		    </div>
+		</div>
+
         <div class="main_menu">
             <nav class="menu_container">
                 <ul class="menu_area">
