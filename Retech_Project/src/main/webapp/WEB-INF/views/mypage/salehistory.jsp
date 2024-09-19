@@ -428,7 +428,7 @@
                                             거래확정
                                            </c:when>
                                            <c:when test="${product.trade_status == '4'}">
-                                               <button class="status-button cancel-request" data-id="${product.pd_idx}">거래취소승인</button>
+                                               <button class="status-button cancel-request2" data-id="${product.pd_idx}">거래취소승인</button>
                                            </c:when>
                                            <c:when test="${product.trade_status == '5'}">
                                             거래취소승인완료
