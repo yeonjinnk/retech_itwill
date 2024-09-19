@@ -602,8 +602,8 @@ function PopularSearches() {
                 + '</tr>';
 
             for(let i = 0; i < 10; i++) {
-                let rank1 = i + 1;
-                let rank2 = i + 11;
+            	let rank1 = (i + 1) + '.';  // 순위 뒤에 점 추가
+                let rank2 = (i + 11) + '.'; // 순위 뒤에 점 추가
                 tableHTML +=
                     '<tr>'
                     + '  <td>'
