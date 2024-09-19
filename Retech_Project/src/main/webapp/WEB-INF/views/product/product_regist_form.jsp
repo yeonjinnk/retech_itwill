@@ -732,7 +732,7 @@ div#insert_box {
 					<td colspan="2" align="left"><span class="pro_info">기본정보</span> &nbsp;&nbsp;&nbsp; <span style="font-size: 14px; color: red">*필수항목</span></td>
 				</tr>
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 
 				<!-- 상품이미지 -->
@@ -783,7 +783,7 @@ div#insert_box {
 				</tr>
 				<!-- 이미지영역끝 -->
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 				<!-- 제목  -->
 				<tr>
@@ -795,7 +795,7 @@ div#insert_box {
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 				<!-- 카테고리 -->
 				<tr>
@@ -816,7 +816,7 @@ div#insert_box {
 					<input type="hidden" name="pd_category" id="pd_category_hidden"></td>
 				</tr>
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 				<!-- 가격 -->
 				<tr>	
@@ -838,7 +838,7 @@ div#insert_box {
 				</tr>
 
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 
 				<!-- 상품설명 -->
@@ -855,7 +855,7 @@ div#insert_box {
 				</tr>
 
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 
 				<!-- 등록 취소버튼 -->
