@@ -13,6 +13,9 @@
 			<a href="">PAY 관리</a>
 		</li>
 		<li class="depth01">
+			<a href="AdminStore">스토어 관리</a>
+		</li>
+		<li class="depth01">
 			<a href="TotalSearchList">검색어 관리</a>
 		</li>
 		<li class="depth01">

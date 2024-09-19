@@ -19,41 +19,36 @@
             <jsp:include page="/WEB-INF/views/inc/admin_side_nav.jsp"></jsp:include>
             <article class="main">
                 <h3>스토어 목록</h3>
+                
+                <form action="AdminStore">
+					<div class="search">
+						<span>Search</span>
+						<input type="search" name="searchKeyword" value="${param.searchKeyword}" >
+						<input type="submit" value="검색">
+					</div>
+				</form>
+                
+                
                 <div class="content">
                     <table border="1">
                         <tr>
-                            <th>회원아이디</th>
-                            <th>이름</th>
-                            <th>상점이름</th>
-                            <th>전화번호</th>
-                            <th>생년월일</th>
-                            <th>회원상태</th>
+                            <th>상품 번호</th>
+                            <th>상품명</th>
+                            <th>상품 가격</th>
+                            <th>상품 이름</th>
+                            <th>카테고리</th>
                         </tr>
                         <c:set var="pageNum" value="1" />
                         <c:if test="${not empty param.pageNum}">
                             <c:set var="pageNum" value="${param.pageNum}" />
                         </c:if>
-                        <c:forEach var="member" items="${memberList}">
+                        <c:forEach var="store" items="${storeList}">
                             <tr align="center">
-						    <td>
-						        <a href="AdminMemberDetail?memberId=${member.member_id}">
-						            ${member.member_id}
-						        </a>
-						    </td>
-						    <td>${member.member_name}</td>
-						    <td>${member.member_nickname}</td>
-						    <td>${member.member_phone}</td>
-						    <td>${member.member_birth}</td>
-						    <td>
-						        <c:choose>
-						            <c:when test="${member.member_status eq '탈퇴'}">
-						                <span class="status-x">X</span>
-						            </c:when>
-						            <c:otherwise>
-						                <span class="status-o">O</span>
-						            </c:otherwise>
-						        </c:choose>
-						    </td>
+						    <td>${store.store_idx}</td>
+						    <td>${store.store_id}</td>
+						    <td>${store.store_price}</td>
+						    <td>${store.store_content}</td>
+						    <td>${store.store_category}</td>
 						</tr>
 
                         </c:forEach>
@@ -66,7 +61,7 @@
                 </div>
                 <div id="pageList">
                     <input type="button" value="이전" 
-                        onclick="location.href='AdminMemberList2?pageNum=${pageNum - 1}'" 
+                        onclick="location.href='AdminStore?pageNum=${pageNum - 1}'" 
                         <c:if test="${pageNum eq 1}"> disabled</c:if> />
                     <c:forEach var="i" begin="${pageInfo.startPage}" end="${pageInfo.endPage}">
                         <c:choose>
@@ -74,12 +69,12 @@
                                 <b>${i}</b>
                             </c:when>
                             <c:otherwise>
-                                <a href="AdminMemberList2?pageNum=${i}">${i}</a>
+                                <a href="AdminStore?pageNum=${i}">${i}</a>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
                     <input type="button" value="다음" 
-                        onclick="location.href='AdminMemberList2?pageNum=${pageNum + 1}'" 
+                        onclick="location.href='AdminStore?pageNum=${pageNum + 1}'" 
                         <c:if test="${pageNum eq pageInfo.endPage}"> disabled</c:if> />
                 </div>
             </article>

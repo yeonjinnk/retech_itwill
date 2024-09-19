@@ -28,7 +28,7 @@
             <article class="main">
                 <h3>리뷰 목록</h3>
                 
-                <form action="AdminReview">
+                <form action="AdminStore">
 							<div class="search">
 								<span>Search</span>
 								<input type="search" name="searchKeyword" value="${param.searchKeyword}" >
