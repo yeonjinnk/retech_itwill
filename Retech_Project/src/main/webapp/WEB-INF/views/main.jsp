@@ -308,6 +308,12 @@ function scrollToTop() {
     background-color: #f0f0f0; /* 마우스 오버 시 배경색 변경 */
 }
 
+
+.section_margin {
+	margin-top: 60px;
+}
+
+
 </style>
 
 </head>
@@ -413,7 +419,7 @@ function scrollToTop() {
 			        </div>
 			    </div>
 			    
-			    <h3 class="category_subject">노트북</h3>
+			    <h3 class="category_subject section_margin">노트북</h3>
 			    <div class="pd_category_area area">
 			        <div class="pd_category_photo photo" onclick="location.href='ProductList?c_id=NB&c_id2=AP'" style="cursor:pointer;">
 			            <img src="${pageContext.request.contextPath }/resources/img/main_category/NBapple.png" style="width:50%;" class="inner_photo category_photo">
@@ -441,7 +447,7 @@ function scrollToTop() {
 			
 			<!-- 메인 이미지 영역 2. 인기상품 -->
 			<div class="pd_popular category_section">    
-			    <h2 class="category_subject">인기상품</h2>
+			    <h2 class="category_subject section_margin">인기상품</h2>
 			    <div class="pd_popular_area area">
 			        <c:forEach var="product" items="${popularProducts}">
 			            <div class="pd_popular_photo photo">
@@ -458,7 +464,7 @@ function scrollToTop() {
 
 			<!-- 메인 이미지 영역 3. 최근 업데이트 상품 -->
 			<div class="pd_recent category_section">    
-			    <h2 class="category_subject">최근 업데이트 상품</h2>
+			    <h2 class="category_subject section_margin">최근 업데이트 상품</h2>
 			    <div class="pd_recent_area area">
 				    <c:forEach var="product" items="${recentProducts}">
 					    <div class="pd_recent_photo photo">
