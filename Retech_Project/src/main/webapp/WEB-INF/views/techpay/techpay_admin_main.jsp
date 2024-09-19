@@ -12,7 +12,6 @@
 <%-- 자바스크립트 연결 --%>
 <script src="${pageContext.request.servletContext.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
-
 </head>
 <body>
 	<header>

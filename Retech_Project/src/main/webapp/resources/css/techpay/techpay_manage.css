@@ -1,0 +1,245 @@
+@charset "UTF-8";
+
+/*---- techpay_manage 영역 전체 ----*/
+.paymanage_container {
+/* 	max-width: 600px; */
+/* 	margin: auto; */
+    width: 600px; /* 기본 너비 */
+    max-width: 100%; /* 화면 너비에 맞게 조정 */
+    margin: 0 auto;   
+    
+    
+	margin-bottom: 40px;
+	margin-top: 10px;
+	border: 1px solid lightgray;
+	border-radius: 5px;
+	padding: 10px 20px 20px 20px;
+	box-sizing: border-box;
+	display: block;
+}
+
+.title, .pay_balance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.pay_account_list, .account_list_table {
+	margin-top: 10px;
+}
+
+/* 비밀번호 설정 폼 영역 */
+.pay_pwd_contents {
+    padding: 20px;
+    background-color: #f9f9f9; /* 배경색 추가 */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.pay_pwd_contents h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* 입력 필드 스타일 */
+.pay_pwd_contents input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.pay_pwd_contents input[type="password"]:focus {
+    border-color: #007BFF; /* 포커스 시 테두리 색상 */
+    outline: none;
+}
+
+/* 비밀번호 체크 결과 메시지 */
+.check {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.check.success {
+    color: #28a745; /* 성공 시 초록색 */
+}
+
+.check.error {
+    color: #dc3545; /* 오류 시 빨간색 */
+}
+
+/* 제출 버튼 스타일 */
+.pay_pwd_contents input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #34495E;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 22px;
+    margin-top: 0px;
+    transition: background-color 0.3s ease;
+}
+
+.pay_pwd_contents input[type="submit"]:hover {
+    background-color: #0064FF; /* 테마보다 약간 어두운 색상으로 변경 */
+}
+
+
+.acc_info_btn { 
+	padding: 10px 20px;
+	border: none;
+	border-radius: 2px;
+	background-color: skyblue;
+	color: white;
+	cursor: pointer;
+	font-size: 10px;
+	width: 100%;
+} 
+
+
+#techpay_passwd_db{
+    margin-bottom: 30px; /* "새 테크페이 비밀번호" 위에 10px 여백 추가 */
+}
+
+.bank_symbol {
+	margin-top: 5px 0px 5px 0px;
+	width: 40px;
+	height: 30px;
+}
+
+.pay_pwd_contents {
+	font-size: 1.2em;
+}
+
+#sName {
+	color: #0064FF;
+	font-size: 28px;
+	padding-top: 5px;
+}
+
+.account_list {
+	margin-top: 10px;
+}
+
+/* 계좌 목록 컨테이너 */
+.account_list {
+    margin: 20px auto;
+    max-width: 900px; /* 컨테이너 너비 설정 */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.account_list h2 {
+    text-align: center;
+    color: #34495E; /* 테마 색상 적용 */
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* 계좌 목록 테이블 스타일 */
+.account_list_table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 경계선 겹침 제거 */
+    margin-top: 5px;
+    font-size: 18px;
+}
+
+.account_list_table th, .account_list_table td {
+    padding: 5px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    color: #555;
+}
+
+.account_list_table th {
+    background-color: #f2f2f2; /* 테이블 헤더 배경색 */
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+.account_list_table tr {
+    transition: background-color 0.3s ease;
+}
+
+
+/* 은행 아이콘 이미지 */
+.bank_symbol {
+    display: block;
+    margin: 0 auto; /* 이미지 가로 가운데 정렬 */
+    width: 55px; /* 원하는 이미지 크기 */
+    height: 40px;
+    vertical-align: middle; /* 이미지 세로 가운데 정렬 */
+}
+
+/* 예금주명 열 가운데 정렬 */
+.account_list_table td:nth-child(4) {
+    text-align: center;
+    padding-left: 0px;
+    font-size: 20px;
+}
+
+.account_list_table td:nth-child(2) {
+    font-size: 20px;
+}
+
+.account_list_table td:nth-child(1) {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+/* 계좌 정보 버튼 스타일 */
+.acc_info_btn {
+    padding: 8px 12px;
+    background-color: #34495E; /* 테마색 적용 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.acc_info_btn:hover {
+    background-color: #2c3e50; /* 마우스 오버 시 색상 변경 */
+}
+
+.title img {
+	margin-right: 10px;
+}
+
+#pay_pwd_title {
+	padding-left: 20px;
+}
+
+
+.title-container {
+    display: grid;
+    grid-template-columns: 1fr auto; /* 왼쪽은 남겨두고, 오른쪽에 텍스트를 정렬 */
+    max-width: 600px; /* paymanage_container와 동일한 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+    color: #34495E;
+    font-size: 12px;
+    margin-top: 50px;
+}
+
+#techpay_title {
+    justify-self: end; /* 오른쪽 정렬 */
+    margin-right: 0;
+    font-weight: bold;
+}

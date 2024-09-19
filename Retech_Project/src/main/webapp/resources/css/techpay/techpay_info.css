@@ -1,0 +1,310 @@
+@charset "UTF-8";
+
+.container {
+	max-width:1600px;
+ 	width: 100%;
+}
+/*---- techpay_info 영역 전체 ----*/
+.payinfo_container {
+	width:100%;
+	margin: 0 auto;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	border: 1px solid gray;
+	border-radius: 10px;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1); 
+	padding: 20px 10px;
+	box-sizing: border-box;
+	display: block;
+}
+
+.title, .pay_balance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/*---- 충전/환급 버튼 ----*/
+.btn_top {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	margin-bottom: 20px;
+}
+
+.btn_top .btn { 
+	padding: 10px 20px; 
+	border: none; 
+	border-radius: 2px; 
+	background-color: skyblue; 
+	color: white; 
+	cursor: pointer; 
+	font-size: 14px;  
+	width: 100%;
+} 
+
+/*---- 페이내역 탭 ----*/
+.pay_history_tab {
+    display: flex;
+    border: 1px #34495E; 
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+#techpay_manage_btn {
+	padding: 10px 20px;
+	font-size: 20px;
+	border: 2px solid #34495E;
+	background-color: #F0F0F0;
+	border-radius: 5px;
+}
+
+#techpay_manage_btn:hover {
+	background-color: #34495E;
+	color: #ffffff;
+}
+
+#loadMoreBtn {
+	background-color: #34493E;
+	color: #ffffff;
+}
+
+h5.product-name {
+	color: #0064FF;
+}
+
+.tab_label {
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    text-align: center;
+    color:black;  /* 기본 상태에서의 글자 색상 */
+    transition: background-color 0.3s ease, color 0.3s ease; /* 배경과 글자 색 전환 효과 추가 */
+}
+
+input[type="radio"]:checked + .tab_label {
+    background-color: #34495E;
+    color: white;
+}
+
+.card-body {
+	padding: 20px 20px;
+}
+
+/*---- 기간선택 모달창 ----*/
+.ui-datepicker {
+    z-index: 9999 !important;
+}
+
+.container {
+	padding: 20px 30px 40px 30px;
+}
+
+/* 개월 선택 탭(1개월, 3개월..) 가로로 꽉 차게 */
+.btn-group {  
+    display: flex;
+}
+
+/* 날짜선택 영역 가로로 꽉 차게 */
+.date_area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.date_area input {
+    flex-grow: 2; /* 입력 필드가 가로 공간을 최대한 차지하도록 설정 */
+}
+
+.btn-group .btn-check {
+	font-size: 30px;
+}
+
+.btn2 {
+	font-size:24px;
+    width: 100%; /* 버튼이 부모의 너비를 꽉 채우도록 설정 */
+    padding: 10px 0; /* 버튼의 상하 여백 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    background-color: #34495E; /* 버튼 배경색 */
+    color: white; /* 버튼 텍스트 색상 */
+    border: none; /* 기본 테두리 제거 */
+    border-radius: 5px; /* 버튼의 둥근 모서리 */
+}
+
+
+.btn22 {
+    display: flex;
+    gap: 10px; /* 버튼 사이의 간격 */
+}
+
+#date_select {
+    display: flex;
+    justify-content: flex-end; /* 버튼을 오른쪽에 정렬 */
+    margin-bottom: 5px; /* 아래에 약간의 간격 추가 */
+}
+
+@media (max-width: 768px) {
+    #date_select {
+        float: none; /* 작은 화면에서는 float 제거 */
+        text-align: right; /* 작은 화면에서 오른쪽 정렬 */
+        margin-top: 10px; /* 여백 추가 */
+    }
+}
+
+#period_info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#info_left {
+    font-size: 22px;
+    color: #555; /* 약간 어두운 회색 */
+}
+
+#info_right {
+    font-size: 22px;
+    cursor: pointer; /* 클릭할 수 있음을 나타내는 포인터 커서 */
+}
+
+#period_info {
+	margin-bottom: 20px;
+}
+
+h5.pay_date {
+	font-size: 22px;
+}
+
+.pay-info #pay_balance_text {
+	font-size: 25px;
+}
+
+#sName {
+	color: #0064FF;
+}
+
+#info_right:hover {
+    color: #0056b3; /* 호버 시 텍스트 색상 변경 */
+}
+
+.btn-group {
+	margin-bottom: 20px;
+}
+
+
+/* ajax 데이터 받는 부분 css */
+/* 연도별 그룹 제목 */
+#payHistoryList #year {
+    font-weight: bold;
+    font-size: 1.5rem;
+    width: calc(100% - 40px); /* 좌우 20px 여백을 고려하여 너비 조정 */
+    margin-bottom: 12px;
+    margin-left: auto;   
+	padding: 10px 20px;
+}
+
+/* 각 항목을 담고 있는 행 (row) */
+.row.content_list {
+    padding: 10px 0px; /* 상하 및 좌우에 적절한 패딩 추가 */
+    border-bottom: 1px solid #e0e0e0; /* 아래쪽에 구분선 추가 */
+    margin-bottom: 10px;
+    width: calc(100% - 40px); /* 좌우 20px 여백을 고려하여 너비 조정 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 날짜 부분 */
+.pay_date {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 제목 (상품명 등) */
+.product-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff; /* 파란색 */
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.product-name a {
+    color: inherit; /* 링크 상태에서도 동일한 색 유지 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.product-name a:hover {
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+
+/* 상세 설명 (시간 및 사용/충전 등 정보) */
+.pay-info-sub {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+/* 금액 부분 */
+.pay-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.btn-group .label {
+	font-size: 22px;
+}
+
+/* 잔액 정보 */
+.pay-balance-sub {
+    font-size: 1.3rem;
+    color: #888;
+}
+
+.btn-outline-primary {
+    color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+@media (min-width: 1200px) {
+    .h2, h2 {
+	font-size: 18px;
+    }
+}
+
+.h2, h2 {
+	font-size: 18px;
+}
+
+.title-container {
+	margin-top: 50px;
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+	color: #34495E;
+	font-size: 18px !important;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+#techpay_title {
+	font-weight: bold;
+}
+
+.pay-info.col-lg-6.col-md-6.col-12 {
+	padding-left: 30px;
+}
+#pay_balance_amt {
+	font-size: 40px;
+	padding-right: 0;
+}
