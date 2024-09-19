@@ -31,7 +31,7 @@ $(document).ready(function() {
 	let pageNum = 1; // 임의로 설정
 	
     let resetPage = true;
-// 	loadList(selectedCategory, selectedSort, resetPage); // 이 함수가 실행되서 productList가 아니라 productListJson까지 다 같이 실행이 되버려서 계속 전체 상품 목록 좋
+ 	loadList(selectedCategory, selectedSort, resetPage); // 이 함수가 실행되서 productList가 아니라 productListJson까지 다 같이 실행이 되버려서 계속 전체 상품 목록 좋
 });
 </script>
 
