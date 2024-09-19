@@ -755,7 +755,7 @@ $(function() {
 						&nbsp;&nbsp;&nbsp; <span style="font-size: 14px; color: red">*필수항목</span></td>
 				</tr>
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 
 				<!-- 상품이미지 -->
@@ -820,7 +820,7 @@ $(function() {
 				
 
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 				
 				<!-- 제목  -->
@@ -838,7 +838,7 @@ $(function() {
 				</tr>
 
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 				
 				<!-- 카테고리 -->
@@ -860,7 +860,7 @@ $(function() {
 					<input type="hidden" name="pd_category" id="pd_category_hidden"></td>
 				</tr>
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 						<!-- 가격 -->
 				<tr>
@@ -870,7 +870,7 @@ $(function() {
 						id="price_under"></span></td>
 				</tr>
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 				<!-- 상품설명 -->
 				<tr>
@@ -891,7 +891,7 @@ $(function() {
 				</tr>
 
 				<tr>
-					<td colspan="2"><hr></td>
+<!-- 					<td colspan="2"><hr></td> -->
 				</tr>
 				
 				<!-- 등록 취소버튼 -->
