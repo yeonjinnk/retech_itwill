@@ -35,6 +35,11 @@ http://c5d2403t1.itwillbs.com/Retech_Project/
 |데이터베이스|<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>|
 |협업 도구|<img alt="Slack" src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white" /><img src="https://img.shields.io/badge/Google%20Sheets-34A853?style=for-the-badge&logo=google-sheets&logoColor=white"/>|
 
+|팀장|부팀장|서기|팀원|팀원|
+|------|---|---|---|---|
+|[옥혜지](https://github.com/devok11)|[박지혁](https://github.com/royalcross)|[진성민](https://github.com/ns0304)|[강연진](https://github.com/yeonjinnk)|[성수안](https://github.com/a4090)|
+|결제, 페이|관리자페이지, CSS|상품 등록, 인기/연관검색어|채팅, 스토어 결제, 리뷰|로그인, 회원가입, 마이페이지|
+
 ---------------------------------------------------------------------
 
 ## 아키텍처
@@ -56,7 +61,4 @@ http://c5d2403t1.itwillbs.com/Retech_Project/
 ## 5. 트러블슈팅(탭메뉴로 구성) 
 향후 계획, 프로젝트를 통해 배운점, 프로젝트에서 문제점을 해결한 과정, 프로젝트의 개선점, 확장성등을 이야기 해도 된다.
 
-|팀장|부팀장|서기|팀원|팀원|
-|------|---|---|---|---|
-|[옥혜지](https://github.com/devok11)|[박지혁](https://github.com/royalcross)|[진성민](https://github.com/ns0304)|[강연진](https://github.com/yeonjinnk)|[성수안](https://github.com/a4090)|
-|결제, 페이|관리자페이지, CSS|상품 등록, 인기/연관검색어|채팅, 스토어 결제, 리뷰|로그인, 회원가입, 마이페이지|
+
