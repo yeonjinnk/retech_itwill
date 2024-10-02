@@ -3,7 +3,7 @@
 
 ## 1. 프로젝트 개요
 기획의도
-ㅁ테크기기 중고 거래 사이트
+테크기기 중고 거래 사이트
 
 ### 서비스 요약
 ----------------
@@ -24,6 +24,7 @@ http://c5d2403t1.itwillbs.com/Retech_Project/
 
 
 ### 📅개발 기간
+----------------
 2024.07.25 - 진행중
 
 |개발 환경||
@@ -35,6 +36,8 @@ http://c5d2403t1.itwillbs.com/Retech_Project/
 |데이터베이스|<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>|
 |협업 도구|<img alt="Slack" src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white" /><img src="https://img.shields.io/badge/Google%20Sheets-34A853?style=for-the-badge&logo=google-sheets&logoColor=white"/>|
 
+### 📅팀원
+----------------
 |팀장|부팀장|서기|팀원|팀원|
 |------|---|---|---|---|
 |[옥혜지](https://github.com/devok11)|[박지혁](https://github.com/royalcross)|[진성민](https://github.com/ns0304)|[강연진](https://github.com/yeonjinnk)|[성수안](https://github.com/ssa121600)|
@@ -42,17 +45,12 @@ http://c5d2403t1.itwillbs.com/Retech_Project/
 
 ---------------------------------------------------------------------
 
-## 아키텍처
-프로젝트의 아키텍처를 그림이나 사진으로 표현하여 첨부한다.
----------------------------------------------------------------------
+
 
 ## 2. 주요 기능
 프로젝트의 핵심 기능을 강조하고 웹의 경우 서버 배포까지 했으면 url을, 아닌 경우 사진이나 그림으로 설명한다.
 ---------------------------------------------------------------------
 
-## 3. 기여도와 역할
-스크럼이나 업무 분담을 한 방식을 표현해준다.
----------------------------------------------------------------------
 
 ## 4. 결과 및 성과
 프로젝트의 결과물과 어떤 문제를 해결했는지, 어떤 성과를 달성했는지 강조한다. 정량적 수치가 있으면 더 좋다.
