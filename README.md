@@ -37,7 +37,7 @@ http://c5d2403t1.itwillbs.com/Retech_Project/
 
 |팀장|부팀장|서기|팀원|팀원|
 |------|---|---|---|---|
-|[옥혜지](https://github.com/devok11)|[박지혁](https://github.com/royalcross)|[진성민](https://github.com/ns0304)|[강연진](https://github.com/yeonjinnk)|[성수안](https://github.com/a4090)|
+|[옥혜지](https://github.com/devok11)|[박지혁](https://github.com/royalcross)|[진성민](https://github.com/ns0304)|[강연진](https://github.com/yeonjinnk)|[성수안](https://github.com/sya121600)|
 |결제, 페이|관리자페이지, CSS|상품 등록, 인기/연관검색어|채팅, 스토어 결제, 리뷰|로그인, 회원가입, 마이페이지|
 
 ---------------------------------------------------------------------
